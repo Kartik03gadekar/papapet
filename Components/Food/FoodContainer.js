@@ -62,18 +62,45 @@ const FoodContainer = () => {
   }, [])
   
   return (
-    <div className="bg w-full h-screen text-black px-14 py-10 ">
-      <h1 className="text-5xl font-bold font-[poppins]">Trending Food</h1>
-      {
-        load ? <Loading/> : 
-        <>
-         <div className="w-full grid grid-cols-6 gap-4 py-4 items-center h-[42vh] max-md:grid-cols-1">
+    <div className="w-full min-h-screen text-black  py-10 mt-[10vh]">
+      <div className="flex flex-col items-center justify-center gap-8 py-10 px-10">
+        <h1 className="text-3xl font-extrabold">Browse By brands</h1>
+     <div className="flex w-full items-center justify-between">
+     <div className="flex flex-col gap-2 items-center justify-center">
+          <div className="h-[20vh] w-[20vh] rounded-full bg-red-500"></div>
+          <h1 className="font-semibold">Pedigree</h1>
+        </div>
+        <div className="flex flex-col gap-2 items-center justify-center">
+          <div className="h-[20vh] w-[20vh] rounded-full bg-red-500"></div>
+          <h1 className="font-semibold">Pedigree</h1>
+        </div>
+        <div className="flex flex-col gap-2 items-center justify-center">
+          <div className="h-[20vh] w-[20vh] rounded-full bg-red-500"></div>
+          <h1 className="font-semibold">Pedigree</h1>
+        </div>
+        <div className="flex flex-col gap-2 items-center justify-center">
+          <div className="h-[20vh] w-[20vh] rounded-full bg-red-500"></div>
+          <h1 className="font-semibold">Pedigree</h1>
+        </div>
+     </div>
+      </div>
+      <div className="flex flex-col items-center justify-center bg-white py-10">
+        <h1 className="text-4xl">Explore our all Products</h1>
+        <div className="w-full grid grid-cols-4 px-10">
         {
             food?.map((i,index)=>(
             <ProductCard key={index} i={i} imgLink={imgLink}/>
               
             ))
         }
+        </div>
+      </div>
+      {/* <h1 className="text-5xl font-bold font-[poppins]">Trending Food</h1> */}
+      {/* {
+        load ? <Loading/> : 
+        <>
+         <div className="w-full grid grid-cols-6 gap-4 py-4 items-center h-[42vh] max-md:grid-cols-1">
+
      
         <div className="w-full h-full gap-2 flex items-center justify-center cursor-pointer">
           <div className="w-12 h-12 shrink-0 flex items-center p-2 justify-center border-[1px] border-gray-600 rounded-full">
@@ -83,7 +110,7 @@ const FoodContainer = () => {
         </div>
       </div>
         </>
-      }
+      } */}
      
     </div>
   );
