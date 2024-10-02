@@ -95,7 +95,11 @@ const NavPapaPet = () => {
         </Link>
       )} */}
       <div className="w-full flex items-center justify-between border-b-[1px]  border-black pb-2">
-        <h1 className="text-2xl font-semibold">PaPaPet</h1>
+    <div className="flex items-center justify-center gap-2">
+    <img className="object-contain h-10 " src="/logo.png" alt="" />
+
+<h1 className="text-2xl font-semibold">PaPaPet</h1>
+    </div>
         <div className="w-fit px-4 py-2 bg-[rgba(255,251,251,0.26)] rounded-full">
           <i className="ri-search-line"></i>
           <input

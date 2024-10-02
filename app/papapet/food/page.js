@@ -1,5 +1,6 @@
 import FoodContainer from "@/Components/Food/FoodContainer";
 import FoodSwiper from "@/Components/Food/FoodSwiper";
+import Footer from "@/Components/Footer/Footer";
 import Nav from "@/Components/Nav/Nav";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import React from "react";
@@ -33,6 +34,7 @@ const page = () => {
         </div>
         <FoodContainer />
       </div>
+      <Footer/>
     </>
   );
 };

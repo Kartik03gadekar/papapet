@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import ProductCard from "../ProductCard";
@@ -10,7 +10,7 @@ const FoodContainer = () => {
   const data = [
     {
       img: [
-          "https://www.petsy.online/cdn/shop/products/1_7af4b746-8c3b-4edb-9e22-7b902102b029.jpg?v=1679985001&width=700",
+        "https://www.petsy.online/cdn/shop/products/1_7af4b746-8c3b-4edb-9e22-7b902102b029.jpg?v=1679985001&width=700",
         "https://www.petsy.online/cdn/shop/products/7_6bcd7945-ca69-4be5-97f7-792acea18c7d.png?v=1614676335&width=1080",
       ],
       title: "Kitty Yums Dry Cat Food for Kittens - Ocean Fish",
@@ -18,81 +18,122 @@ const FoodContainer = () => {
       price: "999",
     },
     {
-        img: [
-            "https://www.petsy.online/cdn/shop/products/1_7af4b746-8c3b-4edb-9e22-7b902102b029.jpg?v=1679985001&width=700",
-          "https://www.petsy.online/cdn/shop/products/7_6bcd7945-ca69-4be5-97f7-792acea18c7d.png?v=1614676335&width=1080",
-        ],
-        title: "Kitty Yums Dry Cat Food for Kittens - Ocean Fish",
-        company: "Kitty Kums",
-        price: "999",
-      },
-      {
-        img: [
-            "https://www.petsy.online/cdn/shop/products/1_7af4b746-8c3b-4edb-9e22-7b902102b029.jpg?v=1679985001&width=700",
-          "https://www.petsy.online/cdn/shop/products/7_6bcd7945-ca69-4be5-97f7-792acea18c7d.png?v=1614676335&width=1080",
-        ],
-        title: "Kitty Yums Dry Cat Food for Kittens - Ocean Fish",
-        company: "Kitty Kums",
-        price: "999",
-      },
-      {
-        img: [
-            "https://www.petsy.online/cdn/shop/products/1_7af4b746-8c3b-4edb-9e22-7b902102b029.jpg?v=1679985001&width=700",
-          "https://www.petsy.online/cdn/shop/products/7_6bcd7945-ca69-4be5-97f7-792acea18c7d.png?v=1614676335&width=1080",
-        ],
-        title: "Kitty Yums Dry Cat Food for Kittens - Ocean Fish",
-        company: "Kitty Kums",
-        price: "999",
-      },
-      {
-        img: [
-            "https://www.petsy.online/cdn/shop/products/1_7af4b746-8c3b-4edb-9e22-7b902102b029.jpg?v=1679985001&width=700",
-          "https://www.petsy.online/cdn/shop/products/7_6bcd7945-ca69-4be5-97f7-792acea18c7d.png?v=1614676335&width=1080",
-        ],
-        title: "Kitty Yums Dry Cat Food for Kittens - Ocean Fish",
-        company: "Kitty Kums",
-        price: "999",
-      }
-      
+      img: [
+        "https://www.petsy.online/cdn/shop/products/1_7af4b746-8c3b-4edb-9e22-7b902102b029.jpg?v=1679985001&width=700",
+        "https://www.petsy.online/cdn/shop/products/7_6bcd7945-ca69-4be5-97f7-792acea18c7d.png?v=1614676335&width=1080",
+      ],
+      title: "Kitty Yums Dry Cat Food for Kittens - Ocean Fish",
+      company: "Kitty Kums",
+      price: "999",
+    },
+    {
+      img: [
+        "https://www.petsy.online/cdn/shop/products/1_7af4b746-8c3b-4edb-9e22-7b902102b029.jpg?v=1679985001&width=700",
+        "https://www.petsy.online/cdn/shop/products/7_6bcd7945-ca69-4be5-97f7-792acea18c7d.png?v=1614676335&width=1080",
+      ],
+      title: "Kitty Yums Dry Cat Food for Kittens - Ocean Fish",
+      company: "Kitty Kums",
+      price: "999",
+    },
+    {
+      img: [
+        "https://www.petsy.online/cdn/shop/products/1_7af4b746-8c3b-4edb-9e22-7b902102b029.jpg?v=1679985001&width=700",
+        "https://www.petsy.online/cdn/shop/products/7_6bcd7945-ca69-4be5-97f7-792acea18c7d.png?v=1614676335&width=1080",
+      ],
+      title: "Kitty Yums Dry Cat Food for Kittens - Ocean Fish",
+      company: "Kitty Kums",
+      price: "999",
+    },
+    {
+      img: [
+        "https://www.petsy.online/cdn/shop/products/1_7af4b746-8c3b-4edb-9e22-7b902102b029.jpg?v=1679985001&width=700",
+        "https://www.petsy.online/cdn/shop/products/7_6bcd7945-ca69-4be5-97f7-792acea18c7d.png?v=1614676335&width=1080",
+      ],
+      title: "Kitty Yums Dry Cat Food for Kittens - Ocean Fish",
+      company: "Kitty Kums",
+      price: "999",
+    },
   ];
-  const {load,food,imgLink} = useSelector((state)=>state.others);
-  const dispatch = useDispatch()
+  const { load, food, imgLink } = useSelector((state) => state.others);
+  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getFood())
-  }, [])
-  
+    dispatch(getFood());
+  }, []);
+
   return (
     <div className="w-full min-h-screen text-black  py-10 mt-[10vh]">
       <div className="flex flex-col items-center justify-center gap-8 py-10 px-10">
         <h1 className="text-3xl font-extrabold">Browse By brands</h1>
-     <div className="flex w-full items-center justify-between">
-     <div className="flex flex-col gap-2 items-center justify-center">
-          <div className="h-[20vh] w-[20vh] rounded-full bg-red-500"></div>
-          <h1 className="font-semibold">Pedigree</h1>
+        <div className="flex w-full items-center justify-between">
+          <div className="flex flex-col gap-2 items-center justify-center">
+            <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
+              <img
+                src="/royal.webp"
+                className="h-full w-full object-contain"
+                alt=""
+              />
+            </div>
+            <h1 className="font-semibold">Royal Canin</h1>
+          </div>
+          <div className="flex flex-col gap-2 items-center justify-center">
+            <div className="h-[20vh] w-[20vh] rounded-full border-2 relative overflow-hidden">
+              <img
+                src="/arden.png"
+                className="h-full w-full object-contain"
+                alt=""
+              />
+            </div>
+            <h1 className="font-semibold">Arden Grance</h1>
+          </div>
+          <div className="flex flex-col gap-2 items-center justify-center">
+            <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
+              <img
+                src="/sniffy.jpg"
+                className="h-full w-full object-contain"
+                alt=""
+              />
+            </div>
+            <h1 className="font-semibold">Sniffy</h1>
+          </div>
+          <div className="flex flex-col gap-2 items-center justify-center">
+            <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
+              <img
+                src="/drools.png"
+                className="h-full w-full object-contain"
+                alt=""
+              />
+            </div>
+            <h1 className="font-semibold">Drools</h1>
+          </div>
+          <div className="flex flex-col gap-2 items-center justify-center">
+            <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
+              <img
+                src="/happy.avif"
+                className="h-full w-full object-contain"
+                alt=""
+              />
+            </div>
+            <h1 className="font-semibold">Happy Dog</h1>
+          </div>
+          <div className="flex flex-col gap-2 items-center justify-center">
+            <div className="h-[20vh] w-[20vh] rounded-full relative border-2 overflow-hidden">
+              <img
+                src="/mera.webp"
+                className="h-full w-full object-contain"
+                alt=""
+              />
+            </div>
+            <h1 className="font-semibold">MERA</h1>
+
+          </div>
         </div>
-        <div className="flex flex-col gap-2 items-center justify-center">
-          <div className="h-[20vh] w-[20vh] rounded-full bg-red-500"></div>
-          <h1 className="font-semibold">Pedigree</h1>
-        </div>
-        <div className="flex flex-col gap-2 items-center justify-center">
-          <div className="h-[20vh] w-[20vh] rounded-full bg-red-500"></div>
-          <h1 className="font-semibold">Pedigree</h1>
-        </div>
-        <div className="flex flex-col gap-2 items-center justify-center">
-          <div className="h-[20vh] w-[20vh] rounded-full bg-red-500"></div>
-          <h1 className="font-semibold">Pedigree</h1>
-        </div>
-     </div>
       </div>
       <div className="flex flex-col items-center justify-center bg-white py-10">
         <h1 className="text-4xl">Explore our all Products</h1>
         <div className="w-full grid grid-cols-4 px-10">
-        {
-            food?.map((i,index)=>(
-            <ProductCard key={index} i={i} imgLink={imgLink}/>
-              
-            ))
-        }
+          {food?.map((i, index) => (
+            <ProductCard key={index} i={i} imgLink={imgLink} />
+          ))}
         </div>
       </div>
       {/* <h1 className="text-5xl font-bold font-[poppins]">Trending Food</h1> */}
@@ -111,7 +152,6 @@ const FoodContainer = () => {
       </div>
         </>
       } */}
-     
     </div>
   );
 };
