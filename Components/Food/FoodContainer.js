@@ -59,12 +59,32 @@ const FoodContainer = () => {
   useEffect(() => {
     dispatch(getFood());
   }, []);
-
+  const d = [
+    {
+      name: "Dry Food",
+      img: "dry.png",
+    },
+    {
+      name: "Wet Food",
+      img: "dry.png",
+    },
+    {
+      name: "Treats",
+      img: "treat.png",
+    },
+    {
+      name: "Treats",
+      img: "wet.png",
+    },
+  ];
   return (
     <div className="w-full min-h-screen text-black  py-10 mt-[10vh]">
       <div className="flex flex-col items-center justify-center gap-8 py-10 px-10">
-        <h1 className="text-3xl font-extrabold">Browse By brands</h1>
-        <div className="flex w-full items-center justify-between">
+        <div className="flex relative">
+        <h1 className="text-4xl font-semibold relative z-10 bg-white">Browse By brands</h1>
+ <img src="/dog.png" className="absolute h-20 -top-10 left-1/2 -translate-x-1/2" alt="" />
+        </div>
+        <div className="flex w-full items-center justify-between overflow-y-auto">
           <div className="flex flex-col gap-2 items-center justify-center">
             <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
               <img
@@ -124,11 +144,27 @@ const FoodContainer = () => {
               />
             </div>
             <h1 className="font-semibold">MERA</h1>
-
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center bg-white py-10">
+      <div className="flex flex-col items-center justify-center gap-8 py-10 px-10">
+        <h1 className="text-4xl font-semibold">Browse By Category</h1>
+        <div className="flex w-full items-center justify-between overflow-y-auto">
+          {d?.map((i, index) => (
+            <div className="flex cursor-pointer flex-col bg-white px-10 py-2 rounded-3xl border-2 border-[#FEBC28] gap-2 items-center justify-center">
+              <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
+                <img
+                  src={`/${i.img}`}
+                  className="h-full w-full object-contain"
+                  alt=""
+                />
+              </div>
+              <h1 className="font-semibold">{i.name}</h1>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center bg-[[#FEBC28] py-10">
         <h1 className="text-4xl">Explore our all Products</h1>
         <div className="w-full grid grid-cols-4 px-10">
           {food?.map((i, index) => (
