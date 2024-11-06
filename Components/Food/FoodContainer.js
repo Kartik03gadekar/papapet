@@ -66,7 +66,7 @@ const FoodContainer = () => {
     },
     {
       name: "Wet Food",
-      img: "dry.png",
+      img: "wetF.jpg",
     },
     {
       name: "Treats",
@@ -81,8 +81,14 @@ const FoodContainer = () => {
     <div className="w-full min-h-screen text-black  py-10 mt-[10vh]">
       <div className="flex flex-col items-center justify-center gap-8 py-10 px-10">
         <div className="flex relative">
-        <h1 className="text-4xl font-semibold relative z-10 bg-white">Browse By brands</h1>
- <img src="/dog.png" className="absolute h-20 -top-10 left-1/2 -translate-x-1/2" alt="" />
+          <h1 className="text-4xl font-semibold relative z-10 bg-white">
+            Browse By brands
+          </h1>
+          <img
+            src="/dog.png"
+            className="absolute h-20 -top-10 left-1/2 -translate-x-1/2"
+            alt=""
+          />
         </div>
         <div className="flex w-full items-center justify-between overflow-y-auto">
           <div className="flex flex-col gap-2 items-center justify-center">
