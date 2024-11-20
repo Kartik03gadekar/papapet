@@ -9,7 +9,7 @@ import NextTopLoader from "nextjs-toploader";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <link rel="shortcut icon" href="/logo.png" type="image/x-icon" />
+      <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
       <body suppressHydrationWarning>
         <Wrapper>
           <NextTopLoader />

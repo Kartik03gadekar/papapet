@@ -8,7 +8,9 @@ const AboutPage = () => {
         className="h-[80%] w-[80%] max-md:w-[100%] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         alt=""
       />
-      <h1 className="relative z-10 text-white font-semibold text-5xl max-md:text-center max-md:text-2xl">About us in numbers</h1>
+      <h1 className="relative z-10 text-white font-semibold text-5xl max-md:text-center max-md:text-2xl">
+        About us in numbers
+      </h1>
       <p className="relative z-10 w-[60%] text-center">
         Papapet, established in 2020, is a global pet products company offering
         over 150 high-quality items to pet owners in more than 30 countries.
