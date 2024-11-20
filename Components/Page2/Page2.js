@@ -48,7 +48,7 @@ const Page2 = () => {
     <div className="min-h-screen w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:h-[50vh] bg-[#FEF8EA]">
       {/* <SwiperService data={cardData}/> */}
       <h1 className="text-5xl text-[gilroy] font-semibold">Our Services</h1>
-      <div className="w-full md:hidden h-[40vh]">
+      <div className="w-full md:hidden h-[50vh] bg-transparent">
         <Swiper
           pagination={true}
           modules={[Pagination]}
