@@ -101,3 +101,6 @@ box-shadow:  -20px -20px 60px #bebebe,
   .service:hover button{
     border: none;
   }
+  .swiper-pagination-bullet-active {
+  background: rgb(249 191 60) !important;
+  }

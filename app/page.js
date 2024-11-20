@@ -64,7 +64,7 @@ const page = () => {
       {/* <Page1 data={homepage?.banner} imgLink={imgLink}/> */}
       {/* <MobileP4 /> */}
       <Page2 />
-      <Resswiper />
+      {/* <Resswiper /> */}
       <AboutPage/>
       <Page3 />
       {/* <Page4 data={homepage?.health} imgLink={imgLink}/> */}

@@ -38,7 +38,7 @@ const NavPapaPet = () => {
     dispatch(checkUser());
   }, []);
   return (
-    <div className="w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-16 justify-between p-5 flex-col bg-[#f9bf3c]">
+    <div className="w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-16 max-md:px-2 justify-between p-5 flex-col bg-[#f9bf3c]">
       {/* <div className="flex items-center gap-4">
         <Link href={"/"} className="flex items-center justify-center gap-2">
           <img className="object-contain h-10 " src="/logo.png" alt="" />
@@ -100,7 +100,7 @@ const NavPapaPet = () => {
 
 <h1 className="text-2xl font-semibold">PaPaPet</h1>
     </div>
-        <div className="w-fit px-4 py-2 bg-[rgba(255,251,251,0.26)] rounded-full">
+        <div className="w-fit max-md:hidden px-4 py-2 bg-[rgba(255,251,251,0.26)] rounded-full">
           <i className="ri-search-line"></i>
           <input
             type="text"
@@ -108,15 +108,16 @@ const NavPapaPet = () => {
             placeholder="Search"
           />
         </div>
-        <div className="flex items-center text-xl justify-center gap-7">
+        <div className="flex max-md:hidden items-center text-xl justify-center gap-7">
           <i className="ri-user-fill"></i>
           <i className="ri-shopping-cart-2-fill"></i>
           <h3 className="text-sm">
             My Cart <br />6 Item
           </h3>
         </div>
+        <i className="ri-menu-2-line md:hidden text-xl"></i>
       </div>
-      <div className="w-full flex items-center justify-between text-black pt-2 text-base  px-4">
+      <div className="w-full max-md:hidden flex items-center justify-between text-black pt-2 text-base  px-4">
         <Link href={"/"}>Home</Link>
         <Link href={"/"}>Services</Link>
         <Link href={"/"}>Pet Supplies</Link>
