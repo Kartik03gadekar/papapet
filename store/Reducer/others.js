@@ -4,7 +4,7 @@ const initialState = {
   error: [],
   isAuthenticated: false,
   load: false,
-  imgLink: "http://localhost:8080/api/v1/admin/get/image",
+  imgLink: "https://papapetbackend.onrender.com/api/v1/admin/get/image",
 };
 
 export const others = createSlice({

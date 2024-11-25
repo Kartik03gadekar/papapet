@@ -30,7 +30,7 @@ const Page5 = ({ data, imgLink }) => {
           {data?.map((dets, index) => (
             <SwiperSlide className="p-[4vw]" key={index}>
               <img
-                className=""
+                className="flex h-full w-full scale-125 object-contain"
                 src={`${imgLink}/${dets?.filename}/${dets?.mimetype}`}
                 alt=""
               />

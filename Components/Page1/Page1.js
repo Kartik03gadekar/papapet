@@ -128,7 +128,7 @@ const Page1 = ({ data, imgLink }) => {
             </h1>
             <button
               class="  text-white text-xs w-32  h-8 font-normal  rounded-full"
-              style={{ backgroundColor: "#718857" }}
+              style={{ backgroundColor: "#f9bf3c" }}
             >
               Start Consultation
             </button>
