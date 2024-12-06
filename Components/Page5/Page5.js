@@ -1,44 +1,24 @@
-"use client";
 import React from "react";
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
 
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-
-// import required modules
-import { Pagination } from "swiper/modules";
-
-const Page5 = ({ data, imgLink }) => {
+const Page5 = () => {
   return (
-    <>
-      <div className="h-64 max-md:h-28  md:pt-10 w-full flex flex-col items-center justify-center gap-2">
-        <h1 className="text-xl  font-medium" style={{ color: "#3f7106" }}>
-          TRUST BY THE BEST{" "}
-        </h1>
-
-        <Swiper
-          slidesPerView={4}
-          spaceBetween={30}
-          pagination={{
-            clickable: true,
-          }}
-          modules={[Pagination]}
-          className="mySwiper  flex items-center"
-        >
-          {data?.map((dets, index) => (
-            <SwiperSlide className="p-[4vw]" key={index}>
-              <img
-                className="flex h-full w-full scale-125 object-contain"
-                src={`${imgLink}/${dets?.filename}/${dets?.mimetype}`}
-                alt=""
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+    <div className="w-full h-fit p-20 flex flex-col items-center justify-center">
+      <img src="/aboutUs.png" className="w-full h-full object-contain" alt="" />
+      <div className="flex items-center p-10 justify-center w-full gap-10">
+        <div className="flex flex-col items-start text-2xl font-semibold">
+          <h1>100+</h1>
+          <h4>Product</h4>
+        </div>
+        <div className="flex flex-col items-start text-2xl font-semibold">
+          <h1>99+</h1>
+          <h4>Seller</h4>
+        </div>
+        <div className="flex flex-col items-start text-2xl font-semibold">
+          <h1>220+</h1>
+          <h4>Positive Review</h4>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

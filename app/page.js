@@ -21,16 +21,16 @@ import { getHomePage } from "@/store/Action/others";
 
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {io} from 'socket.io-client'
+import { io } from "socket.io-client";
 
 const page = () => {
-  const {homepage,imgLink} = useSelector((state)=>state.others)
+  const { homepage, imgLink } = useSelector((state) => state.others);
   const dispatch = useDispatch();
-  const socket = io("http://localhost:8080/",{path:"/socket.io"});
+  const socket = io("http://localhost:8080/", { path: "/socket.io" });
 
   useEffect(() => {
-    dispatch(getHomePage())
-  }, [])
+    dispatch(getHomePage());
+  }, []);
   useEffect(() => {
     // Establish a WebSocket connection
 
@@ -38,8 +38,8 @@ const page = () => {
     socket.on("connect", () => {
       console.log("Connected to server");
     });
-    socket.on('dataUpdate', (data) => {
-      console.log('Received data from the server:', data,489);
+    socket.on("dataUpdate", (data) => {
+      console.log("Received data from the server:", data, 489);
       // Update your React state or perform any other action here
     });
     // Listen for data updates
@@ -55,22 +55,25 @@ const page = () => {
     // };
   }, [dispatch]);
   return (
-    <div className="w-full relative overflow-hidden bg-[#FEF8EA]">
+    <div className="w-full relative overflow-hidden bg-white">
       {/* <Nav/> */}
-      <NavPapaPet/>
+      <NavPapaPet />
       {/* <Page1Swiper imgLink={imgLink} data={homepage?.swiper}/> */}
       {/* <Home/> */}
-      <HomePage/>
+      <HomePage />
       {/* <Page1 data={homepage?.banner} imgLink={imgLink}/> */}
       {/* <MobileP4 /> */}
       <Page2 />
-      {/* <Resswiper /> */}
-      <AboutPage/>
       <Page3 />
+      <Page4 />
+      <Page5 />
+      {/* <Resswiper /> */}
+      {/* <AboutPage /> */}
+      {/* <Page3 /> */}
       {/* <Page4 data={homepage?.health} imgLink={imgLink}/> */}
-      <Page5 data={homepage?.company} imgLink={imgLink}/>
-      <Page6 data={homepage?.review} imgLink={imgLink}/>
-      <Page7 data={homepage?.blogs} post={homepage?.posts} imgLink={imgLink}/>
+      {/* <Page5 data={homepage?.company} imgLink={imgLink} />
+      <Page6 data={homepage?.review} imgLink={imgLink} />
+      <Page7 data={homepage?.blogs} post={homepage?.posts} imgLink={imgLink} /> */}
       {/* <Page8 /> */}
       <ResFooter />
       <Footer />

@@ -45,15 +45,23 @@ const Page2 = () => {
   ];
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:h-[50vh] bg-[#FEF8EA]">
+    <div className="min-h-screen w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:h-[50vh] bg-white">
       {/* <SwiperService data={cardData}/> */}
-      <h1 className="text-5xl text-[gilroy] font-semibold">Our Services</h1>
+      <div className="flex flex-col items-center justify-center">
+        <div className="flex items-end justify-center gap-5">
+          <h1 className="text-5xl text-[gilroy] font-semibold pb-5">
+            Our Services
+          </h1>
+          <img src="/serviceDog.png" alt="" />
+        </div>
+
+        <p className="text-center ">
+          Discover the perfect pet heating solutions to keep your beloved <br />
+          companions cozy and content all year round.
+        </p>
+      </div>
       <div className="w-full md:hidden h-[50vh] bg-transparent">
-        <Swiper
-          pagination={true}
-          modules={[Pagination]}
-          className="mySwiper"
-        >
+        <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
           {data?.map((i, index) => (
             <SwiperSlide
               // className="flex items-center justify-center"
@@ -82,7 +90,7 @@ const Page2 = () => {
           ))}
         </Swiper>
       </div>
-      <div className="w-full max-md:hidden flex flex-wrap gap-10 items-center justify-center gap-y-20 max-md:grid max-md:grid-cols-1 place-content-center place-items-center">
+      <div className="w-full max-md:hidden flex flex-wrap gap-10 items-center justify-center gap-y-20 max-md:grid-cols-1 place-content-center place-items-center">
         {/* <div className="min-h-[24vw] w-[20vw] gap-2 text-white p-5 py-8 rounded-lg items-center justify-between flex flex-col bg-[#F07905] shrink-0">
           <div className="h-32 w-32 shrink-0 bg-white rounded-full"></div>
           <h1 className="font-semibold text-lg">Health & Wellness</h1>
@@ -96,7 +104,7 @@ const Page2 = () => {
 
         {data?.map((i, index) => (
           <Link href={`${i.link}`}>
-            <div className="service cursor-pointer min-h-[24vw] w-[20vw] relative gap-2 p-5 py-8 rounded-lg items-center justify-between flex flex-col bg-white text-black border-2 shrink-0 hover:bg-[#F07905] hover:text-white duration-300 ease-in-out max-md:w-[60vw]">
+            <div className="service  cursor-pointer h-[18vw] w-[18vw]  items-center relative gap-2 p-5 py-8 rounded-full tems-center justify-between flex flex-col bg-white text-black border-2 shrink-0 hover:bg-[#0D9899] hover:text-white duration-300 ease-in-out max-md:w-[60vw]">
               <img
                 className="h-[12vw] W-[12vw] left-1/2 -translate-x-1/2 object-contain absolute -top-10 max-md:h-1/2 w-4/5"
                 src={i?.img}
@@ -104,13 +112,13 @@ const Page2 = () => {
               />
               <div className="h-32 max-md:h-16 w-32 shrink-0 bg-transparent rounded-full "></div>
               <h1 className="font-semibold text-lg">{i?.name}</h1>
-              <p className="text-center text-[.9vw] max-md:text-[1.5vw]">
+              {/* <p className="text-center text-[.9vw] max-md:text-[1.5vw]">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque
                 excepturi delectus reiciendis consequuntur ducimus dicta.
               </p>
               <button className="bg-white border-[1px] border-black text-black px-8 w-[80%] font-semibold rounded-md p-2 max-md:text-sm">
                 Get Service
-              </button>
+              </button> */}
             </div>
           </Link>
         ))}

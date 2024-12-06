@@ -109,3 +109,8 @@ button {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.linear {
+  background: linear-gradient(to right,#ffb828, #fd890e);
+  padding:.5rem 2rem;
+}
