@@ -90,66 +90,66 @@ const FoodContainer = () => {
             alt=""
           />
         </div>
-        <div className="flex w-full items-center justify-between overflow-y-auto">
+        <div className="flex w-full items-center justify-between overflow-y-auto ">
           <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
+            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative overflow-hidden">
               <img
                 src="/royal.webp"
                 className="h-full w-full object-contain"
                 alt=""
               />
             </div>
-            <h1 className="font-semibold">Royal Canin</h1>
+            <h1  className="font-semibold max-md:text-sm">Royal Canin</h1>
           </div>
           <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] w-[20vh] rounded-full border-2 relative overflow-hidden">
+            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full border-2 relative overflow-hidden">
               <img
                 src="/arden.png"
                 className="h-full w-full object-contain"
                 alt=""
               />
             </div>
-            <h1 className="font-semibold">Arden Grance</h1>
+            <h1  className="font-semibold max-md:text-sm">Arden Grance</h1>
           </div>
           <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
+            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative overflow-hidden">
               <img
                 src="/sniffy.jpg"
                 className="h-full w-full object-contain"
                 alt=""
               />
             </div>
-            <h1 className="font-semibold">Sniffy</h1>
+            <h1  className="font-semibold max-md:text-sm">Sniffy</h1>
           </div>
           <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
+            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative overflow-hidden">
               <img
                 src="/drools.png"
                 className="h-full w-full object-contain"
                 alt=""
               />
             </div>
-            <h1 className="font-semibold">Drools</h1>
+            <h1  className="font-semibold max-md:text-sm">Drools</h1>
           </div>
           <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
+            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative overflow-hidden">
               <img
                 src="/happy.avif"
                 className="h-full w-full object-contain"
                 alt=""
               />
             </div>
-            <h1 className="font-semibold">Happy Dog</h1>
+            <h1  className="font-semibold max-md:text-sm">Happy Dog</h1>
           </div>
           <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] w-[20vh] rounded-full relative border-2 overflow-hidden">
+            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative border-2 overflow-hidden">
               <img
                 src="/mera.webp"
                 className="h-full w-full object-contain"
                 alt=""
               />
             </div>
-            <h1 className="font-semibold">MERA</h1>
+            <h1  className="font-semibold max-md:text-sm">MERA</h1>
           </div>
         </div>
       </div>
@@ -158,21 +158,35 @@ const FoodContainer = () => {
         <div className="flex w-full items-center justify-between overflow-y-auto">
           {d?.map((i, index) => (
             <div className="flex cursor-pointer flex-col bg-white px-10 py-2 rounded-3xl border-2 border-[#FEBC28] gap-2 items-center justify-center">
-              <div className="h-[20vh] w-[20vh] rounded-full relative overflow-hidden">
+              <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative overflow-hidden">
                 <img
                   src={`/${i.img}`}
                   className="h-full w-full object-contain"
                   alt=""
                 />
               </div>
-              <h1 className="font-semibold">{i.name}</h1>
+              <h1  className="font-semibold max-md:text-sm">{i.name}</h1>
             </div>
           ))}
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center bg-[[#FEBC28] py-10">
-        <h1 className="text-4xl">Explore our all Products</h1>
-        <div className="w-full grid grid-cols-4 px-10">
+      <div className="w-full px-[10vh] h-[60vh] flex items-center justify-center max-md:flex-col max-md:px-[4vh]">
+        <div className="flex flex-col gap-4 max-md:w-full">
+          <h1 className="text-5xl font-semibold max-md:text-4xl">
+            Explore All Our <span className="text-[#0D9899]">Products</span>
+          </h1>
+          <p className="w-[80%] max-md:w-full">
+            Sweet roll ice cream powder candy canes ice cream donut pudding
+            biscuit ice cream. Cupcake tootsie roll sugar plum danish pudding
+            fruitcake cheesecake jelly-o. Pie muffin topping cake. Pudding
+            biscuit caramels topb
+          </p>
+        </div>
+        <img src="/explore.png" alt="" />
+      </div>
+      <div className="flex flex-col items-center justify-center py-10 gap-10">
+        <h1 className="text-4xl font-semibold">Explore our all Products</h1>
+        <div className="w-full grid grid-cols-4 px-10 max-md:grid-cols-1 max-md:w-full max-md:rounded-xl max-md:gap-4">
           {food?.map((i, index) => (
             <ProductCard key={index} i={i} imgLink={imgLink} />
           ))}

@@ -29,14 +29,14 @@ const Page3 = () => {
   ];
 
   return (
-    <div className="h-fit w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:h-[50vh] bg-white">
+    <div className="h-fit w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:h-[50vh]">
       {/* <SwiperService data={cardData}/> */}
       <div className="flex flex-col items-center justify-center">
         <div className="flex items-end justify-center gap-5">
-          <h1 className="text-5xl text-[gilroy] font-semibold pb-5">
+          <h1 className="text-5xl text-[gilroy] font-semibold pb-5 max-md:text-3xl">
             Shop by Category
           </h1>
-          <img src="/serviceDog.png" alt="" />
+          <img src="/serviceDog.png" className="max-md:h-1/2" alt="" />
         </div>
 
         <p className="text-center ">

@@ -14,7 +14,7 @@ const NavPapaPet = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY === 0) {
         gsap.to(circle.current, {
-          top:"-180%",
+          top:"-210%",
           duration:1
         });
       }
@@ -43,7 +43,7 @@ const NavPapaPet = () => {
 
   return (
     <div
-      className={`w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-16 max-md:px-2 justify-between p-5 flex-col bg-white transition-transform duration-300 ${
+      className={`w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-16  justify-between p-5 flex-col bg-white transition-transform duration-300 max-md:px-5 ${
         showNavbar ? "translate-y-0" : "-translate-y-full"
       }`}
     >
@@ -52,7 +52,7 @@ const NavPapaPet = () => {
           <img className="object-contain h-10" src="/logo.png" alt="logo" />
           <h1 className="text-2xl font-semibold text-[#0D9899]">PaPaPet</h1>
         </div>
-        <div className="flex items-center justify-center gap-7 relative z-20">
+        <div className="flex items-center justify-center gap-7 relative z-20 max-md:hidden">
           <Link href={"/"}>Home</Link>
           <Link href={"/"}>Services</Link>
           <Link href={"/"}>Pet Supplies</Link>
@@ -65,7 +65,7 @@ const NavPapaPet = () => {
         </button>
         <div
           ref={circle}
-          className="w-[20vw] h-[20vw] absolute -top-[180%] left-1/2 -translate-x-1/2 bg-[#FFAD22] rounded-full"
+          className="w-[20vw] h-[20vw] absolute -top-[210%] left-1/2 -translate-x-1/2 bg-[#FFAD22] rounded-full"
         ></div>
       </div>
     </div>

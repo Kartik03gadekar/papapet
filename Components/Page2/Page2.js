@@ -18,22 +18,24 @@ import { Pagination } from "swiper/modules";
 const Page2 = () => {
   const data = [
     {
-      name: "Pet Walking",
-      img: "/walkingPet.png",
+      name: "Food & Accessories",
+      img: "/FoodnAcces.png",
+      link: "/papapet/food",
     },
     {
       name: "Veteniary Doctor",
       img: "/doctorPapaper.png",
     },
     {
+      name: "Pet Walking",
+      img: "/walkingPet.png",
+    },
+
+    {
       name: "Pet DayCare",
       img: "/dayCare.png",
     },
-    {
-      name: "Food & Accessories",
-      img: "/FoodnAcces.png",
-      link: "/papapet/food",
-    },
+
     {
       name: "Pet Boarding",
       img: "/Boarding.png",
@@ -49,10 +51,10 @@ const Page2 = () => {
       {/* <SwiperService data={cardData}/> */}
       <div className="flex flex-col items-center justify-center">
         <div className="flex items-end justify-center gap-5">
-          <h1 className="text-5xl text-[gilroy] font-semibold pb-5">
+          <h1 className="text-5xl text-[gilroy] font-semibold pb-5 max-md:text-3xl">
             Our Services
           </h1>
-          <img src="/serviceDog.png" alt="" />
+          <img src="/serviceDog.png" className="max-md:h-1/2" alt="" />
         </div>
 
         <p className="text-center ">

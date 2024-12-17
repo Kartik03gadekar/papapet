@@ -4,7 +4,7 @@ import React from "react";
 const ProductCard = ({ i, imgLink }) => {
   return (
     <Link href={`/papapet/product/${i._id}`}>
-      <div className="w-[80%] h-fit flex rounded-xl flex-col overflow-hidden items-start justify-center p-2 items-center justify-center bg-white gap-1 max-md:h-fit max-md:overflow-hidden">
+      <div className="w-[80%] h-fit flex rounded-xl flex-col overflow-hidden items-start justify-center p-2 items-center justify-center bg-white gap-1 max-md:h-fit max-md:overflow-hidden max-md:w-full max-md:border-2">
         <div className="w-full h-[20vh]  relative">
           <img
             className="h-full rounded-lg w-full object-contain"

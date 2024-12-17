@@ -36,10 +36,10 @@ const Page4 = () => {
       {/* <SwiperService data={cardData}/> */}
       <div className="flex flex-col items-center justify-center">
         <div className="flex items-end justify-center gap-5">
-          <h1 className="text-5xl text-[gilroy] font-semibold pb-5">
+          <h1 className="text-5xl text-[gilroy] font-semibold pb-5 max-md:text-3xl">
             Featured Brands
           </h1>
-          <img src="/serviceDog.png" alt="" />
+          <img src="/serviceDog.png" className="max-md:h-1/2" alt="" />
         </div>
 
         <p className="text-center ">
