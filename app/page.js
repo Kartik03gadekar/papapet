@@ -75,7 +75,7 @@ const page = () => {
       <Page6 data={homepage?.review} imgLink={imgLink} />
       <Page7 data={homepage?.blogs} post={homepage?.posts} imgLink={imgLink} /> */}
       {/* <Page8 /> */}
-      <ResFooter />
+      {/* <ResFooter /> */}
       <Footer />
     </div>
   );

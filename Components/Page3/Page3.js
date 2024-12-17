@@ -29,7 +29,7 @@ const Page3 = () => {
   ];
 
   return (
-    <div className="h-fit w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:h-[50vh]">
+    <div className="h-fit w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:h-fit max-md:justify-start ">
       {/* <SwiperService data={cardData}/> */}
       <div className="flex flex-col items-center justify-center">
         <div className="flex items-end justify-center gap-5">

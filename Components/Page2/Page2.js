@@ -47,7 +47,7 @@ const Page2 = () => {
   ];
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:h-[50vh] bg-white">
+    <div className="min-h-screen w-full flex items-center max-md:items-start justify-center py-[10vh] flex-col gap-16 max-md:h-fit bg-white max-md:py-0  max-md:justify-start">
       {/* <SwiperService data={cardData}/> */}
       <div className="flex flex-col items-center justify-center">
         <div className="flex items-end justify-center gap-5">

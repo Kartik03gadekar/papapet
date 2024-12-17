@@ -13,7 +13,7 @@ const page = () => {
 
       <div className="container relative">
         {/* <FoodSwiper /> */}
-        <div className="w-full h-screen  relative text-white flex items-center max-md:items-start">
+        <div className="w-full h-screen  relative text-white flex items-center max-md:items-start max-md:h-[60vh]">
           <img
             src="/foodBg.png"
             className="absolute bottom-0 right-28 object-cover max-md:hidden"

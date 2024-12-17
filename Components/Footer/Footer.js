@@ -3,9 +3,9 @@ import React from "react";
 const Footer = () => {
   return (
     <>
-      <div className="h-fit flex w-full max-md:hidden bg-[#fef8ea] border-t-2 text-black">
-        <footer className="footer p-10  flex gap-28 text-base-content">
-          <nav className="flex w-fit gap-1  flex-col text-black pl-20 ">
+      <div className="h-fit flex w-full  bg-[#fef8ea] border-t-2 text-black">
+        <footer className="footer p-10  flex gap-28 text-base-content max-md:grid max-md:grid-cols-2">
+          <nav className="flex w-fit gap-1  flex-col text-black pl-20 max-md:pl-0">
             <header className="footer-title text-xl font-bold">
               About PaPaPet
             </header>
