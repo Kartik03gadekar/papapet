@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL:"https://papapetbackend.onrender.com/api/v1",
+    baseURL:"https://papapetbackend-1.onrender.com/api/v1",
     withCredentials:true
 })
 

@@ -6,7 +6,7 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-      <Nav/>
+      {/* <Nav/> */}
 <Auth/>
     </div>
   )

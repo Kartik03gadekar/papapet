@@ -23,16 +23,16 @@ router.push("/mediensure/verifyauth")
   <div className="h-screen w-full flex flex-col   items-end justify-end " >
     <div className="flex w-full flex-col justify-center items-center " style={{height:"calc(100vh - 75vh)"}}>
     <div className=' h-20 w-full shadow-md  flex items-center mt-10  pt-4 justify-center  '>
-    <button  onClick={()=>setopen(0)} className="bg-white rounded-full  text-[#567237] font-bold py-2 px-4 ">
+    <button  onClick={()=>setopen(0)} className="bg-white rounded-full  text-primary font-bold py-2 px-4 ">
   LOGIN
 
   {
-    open === 0 ?  <div className='h-[1px] w-10 bg-[#567237]'></div>
+    open === 0 ?  <div className='h-[1px] w-10 bg-primtext-primary'></div>
 : ""
   }
   
 </button>
-<button  onClick={()=>setopen(1)} className="bg-white rounded-full  text-[#567237] font-bold py-2 px-4 ">
+<button  onClick={()=>setopen(1)} className="bg-white rounded-full  text-primary font-bold py-2 px-4 ">
   REGISTER
   {
     open === 1 ?  <div className='h-[1px] w-16 bg-[#567237]'></div>

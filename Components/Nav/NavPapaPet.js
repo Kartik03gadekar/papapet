@@ -3,31 +3,68 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import gsap from "gsap";
+import { checkUser } from "@/store/Action/auth";
+import {
+  Avatar,
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 const NavPapaPet = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const prevScrollY = useRef(0);
   const circle = useRef(null);
+  const { user } = useSelector((state) => state.auth);
 
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const { loading, message } = useSelector((state) => state.auth);
+  useEffect(() => {}, [loading, message]);
+  const dispatch = useDispatch();
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+  const settings = [
+    {
+      name: "Profile",
+      link: "/mediensure/profile",
+    },
+  ];
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+  useEffect(() => {
+    dispatch(checkUser());
+  }, []);
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY === 0) {
         gsap.to(circle.current, {
-          top:"-210%",
-          duration:1
+          top: "-210%",
+          duration: 1,
         });
       }
       if (currentScrollY > prevScrollY.current && currentScrollY > 20) {
         gsap.to(circle.current, {
           top: "-350%",
           // opacity: 0,
-          duration: .5,
+          duration: 0.5,
         });
         setShowNavbar(false); // Hide navbar on scroll down
       }
       if (currentScrollY > prevScrollY.current && currentScrollY > 100) {
-
         setShowNavbar(false); // Hide navbar on scroll down
       } else {
         setShowNavbar(true); // Show navbar on scroll up
@@ -59,14 +96,71 @@ const NavPapaPet = () => {
           <Link href={"/"}>Blogs</Link>
           <Link href={"/"}>About Us</Link>
         </div>
-        <button className="text-lg flex items-center justify-center gap-2">
-          Sign in
-          <i className="ri-arrow-right-circle-fill text-lg"></i>
-        </button>
-        <div
-          ref={circle}
-          className="w-[20vw] h-[20vw] absolute -top-[210%] left-1/2 -translate-x-1/2 bg-[#FFAD22] rounded-full"
-        ></div>
+        {user ? (
+          <>
+           <div className="flex items-center justify-center gap-2">
+           <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <>
+                    <Link href={`${setting.link}`}>
+                      <MenuItem
+                        key={setting.name}
+                        onClick={handleCloseUserMenu}
+                      >
+                        <Typography textAlign="center">
+                          {setting.name}
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <MenuItem
+                      key="Logout"
+                      onClick={() => dispatch(logoutUser())}
+                    >
+                      <Typography textAlign="center">Logout</Typography>
+                    </MenuItem>
+                  </>
+                ))}
+              </Menu>
+            </Box>
+            <h1 className="font-semibold text-black">Hi, {user?.name}</h1>
+           </div>
+          </>
+        ) : (
+          <>
+            <Link
+              href={"/papapet/auth"}
+              className="text-lg flex items-center justify-center gap-2"
+            >
+              Sign in
+              <i className="ri-arrow-right-circle-fill text-lg"></i>
+            </Link>
+            <div
+              ref={circle}
+              className="w-[20vw] h-[20vw] absolute -top-[210%] left-1/2 -translate-x-1/2 bg-[#FFAD22] rounded-full"
+            ></div>
+          </>
+        )}
       </div>
     </div>
   );
