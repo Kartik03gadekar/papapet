@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getHomePage } from "@/store/Action/others";
 import { io } from "socket.io-client";
-// import socket from "@/utils/socket";
 let socket;
 const getSocket = () => {
   if (!socket) {
