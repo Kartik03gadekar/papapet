@@ -46,7 +46,8 @@ const NavPapaPet = () => {
   };
   useEffect(() => {
     dispatch(checkUser());
-  }, []);
+  }, []); 
+  
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
