@@ -1,84 +1,53 @@
 "use client";
-import AboutPage from "@/Components/AboutPage";
-import Footer from "@/Components/Footer/Footer";
-import Home from "@/Components/HomePage/Home";
-import HomePage from "@/Components/HomePage/HomePage";
-import Nav from "@/Components/Nav/Nav";
-import NavPapaPet from "@/Components/Nav/NavPapaPet";
-import Page1 from "@/Components/Page1/Page1";
-import Page1Swiper from "@/Components/Page1/Page1Swiper";
-import Page2 from "@/Components/Page2/Page2";
-import Page3 from "@/Components/Page3/Page3";
-import MobileP4 from "@/Components/Page4/MobileP4";
-import Page4 from "@/Components/Page4/Page4";
-import Page5 from "@/Components/Page5/Page5";
-import Page6 from "@/Components/Page6/Page6";
-import Page7 from "@/Components/Page7/Page7";
-import Page8 from "@/Components/Page8/Page8";
-import ResFooter from "@/Components/ResFooter/ResFooter";
-import Resswiper from "@/Components/Resswiper/Resswiper";
-import { getHomePage } from "@/store/Action/others";
 
-import React, { useEffect } from "react";
+import dynamic from "next/dynamic";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { io } from "socket.io-client";
+import { getHomePage } from "@/store/Action/others";
+import socket from "@/utils/socket";
 
-const page = () => {
-  const { homepage, imgLink } = useSelector((state) => state.others);
+// Dynamically import heavy components for performance optimization
+const NavPapaPet = dynamic(() => import("@/Components/Nav/NavPapaPet"), { ssr: false });
+const HomePage = dynamic(() => import("@/Components/HomePage/HomePage"), { ssr: false });
+const Page2 = dynamic(() => import("@/Components/Page2/Page2"), { ssr: false });
+const Page3 = dynamic(() => import("@/Components/Page3/Page3"), { ssr: false });
+const Page4 = dynamic(() => import("@/Components/Page4/Page4"), { ssr: false });
+const Page5 = dynamic(() => import("@/Components/Page5/Page5"), { ssr: false });
+const Footer = dynamic(() => import("@/Components/Footer/Footer"), { ssr: false });
+
+const Page = () => {
   const dispatch = useDispatch();
-  const socket = io("http://localhost:8080/", { path: "/socket.io" });
+  const { homepage, imgLink } = useSelector((state) => state.others);
 
   useEffect(() => {
     dispatch(getHomePage());
-  }, []);
-  useEffect(() => {
-    // Establish a WebSocket connection
+  }, [dispatch]);
 
-    // Listen for connection status (optional)
+  useEffect(() => {
     socket.on("connect", () => {
       console.log("Connected to server");
     });
     socket.on("dataUpdate", (data) => {
-      console.log("Received data from the server:", data, 489);
-      // Update your React state or perform any other action here
+      console.log("Received data from the server:", data);
     });
-    // Listen for data updates
-    // socket.on("consultationScheduled", () => {
-    //   console.log("Consultation scheduled event received");
-    //   // Update your Redux state or perform any other action here
-    //   dispatch(getDoctors());
-    // });
 
-    // // Clean up the socket connection on component unmount
-    // return () => {
-    //   socket.disconnect();
-    // };
-  }, [dispatch]);
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   return (
     <div className="w-full relative overflow-hidden bg-white">
-      {/* <Nav/> */}
       <NavPapaPet />
-      {/* <Page1Swiper imgLink={imgLink} data={homepage?.swiper}/> */}
-      {/* <Home/> */}
       <HomePage />
-      {/* <Page1 data={homepage?.banner} imgLink={imgLink}/> */}
-      {/* <MobileP4 /> */}
       <Page2 />
       <Page3 />
       <Page4 />
       <Page5 />
-      {/* <Resswiper /> */}
-      {/* <AboutPage /> */}
-      {/* <Page3 /> */}
-      {/* <Page4 data={homepage?.health} imgLink={imgLink}/> */}
-      {/* <Page5 data={homepage?.company} imgLink={imgLink} />
-      <Page6 data={homepage?.review} imgLink={imgLink} />
-      <Page7 data={homepage?.blogs} post={homepage?.posts} imgLink={imgLink} /> */}
-      {/* <Page8 /> */}
-      {/* <ResFooter /> */}
       <Footer />
     </div>
   );
 };
 
-export default page;
+export default Page;
+
