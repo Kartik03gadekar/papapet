@@ -1,78 +1,78 @@
 import { loginUser } from "@/store/Action/auth";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const router = useRouter()
-  const handleSubmit = (e) => {
+  const router = useRouter();
+  const [useOtp, setUseOtp] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const target = e.target;
     const formData = new FormData();
     formData.append("email", target.email.value);
     formData.append("password", target.password.value);
-    dispatch(loginUser(formData));
-    router.push("/mediensure/verifyauth")
+
+    try {
+      const response = await dispatch(loginUser(formData)).unwrap();
+      if (response.success) {
+        router.push("/mediensure/verifyauth");
+      } else {
+        console.error("Login failed:", response.message);
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
 
   return (
-    <>
-      <div className="h-[80vh] h- flex   w-full bg-white">
-        <div className="h-full  items-center justify-center w-1/2  ">
-          <img className="h-full w-full object-contain" src="/img.png" alt="" />
-        </div>
-        <div className="h-full  w-1/2 flex items-center justify-center  ">
-          <form onSubmit={handleSubmit}>
-            <div className="h-80 w-96 bg-white rounded-lg   shadow-2xl">
-              <div className=" w-full flex flex-col justify-center gap-1 h-10 mt-4 pl-3 ">
-                <label className="label">
-                  <span className="label-text">Mobile Number/ Email ID</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder=""
-                  name="email"
-                  className="input input-bordered border-2 w-full max-w-xs px-2 py-1"
-                />
-              </div>
-
-              <div className=" w-full flex flex-col justify-center gap-1 h-10 mt-7 pl-3 ">
-                <label className="label">
-                  <span className="label-text">Password</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder=""
-                  name="password"
-                  className="input input-bordered border-2 w-full max-w-xs px-2 py-1"
-                />
-              </div>
-
-              <h1 className="ml-3 mt-5 text-green-300">Forgot Password?</h1>
-
-              <div className="form-control pl-4 pt-3 flex items-center ">
-                <label className="label cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked="checked"
-                    className="checkbox"
-                  />
-                  <span className="label-text text-base pl-3 font-light">
-                    Login with OTP instead of password
-                  </span>
-                </label>
-              </div>
-
-              <button class="bg-[#567237]  ml-6 mt-6  text-white font-bold py-2 px-[10vw] rounded-md">
-                Login
-              </button>
-            </div>
-          </form>
-        </div>
+    <div className="h-[80vh] flex w-full bg-white">
+      <div className="h-full w-full md:w-1/2 flex items-center justify-center">
+        <img className="h-full w-full object-contain" src="/img.png" alt="Login" />
       </div>
-    </>
+      <div className="h-full w-full md:w-1/2 flex items-center justify-center">
+        <form onSubmit={handleSubmit} className="w-96 bg-white rounded-lg shadow-2xl p-6">
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Mobile Number/ Email ID</label>
+            <input
+              type="text"
+              name="email"
+              className="input input-bordered border-2 w-full px-2 py-1"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
+            <input
+              type="password"
+              name="password"
+              className="input input-bordered border-2 w-full px-2 py-1"
+            />
+          </div>
+          <h1 className="text-green-500 text-sm cursor-pointer hover:underline">Forgot Password?</h1>
+          <div className="form-control flex items-center mt-3">
+            <label className="label cursor-pointer flex items-center">
+              <input
+                type="checkbox"
+                checked={useOtp}
+                onChange={() => setUseOtp(!useOtp)}
+                className="checkbox"
+              />
+              <span className="ml-2 text-sm font-light">Login with OTP instead of password</span>
+            </label>
+          </div>
+          <button
+            type="submit"
+            className="bg-[#567237] w-full mt-6 text-white font-bold py-2 rounded-md hover:bg-green-700"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 
 export default Login;
+
