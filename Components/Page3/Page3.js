@@ -1,79 +1,46 @@
 "use client";
-import { cardData, eyeData, ivfData } from "@/db/Card";
-import { colors } from "@mui/material";
 import Link from "next/link";
 import React from "react";
-import SwiperService from "../Swiper/SwiperService";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 
-// import required modules
 const Page3 = () => {
   const data = [
-    {
-      name: "Pet Walking",
-      img: "/walkingPet.png",
-    },
-    {
-      name: "Veteniary Doctor",
-      img: "/doctorPapaper.png",
-    },
-    {
-      name: "Pet DayCare",
-      img: "/dayCare.png",
-    },
-
+    { name: "Dog", img: "/Page3Dog.png" },
+    { name: "Cat", img: "/Page3Cat.png" },
+    { name: "Fish", img: "/Page3Fish.png" },
   ];
 
   return (
-    <div className="h-fit w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:h-fit max-md:justify-start ">
-      {/* <SwiperService data={cardData}/> */}
-      <div className="flex flex-col items-center justify-center">
+    <div className="h-fit w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh]">
+      {/* Title Section */}
+      <div className="flex flex-col items-center justify-center text-center px-4">
         <div className="flex items-end justify-center gap-5">
-          <h1 className="text-5xl text-[gilroy] font-semibold pb-5 max-md:text-3xl">
-            Shop by Category
+          <h1 className="text-5xl font-semibold pb-5 max-md:text-3xl">
+            Shop by <span className="text-[#0D9899]">Category</span>
           </h1>
-          <img src="/serviceDog.png" className="max-md:h-1/2" alt="" />
+          <img src="/serviceDog.png" className="max-md:h-12 h-16" alt="Service Dog" />
         </div>
-
-        <p className="text-center ">
-          Discover the perfect pet heating solutions to keep your beloved
-          companions <br /> cozy and content all year round.
+        <p className="text-lg max-md:text-base">
+          Discover the perfect pet heating solutions to keep your beloved companions
+          <br className="max-md:hidden" /> cozy and content all year round.
         </p>
       </div>
 
-      <div className="max-md:hidden flex flex-wrap justify-around gap-10 items-center  gap-y-20 max-md:grid-cols-1 place-content-center place-items-center w-[80%]">
-        {/* <div className="min-h-[24vw] w-[20vw] gap-2 text-white p-5 py-8 rounded-lg items-center justify-between flex flex-col bg-[#F07905] shrink-0">
-          <div className="h-32 w-32 shrink-0 bg-white rounded-full"></div>
-          <h1 className="font-semibold text-lg">Health & Wellness</h1>
-          <p className="text-center text-[.9vw]">
-           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque excepturi delectus reiciendis consequuntur ducimus dicta.
-          </p>
-          <button className="w-[80%] bg-white text-black px-8 font-semibold rounded-md p-2">
-            Get Service
-          </button>
-          </div>    */}
-
+      {/* Category Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 w-[80%] place-content-center place-items-center">
         {data?.map((i, index) => (
-          <Link href={`${i.link}`}>
-            <div className="service  cursor-pointer h-[18vw] w-[18vw]  items-center relative gap-2 p-5 py-8 rounded-full tems-center justify-between flex flex-col bg-white text-black border-2 shrink-0 hover:bg-[#0D9899] hover:text-white duration-300 ease-in-out max-md:w-[60vw]">
-              <img
-                className="h-[12vw] W-[12vw] left-1/2 -translate-x-1/2 object-contain absolute -top-10 max-md:h-1/2 w-4/5"
-                src={i?.img}
-                alt=""
-              />
-              <div className="h-32 max-md:h-16 w-32 shrink-0 bg-transparent rounded-full "></div>
-              <h1 className="font-semibold text-lg">{i?.name}</h1>
-              {/* <p className="text-center text-[.9vw] max-md:text-[1.5vw]">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque
-                excepturi delectus reiciendis consequuntur ducimus dicta.
-              </p>
-              <button className="bg-white border-[1px] border-black text-black px-8 w-[80%] font-semibold rounded-md p-2 max-md:text-sm">
-                Get Service
-              </button> */}
+          <Link key={index} href={`${i.link || "#"}`}>
+            <div className="flex flex-col items-center gap-6 cursor-pointer">
+              {/* Image Container */}
+              <div className="h-[14vw] w-[14vw] max-md:h-32 max-md:w-32 rounded-full overflow-hidden border-2 flex items-center justify-center hover:shadow-lg transition-all duration-300">
+                <img className="h-full w-full object-cover" src={i?.img} alt={i?.name} />
+              </div>
+
+              {/* Category Name */}
+              <h1 className="font-semibold text-2xl max-md:text-lg">{i?.name}</h1>
             </div>
           </Link>
         ))}

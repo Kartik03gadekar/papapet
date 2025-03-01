@@ -1,0 +1,5 @@
+.swiper {
+  --swiper-navigation-size: 35px;
+    --swiper-navigation-color: #0D9899;
+    --swiper-pagination-bottom:-3px;
+  }

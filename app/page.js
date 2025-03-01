@@ -27,6 +27,7 @@ const Page2 = dynamic(() => import("@/Components/Page2/Page2"), { ssr: false });
 const Page3 = dynamic(() => import("@/Components/Page3/Page3"), { ssr: false });
 const Page4 = dynamic(() => import("@/Components/Page4/Page4"), { ssr: false });
 const Page5 = dynamic(() => import("@/Components/Page5/Page5"), { ssr: false });
+const Page6= dynamic(() => import("@/Components/Page6/Page6"),{ssr:false,});
 const Footer = dynamic(() => import("@/Components/Footer/Footer"), {
   ssr: false,
 });
@@ -61,6 +62,7 @@ const Page = () => {
       <Page3 />
       <Page4 />
       <Page5 />
+      <Page6/>
       <Footer />
     </div>
   );
