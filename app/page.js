@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getHomePage } from "@/store/Action/others";
 import { io } from "socket.io-client";
 let socket;
-const getSocket = () => {
+const getSocket = () => {   
   if (!socket) {
     // socket = io("http://localhost:5001/", { path: "/socket.io" });
     socket = io("https://api.mycozee.in/", {
