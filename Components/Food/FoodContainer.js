@@ -2,9 +2,15 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import ProductCard from "../ProductCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Pagination, Navigation } from "swiper/modules";
 import { useDispatch, useSelector } from "react-redux";
 import { getFood } from "@/store/Action/others";
 import Loading from "../loading";
+import style from "./FoodContainer.module.css"
 
 const FoodContainer = () => {
   const data = [
@@ -54,6 +60,14 @@ const FoodContainer = () => {
       price: "999",
     },
   ];
+  const brands = [
+    { name: "Royal Canin", img: "/royal.webp" },
+    { name: "Arden Grance", img: "/arden.png" },
+    { name: "Sniffy", img: "/sniffy.jpg" },
+    { name: "Drools", img: "/drools.png" },
+    { name: "Happy Dog", img: "/happy.avif" },
+    { name: "MERA", img: "/mera.webp" },
+  ];
   const { load, food, imgLink } = useSelector((state) => state.others);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -79,98 +93,98 @@ const FoodContainer = () => {
   ];
   return (
     <div className="w-full min-h-screen text-black  py-10 mt-[10vh]">
-      <div className="flex flex-col items-center justify-center gap-8 py-10 px-10">
-        <div className="flex relative">
-          <h1 className="text-4xl font-semibold relative z-10 bg-white">
-            Browse By brands
-          </h1>
+      {/* Browse By Brands */}
+ <div className="flex flex-col gap-[4vw] items-center justify-center mt-2">
+ <div className=" flex  items-center text-center justify-center">
+    <h1 className="text-4xl font-semibold relative z-10 bg-white text-center">
+      Browse By Brands
+    </h1>
+  </div>
+<div className="w-full  h-52 max-md:h-40 flex  items-center justify-center gap-8 py-2 ">
+  
+  <Swiper
+    slidesPerView={3}
+    spaceBetween={20}
+    breakpoints={{
+      640: { slidesPerView: 2 },
+      1024: { slidesPerView: 4 },
+    }}
+    navigation={window.innerWidth > 768}
+    pagination={{ clickable: true }}
+    modules={[Pagination, Navigation]}
+    className={`w-full  ${style.swiper}`}
+  >
+    {brands.map((brand, index) => (
+      <SwiperSlide
+        key={index}
+       
+      >
+
+       <div className="w-[20vw]  max-md:w-[30vw] flex flex-col items-center justify-center ">
+       <div className="h-[20vh] w-[20vh] max-md:h-[10vh] max-md:w-[10vh] rounded-full border-2 overflow-hidden
+        flex  flex-col items-center justify-center  ">
           <img
-            src="/dog.png"
-            className="absolute h-20 -top-10 left-1/2 -translate-x-1/2"
-            alt=""
+            src={brand.img}
+            className="w-full h-full object-cover  "
+            alt={brand.name}
+          />
+           
+        </div>
+        <h1 className="font-semibold max-md:text-sm mt-2">{brand.name}</h1>
+       </div>
+       
+      </SwiperSlide>
+    ))}
+  </Swiper>
+</div>
+ </div>
+
+{/* Browse By Category */}
+<div className="flex flex-col gap-[4vw] items-center justify-center mt-[5vw] ">
+ <div className=" flex  items-center text-center justify-center">
+    <h1 className="text-4xl font-semibold relative z-10 bg-white text-center">
+      Browse By Category
+    </h1>
+  </div>
+<div className="w-full  h-52 max-md:h-40 flex  items-center justify-center gap-8 py-2 ">
+  
+<Swiper
+    slidesPerView={3}
+    spaceBetween={20}
+    breakpoints={{
+      640: { slidesPerView: 2 },
+      1024: { slidesPerView: 4 },
+    }}
+    navigation={window.innerWidth > 768}
+    pagination={{ clickable: true }}
+    modules={[Pagination, Navigation]}
+    className={`w-full  ${style.swiper}`}
+  >
+    {d.map((category, index) => (
+      <SwiperSlide
+        key={index}
+        className="flex flex-col items-center justify-center text-center"
+      >
+      <div className="w-[20vw]  max-md:w-[30vw] flex flex-col items-center justify-center ">
+       <div className="h-[20vh] w-[20vh] max-md:h-[10vh] max-md:w-[10vh] rounded-full border-2 overflow-hidden
+        flex  flex-col items-center justify-center  ">
+          <img
+            src={`/${category.img}`}
+            className="h-full w-full object-contain"
+            alt={category.name}
           />
         </div>
-        <div className="flex w-full items-center justify-between overflow-y-auto ">
-          <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative overflow-hidden">
-              <img
-                src="/royal.webp"
-                className="h-full w-full object-contain"
-                alt=""
-              />
-            </div>
-            <h1  className="font-semibold max-md:text-sm">Royal Canin</h1>
-          </div>
-          <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full border-2 relative overflow-hidden">
-              <img
-                src="/arden.png"
-                className="h-full w-full object-contain"
-                alt=""
-              />
-            </div>
-            <h1  className="font-semibold max-md:text-sm">Arden Grance</h1>
-          </div>
-          <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative overflow-hidden">
-              <img
-                src="/sniffy.jpg"
-                className="h-full w-full object-contain"
-                alt=""
-              />
-            </div>
-            <h1  className="font-semibold max-md:text-sm">Sniffy</h1>
-          </div>
-          <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative overflow-hidden">
-              <img
-                src="/drools.png"
-                className="h-full w-full object-contain"
-                alt=""
-              />
-            </div>
-            <h1  className="font-semibold max-md:text-sm">Drools</h1>
-          </div>
-          <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative overflow-hidden">
-              <img
-                src="/happy.avif"
-                className="h-full w-full object-contain"
-                alt=""
-              />
-            </div>
-            <h1  className="font-semibold max-md:text-sm">Happy Dog</h1>
-          </div>
-          <div className="flex flex-col gap-2 items-center justify-center">
-            <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative border-2 overflow-hidden">
-              <img
-                src="/mera.webp"
-                className="h-full w-full object-contain"
-                alt=""
-              />
-            </div>
-            <h1  className="font-semibold max-md:text-sm">MERA</h1>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col items-center justify-center gap-8 py-10 px-10">
-        <h1 className="text-4xl font-semibold">Browse By Category</h1>
-        <div className="flex w-full items-center justify-between overflow-y-auto">
-          {d?.map((i, index) => (
-            <div className="flex cursor-pointer flex-col bg-white px-10 py-2 rounded-3xl border-2 border-[#FEBC28] gap-2 items-center justify-center">
-              <div className="h-[20vh] max-md:h-[10vh] max-md:w-[10vh] w-[20vh] rounded-full relative overflow-hidden">
-                <img
-                  src={`/${i.img}`}
-                  className="h-full w-full object-contain"
-                  alt=""
-                />
-              </div>
-              <h1  className="font-semibold max-md:text-sm">{i.name}</h1>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="w-full px-[10vh] h-[60vh] flex items-center justify-center max-md:flex-col max-md:px-[4vh]">
+        <h1 className="font-semibold max-md:text-sm mt-2">{category.name}</h1>
+   </div>
+      </SwiperSlide>
+    ))}
+  </Swiper>
+
+  </div>
+  </div>
+
+
+      {/* <div className="hidden w-full px-[10vh] h-[60vh]  items-center justify-center  mt-[2vw] max-md:mt-[4vw] max-md:flex-col max-md:px-[4v h]"  >
         <div className="flex flex-col gap-4 max-md:w-full">
           <h1 className="text-5xl font-semibold max-md:text-4xl">
             Explore All Our <span className="text-[#0D9899]">Products</span>
@@ -183,7 +197,7 @@ const FoodContainer = () => {
           </p>
         </div>
         <img src="/explore.png" alt="" />
-      </div>
+      </div> */}
       <div className="flex flex-col items-center justify-center py-10 gap-10">
         <h1 className="text-4xl font-semibold">Explore our all Products</h1>
         <div className="w-full grid grid-cols-4 px-10 max-md:grid-cols-2 max-md:w-full max-md:rounded-xl max-md:gap-4 max-md:px-4">

@@ -4,10 +4,3 @@
   --swiper-pagination-bottom: -3px;
 }
 
-@media (max-width:768px
-) {
-  .swiper {
-    --swiper-navigation-opacity: 0;
-       /* display: none ; */
-  }
-}

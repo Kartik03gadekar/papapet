@@ -123,40 +123,43 @@ const Page4 = () => {
     </div>
 
 
-    <section className=" hidden max-md:flex max-md:w-full  max-md:flex-col max-md:items-center max-md:p-6 max-md:bg-white">
+    <section className=" hidden max-md:flex max-md:w-full max-md:h-fit   max-md:flex-col max-md:items-center max-md:p-6 max-md:bg-white">
       {/* Title */}
-      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-2">
+    <div className="bg-linear-to-t [#FFFFF]-[#FFDEBA]">
+    <div>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-2">
         Featured <span className="text-teal-500">Products</span>
         <Image src="/serviceDog.png" alt="Dog" width={40} height={40} />
       </h2>
+    </div>
 
       {/* Products Grid */}
-      <div className="grid max-md:grid-cols-2 grid-cols-4 gap-5 mt-6 w-full max-w-6xl">
+      <div className="grid max-md:grid-cols-2 grid-cols-4 gap-5 mt-6 w-full max-w-6xl h-fit  ">
         {products.map((product, index) => (
           <div
             key={index}
-            className="p-4 shadow-md rounded-lg bg-gray-100 transition-transform duration-300 ease-in-out hover:scale-105"
+            className=" h-[60vw] w-[45vw] px-4 py-2 shadow-md rounded-lg bg-gray-100 transition-transform duration-300 ease-in-out hover:scale-105"
           >
-            <h6 className="text-slg font-[600] ">PaPaPet</h6>
-            <h3 className="text-lg font-semibold ">{product.name}</h3>
-            <p className="text-sm text-gray-600 mb-[4">{product.description}</p>
-            <Image
+            <h6 className="text-slg font-[500] ">PaPaPet</h6>
+            <h3 className="text-xl font-[700] ">{product.name}</h3>
+            {/* <p className="text-sm text-gray-600 font-[400] mb-[4] leading-[1.1] ">{product.description}</p> */}
+            <img
               src={product.image}
               alt={product.name}
-              width={150}
-              height={150}
-              className="mx-auto max-md:h-[50vw] "
+              
+              className=" mx-auto max-md:h-[40vw] "
             />
             
           </div>
         ))}
       </div>
 
+    </div>
 
       {/* Features Section - Visible on Mobile Only */}
       <div className=" max-md:flex max-md:w-screen   max-md:gap-2 max-md:bg-teal-100 py-4  px-2  max-md:items-center  justify-center  max-md:mt-[4vw]  ">
-        <div className="max-md:justify-between  max-md:flex max-md:items-center max-md:gap-7 max-md:w-[40vw] max-md:h-[18vw] max-md:bg-white  max-md:rounded-lg">
-          <img src="/Page41.png" alt="Products" className="w-[7vw] h-[10vw] mx-2 "  />
+        <div className="max-md:justify-between  max-md:flex max-md:items-center max-md:gap-5 max-md:w-[40vw] max-md:h-[18vw] max-md:bg-white  max-md:rounded-lg">
+          <img src="/Page41.png" alt="Products" className="w-[7vw] h-[10vw] mx-1 "  />
           <p className="font-semibold">100+  <span className="font-[400]  ">Products</span></p>
         </div>
         <div className="max-md:justify-between max-md:flex max-md:items-center max-md:gap-2 max-md:w-[40vw] max-md:h-[18vw] max-md:bg-white max-md:rounded-lg">
