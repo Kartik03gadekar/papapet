@@ -9,7 +9,7 @@ const HomePage = () => {
     <div className="  max-md:flex max-md:flex-col max-md:items-center max-md:justify-start max-md:pt-[26vw] w-full h-screen overflow-hidden flex flex-col items-start px-[8vw] justify-center relative gap-4 max-md:h-[100vh] max-md:pb-0">
       {/* Content Wrapper */}
       <div className=" max-md:absolute  max-md:top-[12%]  max-md:left-[5%]  max-md:z-10 pt-2">
-        <h1 className="  text-black text-7xl font-bold leading-tight max-md:text-4xl  max-md:mb-4 ">
+        <h1 className="  text-black text-7xl font-bold leading-tight max-md:text-4xl  max-md:mb-3 ">
           Making Pet's Life <span className="text-[#0D9899]">Better</span>
           <br className="max-md:hidden" /> Together
         </h1>

@@ -8,34 +8,34 @@ import "swiper/css/pagination";
 
 const Page3 = () => {
   const data = [
-    { name: "Dog", img: "/Page3Dog.png" },
-    { name: "Cat", img: "/Page3Cat.png" },
-    { name: "Fish", img: "/Page3Fish.png" },
+    { name: "Dog", img: "/Page31.jpg" },
+    { name: "Cat", img: "/Page32.jpg" },
+    { name: "Fish", img: "/Page33.jpg" },
   ];
 
   return (
-    <div className="h-fit w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh]">
+    <div className="h-fit  max-md:h-fit w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:my-[3vw]  ">
       {/* Title Section */}
       <div className="flex flex-col items-center justify-center text-center px-4">
         <div className="flex items-end justify-center gap-5">
           <h1 className="text-5xl font-semibold pb-5 max-md:text-3xl">
             Shop by <span className="text-[#0D9899]">Category</span>
           </h1>
-          <img src="/serviceDog.png" className="max-md:h-12 h-16" alt="Service Dog" />
+          <img src="/serviceDog.png" className="max-md:h-[15vw] h-16" alt="Service Dog" />
         </div>
-        <p className="text-lg max-md:text-base">
+        <p className=" max-md:hidden text-lg max-md:text-base">
           Discover the perfect pet heating solutions to keep your beloved companions
           <br className="max-md:hidden" /> cozy and content all year round.
         </p>
       </div>
 
       {/* Category Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 w-[80%] place-content-center place-items-center">
+      <div className="flex items-center justify-between max-md:flex  max-md:items-center   max-md:justify-around  max-md:w-screen w-[80%] max-md:px-[2vw]  ">
         {data?.map((i, index) => (
           <Link key={index} href={`${i.link || "#"}`}>
             <div className="flex flex-col items-center gap-6 cursor-pointer">
               {/* Image Container */}
-              <div className="h-[14vw] w-[14vw] max-md:h-32 max-md:w-32 rounded-full overflow-hidden border-2 flex items-center justify-center hover:shadow-lg transition-all duration-300">
+              <div className="h-[13vw] w-[13vw] max-md:h-[25vw] max-md:w-[25vw] rounded-full overflow-hidden border-2  max-md:border-none flex items-center justify-center hover:shadow-lg transition-all duration-300">
                 <img className="h-full w-full object-cover" src={i?.img} alt={i?.name} />
               </div>
 

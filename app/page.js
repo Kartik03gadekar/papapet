@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getHomePage } from "@/store/Action/others";
 import { io } from "socket.io-client";
 let socket;
-const getSocket = () => {
+const getSocket = () => {   
   if (!socket) {
     // socket = io("http://localhost:5001/", { path: "/socket.io" });
     socket = io("https://api.mycozee.in/", {
@@ -24,13 +24,17 @@ const HomePage = dynamic(() => import("@/Components/HomePage/HomePage"), {
   ssr: false,
 });
 const Page2 = dynamic(() => import("@/Components/Page2/Page2"), { ssr: false });
+
 const Page3 = dynamic(() => import("@/Components/Page3/Page3"), { ssr: false });
+
 const Page4 = dynamic(() => import("@/Components/Page4/Page4"), { ssr: false });
+
 const Page5 = dynamic(() => import("@/Components/Page5/Page5"), { ssr: false });
 const Page6= dynamic(() => import("@/Components/Page6/Page6"),{ssr:false,});
 const Footer = dynamic(() => import("@/Components/Footer/Footer"), {
   ssr: false,
 });
+
 
 const Page = () => {
   const dispatch = useDispatch();

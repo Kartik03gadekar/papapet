@@ -30,11 +30,11 @@ const blogs = [
     <div className="text-center">
     <div className="flex items-end justify-center gap-5">
       <h2 className="text-3xl font-bold">
-        Know Your <span className="text-blue-600">Buddy</span>
+        Know Your <span className="text-[#0d9899] max-md:text-orange-400">Buddy</span>
       </h2>
-      <img src="/serviceDog.png" className="max-md:h-12 h-16" alt="Service Dog" />
+      <img src="/serviceDog.png" className="max-md:h-[15vw] h-16" alt="Service Dog" />
       </div>
-      <p className="text-lg max-md:text-base mt-2">
+      <p className="text-lg max-md:text-base mt-2 max-md:hidden ">
         Read our latest Blogs and Keep your Pets Super Healthy
       </p>
     </div>
@@ -53,21 +53,17 @@ const blogs = [
             className="w-full h-42 object-contain"
           />
           <div className="p-4">
-            <span className="text-sm bg-blue-100 text-blue-600 px-2 py-1 rounded">
+            <span className="max-md:text-[2.5vw] bg-[#0d9899] text-white px-2 py-1 rounded text-lg">
               Pet Knowledge
             </span>
             <h3 className="font-semibold text-lg mt-2">{blog.title}</h3>
-            <p className="text-gray-600 text-sm mt-1">{blog.description}</p>
+            <p className="text-gray-600 text-sm mt-1 max-md:hidden">{blog.description}</p>
           </div>
         </div>
       ))}
     </div>
 
-    <div className="text-center mt-6">
-      <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
-        View More
-      </button>
-    </div>
+    
   </section>
   )
 }
