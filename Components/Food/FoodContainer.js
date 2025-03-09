@@ -109,7 +109,7 @@ const FoodContainer = () => {
       640: { slidesPerView: 2 },
       1024: { slidesPerView: 4 },
     }}
-    navigation={window.innerWidth > 768}
+    navigation={window?.innerWidth > 768}
     pagination={{ clickable: true }}
     modules={[Pagination, Navigation]}
     className={`w-full  ${style.swiper}`}
@@ -155,7 +155,7 @@ const FoodContainer = () => {
       640: { slidesPerView: 2 },
       1024: { slidesPerView: 4 },
     }}
-    navigation={window.innerWidth > 768}
+    navigation={window?.innerWidth > 768}
     pagination={{ clickable: true }}
     modules={[Pagination, Navigation]}
     className={`w-full  ${style.swiper}`}
