@@ -92,11 +92,11 @@ const FoodContainer = () => {
     },
   ];
   return (
-    <div className="w-full min-h-screen text-black  py-10 mt-[10vh]">
+    <div className="w-full min-h-screen text-black  py-6 mt-[5vh] ">
       {/* Browse By Brands */}
- <div className="flex flex-col gap-[4vw] items-center justify-center mt-2">
+ <div className="flex flex-col gap-[4vw] items-center justify-center mt-2  ">
  <div className=" flex  items-center text-center justify-center">
-    <h1 className="text-4xl font-semibold relative z-10 bg-white text-center">
+    <h1 className="text-4xl font-semibold relative z-10 bg-white text-center max-md:text-3xl max-md:pb-6">
       Browse By Brands
     </h1>
   </div>
@@ -140,9 +140,9 @@ const FoodContainer = () => {
  </div>
 
 {/* Browse By Category */}
-<div className="flex flex-col gap-[4vw] items-center justify-center mt-[5vw] ">
+<div className="flex flex-col gap-[4vw] items-center justify-center mt-[10vw] max-md:mt-[14vw] ">
  <div className=" flex  items-center text-center justify-center">
-    <h1 className="text-4xl font-semibold relative z-10 bg-white text-center">
+    <h1 className="text-4xl font-semibold relative z-10 bg-white text-center max-md:text-3xl max-md:pb-6">
       Browse By Category
     </h1>
   </div>
@@ -166,7 +166,7 @@ const FoodContainer = () => {
         className="flex flex-col items-center justify-center text-center"
       >
       <div className="w-[20vw]  max-md:w-[30vw] flex flex-col items-center justify-center ">
-       <div className="h-[20vh] w-[20vh] max-md:h-[10vh] max-md:w-[10vh] rounded-full border-2 overflow-hidden
+       <div className="h-[20vh] w-[20vh] max-md:h-[10vh] max-md:w-[10vh] rounded border-2 overflow-hidden
         flex  flex-col items-center justify-center  ">
           <img
             src={`/${category.img}`}
@@ -199,7 +199,7 @@ const FoodContainer = () => {
         <img src="/explore.png" alt="" />
       </div> */}
       <div className="flex flex-col items-center justify-center py-10 gap-10">
-        <h1 className="text-4xl font-semibold">Explore our all Products</h1>
+        <h1 className="text-4xl font-semibold max-md:text-3xl ">Explore our all Products</h1>
         <div className="w-full grid grid-cols-4 px-10 max-md:grid-cols-2 max-md:w-full max-md:rounded-xl max-md:gap-4 max-md:px-4">
           {food?.map((i, index) => (
             <ProductCard key={index} i={i} imgLink={imgLink} />

@@ -34,8 +34,8 @@ const ProductCard = ({ i, imgLink }) => {
         <button className="bg-red-600 max-md:hidden rounded-md text-xs px-4 py-1 text-white">
           Great Offer
         </button>
-        <h1 className="text-2xl font-[poppins] ">
-          <span className="text-lg">
+        <h1 className="text-2xl font-[poppins] max-md:text-2sm ">
+          <span className="text-lg ">
           M.R.P
           </span> 
            &nbsp; ₹ {i?.price}</h1>
