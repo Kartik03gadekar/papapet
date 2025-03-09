@@ -66,7 +66,8 @@ const ProductDetail = ({ product }) => {
         <h1
           id="gil"
           className="text-lg text-red-500 w-[80%] font-[gilroy] font-normal"
-        >
+        >  
+        
           <span className="font-extralight text-black">by</span>{" "}
           {product?.brand}
         </h1>
