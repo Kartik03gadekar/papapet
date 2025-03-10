@@ -26,12 +26,13 @@ const Page2 = () => {
     {
       name: "Accessories",
       img: "/FoodnAcces.png",
-      link: "/papapet/food",
+      link: "/papapet/accessories",
       color: "bg-gray-200" 
     },
     {
       name: "Veteniary Doctor",
       img: "/doctorPapaper.png",
+      link: "/papapet/doctor",
       color: "bg-green-200" 
     },
     {

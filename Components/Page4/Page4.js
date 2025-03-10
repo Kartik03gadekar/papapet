@@ -36,14 +36,16 @@ const Page4 = () => {
 
 
   const brands = [
-    {  img: "/walkingPet.png" },
-    {  img: "/doctorPapaper.png" },
-    {  img: "/dayCare.png" },
-    {  img: "/grooming.png" },
-    {  img: "/walkingPet.png" },
-    {  img: "/doctorPapaper.png" },
-    {  img: "/dayCare.png" },
-    {  img: "/grooming.png" },
+    {  img: "/image1.png" },
+    {  img: "/image2.png" },
+    {  img: "/image3.png" },
+    {  img: "/image4.jpg" },
+    {  img: "/image5.png" },
+    {  img: "/image1.png" },
+    {  img: "/image2.png" },
+    {  img: "/image3.png" },
+    {  img: "/image4.jpg" },
+    {  img: "/image5.png" },
   ];
 
   return (
@@ -110,7 +112,7 @@ const Page4 = () => {
                   alt={brand.name}
                   width={100}
                   height={100}
-                  className=" max-md:w-70 max-md:h-70 object-contain"
+                  className=" max-md:w-70 max-md:h-70 object-contain  rounded-full "
                 />
               </div>
               

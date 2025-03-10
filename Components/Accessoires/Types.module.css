@@ -1,0 +1,9 @@
+.swiper {
+  /* background-color: aqua; */
+    --swiper-navigation-size: 35px;
+    --swiper-navigation-color: #0D9899;
+    /* --swiper-navigation-color: black; */
+    --swiper-pagination-bottom: -2px;
+  }
+  
+  
