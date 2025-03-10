@@ -125,9 +125,9 @@ const Page4 = () => {
     </div>
 
 
-    <section className=" hidden max-md:flex max-md:w-full max-md:h-fit   max-md:flex-col max-md:items-center max-md:p-6 max-md:bg-white">
+    <section className=" hidden max-md:flex max-md:w-full max-md:h-fit    max-md:flex-col max-md:items-center max-md:p-6 max-md:bg-white">
       {/* Title */}
-    <div className="bg-linear-to-t [#FFFFF]-[#FFDEBA]">
+    <div className="bg-linear-to-t [#FFFFF]-[#FFDEBA]  max-md:w-full ">
     <div>
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-2">
         Featured <span className="text-teal-500">Products</span>
@@ -136,11 +136,11 @@ const Page4 = () => {
     </div>
 
       {/* Products Grid */}
-      <div className="grid max-md:grid-cols-2 grid-cols-4 gap-5 mt-6 w-full max-w-6xl h-fit  ">
+      <div className="grid max-md:grid-cols-2 grid-cols-4 gap-5 mt-6 w-full max-w-6xl h-fit    ">
         {products.map((product, index) => (
           <div
             key={index}
-            className=" h-[60vw] w-[45vw] px-4 py-2 shadow-md rounded-lg bg-gray-100 transition-transform duration-300 ease-in-out hover:scale-105"
+            className=" h-[60vw] w-[45vw] px-4 py-2 shadow-md rounded-lg bg-gray-100 "
           >
             <h6 className="text-slg font-[500] ">PaPaPet</h6>
             <h3 className="text-xl font-[700] ">{product.name}</h3>

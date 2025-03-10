@@ -26,7 +26,7 @@ const blogs = [
     },
   ];
   return (
-    <section className="px-6 py-12">
+    <section className="px-6 py-12 max-md:bg-[#F4EEE1] max-md:py-14">
     <div className="text-center">
     <div className="flex items-end justify-center gap-5">
       <h2 className="text-3xl font-bold">

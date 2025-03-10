@@ -15,7 +15,7 @@ const AccessoiresProduct = () => {
   
   return (
     <div>
-          <div className="flex flex-col items-center justify-center py-10 gap-10">
+          <div className="flex flex-col items-center justify-center py-20 bg-[#F4EEE1] gap-10">
         <h1 className="text-4xl font-semibold max-md:text-3xl ">
           Explore our all Products
         </h1>

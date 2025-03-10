@@ -65,7 +65,6 @@ const Page = () => {
 
       {/* Services Section */}
       <section className="py-8 text-center bg-[#F4EEE1]">
-        <h2 className="text-3xl font-semibold">Our Best Services</h2>
         <div className="flex items-center justify-around  mt-6 px-6 max-md:gap-[4vw] max-md:flex max-md:flex-col max-md:items-center">
           {services.map((service, index) => (
             <div key={index} className="bg-white w-[18vw] h-[13vw] max-md:w-[60vw] max-md:h-[42vw] rounded-lg shadow-md flex flex-col items-center justify-center p-4">

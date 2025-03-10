@@ -106,9 +106,9 @@ const FoodContainer = () => {
   return (
     <div className="w-full min-h-screen text-black  py-6 mt-[5vh] ">
       {/* Browse By Brands */}
-      <div className="flex flex-col gap-[4vw] items-center justify-center mt-2  ">
+      <div className="flex flex-col gap-[4vw] items-center justify-center mt-2 bg-[#F4EEE1] py-8  ">
         <div className=" flex  items-center text-center justify-center">
-          <h1 className="text-4xl font-semibold relative z-10 bg-white text-center max-md:text-3xl max-md:pb-6">
+          <h1 className="text-4xl font-semibold relative z-10  text-center max-md:text-3xl max-md:pb-6">
             Browse By Brands
           </h1>
         </div>
@@ -208,7 +208,7 @@ const FoodContainer = () => {
         </div>
         <img src="/explore.png" alt="" />
       </div> */}
-      <div className="flex flex-col items-center justify-center py-10 gap-10">
+      <div className="flex flex-col items-center justify-center py-20 gap-10  bg-[#F4EEE1] ">
         <h1 className="text-4xl font-semibold max-md:text-3xl ">
           Explore our all Products
         </h1>
