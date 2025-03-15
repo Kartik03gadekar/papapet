@@ -47,7 +47,8 @@ const Page = () => {
           </div>
         </div>
 
-        <FoodContainer />
+        <FoodContainer />   
+        
       </div>
       <Footer />
     </>
