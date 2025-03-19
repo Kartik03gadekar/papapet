@@ -6,16 +6,15 @@ const HomePage = () => {
   const [petType, setpetType] = useState("a");
 
   return (
-    <div className="  max-md:flex max-md:flex-col max-md:items-center max-md:justify-start max-md:pt-[26vw] w-full h-screen overflow-hidden flex flex-col items-start px-[8vw] justify-center relative gap-4 max-md:h-[100vh] max-md:pb-0">
+    <div className="  max-md:flex max-md:flex-col max-md:items-center max-md:justify-start max-md:pt-[26vw] w-full h-screen overflow-hidden flex flex-col items-start px-[2vw] justify-center relative gap-4 max-md:h-[100vh] max-md:pb-0">
       {/* Content Wrapper */}
-      <div className=" max-md:absolute  max-md:top-[12%]  max-md:left-[5%]  max-md:z-10 pt-2">
+      <div className=" max-md:absolute  max-md:top-[12%]  max-md:left-[2%]  max-md:z-10 pt-2">
         <h1 className="  text-black text-7xl font-bold leading-tight max-md:text-4xl  max-md:mb-3 ">
           Making Pet's Life <span className="text-[#0D9899]">Better</span>
           <br className="max-md:hidden" /> Together
         </h1>
         <p className="w-[36%] text-lg max-md:w-full  max-md:px-4 pt-2">
-          Discover the perfect pet heating solutions to keep your beloved
-          companions cozy and content all year round.
+        We’re dedicated to making pet parenting easier, happier, and healthier. From premium nutrition to essential care, we bring you trusted products and expert advice—because every pet deserves the best, and every moment together matters.
         </p>
         <div className="flex items-center gap-4  max-md:mt-[0.2vw] ">
           <button className="linear rounded-full font-semibold text-lg ">

@@ -90,8 +90,8 @@ const Page2 = () => {
                     src={i?.img}
                     alt=""
                   />
-                  <div className="h-32 max-md:h-16 w-32 shrink-0 bg-transparent rounded-full "></div>
-                  <h1 className="font-semibold text-lg">{i?.name}</h1>
+                  <div className="h-30 max-md:h-16 w-30 shrink-0 bg-transparent rounded-full "></div>
+                  <h1 className="font-semibold text-[1vw] ">{i?.name}</h1>
                   <p className="text-center text-[.9vw] max-md:text-[1.5vw]">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                     Itaque excepturi delectus reiciendis consequuntur ducimus
@@ -130,17 +130,19 @@ const Page2 = () => {
           </button>
           </div>    */}
 
-     <div className="w-screen flex  items-center justify-center gap-40 shrink-0 flex-wrap  ">
+     <div className="w-screen flex  items-center justify-center gap-40 shrink-0 flex-wrap ">
      {data?.map((i, index) => (
           <Link href={`${i.link}`}>
-            <div className="service  cursor-pointer h-[14vw] w-[14vw]  items-center relative gap-2  p-5 py-4 rounded-full tems-center justify-center flex flex-col bg-white text-black border-2 shrink-0 hover:bg-[#0D9899] hover:text-white duration-300 ease-in-out max-md:w-[60vw]">
+            <div className="service  cursor-pointer h-[15vw] w-[15vw]   items-center relative gap-1    rounded-full  justify-center flex flex-col 
+            text-black border-2 shrink-0 hover:bg-[#0D9899] hover:text-white duration-300 ease-in-out max-md:w-[60vw]">
               <img
-                className="h-[8vw] W-[10vw] left-1/2 -translate-x-1/2 object-contain absolute -top-5 max-md:h-1/2 w-4/5"
+                className="h-[7vw] W-[7vw]  object-contain absolute   -top-2 max-md:h-1/2 w-4/5 left-1/2 -translate-x-1/2 "
                 src={i?.img}
                 alt=""
               />
-              <div className="h-32 max-md:h-16 w-32 shrink-0 bg-transparent rounded-full "></div>
-              <h1 className="font-semibold text-lg">{i?.name}</h1>
+              {/**/}
+              <div className="h-32 max-md:h-16 w-full shrink-0 bg-transparent rounded-full   "></div>
+              <h1 className="font-semibold text-[1.2vw] pb-[4vw] max-md:text-[1vw]  max-lg:pb-[6vw] max-lg:text-[1vw] max-md:pb-[5vw]">{i?.name}</h1>
               {/* <p className="text-center text-[.9vw] max-md:text-[1.5vw]">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque
                 excepturi delectus reiciendis consequuntur ducimus dicta.

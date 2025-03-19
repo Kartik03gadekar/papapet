@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import NavPapaPet from "@/Components/Nav/NavPapaPet";
 
 const Page = () => {
   const services = [
@@ -12,56 +13,85 @@ const Page = () => {
 
   return (
     <div className="w-full">
-      {/* Hero Section */}
-      <section className="relative w-full h-screen text-white flex flex-col justify-center max-md:justify-start max-md:pt-[50vw] max-md:gap-[7vw]  items-start px-8 md:px-20 max-md:w-full max-md:h-screen">
-      {/* Background Image */}
-      <div className="absolute inset-0 -z-10 max-md:w-screen  max-md:h-[200vw]">
-        <Image
-          src="/doctormainimage.png" // Replace with actual image path
-          alt="Pet Care"
-          layout="fill"
-          objectFit="cover"
-          className="opacity-70 max-md:relative max-md:w-full max-md:h-[80vw]"
-        />
-      </div>
+    <nav className="w-full  h-[5vw]  bg-red-200">     <NavPapaPet/> </nav>
 
-      {/* Left Content */}
-      <div className="w-full  max-md:w-screen max-md:px-[4vw]">
-        <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-          <span className="text-black">The Perfect</span> 
-          <span className="text-teal-400"> Pet </span> 
-          <span className="text-black">Match, Just a Click Away!</span>
-        </h1>
-        <button className="mt-8 bg-yellow-400 px-6 py-3 rounded-full text-black font-semibold shadow-lg">
-          Book Now
-        </button>
-      </div>
+     {/* Hero Section */}
+    
+ 
+       
+     <section className="relative w-[100%] h-screen text-white flex flex-col md:flex-row justify-between items-center  px-8 gap-8">
+  
+  {/* Left Content */}
+  <div className="w-[30%] h-screen md:w-1/3 text-left flex flex-col items-start justify-start gap-[5vw] pt-[5vw]  ">
+  <h1 className="text-3xl md:text-6xl font-bold leading-[1.4]">
+  <span className="text-black block pb-2">The Perfect</span> 
+  <span className="text-teal-400 block pb-2">Pet Match,</span> 
+  <span className="text-black block pb-2">Just a Click</span>
+  <span className="text-black block pb-2">Away!</span>
+</h1>
 
-      {/* Appointment Form */}
-      <div className="w-[22vw] h-[17vw] absolute right-[7vw] top-[23vw] px-6 py-4 bg-white bg-opacity-30 backdrop-blur-lg rounded-lg shadow-lg max-md:hidden max-md:w-full max-md:p-4 max-md:mt-6">
-        <form className="mt-4">
-          <label className="text-black text-sm font-medium">Owner Name</label>
-          <input
-            type="text"
-            placeholder="Kartik"
-            className="w-full p-2 mt-1 outline-none text-gray-400 text-sm bg-white placeholder:pl-2 rounded-full"
-          />
+    <button className=" bg-yellow-400 px-6 py-3 rounded-full text-black font-semibold shadow-lg">
+      Book Now
+    </button>
+  </div>
 
-          <label className="text-black text-sm font-medium mt-4">Category</label>
-          <select className="w-full p-2 mt-1 outline-none text-gray-400 text-sm bg-white placeholder:pl-2 rounded-full">
-            <option>Dog</option>
-            <option>Cat</option>
-          </select>
+  {/* Middle - Image */}
+  <div className="w-[35%] md:w-1/3 flex justify-center relative">
+    <img
+      src="/GirlDoctor.png" // Replace with actual img path
+      alt="Veterinarian with Pet"
+   
+      className="rounded-lg w-[20vw] "
+    />
+    
 
-          <label className="text-black text-sm font-medium mt-4">Appointment Date</label>
-          <input
-            type="text"
-            placeholder="06/06/2025"
-            className="w-full p-2 mt-1 outline-none text-gray-400 text-sm bg-white placeholder:pl-2 rounded-full"
-          />
-        </form>
-      </div>
-    </section>
+  </div>
+
+
+ <div className="  w-[35%] h-screen flex flex-col  items-center justify-start gap-[12vw]  ">
+
+    <div className=" bg-yellow-100 p-4 rounded-lg shadow-lg flex items-center space-x-3">
+     
+      <p className="text-sm font-medium text-gray-700">
+        Generate your Pet’s Health Report in just a few clicks
+      </p>
+
+      <img
+        src="/FloatingBanner.png" // Replace with actual icon path
+        alt="Health Report"
+        width={40}
+        height={40}
+      />
+    </div>
+  
+  <div className="bg-[#77C5C6] w-[22vw] h-[20vw] rounded-xl " >
+    <form className="pl-[2vw] pt-[2vw] flex flex-col items-start justify-center gap-2">
+    <label className="block text-gray-800 font-semibold text-lg">Owner Name</label>
+      <input
+        type="text"
+        placeholder="Kartik"
+        className="w-[80%] outline-none h-[2.5vw] placeholder:pl-2 pl-2 border rounded-lg text-gray-700 shadow-sm"
+      />
+    <label className="block text-gray-800 font-semibold text-lg">Category</label>
+      <select className="w-[80%] outline-none h-[2.5vw] placeholder:pl-2 pl-2 border rounded-lg text-gray-700 shadow-sm">
+        <option>DOG</option>
+        <option>CAT</option>
+      </select>
+      <label className="block text-gray-800 font-semibold text-lg">Appointment Date</label>
+      <input
+        type="date"
+        className="w-[80%] outline-none h-[2.5vw] placeholder:pl-2 pl-2 border rounded-lg text-gray-700 shadow-sm"
+      />
+    </form>
+  </div>
+    
+
+
+ </div>
+</section>
+
+   
+   
 
       {/* Services Section */}
       <section className="py-8 text-center bg-[#F4EEE1]">

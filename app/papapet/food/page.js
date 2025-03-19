@@ -8,8 +8,8 @@ const Page = () => {
   return (
     <>
       <NavPapaPet />
-      <div className="container relative">
-        <div className="flex items-center justify-between h-screen px-10 py-16  
+      <div className=" relative  ">
+        <div className="  flex items-center justify-between h-screen px-10 py-[12vw] pl-[4vw]  
         max-md:flex-col max-md:px-5 max-md:gap-[4vw] max-md:h-auto max-md:py-20">
           
           {/* Left Content */}

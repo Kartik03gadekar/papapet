@@ -52,25 +52,7 @@ const Page4 = () => {
  
         <div className=" ">
           <div className="hidden    max-md:w-screen max-md:flex max-md:items-center max-md:justify-center  " >
-          <div className=" hidden  max-md:w-[90vw] max-md:h-[25vh] max-md:rounded-2xl max-md:shadow-lg max-md:bg-gradient-to-r max-md:from-red-400 max-md:to-orange-300 max-md:flex max-md:items-center max-md:justify-center max-md:relative max-md:p-4">
-          {/* Text Section */}
-          <div className="max-md:text-center max-md:flex max-md:flex-col max-md:items-center max-md:gap-2">
-            <h1 className="max-md:text-white max-md:text-2xl max-md:font-bold max-md:italic">
-              CRAVING A TASTE OF SAVINGS?
-            </h1>
-            <p className="max-md:text-white max-md:text-lg max-md:font-semibold">
-              Enjoy up to <span className="max-md:bg-yellow-300 max-md:text-black max-md:px-2 max-md:py-1 max-md:rounded-md max-md:font-bold">60%</span> off
-              <br /> on pet foods!
-            </p>
-          </div>
-    
-          {/* Images */}
-          <img src="/Cat.png" className="max-md:absolute max-md:left-2 max-md:bottom-2 max-md:h-[10vh]" alt="Cat" />
-          <img src="/dog.png" className="max-md:absolute max-md:right-2 max-md:bottom-2 max-md:h-[10vh]" alt="Dog" />
-          <img src="/food-bowl.png" className="max-md:absolute max-md:right-[45%] max-md:top-2 max-md:h-[7vh]" alt="Food Bowl" />
-          <img src="/treat.png" className="max-md:absolute max-md:left-6 max-md:top-2 max-md:h-[5vh]" alt="Treat" />
-          <img src="/leash.png" className="max-md:absolute max-md:right-10 max-md:top-4 max-md:h-[6vh]" alt="Leash" />
-        </div>
+          <img src={`/6.png`} alt="" />
         </div>
    
     
@@ -140,7 +122,7 @@ const Page4 = () => {
         {products.map((product, index) => (
           <div
             key={index}
-            className=" h-[60vw] w-[45vw] px-4 py-2 shadow-md rounded-lg bg-gray-100 "
+            className=" h-[60vw] w-[45vw] px-4 py-2 shadow-md rounded-lg  bg-gradient-to-b from-[#FBFEFD] to-[#DCF8F0] "
           >
             <h6 className="text-slg font-[500] ">PaPaPet</h6>
             <h3 className="text-xl font-[700] ">{product.name}</h3>

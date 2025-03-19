@@ -117,14 +117,14 @@ const Types = () => {
         {products.map((product, index) => (
           <div
             key={index}
-            className="h-[30vw] md:h-[15vw] w-full px-4 py-4 shadow-md rounded-lg bg-gray-100 flex flex-col items-center"
+            className="h-[100vw] md:h-[15vw] w-full px-4 py-2 shadow-md rounded-lg bg-gray-100 flex flex-col items-center"
           >
-            <h6 className="text-lg font-medium text-gray-700">PaPaPet</h6>
+            <h6 className="text-[1.2vw] font-medium text-gray-700">PaPaPet</h6>
             <h3 className="text-xl font-bold text-gray-900">{product.name}</h3>
             <img
               src={product.image}
               alt={product.name}
-              className="w-24 h-24 md:w-32 md:h-32 object-contain mt-2"
+              className="w-[10vw] h-[9vw] md:w-32 md:h-32 object-contain "
             />
           </div>
         ))}
