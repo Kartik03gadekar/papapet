@@ -60,7 +60,7 @@ const Page = () => {
       />
     </div>
   
-    <div className="bg-[#77C5C6] w-[90%]   h-[20vw] max-md:h-auto rounded-xl flex flex-col items-center px-4 py-2">
+    <div className="bg-[#77C5C6] w-[90%] np  h-[20vw] max-md:h-auto rounded-xl flex flex-col items-center px-4 py-2">
       <form className="w-full flex flex-col items-start justify-center gap-4">
         <label className="block text-gray-800 font-semibold text-lg">Owner Name</label>
         <input

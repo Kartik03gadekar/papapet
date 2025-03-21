@@ -108,6 +108,7 @@ const Page2 = () => {
       </div>
       <div className="hidden max-md:w-screen max-md:flex max-md:flex-wrap max-md:justify-center max-md:gap-6">
   {data.map((i, index) => (
+     <Link href={`${i.link}`}>
     <div
       key={index}
       className={`max-md:w-[40%] max-md:h-[22vh] max-md:flex max-md:flex-col max-md:items-center max-md:justify-center max-md:rounded-lg max-md:shadow-lg ${i.color} max-md:p-4 max-md:min-w-[180px]`}
@@ -115,6 +116,7 @@ const Page2 = () => {
       <h1 className="max-md:font-semibold max-md:text-lg max-md:ml-4 max-md:pb-2 max-md:pr-[5vw]">{i.name}</h1>
       <img src={i.img} className=" max-md:w-auto max-md:h-[12vh]" alt={i.name} />
     </div>
+    </Link>
   ))}
 </div>
 
