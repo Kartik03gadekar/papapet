@@ -38,6 +38,8 @@ const Page = () => {
           </div>
 
           {/* Right Content (Dog Image) */}
+
+          
           <div className="w-1/2 flex justify-end max-md:w-full max-md:justify-center max-md:mt-4 max-md:mr-8">
             <img
               src="/foodBg.png"
