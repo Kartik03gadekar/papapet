@@ -6,6 +6,7 @@ import { FaGoogle, FaApple, FaFacebook } from 'react-icons/fa';
 import React from 'react'
 
 const page = () => {
+  
     const [phone, setPhone] = useState('');
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
