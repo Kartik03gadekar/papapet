@@ -114,4 +114,8 @@ button {
   background: linear-gradient(to right,#ffb828, #fd890e);
   padding:.8rem 2rem;
 }
+.lin{
+  background: linear-gradient(to right,#ffb828, #fd890e);
+  padding:.4rem 2rem;
+}
 

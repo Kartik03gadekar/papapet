@@ -7,6 +7,7 @@ import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
 import style from "./Types.module.css";
 import Link from "next/link";
+// import Image from "next/image";
 
 const Types = () => {
   const [isLargeScreen, setIsLargeScreen] = useState(false);
@@ -15,33 +16,16 @@ const Types = () => {
     const handleResize = () => {
       setIsLargeScreen(window.innerWidth > 768);
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const products = [
-    {
-      name: "Jiggly Ball",
-      description: "Jiggly the bouncy ball that keeps your pet active!",
-      image: "/Page4Product1.png",
-    },
-    {
-      name: "Glides",
-      description: "Slide effortlessly on different surfaces for endless fun.",
-      image: "/Page4Product2.png",
-    },
-    {
-      name: "Toothie",
-      description: "A must-have dental toy for healthy teeth and fun chewing.",
-      image: "/Page4Product3.png",
-    },
-    {
-      name: "Chewie",
-      description: "Choose the squeaky toy for playful fun all day long.",
-      image: "/Page4Product4.png",
-    },
+    { name: "Jiggly Ball", description: "Bouncy fun toy", image: "/Page4Product1.png" },
+    { name: "Glides", description: "Sliding fun toy", image: "/Page4Product2.png" },
+    { name: "Toothie", description: "Dental care toy", image: "/Page4Product3.png" },
+    { name: "Chewie", description: "Squeaky fun toy", image: "/Page4Product4.png" },
   ];
 
   const brands = [
@@ -49,16 +33,12 @@ const Types = () => {
     { img: "/doctorPapaper.png" },
     { img: "/dayCare.png" },
     { img: "/grooming.png" },
-    { img: "/walkingPet.png" },
-    { img: "/doctorPapaper.png" },
-    { img: "/dayCare.png" },
-    { img: "/grooming.png" },
   ];
 
   const petTypes = [
-    { name: "Dog", img: "/Page31.jpg" },
-    { name: "Cat", img: "/Page32.jpg" },
-    { name: "Fish", img: "/Page33.jpg" },
+    { name: "Dog", img: "/Page31.jpg", link: "/dogs" },
+    { name: "Cat", img: "/Page32.jpg", link: "/cats" },
+    { name: "Fish", img: "/Page33.jpg", link: "/fish" },
   ];
 
   return (
@@ -66,16 +46,15 @@ const Types = () => {
       {/* Brand Types - Swiper */}
       <section className="py-10 flex flex-col items-center px-8">
         <h2 className="text-2xl font-bold text-center mb-6">Browse By Types</h2>
-
         <div className="w-full h-40 mt-10 flex items-center justify-center">
           <Swiper
-            slidesPerView={3}
-            spaceBetween={40}
+            slidesPerView={2}
+            spaceBetween={20}
             navigation={isLargeScreen}
             pagination={{ clickable: true }}
             breakpoints={{
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 5 },
+              640: { slidesPerView: 3 },
+              1024: { slidesPerView: 4 },
             }}
             modules={[Pagination, Navigation]}
             className={style.swiper}
@@ -83,11 +62,7 @@ const Types = () => {
             {brands.map((brand, index) => (
               <SwiperSlide key={index} className="flex items-center justify-center">
                 <div className="w-24 h-24 md:w-32 md:h-32 border-4 border-yellow-500 rounded-full flex items-center justify-center">
-                  <img
-                    src={brand.img}
-                    alt="Brand"
-                    className="w-full h-full object-contain"
-                  />
+                  <img src={brand.img} alt="Brand" width={128} height={128} className="object-contain" />
                 </div>
               </SwiperSlide>
             ))}
@@ -100,10 +75,10 @@ const Types = () => {
         <h2 className="text-2xl font-bold text-center mb-6">Pet Type</h2>
         <div className="flex items-center justify-around px-4 flex-wrap gap-6">
           {petTypes.map((pet, index) => (
-            <Link key={index} href={pet.link || "#"}>
+            <Link key={index} href={pet.link}>
               <div className="flex flex-col items-center gap-4 cursor-pointer">
                 <div className="h-36 w-36 md:h-48 md:w-48 rounded-full overflow-hidden border-2 hover:shadow-lg transition-all duration-300">
-                  <img className="h-full w-full object-cover" src={pet.img} alt={pet.name} />
+                  <img src={pet.img} alt={pet.name} width={192} height={192} className="object-cover" />
                 </div>
                 <h1 className="font-semibold text-xl">{pet.name}</h1>
               </div>
@@ -113,19 +88,12 @@ const Types = () => {
       </div>
 
       {/* Products Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 w-full max-w-6xl mx-auto">
+      <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-6 mt-6  max-w-6xl mx-auto px-[3vw] ">
         {products.map((product, index) => (
-          <div
-            key={index}
-            className="h-[100vw] md:h-[15vw] w-full px-4 py-2 shadow-md rounded-lg bg-gray-100 flex flex-col items-center"
-          >
-            <h6 className="text-[1.2vw] font-medium text-gray-700">PaPaPet</h6>
-            <h3 className="text-xl font-bold text-gray-900">{product.name}</h3>
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-[10vw] h-[9vw] md:w-32 md:h-32 object-contain "
-            />
+          <div key={index} className="h-[17vw]  max-md:h-[60vw] max-md:py-2 w-full px-4 py-2 shadow-md rounded-lg bg-gray-100 flex flex-col items-center ">
+            <h6 className="text-sm  max-md:text-[4vw] font-medium text-gray-700">PaPaPet</h6>
+            <h3 className="text-lg  max-md:text-[4vw] font-bold text-gray-900">{product.name}</h3>
+            <img src={product.image} alt={product.name}  className="w-[4vw]  max-md:w-[12vw] object-contain" />
           </div>
         ))}
       </div>

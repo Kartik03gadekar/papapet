@@ -37,23 +37,27 @@ const Page2 = () => {
     },
     {
       name: "Pet Walking",
+      link: "/papapet/walking",
       img: "/walkingPet.png",
-    color: "bg-red-200"
+    color: "bg-red-200" 
     },
 
     {
       name: "Pet DayCare",
+      link: "/papapet/daycare",
       img: "/dayCare.png",
       color: "bg-lime-200" 
     },
 
     {
       name: "Pet Boarding",
+      link: "/papapet/boarding",
       img: "/Boarding.png",
       color: "bg-orange-300"
     },
     {
       name: "Pet Grooming",
+      link: "/papapet/grooming",
       img: "/grooming.png",
       color: "bg-purple-200" 
     },

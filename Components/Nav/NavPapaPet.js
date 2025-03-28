@@ -53,13 +53,13 @@ const NavPapaPet = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY === 0) {
         gsap.to(circle.current, {
-          top: "-210%",
+          top: "-290%",
           duration: 1,
         });
       }
       if (currentScrollY > prevScrollY.current && currentScrollY > 20) {
         gsap.to(circle.current, {
-          top: "-350%",
+          top: "-390%",
           // opacity: 0,
           duration: 0.5,
         });
@@ -81,7 +81,7 @@ const NavPapaPet = () => {
 
   return (
     <div
-      className={`  w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-16  justify-between p-5 flex-col bg-white transition-transform duration-300 max-md:px-5 ${
+      className={`  w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-16   justify-between p-5 flex-col bg-white transition-transform duration-300 max-md:px-5 ${
         showNavbar ? "translate-y-0" : "-translate-y-full"
       }`}
     >
@@ -177,10 +177,10 @@ const NavPapaPet = () => {
 </div>
 <div
 
-  className="w-[20vw] h-[20vw] absolute -top-[210%] left-1/2 -translate-x-1/2 
+  className="w-[20vw] h-[20vw] absolute -top-[220%] left-1/2 -translate-x-1/2 
              bg-[#FFAD22] rounded-full flex items-end justify-center gap-[2vw]  
              max-md:w-[60vw] max-md:h-[60vw] max-md:absolute max-md:translate-x-10
-             max-md:-right-[120%] max-md:-top-[170%] max-md:-z-20 max-md:px-3 max-md:pb-[12vw] max-md:pr-[17vw]"
+             max-md:-right-[120%] max-md:-top-[170%] max-md:-z-20 max-md:px-3 max-md:pb-[8vw] max-md:pr-[17vw]"
 >
   {/* Search Icon */}
   <button className="max-md:relative max-md:z-40   hidden max-md:flex max-md:text-2xl max-md:text-white max-md:font-light max-md:px-3 max-md:py-1 max-md:rounded-full max-md:transition-all max-md:duration-300 
