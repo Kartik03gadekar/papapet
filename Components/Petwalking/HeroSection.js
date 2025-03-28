@@ -4,14 +4,14 @@ import React from "react";
 const HeroSection = () => {
   return (
     <div className=" relative w-full flex items-center justify-between h-screen px-10  overflow-hidden 
-      max-md:flex-col max-md:px-5 max-md:gap-[4vw] max-md:h-auto max-md:py-20">
+      max-md:flex-col max-md:px-5 max-md:gap-[2vw] max-md:h-auto  max-md:pt-4">
       
       {/* Left Content */}
       <div className="flex flex-col items-start justify-start gap-8  mt-[15vw] w-[70%] h-full text-black  
-        max-md:w-full max-md:text-start max-md:pb-[10vw] max-md:pl-[3vw] max-md:pt-[18vw]">
+        max-md:w-full max-md:text-start max-md:pb-[4vw] max-md:pl-[2vw] max-md:pt-[18vw]">
 
   {/* Title */}
-  <h1 className="text-5xl font-bold leading-tight gilroy mt-10 max-md:text-3xl">
+  <h1 className="text-5xl font-bold leading-tight gilroy mt-4 max-md:text-3xl">
     Find Trusted <span className="text-[#0D9899]"> Pet Walkers </span> Near You for Happy Strolls!
   </h1>
 
@@ -22,7 +22,7 @@ const HeroSection = () => {
 
   {/* Button */}
   <div className="flex items-center gap-4 pt-4">
-    <button className="linear rounded-full font-semibold text-lg px-6 py-2 max-md:text-sm max-md:px-4 max-md:py-1">
+    <button className="linear rounded-full font-semibold text-lg px-6 py-2 max-md:text-sm max-md:px-[4vw] max-md:py-[2vw]">
       Explore Now <i className="ri-arrow-right-s-line bg-white rounded-full"></i>
     </button>
   </div>
