@@ -1,38 +1,37 @@
-"use client";
-import React from "react";
+import React from 'react'
 
-const PetDaycareList = () => {
-  // Dummy Data
-  const daycares = [
-    {
-      id: 1,
-      name: "PawHaven Daycare",
-      location: "Maple Paw Avenue, Sunnybrook City",
-      description: "A safe and fun daycare where pets play, socialize, and receive expert care.",
-      image: "/daycareimage1.png",
-    },
-    {
-      id: 2,
-      name: "Furry Friends Playhouse",
-      location: "432 Barkshire Lane, Pawsville",
-      description: "Spacious play areas, loving staff, and tailored activities for happy pets.",
-      image: "/daycareimage2.png",
-    },
-    {
-      id: 3,
-      name: "Happy Tails Academy",
-      location: "Whisker Way, Greenfield Heights",
-      description: "Reliable pet daycare ensuring comfort, safety, and endless tail wags.",
-      image: "/daycareimage3.png",
-    },
-  ];
+const BoardingList = () => {
+// Dummy Data
+const boardlist =[
+  {
+    "name": "Cozy Paws Inn",
+    "address": "Maple Paw Avenue, Sunnybrook City",
+    "description": "A safe, comfortable stay where pets feel at home while you’re away.",
+    "action": "Book",
+    "image":"/boardingimage1.png"
+  },
+  {
+    "name": "Furry Retreat",
+    "address": "432 Barkshire Lane, Pawsville",
+    "description": "Spacious, stress-free boarding with 24/7 care and personalized attention.",
+    "action": "Book",
+     "image":"/boardingimage2.png"
+  },
+  {
+    "name": "Tail Haven Boarding",
+    "address": "Whisker Way, Greenfield Heights",
+    "description": "Trusted pet boarding with cozy spaces, playtime, and loving care.",
+    "action": "Book",
+     "image":"/boardingimage3.png"
+  }
+]
 
   return (
     <div className="w-full px-10 py-10 max-md:px-4">
-      {/* <h2 className="text-3xl font-semibold text-center mb-8">Find a Pet Daycare Near You</h2> */}
+      <h2 className="text-3xl font-semibold text-center mb-8">Find a Pet Daycare Near You</h2>
       
       <div className="flex flex-col gap-6">
-        {daycares.map((daycare) => (
+        {boardlist.map((daycare) => (
           <div key={daycare.id} className="flex items-center gap-[6vw] bg-white p-4 rounded-lg shadow-md transition-all hover:shadow-lg max-md:flex-col max-md:items-start max-md:gap-4">
            <div>
              {/* Image */}
@@ -56,6 +55,6 @@ const PetDaycareList = () => {
       </div>
     </div>
   );
-};
+}
 
-export default PetDaycareList;
+export default BoardingList
