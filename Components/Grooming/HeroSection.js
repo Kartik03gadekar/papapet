@@ -33,9 +33,9 @@ Top-Rated  <span className="text-[#0D9899]">Grooming</span> Services!
           {/* Right Content (Dog Image) */}
     <div className="absolute -right-[70px] -bottom-[155px] bg-[#FDB625] w-[35vw] h-[35vw] rounded-full " ></div>
     
-          <div className="   w-[30%]  flex justify-start items-start max-md:w-full max-md:justify-center mt-[10vw] max-md:mt-4 max-md:mr-8">
+          <div className="   w-[27%]  flex justify-start items-start max-md:w-full max-md:justify-center mt-[10vw] max-md:mt-4 max-md:mr-8">
     
-            <img src="/daycareheroimage.png" className=" relative  z-10 w-[30vw] object-cover max-md:w-[80vw]" alt="Dog" />
+            <img src="/groomingmainimage.png" className=" relative  ml-[4vw] z-10 w-[25vw] object-cover max-md:w-[80vw]" alt="Dog" />
     
           </div>
         </div>

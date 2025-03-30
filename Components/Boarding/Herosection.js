@@ -31,11 +31,11 @@ const HeroSection = () => {
     </div>
     
           {/* Right Content (Dog Image) */}
-    <div className="absolute -right-[70px] -bottom-[155px] bg-[#FDB625] w-[35vw] h-[35vw] rounded-full " ></div>
+    <div className="absolute -right-[70px] -bottom-[155px] bg-[#0D9899] w-[35vw] h-[35vw] rounded-full " ></div>
     
-          <div className="   w-[30%]  flex justify-start items-start max-md:w-full max-md:justify-center mt-[10vw] max-md:mt-4 max-md:mr-8">
+          <div className="   w-[40%]  flex justify-start items-start max-md:w-full max-md:justify-center mt-[5vw] max-md:mt-4 max-md:mr-8">
     
-            <img src="/daycareheroimage.png" className=" relative  z-10 w-[30vw] object-cover max-md:w-[80vw]" alt="Dog" />
+            <img src="/boardingmainimage.png" className=" relative ml-[4vw]  z-10 w-[40vw] object-cover max-md:w-[80vw]" alt="Dog" />
     
           </div>
         </div>
