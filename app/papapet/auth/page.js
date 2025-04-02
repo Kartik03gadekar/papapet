@@ -10,6 +10,9 @@ const page = () => {
 
       
      <div className="h-[10%]"><NavPapaPet/></div>
+
+
+     
     <div className="h-[80%]" >  <Auth /></div>
      
     </div>
