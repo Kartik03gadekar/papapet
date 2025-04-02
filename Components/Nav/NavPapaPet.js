@@ -177,10 +177,10 @@ const NavPapaPet = () => {
 </div>
 <div
 
-  className="w-[20vw] h-[20vw] absolute -top-[220%] left-1/2 -translate-x-1/2 
+  className="w-[20vw] h-[20vw] absolute -top-[210%] left-1/2 -translate-x-1/2 
              bg-[#FFAD22] rounded-full flex items-end justify-center gap-[2vw]  
              max-md:w-[60vw] max-md:h-[60vw] max-md:absolute max-md:translate-x-10
-             max-md:-right-[120%] max-md:-top-[170%] max-md:-z-20 max-md:px-3 max-md:pb-[8vw] max-md:pr-[17vw]"
+             max-md:-right-[120%] max-md:-top-[150%] max-md:-z-20 max-md:px-3 max-md:pb-[16vw] max-md:pr-[17vw]"
 >
   {/* Search Icon */}
   <button className="max-md:relative max-md:z-40   hidden max-md:flex max-md:text-2xl max-md:text-white max-md:font-light max-md:px-3 max-md:py-1 max-md:rounded-full max-md:transition-all max-md:duration-300 

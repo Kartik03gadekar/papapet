@@ -51,7 +51,7 @@ const page = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {services.map((service) => (
           <div key={service.id} className="bg-white p-4 rounded-lg shadow-sm flex flex-col items-center text-center">
-            <div className="w-20 h-20 rounded-lg overflow-hidden mb-3">
+            <div className="w-40 h-40 max-md:w-[40vw]  max-md:h-[40vw]  rounded-lg overflow-hidden mb-3">
               <img 
                 src={service.image} 
                 alt={service.title} 
@@ -59,7 +59,7 @@ const page = () => {
               />
             </div>
             
-            <h3 className="font-medium text-sm mb-2">{service.title}</h3>
+            <h3 className="font-medium text-sm max-md:text-[4vw] mb-2">{service.title}</h3>
             
             <button>
               {service.actionText}

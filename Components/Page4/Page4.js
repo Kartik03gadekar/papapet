@@ -71,10 +71,10 @@ const Page4 = () => {
       </div>
 
       {/* Full-Width Swiper Brand Section */}
-      <div className="w-full h-40 mt-10 flex items-center justify-center">
+      <div className="w-screen h-40 mt-10 flex items-center justify-center  ">
         <Swiper
           slidesPerView={3}
-          spaceBetween={40}
+          spaceBetween={20}
           navigation={window.innerWidth > 768}
           pagination={{ clickable: true }}
           breakpoints={{
@@ -85,10 +85,10 @@ const Page4 = () => {
           className={` ${style.swiper} `} // Ensures full width
         >
           {brands.map((brand, index) => (
-            <SwiperSlide   key={index} className={`   flex flex-col items-center justify-center gap-20
+            <SwiperSlide   key={index} className={`  flex flex-col items-center justify-center gap-20
             ${style.swiper} `} >
-              <div className="flex flex-col items-center justify-center">
-              <div className="w-24 h-24 md:w-32 md:h-32 border-4 border-yellow-500 rounded-full flex items-center justify-center  ">
+              <div className="w-full flex flex-col items-center justify-center ">
+              <div className="w-24 h-24 md:w-30 md:h-30 border-4 border-yellow-500 rounded-full flex items-center justify-center   ">
                 <img
                   src={brand.img}
                   alt={brand.name}
@@ -142,16 +142,19 @@ const Page4 = () => {
 
       {/* Features Section - Visible on Mobile Only */}
       <div className=" max-md:flex max-md:w-screen   max-md:gap-2 max-md:bg-teal-100 py-4  px-2  max-md:items-center  justify-center  max-md:mt-[4vw]  ">
-        <div className="max-md:justify-between  max-md:flex max-md:items-center max-md:gap-5 max-md:w-[40vw] max-md:h-[18vw] max-md:bg-white  max-md:rounded-lg">
-          <img src="/Page41.png" alt="Products" className="w-[7vw] h-[10vw] mx-1 "  />
+        <div className="max-md:justify-center tween  max-md:flex max-md:items-center max-md:gap-2 max-md:w-[40vw] max-md:h-[20vw]
+         max-md:bg-white  max-md:rounded-lg">
+          <img src="/Page41.png" alt="Products" className="w-[7vw] h-[10vw] mx-2 "  />
           <p className="font-semibold">100+  <span className="font-[400]  ">Products</span></p>
         </div>
-        <div className="max-md:justify-between max-md:flex max-md:items-center max-md:gap-2 max-md:w-[40vw] max-md:h-[18vw] max-md:bg-white max-md:rounded-lg">
+        <div className="max-md:justify-center max-md:flex max-md:items-center max-md:gap-2 max-md:w-[40vw] max-md:h-[20vw]
+         max-md:bg-white max-md:rounded-lg">
           <img src="/Page42.png" alt="Service" className="w-[7vw] h-[10vw] mx-3" />
           <p className="font-semibold">7+  <span className="font-[400]  "> Service</span> </p>
         </div>
-        <div className="max-md:justify-between  max-md:flex max-md:items-center max-md:gap-2 max-md:w-[40vw] max-md:h-[18vw] max-md:bg-white max-md:rounded-lg">
-          <img src="/Page43.png" alt="Fast Delivery" className="w-[7vw] h-[10vw] mx-2"  />
+        <div className="max-md:justify-center  max-md:flex max-md:items-center max-md:gap-2 max-md:w-[40vw] max-md:h-[20vw]
+         max-md:bg-white max-md:rounded-lg">
+          <img src="/Page43.png" alt="Fast Delivery" className="w-[7vw] h-[10vw] mx-3"  />
           <p className="font-semibold">Fast  <span className="font-[400]  ">Delivery</span></p>
         </div>
       </div>

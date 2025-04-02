@@ -22,19 +22,31 @@ const Page = () => {
      <section className="relative w-full h-screen max-md:h-auto max-md:pb-10 text-white flex flex-col md:flex-row justify-between items-center px-8 gap-8">
   
   {/* Left Content */}
-  <div className="w-full md:w-1/3 text-left flex flex-col items-start md:items-start justify-start gap-[5vw] max-md:gap-[0.5vw]
-    max-md:w-full max-md:text-center max-md:items-center max-md:pt-[18vw]">
-    <h1 className="text-3xl md:text-6xl font-bold leading-[1] max-md:text-3xl max-md:text-center px-[1vw]">
-      <span className="text-black block pb-4">The Perfect</span> 
-      <span className="text-teal-400 block pb-4">Pet Match,</span> 
-      <span className="text-black block pb-4">Just a Click</span>
-      <span className="text-black block pb-4">Away!</span>
-    </h1>
+  <div className="w-full md:w-1/3 flex flex-col items-start justify-start gap-[5vw] 
+  max-md:gap-[2vw] max-md:w-full max-md:text-center max-md:items-center max-md:pt-[20vw]">
 
-    <button className="bg-yellow-400 px-6 py-3 rounded-full text-black font-semibold shadow-lg">
-      Book Now
-    </button>
-  </div>
+  {/* Desktop Heading */}
+  <h1 className="hidden md:block text-6xl font-bold leading-[1.2] text-black text-left px-[1vw]">
+    <span className="text-black block pb-4">The Perfect</span> 
+    <span className="text-teal-400 block pb-4">Pet Match,</span> 
+    <span className="text-black block pb-4">Just a Click</span>
+    <span className="text-black block pb-4">Away!</span>
+  </h1>
+
+  {/* Mobile Heading */}
+  <h1 className="max-md:block max-md:pb-2 hidden text-3xl leading-tight font-bold text-black text-center px-[4vw] ">
+    The Perfect
+    <span className="text-teal-400 block pb-1 pt-1">Pet Match,</span>  
+    Just a Click Away!
+  </h1>
+
+  {/* Button */}
+  <button className="bg-yellow-400 px-6 py-3 rounded-full text-black font-semibold shadow-lg">
+    Book Now
+  </button>
+
+</div>
+
 
   {/* Middle - Image */}
   <div className="w-full md:w-1/3 flex justify-center relative">
@@ -88,18 +100,31 @@ const Page = () => {
    
    
 
-      {/* Services Section */}
-      <section className="py-8 text-center bg-[#F4EEE1]">
-        <div className="flex items-center justify-around  mt-6 px-6 max-md:gap-[4vw] max-md:flex max-md:flex-col max-md:items-center">
-          {services.map((service, index) => (
-            <div key={index} className="bg-white w-[18vw] h-[13vw] max-md:w-[60vw] max-md:h-[42vw] rounded-lg shadow-md flex flex-col items-center justify-center p-4">
-              <img src={service.img} alt={service.name}  className="rounded w-[10vw] max-md:w-[20vw]" />
-              <h3 className="mt-2 font-medium text-[1vw] max-md:text-[4vw] max-md:text-lg">{service.name}</h3>
-              <p className="text-xs text-gray-400 max-md:text-[3vw]">{service.p}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+     {/* Services Section */}
+<section className="py-8 text-center bg-[#F4EEE1]">
+  {/* Grid structure for mobile view (2 services per row) */}
+  <div className="grid grid-cols-1 md:flex md:items-center md:justify-around  px-6 max-md:px-3 max-md:grid-cols-2 max-md:gap-4">
+    {services.map((service, index) => (
+      <div 
+        key={index} 
+        className="bg-white w-[18vw] h-[13vw] max-md:w-[45vw] max-md:h-[42vw] 
+        rounded-lg shadow-md flex flex-col items-center justify-center p-2"
+      >
+        <img 
+          src={service.img} 
+          alt={service.name}  
+          className="rounded w-[10vw] max-md:w-[25vw]"
+        />
+        <h3 className="mt-2 font-medium text-[1vw] max-md:text-[3.7vw] ">
+          {service.name}
+        </h3>
+        <p className="text-xs text-gray-400 max-md:text-[3vw]">
+          {service.p}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>
 
       {/* Trusted Doctors Section */}
       <section className="py-10 px-6 text-center bg-[#F4EEE1]">
@@ -111,20 +136,23 @@ const Page = () => {
         />
       </section>
 
-      {/* Best Doctors Section */}
-      <section className="py-10 px-6 bg-white">
-        <h2 className="text-3xl font-semibold text-center">Best Doctors Connected With Us</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 max-md:grid-cols-1">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <div key={index} className="bg-white px-4 py-2 rounded-lg border border-orange-300 text-center">
-              <Image src="/doctorimagepng (1).png" alt="Doctor" width={80} height={80} className="mx-auto" />
-              <h3 className="mt-2 font-medium max-md:text-[4vw]">Dr. Abhinav Jain</h3>
-              <h4 className="text-sm max-md:text-[3vw]">City-Bhopal</h4>
-              <p className="text-sm text-gray-500 max-md:text-[2.5vw]">Connect Within 60 sec</p>
-            </div>
-          ))}
-        </div>
-      </section>
+     {/* Best Doctors Section */}
+<section className="py-10 px-6 bg-white">
+  <h2 className="text-3xl font-semibold text-center">Best Doctors Connected With Us</h2>
+  
+  {/* Updated Grid Layout */}
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 max-md:grid-cols-2">
+    {Array.from({ length: 8 }).map((_, index) => (
+      <div key={index} className="bg-white px-4 py-2 rounded-lg border border-orange-300 text-center">
+        <img src="/doctorimagepng (1).png" alt="Doctor" width={80} height={80} className="mx-auto" />
+        <h3 className="mt-2 font-medium max-md:text-[4vw]">Dr. Abhinav Jain</h3>
+        <h4 className="text-sm max-md:text-[3vw]">City-Bhopal</h4>
+        <p className="text-sm text-gray-500 max-md:text-[2.5vw]">Connect Within 60 sec</p>
+      </div>
+    ))}
+  </div>
+</section>
+
     </div>
   );
 };

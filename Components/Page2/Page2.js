@@ -110,19 +110,27 @@ const Page2 = () => {
           ))}
         </Swiper>
       </div>
-      <div className="hidden max-md:w-screen max-md:flex max-md:flex-wrap max-md:justify-center max-md:gap-6">
-  {data.map((i, index) => (
-     <Link href={`${i.link}`}>
-    <div
-      key={index}
-      className={`max-md:w-[40%] max-md:h-[22vh] max-md:flex max-md:flex-col max-md:items-center max-md:justify-center max-md:rounded-lg max-md:shadow-lg ${i.color} max-md:p-4 max-md:min-w-[180px]`}
-    >
-      <h1 className="max-md:font-semibold max-md:text-lg max-md:ml-4 max-md:pb-2 max-md:pr-[5vw]">{i.name}</h1>
-      <img src={i.img} className=" max-md:w-auto max-md:h-[12vh]" alt={i.name} />
+      <div className="hidden max-md:grid max-md:grid-cols-2 max-md:gap-4 max-md:w-screen max-md:px-4 max-md:py-4">
+      {data.map((i, index) => (
+        <Link key={index} href={i.link} className="w-full">
+          <div
+            className={`max-md:h-[24vh] max-md:flex max-md:flex-col max-md:items-center 
+              max-md:justify-center max-md:rounded-lg max-md:shadow-lg ${i.color}`}
+          >
+            <h1 className="max-md:font-semibold max-md:text-[4.5vw] max-md:pb-2 text-center">
+              {i.name}
+            </h1>
+            <img
+              src={i.img}
+              width={120}
+              height={100}
+              className="max-md:w-auto max-md:h-[12vh] object-contain"
+              alt={i.name}
+            />
+          </div>
+        </Link>
+      ))}
     </div>
-    </Link>
-  ))}
-</div>
 
       <div className="w-full max-md:hidden flex flex-wrap gap-10 items-center justify-center gap-y-20 max-md:grid-cols-1 place-content-center place-items-center">
         {/* <div className="min-h-[24vw] w-[20vw] gap-2 text-white p-5 py-8 rounded-lg items-center justify-between flex flex-col bg-[#F07905] shrink-0">
