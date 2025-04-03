@@ -4,11 +4,11 @@ import React from 'react'
 const HeroSection = () => {
     return (
       <div className="   relative w-full flex items-center justify-between h-screen px-10  overflow-hidden 
-      max-md:flex-col max-md:px-5  max-md:h-screen  ">
+      max-md:flex-col max-md:px-5  max-md:h-fit  ">
       
       {/* Left Content */}
-      <div className="flex flex-col items-start justify-start gap-3  mt-[15vw] w-[70%] h-full text-black   
-        max-md:w-full max-md:text-start max-md:pb-[2vw] max-md:pl-[2vw] max-md:pt-[10vw]    ">
+      <div className=" px-[2vw] flex flex-col items-start justify-start gap-1  mt-[15vw] w-[70%] h-full text-black   
+        max-md:w-full max-md:text-start max-md:pb-[2vw] max-md:pl-[2vw] max-md:pt-[9vw]    ">
 
       {/* Title */}
       <h1 className="text-5xl font-bold leading-tight gilroy mt-3 max-md:text-3xl ">
@@ -16,7 +16,7 @@ const HeroSection = () => {
       </h1>
     
       {/* Description */}
-      <p className="text-lg w-[80%] pt-5 max-md:w-full max-md:text-base">
+      <p className="text-lg w-[80%] pt-4 max-md:w-full max-md:text-base">
         Discover the Best Daycare for Your Pet’s Care & Play! <br />
 A safe and engaging space where pets receive attention, playtime, and the care they deserve.
       </p>

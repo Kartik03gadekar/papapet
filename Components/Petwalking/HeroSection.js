@@ -12,7 +12,7 @@ const HeroSection = () => {
             max-md:w-full max-md:text-start max-md:pb-[2vw] max-md:pl-[2vw] max-md:pt-[10vw]    ">
     
   {/* Title */}
-  <h1 className="text-5xl font-bold leading-tight gilroy mt-3 max-md:text-3xl">
+  <h1 className="text-5xl font-bold leading-tight gilroy mt-2 max-md:text-3xl">
     Find Trusted <span className="text-[#0D9899]"> Pet Walkers </span> Near You for Happy Strolls!
   </h1>
 
@@ -31,13 +31,13 @@ const HeroSection = () => {
 </div>
 
       {/* Right Content (Dog Image) */}
-<div className="absolute -right-[70px] -bottom-[155px] bg-[#0D9899] w-[35vw] h-[35vw] rounded-full " ></div>
+<div className=" absolute -right-[70px] -bottom-[155px] bg-[#0D9899] w-[35vw] h-[35vw] rounded-full " ></div>
 
-      <div className="  w-[30%]  flex justify-start items-start max-md:w-full max-md:flex max-m  max-md:justify-start max-md:items-start  max-md:mr-8">
+      <div className="  w-[30%]  flex justify-start items-start max-md:w-screen  max-md:flex   max-md:justify-start max-md:items-start  max-md:mr-8">
 
       <img 
     src="/petwalkingheropage.png" 
-    className="relative z-10 w-[25vw] object-cover max-md:w-[80vw] max-md:mt-4 max-md:mx-auto" 
+    className="relative z-10 w-[25vw] object-cover max-md:w-[80vw] max-md:mt-2 max-md:mx-auto" 
     alt="Dog" 
   />
       </div>

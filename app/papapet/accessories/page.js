@@ -18,11 +18,11 @@ const page = () => {
     <NavPapaPet />
     <div className=" relative">
       <div className=" w-[100%] gap-[20vw] flex items-center justify-between h-screen px-10 py-[20vw]  
-      max-md:flex-col max-md:px-5 max-md:gap-[4vw] max-md:h-auto max-md:py-20">
+      max-md:flex-col max-md:px-5 max-md:gap-[4vw] max-md:h-fit max-md:pt-[8vw]">
         
         {/* Left Content */}
         <div className="flex flex-col gap-6 w-[60%] text-black  
-         max-md:w-full max-md:text-start max-md:pb-[10vw] max-md:pl-[3vw] max-md:pt-[22vw]">
+         max-md:w-full max-md:text-start max-md:pb-[10vw] max-md:pl-[3vw] max-md:pt-[20vw]">
           <h1 className="text-5xl font-bold leading-tight gilroy max-md:text-3xl max-md:pl-0">
             Let Your  <span className="text-[#0D9899]">Pets</span> <br />
           Enjoy Some Play Time<span className="text-[#FFAD22]">Pets</span>

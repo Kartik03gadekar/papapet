@@ -3,12 +3,12 @@ import React from 'react'
 
 const HeroSection = () => {
     return (
-        <div className="   relative w-full flex items-center justify-between h-screen px-10  overflow-hidden 
-          max-md:flex-col max-md:px-5  max-md:h-screen  ">
+        <div className="   relative w-full flex items-center justify-center  h-screen px-10  overflow-hidden 
+          max-md:flex-col max-md:px-5  max-md:h-fit  ">
           
           {/* Left Content */}
-          <div className="flex flex-col items-start justify-start gap-3  mt-[15vw] w-[70%] h-full text-black   
-            max-md:w-full max-md:text-start max-md:pb-[2vw] max-md:pl-[2vw] max-md:pt-[10vw]    ">
+          <div className="  flex flex-col items-start justify-start gap-3  mt-[15vw] w-[70%] h-full text-black   
+            max-md:w-full max-md:text-start  max-md:pl-[2vw] max-md:pt-[5vw]   max-md:gap-1  ">
     
       {/* Title */}
       <h1 className="text-5xl font-bold leading-tight gilroy mt-3 max-md:text-3xl ">
@@ -33,11 +33,14 @@ Top-Rated  <span className="text-[#0D9899]">Grooming</span> Services!
           {/* Right Content (Dog Image) */}
     <div className="absolute -right-[70px] -bottom-[155px] bg-[#FDB625] w-[35vw] h-[35vw] rounded-full " ></div>
     
-          <div className="   w-[30%]  flex justify-start items-start max-md:w-full max-md:justify-start max-md:items-start mt-[10vw] max-md:mt-1 max-md:mr-8">
-    
-            <img src="/groomingmainimage.png" className=" relative  ml-[4vw] z-10 w-[25vw] object-cover max-md:w-[80vw] max-md:ml-[10vw]" alt="Dog" />
-    
-          </div>
+    <div className="   max-md:w-screen  max-md:flex max-md:justify-start max-md:items-start ">
+    <img 
+        src="/groomingmainimage.png" 
+        className="relative z-10 w-[25vw] object-cover max-md:ml-[16vw]
+        max-md:w-[80vw] " 
+        alt="Dog" 
+    />
+</div>
         </div>
       );
 }
