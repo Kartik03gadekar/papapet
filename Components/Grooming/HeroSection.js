@@ -4,21 +4,21 @@ import React from 'react'
 const HeroSection = () => {
     return (
         <div className="   relative w-full flex items-center justify-center  h-screen px-10  overflow-hidden 
-          max-md:flex-col max-md:px-5  max-md:h-fit  ">
+          max-md:flex-col max-md:px-2  max-md:h-fit  ">
           
           {/* Left Content */}
           <div className="  flex flex-col items-start justify-start gap-3  mt-[15vw] w-[70%] h-full text-black   
-            max-md:w-full max-md:text-start  max-md:pl-[2vw] max-md:pt-[5vw]   max-md:gap-1  ">
+            max-md:w-full max-md:text-start  max-md:pl-[2vw] max-md:pt-[5vw]   max-md:gap-0  ">
     
       {/* Title */}
-      <h1 className="text-5xl font-bold leading-tight gilroy mt-3 max-md:text-3xl ">
+      <h1 className="text-5xl font-bold leading-tight gilroy mt-3 max-md:text-[7vw] ">
         Pamper Your Pet with <br />
 Top-Rated  <span className="text-[#0D9899]">Grooming</span> Services!
       </h1>
     
       {/* Description */}
       <p className="text-lg w-[80%] pt-5 max-md:w-full max-md:text-base">
-      Premium care to keep your pet looking and feeling  <br /> their best with gentle hands and expert touch.
+      Premium care to keep your pet looking and feeling   their best with gentle hands and expert touch.
       </p>
     
       {/* Button */}

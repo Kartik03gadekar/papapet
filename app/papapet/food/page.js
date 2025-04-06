@@ -15,7 +15,7 @@ const Page = () => {
           {/* Left Content */}
           <div className="flex flex-col gap-6 w-1/2 text-black  
            max-md:w-full max-md:text-start max-md:pb-[10vw] max-md:pl-[3vw] max-md:pt-[20vw]">
-            <h1 className="text-5xl font-bold leading-tight gilroy max-md:text-3xl max-md:pl-0">
+            <h1 className="text-5xl font-bold leading-tight gilroy max-md:text-[7vw] max-md:pl-0">
               We Offer the <span className="text-[#0D9899]">Best</span> <br />
               Products for your <span className="text-[#FFAD22]">Pets</span>
             </h1>

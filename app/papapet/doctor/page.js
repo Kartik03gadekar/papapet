@@ -19,7 +19,7 @@ const Page = () => {
     
  
        
-     <section className="relative w-full h-screen max-md:h-auto max-md:pb-10 text-white flex flex-col md:flex-row justify-between items-center px-8 gap-8">
+     <section className="relative w-full h-screen max-md:h-auto max-md:pb-6 text-white flex flex-col md:flex-row justify-between items-center px-8 gap-4">
   
   {/* Left Content */}
   <div className="w-full md:w-1/3 flex flex-col items-start justify-start gap-[5vw] 
@@ -34,14 +34,14 @@ const Page = () => {
   </h1>
 
   {/* Mobile Heading */}
-  <h1 className="max-md:block max-md:pb-2 hidden text-3xl leading-tight font-bold text-black text-center px-[4vw] ">
+  <h1 className="max-md:block max-md:pb-1 hidden text-3xl leading-tight font-bold text-black text-center px-[4vw] ">
     The Perfect
     <span className="text-teal-400 block pb-1 pt-1">Pet Match,</span>  
     Just a Click Away!
   </h1>
 
   {/* Button */}
-  <button className="bg-yellow-400 px-6 py-3 rounded-full text-black font-semibold shadow-lg">
+  <button className="bg-[#FFAD22] px-6 py-3 rounded-full text-black font-semibold shadow-lg">
     Book Now
   </button>
 
@@ -60,7 +60,7 @@ const Page = () => {
   {/* Right Section */}
   <div className="w-full md:w-1/3 flex flex-col items-center justify-start gap-[8vw] max-md:w-full max-md:items-center max-md:gap-[6vw]">
 
-    <div className="bg-yellow-100 p-4 rounded-lg shadow-lg flex items-center space-x-3 max-md:w-[80%]">
+    <div className="bg-[#FFAD22] p-4 rounded-lg shadow-lg flex items-center space-x-3 max-md:w-[80%]">
       <p className="text-sm font-medium text-gray-700">
         Generate your Pet’s Health Report in just a few clicks
       </p>

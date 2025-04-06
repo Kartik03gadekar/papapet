@@ -15,7 +15,7 @@ const page = () => {
         
          {/* Trusted Doctors Section */}
          <section className="py-20 px-6 text-center bg-[#F4EEE1]">
-        <h2 className="text-3xl font-semibold">Find Pet Walkers Near you</h2>
+        <h2 className="text-3xl font-semibold max-md:text-xl">Find Pet Walkers Near you</h2>
         <input
           type="text"
           placeholder="Search Top grooming services Near you..."

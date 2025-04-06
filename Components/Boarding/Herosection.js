@@ -11,13 +11,13 @@ const HeroSection = () => {
         max-md:w-full max-md:text-start  max-md:pl-[2vw] max-md:pt-[8vw]    ">
 
   {/* Title */}
-  <h1 className="text-5xl font-bold leading-tight gilroy mt-3 max-md:text-3xl "> 
+  <h1 className="text-5xl font-bold leading-tight gilroy mt-2   max-md:text-[7vw] "> 
         Safe & Cozy <span className="text-[#0D9899]">Boarding</span>  for <br /> Your Pet While You’re Away!
       </h1>
     
       {/* Description */}
       <p className="text-lg w-[80%] pt-4 max-md:w-full max-md:text-base">
-      Comfortable overnight stays with attentive  <br />  caregivers,ensuring a stress-free experience <br /> for your pet.
+      Comfortable overnight stays with attentive caregivers,ensuring a stress-free experience  for your pet.
       </p>
     
       {/* Button */}
