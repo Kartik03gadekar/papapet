@@ -15,7 +15,6 @@ const page = () => {
   useEffect(() => {
     dispatch(getFoodById(id));
   }, []);
-
   return (
     <>
       <div className="w-full">
