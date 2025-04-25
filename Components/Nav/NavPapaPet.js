@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import gsap from "gsap";
-import { checkUser } from "@/store/Action/auth";
+import { checkUser, logoutUser } from "@/store/Action/auth";
 import {
   Avatar,
   Box,
@@ -53,13 +53,13 @@ const NavPapaPet = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY === 0) {
         gsap.to(circle.current, {
-          top: "-290%",
+          top: "-300%",
           duration: 1,
         });
       }
       if (currentScrollY > prevScrollY.current && currentScrollY > 20) {
         gsap.to(circle.current, {
-          top: "-390%",
+          top: "-400%",
           // opacity: 0,
           duration: 0.5,
         });
@@ -170,14 +170,17 @@ const NavPapaPet = () => {
   </button>
 
   {/* Menu Icon */}
+  <Link  href={"/papapet/auth"} >
   <button className="text-2xl text-white font-light px-3 py-1 rounded-full transition-all duration-300 
                      hover:bg-white hover:text-[#0D9899] focus:bg-white focus:text-[#0D9899]">
     <i className="ri-menu-2-line"></i>
   </button>
+  </Link>
+
 </div>
 <div
 
-  className="w-[20vw] h-[20vw] absolute -top-[210%] left-1/2 -translate-x-1/2 
+  className="w-[18vw] h-[18vw] absolute -top-[210%] left-1/2 -translate-x-1/2 
              bg-[#FFAD22] rounded-full flex items-end justify-center gap-[2vw]  
              max-md:w-[60vw] max-md:h-[60vw] max-md:absolute max-md:translate-x-10
              max-md:-right-[120%] max-md:-top-[150%] max-md:-z-20 max-md:px-3 max-md:pb-[16vw] max-md:pr-[17vw]"
@@ -189,10 +192,12 @@ const NavPapaPet = () => {
   </button>
 
   {/* Menu Icon */}
+  <Link  href={"/papapet/auth"} >
   <button className="max-md:relative max-md:z-40  hidden max-md:flex max-md:text-2xl max-md:text-white max-md:font-light max-md:px-3 max-md:py-1 max-md:rounded-full max-md:transition-all max-md:duration-300 
                      max-md:hover:bg-white max-md:hover:text-[#0D9899] ">
     <i className="ri-menu-2-line"></i>
   </button>
+  </Link>
 </div>
 
           </>

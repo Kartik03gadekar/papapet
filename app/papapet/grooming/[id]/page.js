@@ -1,16 +1,25 @@
-"use client "
-import BookGrooming from '@/Components/Grooming/BookGrooming';
-import { useParams } from 'next/navigation';
-import React from 'react'
+"use client"; // <-- Add this line at the top
 
-const page = () => {
-      const { id } = useParams();
+import BookGrooming from '@/Components/Grooming/BookGrooming';
+import NavPapaPet from '@/Components/Nav/NavPapaPet';
+import { useParams } from 'next/navigation';
+import React from 'react';
+ 
+
+const Page = () => {
+  const { id } = useParams(); 
+  
   return (
     <div>
+      <div className='w-full h-20 bg-red-200' >       <NavPapaPet/>  </div>
 
-      <BookGrooming id={id}/>
+      <BookGrooming/>
     </div>
-  )
-}
 
-export default page
+  );
+};
+
+
+export default Page;
+
+
