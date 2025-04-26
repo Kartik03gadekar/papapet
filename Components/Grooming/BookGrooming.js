@@ -95,7 +95,8 @@ const BookGrooming = ({ id }) => {
                 <Radio value="pickup">Pickup</Radio>
               </div>
             </Radio.Group>
-          </Card>
+          </Card> 
+          
         </div>
 
         {/* Book Now Button */}
