@@ -49,7 +49,7 @@ const GroomingList = () => {
               <p className="text-gray-400 text-lg">{daycare.location}</p>
               <p className=" mt-3 mb-1">{daycare.description}</p>
                   {/* Button */}
-                  <Link href={`/papapet/grooming/${daycare.id}`}>
+                  <Link href={`/papapet/grooming/${daycare.id}`} >
                   <button   className="bg-[#FFA500] text-white  w-[10vw] px-4 py-2 rounded-lg font-medium hover:bg-[#FF8C00] max-md:w-full">
               Book
             </button>

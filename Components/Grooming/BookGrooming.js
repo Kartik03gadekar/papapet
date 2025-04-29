@@ -34,13 +34,13 @@ const BookGrooming = ({ id }) => {
     <div className="w-full px-4 py-6 md:p-8">
       {/* Top Section */}
       <div className="w-full flex flex-col gap-4">
-        <div className="w-full flex flex-col md:flex-row border-2 rounded-2xl shadow-sm gap-4 p-4">
+        <div className="w-full flex flex-col md:flex-row border-2 rounded-2xl shadow-sm gap-4 p-2">
           <img
             src="/groomimage1.png"
             className="w-full md:w-[30%] h-60 object-cover rounded-2xl"
           />
-          <div className="flex flex-col justify-center gap-2 md:mt-0">
-            <h2 className="text-xl md:text-2xl font-bold">Pawfect Spa</h2>
+          <div className="flex flex-col justify-start gap-1 md:mt-6">
+            <h2 className="text-4xl md:text-4xl font-bold">Pawfect Spa</h2>
             <p className="text-gray-600 text-sm md:text-base">
               📍 Maple Paw Avenue, Sunnybrook City • ⏱ 30 min • 📏 1km away • ⭐ 4.4
             </p>

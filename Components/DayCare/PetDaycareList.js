@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React from "react";
 
 const PetDaycareList = () => {
@@ -45,9 +46,12 @@ const PetDaycareList = () => {
               <p className="text-gray-400 text-lg">{daycare.location}</p>
               <p className=" mt-3 mb-1">{daycare.description}</p>
                   {/* Button */}
+                  <Link href={`/papapet/daycare/${daycare.id}`} >
+                 
             <button className="bg-[#FFA500] text-white  w-[10vw] px-4 py-2 rounded-lg font-medium hover:bg-[#FF8C00] max-md:w-full">
               Book
             </button>
+            </Link>
             </div>
 
         
