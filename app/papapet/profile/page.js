@@ -25,20 +25,26 @@ dispatch(getAllOfflineConsultation())
 }, [message, loading]);
   return (
     <>
-    <NavPapaPet/>
-    <div className="w-full flex  relative overflow-hidden translate-y-[10vh]" style={{height:"calc(100vh - 10vh)"}}>
-        <Sidebar setopen={setopen} />
-        {
-          open === 0 ? 
-          <Profile user={user}/>
-          :
-          open === 1 ?
-          <ConsultationHistory data={consult}/> 
-          :
-          open === 4 ?
-          <OfflineConsult data={ofconsult}/> : ""
-        }
-    </div>
+   <div className='w-full  h-2' >   <NavPapaPet/> </div>
+ 
+    <div className="w-full flex relative overflow-hidden translate-y-[10vh]" style={{ height: "calc(100vh - 15vh)" }}>
+  {/* Sidebar (fixed height, non-scrollable) */}
+  <div className="w-[250px] h-full  shadow-lg z-10">
+    <Sidebar setopen={setopen} />
+  </div>
+
+  {/* Main Content Area (scrollable) */}
+  <div className="flex-1 overflow-y-auto bg-gray-50 p-5">
+    {open === 0 ? (
+      <Profile user={user} />
+    ) : open === 1 ? (
+      <ConsultationHistory data={consult} />
+    ) : open === 4 ? (
+      <OfflineConsult data={ofconsult} />
+    ) : null}
+  </div>
+</div>
+
     </>
   )
 }

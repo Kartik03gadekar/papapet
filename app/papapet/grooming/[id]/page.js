@@ -11,7 +11,7 @@ const Page = () => {
   
   return (
     <div>
-      <div className='w-full h-20 bg-red-200' >       <NavPapaPet/>  </div>
+      <div className='w-full h-20 ' >       <NavPapaPet/>  </div>
 
       <BookGrooming/>
     </div>

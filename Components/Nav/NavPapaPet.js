@@ -81,7 +81,8 @@ const NavPapaPet = () => {
 
   return (
     <div
-      className={`  w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-16   justify-between p-5 flex-col bg-white transition-transform duration-300 max-md:px-5 ${
+      className={`  w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-16   justify-between p-5 flex-col
+        transition-transform duration-300 max-md:px-5 ${
         showNavbar ? "translate-y-0" : "-translate-y-full"
       }`}
     >
