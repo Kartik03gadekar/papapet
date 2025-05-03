@@ -38,7 +38,7 @@ const NavPapaPet = () => {
   const settings = [
     {
       name: "Profile",
-      link: "/mediensure/profile",
+      link: "/papapet/profile",
     },
   ];
   const handleCloseUserMenu = () => {
@@ -86,10 +86,14 @@ const NavPapaPet = () => {
       }`}
     >
       <div className="w-full flex items-center justify-between pb-2">
+             <Link href={"/"}> 
         <div className="flex items-center justify-center gap-2">
+     
           <img className="object-contain h-10" src="/logo.png" alt="logo" />
           <h1 className="text-2xl font-semibold text-[#0D9899]">PaPaPet</h1>
+        
         </div>
+        </Link>
         <div className="flex items-center justify-center gap-7 relative z-20 max-md:hidden">
           <Link href={"/"}>Home</Link>
           <Link href={"/"}>Services</Link>
@@ -98,55 +102,21 @@ const NavPapaPet = () => {
           <Link href={"/"}>About Us</Link>
         </div>
         {user ? (
-          <>
-           <div className="flex items-center justify-center gap-2">
-           <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <>
-                    <Link href={`${setting.link}`}>
-                      <MenuItem
-                        key={setting.name}
-                        onClick={handleCloseUserMenu}
-                      >
-                        <Typography textAlign="center">
-                          {setting.name}
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                    <MenuItem
-                      key="Logout"
-                      onClick={() => dispatch(logoutUser())}
-                    >
-                      <Typography textAlign="center">Logout</Typography>
-                    </MenuItem>
-                  </>
-                ))}
-              </Menu>
-            </Box>
-            <h1 className="font-semibold text-black">Hi, {user?.name}</h1>
-           </div>
-          </>
+       <>
+       <div className="flex items-center justify-center gap-2">
+         <Box sx={{ flexGrow: 0 }}>
+           <Tooltip title="Open profile">
+             <IconButton onClick={() => window.location.href = "/papapet/profile"} sx={{ p: 0 }}>
+               {/* Circle Avatar or Just Circle */}
+               <div className="w-10 h-10 bg-[#0D9899] rounded-full flex items-center justify-center text-white font-semibold">
+                 {user?.name?.charAt(0)} {/* Display first letter of user's name */}
+               </div>
+             </IconButton>
+           </Tooltip>
+         </Box>
+         <h1 className="font-semibold text-black">Hi, {user?.name}</h1>
+       </div>
+     </>
         ) : (
           <>
             <Link
