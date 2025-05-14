@@ -44,7 +44,7 @@ const Page = () => {
 
   return (
     <div className="w-full">
-      <div className='w-full bg-black h-[5.2vw]' > 
+      <div className='w-full  h-[5.2vw]' > 
       <NavPapaPet />
       </div>
    
@@ -68,7 +68,7 @@ const Page = () => {
       )}
    </div>
    <div className="flex flex-col items-center justify-center py-20 bg-[#F4EEE1] gap-10">
-   <div className="w-full grid grid-cols-4 px-10 max-md:grid-cols-2 max-md:w-full max-md:rounded-xl max-md:gap-4 max-md:px-4">
+   <div className="w-full grid grid-cols-4 gap-6 px-10 max-md:grid-cols-2 max-md:gap-4 max-md:px-4 max-md:rounded-xl">
           {food?.map((i, index) => (
             <ProductCard key={index} i={i} imgLink={imgLink} />
           ))}

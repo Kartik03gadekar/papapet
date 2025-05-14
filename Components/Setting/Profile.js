@@ -1,229 +1,15 @@
-// "use client";
-// import { Image } from "antd";
-// import React, { useEffect, useRef, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { toast } from "react-toastify";
-// import { Skeleton } from "@mui/material";
-// import { checkUser } from "@/store/Action/auth";
-
-// const Profile = ({user}) => {
-//   const file = useRef(null);
-//   const openfile = () => {
-//     file.current.click();
-//   };
-//   const [name, setname] = useState("");
-//   const [last, setLast] = useState("");
-//   const [email, setemail] = useState("");
-//   const [medicialName, setmedicialName] = useState("");
-//   const [gst, setgst] = useState("");
-//   const [address, setaddress] = useState("");
-//   const [city, setcity] = useState("");
-//   const [state, setstate] = useState("");
-//   const [phone, setphone] = useState("");
-//   const [pinCode, setpinCode] = useState("");
-//   const dispatch = useDispatch();
-//   const uploadImage = (e) => {
-//     const myform = new FormData();
-//     myform.set("avatar", e.target.files[0]);
-//     dispatch(uploadAvatar(myform));
-//   };
-
-//   useEffect(() => {
-//     if (user) {
-//       setname(user?.name);
-//       setLast(user?.lastname);
-//       setemail(user?.email);
-//       setphone(user?.phone);
-//       setgst(user?.gst);
-//       setmedicialName(user?.medicalName);
-//       setpinCode(user?.pinCode);
-//       setgst(user?.gst);
-//       setphone(user?.phone);
-//       setcity(user?.city);
-//       setstate(user?.state);
-//       setaddress(user?.address);
-//     }
-//   }, [user]);
-
-//   const submitData = () => {
-//     const info = {
-//       firstname: name,
-//       lastname: last,
-//       email: email,
-//       medicalName: medicialName,
-//       phone: phone,
-//       gst: gst,
-//       address: address,
-//       state: state,
-//       city: city,
-//       pinCode: pinCode,
-//     };
-//     if (
-//       name &&
-//       last &&
-//       email &&
-//       medicialName &&
-//       phone &&
-//       gst &&
-//       address &&
-//       state &&
-//       city &&
-//       pinCode
-//     ) {
-//       // dispatch(updateDetails(info));
-//     } else {
-//       toast.error("All details are required");
-//     }
-//   };
-//   return (
-//     <div className="w-full  min-h-full relative overflow-y-auto items-center justify-center flex">
-//       <div className="h-full w-[30%] flex flex-col items-center justify-center mt-10 p-10">
-//         {user?.avatar ? (
-//           <Image
-//             src={user?.avatar?.url}
-//             width={"20vw"}
-//             height={"20vw"}
-//             style={{ borderRadius: "100%" }}
-//           />
-//         ) : (
-//           <Skeleton variant="circular" width={"20vw"} height={"20vw"} />
-//         )}
-
-//         <div
-//           onClick={openfile}
-//           className="div flex items-center justify-center p-6 px-14 mt-10 gap-2 text-lg font-semibold text-blue-400 cursor-pointer border-dashed border-2 border-blue-300 bg-blue-100"
-//         >
-//           <i className="ri-upload-cloud-2-line"></i>
-//           Upload Image
-//           <input
-//             type="file"
-//             name="img"
-//             accept=".png, .jpg, .jpeg .avif"
-//             ref={file}
-//             onChange={(e) => uploadImage(e)}
-//             className="hidden"
-//           />
-//         </div>
-//       </div>
-//       <div className="h-full w-[70%] grid grid-cols-2 place-content-center place-items-center  gap-5 p-4 pt-10">
-//         <div className="flex flex-col items-start gap-4">
-//           <label className="label">
-//             <span className="label-text">Name</span>
-//           </label>
-//           <input
-//             type="text"
-//             placeholder="Type here"
-//             value={name}
-//             onChange={(e) => setname(e.target.value)}
-//             className="p-2 outline-none rounded-sm border-2 w-full max-w-xs"
-//           />
-//         </div>
-
-//         <div className="flex flex-col items-start gap-4">
-//           <label className="label">
-//             <span className="label-text">Contact</span>
-//           </label>
-//           <input
-//             type="number"
-//             placeholder="Type here"
-//             value={phone}
-//             onChange={(e) => setphone(e.target.value)}
-//             className="p-2 outline-none rounded-sm border-2 w-full max-w-xs"
-//           />
-//         </div>
-//         <div className="flex flex-col items-start gap-4">
-//           <label className="label">
-//             <span className="label-text">Email</span>
-//           </label>
-//           <input
-//             type="email"
-//             placeholder="Type here"
-//             value={email}
-//             onChange={(e) => setemail(e.target.value)}
-//             className="p-2 outline-none rounded-sm border-2 w-full max-w-xs"
-//           />
-//         </div>
-//         <div className="flex flex-col items-start gap-4">
-//           <label className="label">
-//             <span className="label-text">Age</span>
-//           </label>
-//           <input
-//             type="number"
-//             placeholder="Type here"
-//             // value={pinCode}
-//             // onChange={(e) => setpinCode(e.target.value)}
-//             className="p-2 outline-none rounded-sm border-2 w-full max-w-xs"
-//           />
-//         </div>
-//         <div className="flex flex-col items-start gap-4">
-//           <label className="label">
-//             <span className="label-text">Address</span>
-//           </label>
-//           <input
-//             type="text"
-//             placeholder="Type here"
-//             value={address}
-//             onChange={(e) => setaddress(e.target.value)}
-//             className="p-2 outline-none rounded-sm border-2 w-full max-w-xs"
-//           />
-//         </div>
-//         <div className="flex flex-col items-start gap-4">
-//           <label className="label">
-//             <span className="label-text">City</span>
-//           </label>
-//           <input
-//             type="text"
-//             placeholder="Type here"
-//             value={city}
-//             onChange={(e) => setcity(e.target.value)}
-//             className="p-2 outline-none rounded-sm border-2 w-full max-w-xs"
-//           />
-//         </div>
-//         <div className="flex flex-col items-start gap-4">
-//           <label className="label">
-//             <span className="label-text">State</span>
-//           </label>
-//           <input
-//             type="text"
-//             placeholder="Type here"
-//             value={state}
-//             onChange={(e) => setstate(e.target.value)}
-//             className="p-2 outline-none rounded-sm border-2 w-full max-w-xs"
-//           />
-//         </div>
-//         <div className="flex flex-col items-start gap-4">
-//           <label className="label">
-//             <span className="label-text">Pin Code</span>
-//           </label>
-//           <input
-//             type="text"
-//             placeholder="Type here"
-//             value={pinCode}
-//             onChange={(e) => setpinCode(e.target.value)}
-//             className="p-2 outline-none rounded-sm border-2 w-full max-w-xs"
-//           />
-//         </div>
-//         <span></span>
-//         <button
-//           onClick={submitData}
-//           className="p-4 px-14 rounded-lg bg-green-600 text-white ease-linear transition-all duration-300 hover:shadow-md hover:bg-green-700"
-//         >
-//           Update
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Profile;
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import { Skeleton } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify"; // Ensure you import toast
+import { updateDetails } from "@/store/Action/auth";
+// import { uploadAvatar, updateDetails } from "../redux/actions/user"; // Adjust path as needed
 
 const Profile = ({ user }) => {
+  console.log(user);
+  
   const file = useRef(null);
   const dispatch = useDispatch();
 
@@ -237,7 +23,6 @@ const Profile = ({ user }) => {
     zipCode: "",
     address: "",
     landmark: "",
-   
   });
 
   const openfile = () => {
@@ -266,22 +51,35 @@ const Profile = ({ user }) => {
         zipCode: user.pinCode || "",
         address: user.address || "",
         landmark: user.landmark || "",
-        firstName: user.name || "",
       });
     }
   }, [user]);
 
   const submitData = () => {
-    const { email, phoneNumber, address, state, city, zipCode } = formData;
-    if (email && phoneNumber && address && state && zipCode) {
+    const {
+      email,
+      secondaryEmail,
+      phoneNumber,
+      address,
+      state,
+      country,
+      zipCode,
+      landmark,
+    } = formData;
+
+    if (email && phoneNumber && zipCode) {
       const info = {
         email,
+        secondaryEmail,
         phone: phoneNumber,
-        address,
+    
         state,
+        country,
         zipCode,
+        
       };
-      // dispatch(updateDetails(info));
+      dispatch(updateDetails(info));
+      toast.success("Profile updated successfully!");
     } else {
       toast.error("All details are required");
     }
@@ -319,7 +117,7 @@ const Profile = ({ user }) => {
             </div>
           </div>
 
-          <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex-1 grid grid-cols md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium">Full Name</label>
               <input
@@ -404,98 +202,88 @@ const Profile = ({ user }) => {
         <div className="grid grid-cols-1 gap-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="firstName">Full Name</label>
+              <label className="block text-sm font-medium mb-1">Full Name</label>
               <input
-                id="firstName"
-                name="firstName"
-                value={formData.firstName}
+                name="fullName"
+                value={formData.fullName}
                 onChange={handleChange}
                 placeholder="Full Name"
                 className="border rounded px-3 py-2 w-full"
               />
             </div>
-
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="Email">Email</label>
+              <label className="block text-sm font-medium mb-1">Secondary Email</label>
               <input
-                id="secondaryEmail"
                 name="secondaryEmail"
-                value={formData.email}
+                value={formData.secondaryEmail}
                 onChange={handleChange}
-                placeholder="Email"
+                placeholder="Secondary Email"
                 className="border rounded px-3 py-2 w-full"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div> <label className="block text-sm font-medium mb-1" htmlFor="phoneNumber">Phone Number</label>
-            <input
-              id="phoneNumber"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              placeholder="Phone Number"
-              className="border rounded px-3 py-2 w-full"
-            /></div>
-            
-                 <div> <label className="block text-sm font-medium mb-1" htmlFor="secondaryEmail">Secondary Email</label>
+            <div>
+              <label className="block text-sm font-medium mb-1">Phone Number</label>
               <input
-                id="secondaryEmail"
-                name="secondaryEmail"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                placeholder="Phone Number"
+                className="border rounded px-3 py-2 w-full"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Email</label>
+              <input
+                name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Email"
                 className="border rounded px-3 py-2 w-full"
-              /></div>
-              
-           
+              />
+            </div>
           </div>
 
-          <div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="country">Country</label>
-                <select
-                  id="country"
-                  name="country"
-                  value={formData.country}
-                  onChange={handleChange}
-                  className="border rounded px-3 py-2 w-full"
-                >
-                  <option>Bangladesh</option>
-                  <option>India</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="state">State</label>
-                <input
-                  id="state"
-                  name="state"
-                  value={formData.state}
-                  onChange={handleChange}
-                  placeholder="State"
-                  className="border rounded px-3 py-2 w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="zipCode">Zip Code</label>
-                <input
-                  id="zipCode"
-                  name="zipCode"
-                  value={formData.zipCode}
-                  onChange={handleChange}
-                  placeholder="Zip Code"
-                  className="border rounded px-3 py-2 w-full"
-                />
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Country</label>
+              <select
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                className="border rounded px-3 py-2 w-full"
+              >
+                <option>Bangladesh</option>
+                <option>India</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">State</label>
+              <input
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+                placeholder="State"
+                className="border rounded px-3 py-2 w-full"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Zip Code</label>
+              <input
+                name="zipCode"
+                value={formData.zipCode}
+                onChange={handleChange}
+                placeholder="Zip Code"
+                className="border rounded px-3 py-2 w-full"
+              />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="address">Address</label>
+            <label className="block text-sm font-medium mb-1">Address</label>
             <input
-              id="address"
               name="address"
               value={formData.address}
               onChange={handleChange}
@@ -505,9 +293,8 @@ const Profile = ({ user }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1" htmlFor="landmark">Landmark (Optional)</label>
+            <label className="block text-sm font-medium mb-1">Landmark (Optional)</label>
             <input
-              id="landmark"
               name="landmark"
               value={formData.landmark}
               onChange={handleChange}
@@ -517,7 +304,10 @@ const Profile = ({ user }) => {
           </div>
         </div>
 
-        <button className="mt-6 bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600">
+        <button
+          onClick={submitData}
+          className="mt-6 bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600"
+        >
           Save Changes
         </button>
       </section>

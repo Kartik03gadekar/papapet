@@ -38,7 +38,7 @@ const NavPapaPet = () => {
   const settings = [
     {
       name: "Profile",
-      link: "/papapet/profile",
+      link: "/papapet/dashboard",
     },
   ];
   const handleCloseUserMenu = () => {
@@ -107,7 +107,7 @@ const NavPapaPet = () => {
        <div className="flex items-center justify-center gap-2">
          <Box sx={{ flexGrow: 0 }}>
            <Tooltip title="Open profile">
-             <IconButton onClick={() => window.location.href = "/papapet/profile"} sx={{ p: 0 }}>
+             <IconButton onClick={() => window.location.href = "/papapet/dashboard"} sx={{ p: 0 }}>
                {/* Circle Avatar or Just Circle */}
                <div className="w-10 h-10 bg-[#0D9899] rounded-full flex items-center justify-center text-white font-semibold">
                  {user?.name?.charAt(0)} {/* Display first letter of user's name */}
