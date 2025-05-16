@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getHomePage } from "@/store/Action/others";
 import { io } from "socket.io-client";
+import PhantomConnect from "@/Components/WalletProvider";
 let socket;
 const getSocket = () => {   
   if (!socket) {

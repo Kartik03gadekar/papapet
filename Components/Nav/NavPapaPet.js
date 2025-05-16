@@ -13,6 +13,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import PhantomConnect from "../WalletProvider";
 
 const NavPapaPet = () => {
   const [showNavbar, setShowNavbar] = useState(true);
@@ -46,8 +47,8 @@ const NavPapaPet = () => {
   };
   useEffect(() => {
     dispatch(checkUser());
-  }, []); 
-  
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -97,58 +98,65 @@ const NavPapaPet = () => {
           <Link href={"/"}>Blogs</Link>
           <Link href={"/"}>About Us</Link>
         </div>
+
         {user ? (
           <>
-           <div className="flex items-center justify-center gap-2">
-           <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <>
-                    <Link href={`${setting.link}`}>
+            <div className="flex items-center justify-center gap-2">
+              
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <>
+                      <Link href={`${setting.link}`}>
+                        <MenuItem
+                          key={setting.name}
+                          onClick={handleCloseUserMenu}
+                        >
+                          <Typography textAlign="center">
+                            {setting.name}
+                          </Typography>
+                        </MenuItem>
+                      </Link>
                       <MenuItem
-                        key={setting.name}
-                        onClick={handleCloseUserMenu}
+                        key="Logout"
+                        onClick={() => dispatch(logoutUser())}
                       >
-                        <Typography textAlign="center">
-                          {setting.name}
-                        </Typography>
+                        <Typography textAlign="center">Logout</Typography>
                       </MenuItem>
-                    </Link>
-                    <MenuItem
-                      key="Logout"
-                      onClick={() => dispatch(logoutUser())}
-                    >
-                      <Typography textAlign="center">Logout</Typography>
-                    </MenuItem>
-                  </>
-                ))}
-              </Menu>
-            </Box>
-            <h1 className="font-semibold text-black">Hi, {user?.name}</h1>
-           </div>
+                    </>
+                  ))}
+                </Menu>
+              </Box>
+              <h1 className="font-semibold text-black">Hi, {user?.name}</h1>
+            </div>
           </>
         ) : (
           <>
+          <div className="flex">
+
             <Link
               href={"/papapet/auth"}
               className="max-md:hidden text-lg flex items-center justify-center gap-2"
@@ -156,45 +164,54 @@ const NavPapaPet = () => {
               Sign in
               <i className="ri-arrow-right-circle-fill text-lg"></i>
             </Link>
+            <PhantomConnect/>
+          </div>
+          
             <div
-  ref={circle}
-  className="w-[20vw] h-[20vw] absolute -top-[210%] left-1/2 -translate-x-1/2 
+              ref={circle}
+              className="w-[20vw] h-[20vw] absolute -top-[210%] left-1/2 -translate-x-1/2 
              bg-[#FFAD22] rounded-full flex items-center justify-center gap-[2vw] 
            
             "
->
-  {/* Search Icon */}
-  <button className="text-2xl text-white font-light px-3 py-1 rounded-full transition-all duration-300 
-                     hover:bg-white hover:text-[#0D9899] focus:bg-white focus:text-[#0D9899]">
-    <i className="ri-search-line"></i>
-  </button>
+            >
+              {/* Search Icon */}
+              <button
+                className="text-2xl text-white font-light px-3 py-1 rounded-full transition-all duration-300 
+                     hover:bg-white hover:text-[#0D9899] focus:bg-white focus:text-[#0D9899]"
+              >
+                <i className="ri-search-line"></i>
+              </button>
 
-  {/* Menu Icon */}
-  <button className="text-2xl text-white font-light px-3 py-1 rounded-full transition-all duration-300 
-                     hover:bg-white hover:text-[#0D9899] focus:bg-white focus:text-[#0D9899]">
-    <i className="ri-menu-2-line"></i>
-  </button>
-</div>
-<div
-
-  className="w-[20vw] h-[20vw] absolute -top-[210%] left-1/2 -translate-x-1/2 
+              {/* Menu Icon */}
+              <button
+                className="text-2xl text-white font-light px-3 py-1 rounded-full transition-all duration-300 
+                     hover:bg-white hover:text-[#0D9899] focus:bg-white focus:text-[#0D9899]"
+              >
+                <i className="ri-menu-2-line"></i>
+              </button>
+            </div>
+            <div
+              className="w-[20vw] h-[20vw] absolute -top-[210%] left-1/2 -translate-x-1/2 
              bg-[#FFAD22] rounded-full flex items-end justify-center gap-[2vw]  
              max-md:w-[60vw] max-md:h-[60vw] max-md:absolute max-md:translate-x-10
              max-md:-right-[120%] max-md:-top-[150%] max-md:-z-20 max-md:px-3 max-md:pb-[16vw] max-md:pr-[17vw]"
->
-  {/* Search Icon */}
-  <button className="max-md:relative max-md:z-40   hidden max-md:flex max-md:text-2xl max-md:text-white max-md:font-light max-md:px-3 max-md:py-1 max-md:rounded-full max-md:transition-all max-md:duration-300 
-                     max-md:hover:bg-white max-md:hover:text-[#0D9899] ">
-    <i className="ri-search-line"></i>
-  </button>
+            >
+              {/* Search Icon */}
+              <button
+                className="max-md:relative max-md:z-40   hidden max-md:flex max-md:text-2xl max-md:text-white max-md:font-light max-md:px-3 max-md:py-1 max-md:rounded-full max-md:transition-all max-md:duration-300 
+                     max-md:hover:bg-white max-md:hover:text-[#0D9899] "
+              >
+                <i className="ri-search-line"></i>
+              </button>
 
-  {/* Menu Icon */}
-  <button className="max-md:relative max-md:z-40  hidden max-md:flex max-md:text-2xl max-md:text-white max-md:font-light max-md:px-3 max-md:py-1 max-md:rounded-full max-md:transition-all max-md:duration-300 
-                     max-md:hover:bg-white max-md:hover:text-[#0D9899] ">
-    <i className="ri-menu-2-line"></i>
-  </button>
-</div>
-
+              {/* Menu Icon */}
+              <button
+                className="max-md:relative max-md:z-40  hidden max-md:flex max-md:text-2xl max-md:text-white max-md:font-light max-md:px-3 max-md:py-1 max-md:rounded-full max-md:transition-all max-md:duration-300 
+                     max-md:hover:bg-white max-md:hover:text-[#0D9899] "
+              >
+                <i className="ri-menu-2-line"></i>
+              </button>
+            </div>
           </>
         )}
       </div>
