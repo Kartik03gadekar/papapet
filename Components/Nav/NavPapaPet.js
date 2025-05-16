@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import gsap from "gsap";
-import { checkUser } from "@/store/Action/auth";
+import { checkUser, logoutUser } from "@/store/Action/auth";
 import {
   Avatar,
   Box,
@@ -39,7 +39,7 @@ const NavPapaPet = () => {
   const settings = [
     {
       name: "Profile",
-      link: "/mediensure/profile",
+      link: "/papapet/dashboard",
     },
   ];
   const handleCloseUserMenu = () => {
@@ -54,13 +54,13 @@ const NavPapaPet = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY === 0) {
         gsap.to(circle.current, {
-          top: "-290%",
+          top: "-300%",
           duration: 1,
         });
       }
       if (currentScrollY > prevScrollY.current && currentScrollY > 20) {
         gsap.to(circle.current, {
-          top: "-390%",
+          top: "-400%",
           // opacity: 0,
           duration: 0.5,
         });
@@ -82,15 +82,20 @@ const NavPapaPet = () => {
 
   return (
     <div
-      className={`  w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-16   justify-between p-5 flex-col bg-white transition-transform duration-300 max-md:px-5 ${
+      className={`  w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-16   justify-between p-5 flex-col
+        transition-transform duration-300 max-md:px-5 ${
         showNavbar ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       <div className="w-full flex items-center justify-between pb-2">
+             <Link href={"/"}> 
         <div className="flex items-center justify-center gap-2">
+     
           <img className="object-contain h-10" src="/logo.png" alt="logo" />
           <h1 className="text-2xl font-semibold text-[#0D9899]">PaPaPet</h1>
+        
         </div>
+        </Link>
         <div className="flex items-center justify-center gap-7 relative z-20 max-md:hidden">
           <Link href={"/"}>Home</Link>
           <Link href={"/"}>Services</Link>

@@ -212,11 +212,11 @@ const FoodContainer = () => {
         <h1 className="text-4xl font-semibold max-md:text-3xl ">
           Explore our all Products
         </h1>
-        <div className="w-full grid grid-cols-4 px-10 max-md:grid-cols-2 max-md:w-full max-md:rounded-xl max-md:gap-4 max-md:px-4">
-          {food?.map((i, index) => (
-            <ProductCard key={index} i={i} imgLink={imgLink} />
-          ))}
-        </div>
+        <div className="w-full grid grid-cols-4 gap-6 px-10 max-md:grid-cols-2 max-md:gap-4 max-md:px-4 max-md:rounded-xl">
+  {food?.map((i, index) => (
+    <ProductCard key={index} i={i} imgLink={imgLink} />
+  ))}
+</div>
       </div>
       {/* <h1 className="text-5xl font-bold font-[poppins]">Trending Food</h1> */}
       {/* {

@@ -4,6 +4,7 @@ import ProductImg from "./ProductImg";
 import ProductDetail from "./ProductDetail";
 
 const ProductView = ({data,imgLink,loading}) => {
+ 
 
  
   return (

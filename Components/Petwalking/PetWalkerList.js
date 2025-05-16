@@ -22,7 +22,7 @@ const PetwalkerList = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-center text-2xl font-bold mb-4">Best Pet Walkers Connected With Us</h2>
+      <h2 className="text-center text-2xl  max-md:text-xl font-bold mb-4">Best Pet Walkers Connected With Us</h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 px-6">
         {walkers.map((walker, index) => (
           <PetWalkerCard key={index} {...walker} />

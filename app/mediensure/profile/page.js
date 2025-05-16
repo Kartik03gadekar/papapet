@@ -1,5 +1,6 @@
 "use client";
 import Nav from '@/Components/Nav/Nav';
+import NavPapaPet from '@/Components/Nav/NavPapaPet';
 import ConsultationHistory from '@/Components/Setting/ConsultationHistory';
 import OfflineConsult from '@/Components/Setting/OfflineConsult';
 import Profile from '@/Components/Setting/Profile';
@@ -24,7 +25,7 @@ dispatch(getAllOfflineConsultation())
 }, [message, loading]);
   return (
     <>
-    <Nav/>
+    <NavPapaPet/>
     <div className="w-full flex  relative overflow-hidden translate-y-[10vh]" style={{height:"calc(100vh - 10vh)"}}>
         <Sidebar setopen={setopen} />
         {

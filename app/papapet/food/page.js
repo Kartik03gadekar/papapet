@@ -10,12 +10,12 @@ const Page = () => {
       <NavPapaPet />
       <div className=" relative  ">
         <div className="  flex items-center justify-between h-screen px-10 py-[12vw] pl-[4vw]  
-        max-md:flex-col max-md:px-5 max-md:gap-[4vw] max-md:h-auto max-md:py-20">
+        max-md:flex-col max-md:px-5 max-md:gap-[4vw] max-md:h-fit max-md:pt-[8vw]">
           
           {/* Left Content */}
           <div className="flex flex-col gap-6 w-1/2 text-black  
-           max-md:w-full max-md:text-start max-md:pb-[10vw] max-md:pl-[3vw] max-md:pt-[22vw]">
-            <h1 className="text-5xl font-bold leading-tight gilroy max-md:text-3xl max-md:pl-0">
+           max-md:w-full max-md:text-start max-md:pb-[10vw] max-md:pl-[3vw] max-md:pt-[20vw]">
+            <h1 className="text-5xl font-bold leading-tight gilroy max-md:text-[7vw] max-md:pl-0">
               We Offer the <span className="text-[#0D9899]">Best</span> <br />
               Products for your <span className="text-[#FFAD22]">Pets</span>
             </h1>
@@ -39,10 +39,10 @@ const Page = () => {
 
 
           
-          <div className="w-1/2 flex justify-end max-md:w-full max-md:justify-center max-md:mt-4 max-md:mr-8">
+          <div className="w-1/2 flex justify-end max-md:w-full max-md:justify-center max-md:mr-8">
             <img
               src="/foodBg.png"
-              className="w-[40vw] object-cover max-md:w-[80vw]"
+              className="w-[40vw] object-cover max-md:w-[90vw]"
               alt="Dog"
             />
           </div>

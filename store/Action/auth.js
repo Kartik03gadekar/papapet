@@ -1,5 +1,6 @@
 import axios from "@/Axios/axios.js";
-import { fail, getConsultation, getNetworkFail, getNetworkRequest, getNetworkSuccess, getOffConsultation, isUser, isUserFail, isUserRequest, request, success } from "../Reducer/auth";
+import { fail, getConsultation, getNetworkFail, getNetworkRequest, getNetworkSuccess, getOffConsultation, isUser, isUserFail, isUserRequest,
+   request, success } from "../Reducer/auth";
 
 
 export const checkUser = ()=>async(dispatch)=>{
@@ -87,5 +88,19 @@ export const bookConsultationNetwork = (id,info)=>async(dispatch)=>{
     
   } catch (error) {
     dispatch(fail(error.response.data))
+  }
+}
+
+
+export const updateDetails = (info)=>async(dispatch)=>{
+  dispatch(isUserRequest())
+console.log(info);
+  try {
+
+    const {data} = await axios.post("/user/profile/update",info);
+    dispatch(isUser(data))
+    
+  } catch (error) {
+    dispatch(isUserFail(error.response.data))
   }
 }

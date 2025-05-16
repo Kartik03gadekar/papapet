@@ -55,15 +55,15 @@ const Nav = () => {
           <img className="h-7 mt-4" src="/menu.png" alt="" />
           <Link href={"/"} className="flex items-center justify-center gap-2">
             <img className="object-contain h-10 " src="/logo.png" alt="" />
-            <h1 className="font-[monument]">PaPaPet</h1>
+            <h1 className="font-[monument] text-[#0D9899]">PaPaPet</h1>
           </Link>
         </div>
         <div className=" flex pl-24 items-center gap-2   max-md:hidden  ">
           <Link href={"/"} className="flex items-center justify-center gap-2">
-            <img className="object-contain h-7 " src="/logo.png" alt="" />
-            <h1 className="font-[poppins] font-semibold">PaPaPet</h1>
+            <img className="object-contain h-10 " src="/logo.png" alt="" />
+            <h1 className="font-[poppins] font-semibold text-[1.2vw] text-[#0D9899]">PaPaPet</h1>
           </Link>
-          <Link className="" href={"/mediensure/consultdr"}>
+          {/* <Link className="" href={"/mediensure/consultdr"}>
             {" "}
             Book Consultation
           </Link>
@@ -74,17 +74,17 @@ const Nav = () => {
           <Link className="" href={"/mediensure/ivfnetwork"}>
             {" "}
             Ivf Network
-          </Link>
+          </Link> */}
         </div>
         <div className="flex  items-center justify-center pt-2 pr-14 gap-5 max-md:hidden">
-          <Link href={"mediensure/demo2"} className="flex items-center ">
+          {/* <Link href={"mediensure/demo2"} className="flex items-center ">
             For Corporate
             <img className="h-5" src="/down.png" alt="" />
           </Link>
           <Link href={"/mediensure/demo"} className=" flex items-center ">
             For Providers
             <img className="h-5" src="/down.png" alt="" />
-          </Link>
+          </Link> */}
           {user ? (
             <>
               <Box sx={{ flexGrow: 0 }}>

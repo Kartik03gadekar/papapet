@@ -1,83 +1,106 @@
-"use client";
-import React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import { Circle, Remove } from "@mui/icons-material";
-import { useState } from "react";
-// import { LeadData, consultData, dentalData, homeData } from "./SidebarData";
-const Sidebar = ({ setopen }) => {
-  const params = useParams();
-  const [home, sethome] = useState(10);
+'use client';
+import { useState } from 'react';
+import { FaUser, FaHistory, FaTruck } from 'react-icons/fa';
+import { FiShoppingCart, FiLogOut } from 'react-icons/fi';
+
+const navItems = [
+  { name: 'Profile', icon: FaUser, index: 0 },
+  { name: 'Order History', icon: FaHistory, index: 1 },
+  { name: 'Track Order', icon: FaTruck, index: 2 },
+  { name: 'Shopping Cart', icon: FiShoppingCart, index: 3 },
+  { name: 'LogOut', icon: FiLogOut, index: 4 },
+];
+
+export default function Sidebar({ setopen, activeIndex }) {
+  const [openSidebar, setOpenSidebar] = useState(false);
+
+  const handleClick = (index, name) => {
+    if (name === 'LogOut') {
+      console.log('User logged out');
+      return;
+    }
+    setopen(index);
+    setOpenSidebar(false); // Close on mobile
+  };
 
   return (
     <>
+      {/* Menu Toggle Button (Only for Mobile, below Navbar) */}
+      <div className="md:hidden px-4 py-2 bg-white shadow z-20">
+        <button
+          onClick={() => setOpenSidebar(true)}
+          className="text-xl text-gray-700"
+        >
+          ☰ Menu
+        </button>
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {openSidebar && (
+        <div
+          onClick={() => setOpenSidebar(false)}
+          className="fixed inset-0 bg-black bg-opacity-40 z-40 md:hidden"
+        />
+      )}
+
+      {/* Sidebar for Mobile */}
       <div
-        className="w-[15vw] h-full  relative overflow-hidden  shrink-0 flex flex-col  min-h-full items-start"
-        style={{ backgroundColor: "hsl(226.03deg 36.32% 39.41%)" }}
+        className={`fixed top-0 left-0 h-full w-64 bg-white border-r shadow-lg z-50 transition-transform duration-300
+        ${openSidebar ? 'translate-x-0' : '-translate-x-full'} md:hidden`}
       >
-        <div
-          onClick={() => setopen(0)}
-          className="w-full cursor-pointer flex items-center justify-start p-4 gap-2 text-lg text-white border-b border-black"
-        >
-          <i className="ri-user-settings-fill"></i>
-          <h3>Profile</h3>
+        <div className="flex justify-between items-center p-4 border-b">
+          <h2 className="text-lg font-semibold">Menu</h2>
+          <button
+            onClick={() => setOpenSidebar(false)}
+            className="text-gray-600 text-2xl"
+          >
+            ✕
+          </button>
         </div>
-        <div
-          onClick={() => setopen(1)}
-          className="w-full cursor-pointer flex-shrink-0 flex items-center justify-start p-4 gap-2 text-lg text-white border-b border-black"
-        >
-          <img
-            src="/consultation.png"
-            className="h-7 w-6 object-contain"
-            alt=""
-          />
-          <h3 className="whitespace-nowrap">Consultations history</h3>
-        </div>
-        <div
-          onClick={() => setopen(4)}
-          className="w-full cursor-pointer flex-shrink-0 flex items-center justify-start p-4 gap-2 text-lg text-white border-b border-black"
-        >
-          <img
-            src="/consultation.png"
-            className="h-7 w-6 object-contain"
-            alt=""
-          />
-          <h3 className="whitespace-nowrap">Offline Consultations</h3>
-        </div>
-        {/* <div
-          onClick={() => setopen(2)}
-          className="w-full cursor-pointer flex items-center justify-start p-4 gap-2 text-lg text-white border-b border-black"
-        >
-          <img
-            src="/prescription.png"
-            className="h-7 w-6 object-contain"
-            alt=""
-          />
-          <h3>Prescriptions history</h3>
-        </div> */}
-        <div
-          onClick={() => setopen(3)}
-          className="w-full cursor-pointer flex items-center justify-start p-4 gap-2 text-lg text-white border-b border-black"
-        >
-          <img
-            src="/prescription.png"
-            className="h-7 w-6 object-contain"
-            alt=""
-          />
-          <h3>Feedback</h3>
-        </div>
-        <div className="w-full cursor-pointer flex items-center justify-start p-4 gap-2 text-lg text-white border-b border-black">
-          <i className="ri-wallet-3-line"></i>
-          <h3>Payment history</h3>
-        </div>
+
+        <nav className="px-4 py-2">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isLogout = item.name === 'LogOut';
+            const isActive = activeIndex === item.index && !isLogout;
+
+            return (
+              <button
+                key={item.name}
+                onClick={() => handleClick(item.index, item.name)}
+                className={`flex w-full items-center gap-3 px-4 py-2 my-1 rounded-md transition
+                  ${isActive ? 'bg-orange-500 text-white' : 'text-gray-700 hover:bg-orange-200'}`}
+              >
+                <Icon className="text-lg" />
+                <span className="text-sm font-medium">{item.name}</span>
+              </button>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block w-[13%]  h-[calc(100vh-10vh)] fixed top-[10vh] left-0">
+        <nav className="px-4 py-2">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isLogout = item.name === 'LogOut';
+            const isActive = activeIndex === item.index && !isLogout;
+
+            return (
+              <button
+                key={item.name}
+                onClick={() => handleClick(item.index, item.name)}
+                className={`flex w-full items-center gap-3 px-4 py-2 my-1 rounded-md transition
+                  ${isActive ? 'bg-orange-500 text-white' : 'text-gray-700 hover:bg-orange-200'}`}
+              >
+                <Icon className="text-lg" />
+                <span className="text-sm font-medium">{item.name}</span>
+              </button>
+            );
+          })}
+        </nav>
       </div>
     </>
   );
-};
-
-export default Sidebar;
+}

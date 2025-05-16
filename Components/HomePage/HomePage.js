@@ -17,7 +17,7 @@ const HomePage = () => {
         Premium dog food, veterinary care, pet grooming, accessories, pet walking & daycare. Expert-approved pet essentials for a happy, healthy pet!
         </p>
         <div className="flex items-center gap-4  max-md:mt-[0.4vw] pt-[2vw]">
-          <button className="lin rounded-full font-semibold text-lg  max-md:text-[3vw] ">
+        <button className="linear rounded-full font-semibold text-lg px-6 py-2 max-md:text-sm max-md:px-[4vw] max-md:py-[2vw]">
             Our services{" "}
             <i className="ri-arrow-right-s-line bg-white rounded-full"></i>
           </button>

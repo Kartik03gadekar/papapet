@@ -1,10 +1,12 @@
 "use client "
+import Link from 'next/link';
 import React from 'react'
 
 const GroomingList = () => {
   // Dummy Data
   const groomlist =[
     {
+      "id":"1",
       "name": "Pawfect Spa ",
       "address": "Maple Paw Avenue, Sunnybrook City",
       "description": "Professional grooming services to keep your pet clean, stylish, and feeling their absolute best",
@@ -12,6 +14,7 @@ const GroomingList = () => {
       "image":"/groomimage1.png"
     },
     {
+      "id":"2",
       "name": "Fluff & Shine Grooming ",
       "address": "432 Barkshire Lane, Pawsville",
       "description": "Gentle care with expert trimming, bathing, and styling for a fresh, healthy, and happy pet.",
@@ -19,6 +22,7 @@ const GroomingList = () => {
        "image":"/groomimage2.png"
     },
     {
+      "id":"3",
       "name": "The Grooming Den ",
       "address": "Whisker Way, Greenfield Heights",
       "description": "A relaxing grooming experience with premium treatments to maintain your pet’s hygiene and beauty.",
@@ -45,9 +49,12 @@ const GroomingList = () => {
               <p className="text-gray-400 text-lg">{daycare.location}</p>
               <p className=" mt-3 mb-1">{daycare.description}</p>
                   {/* Button */}
-            <button className="bg-[#FFA500] text-white  w-[10vw] px-4 py-2 rounded-lg font-medium hover:bg-[#FF8C00] max-md:w-full">
+                  <Link href={`/papapet/grooming/${daycare.id}`} >
+                  <button   className="bg-[#FFA500] text-white  w-[10vw] px-4 py-2 rounded-lg font-medium hover:bg-[#FF8C00] max-md:w-full">
               Book
             </button>
+                  </Link>
+    
             </div>
 
         
