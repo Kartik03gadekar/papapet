@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TrackOrder = ({user}) => {
-  // console.log(user.name);
+  console.log(user);
   const order = {
 
     id: '96459761',
@@ -147,13 +147,13 @@ const TrackOrder = ({user}) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm text-gray-600">
         <div className="border rounded-md p-4">
           <h4 className="font-semibold text-gray-800 mb-1">Billing Address</h4>
-          <p>{user.name}<br />{user.address}</p>
-          <p className="mt-1 text-xs">Email: {user.email}</p>
+          <p>{user?.name}<br />{user?.address}</p>
+          <p className="mt-1 text-xs">Email: {user?.email}</p>
         </div>
         <div className="border rounded-md p-4">
           <h4 className="font-semibold text-gray-800 mb-1">Shipping Address</h4>
-          <p>{user.name}<br />{user.address}</p>
-          <p className="mt-1 text-xs">Email: {user.email}</p>
+          <p>{user?.name}<br />{user?.address}</p>
+          <p className="mt-1 text-xs">Email: {user?.email}</p>
         </div>
         <div className="border rounded-md p-4">
           <h4 className="font-semibold text-gray-800 mb-1">Order Notes</h4>

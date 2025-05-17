@@ -3,15 +3,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Skeleton } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify"; // Ensure you import toast
+import { toast } from "react-toastify";
 import { updateDetails } from "@/store/Action/auth";
-// import { uploadAvatar, updateDetails } from "../redux/actions/user"; // Adjust path as needed
 
 const Profile = ({ user }) => {
   console.log(user);
   
   const file = useRef(null);
   const dispatch = useDispatch();
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -20,7 +21,7 @@ const Profile = ({ user }) => {
     phoneNumber: "",
     country: "",
     state: "",
-    zipCode: "",
+    zipcode: "",
     address: "",
     landmark: "",
   });
@@ -32,7 +33,7 @@ const Profile = ({ user }) => {
   const uploadImage = (e) => {
     const myform = new FormData();
     myform.set("avatar", e.target.files[0]);
-    dispatch(uploadAvatar(myform));
+    dispatch(uploadAvatar(myform)); // You must ensure `uploadAvatar` is properly imported
   };
 
   const handleChange = (e) => {
@@ -48,12 +49,12 @@ const Profile = ({ user }) => {
         phoneNumber: user.phone || "",
         country: user.country || "",
         state: user.state || "",
-        zipCode: user.pinCode || "",
+        zipcode: user.zipcode || "",
         address: user.address || "",
         landmark: user.landmark || "",
       });
     }
-  }, [user]);
+  }, [user, dispatch]);
 
   const submitData = () => {
     const {
@@ -63,23 +64,24 @@ const Profile = ({ user }) => {
       address,
       state,
       country,
-      zipCode,
+      zipcode,
       landmark,
     } = formData;
 
-    if (email && phoneNumber && zipCode) {
+    if (email && phoneNumber) {
       const info = {
         email,
         secondaryEmail,
         phone: phoneNumber,
-    
+        address,
         state,
         country,
-        zipCode,
-        
+        zipcode,
+        landmark,
       };
       dispatch(updateDetails(info));
       toast.success("Profile updated successfully!");
+      setIsEditing(false); // turn off edit mode
     } else {
       toast.error("All details are required");
     }
@@ -124,6 +126,7 @@ const Profile = ({ user }) => {
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
+                disabled={!isEditing}
                 className="mt-1 w-full border rounded px-3 py-2"
               />
             </div>
@@ -134,6 +137,7 @@ const Profile = ({ user }) => {
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
+                disabled={!isEditing}
                 className="mt-1 w-full border rounded px-3 py-2"
               />
             </div>
@@ -144,6 +148,7 @@ const Profile = ({ user }) => {
                 type="email"
                 value={formData.secondaryEmail}
                 onChange={handleChange}
+                disabled={!isEditing}
                 className="mt-1 w-full border rounded px-3 py-2"
               />
             </div>
@@ -154,6 +159,7 @@ const Profile = ({ user }) => {
                 type="tel"
                 value={formData.phoneNumber}
                 onChange={handleChange}
+                disabled={!isEditing}
                 className="mt-1 w-full border rounded px-3 py-2"
               />
             </div>
@@ -165,6 +171,7 @@ const Profile = ({ user }) => {
                   name="country"
                   value={formData.country}
                   onChange={handleChange}
+                  disabled={!isEditing}
                   className="border rounded px-3 py-2 w-full"
                 >
                   <option>Bangladesh</option>
@@ -174,13 +181,15 @@ const Profile = ({ user }) => {
                   name="state"
                   value={formData.state}
                   onChange={handleChange}
+                  disabled={!isEditing}
                   placeholder="State"
                   className="border rounded px-3 py-2 w-full"
                 />
                 <input
-                  name="zipCode"
-                  value={formData.zipCode}
+                  name="zipcode"
+                  value={formData.zipcode}
                   onChange={handleChange}
+                  disabled={!isEditing}
                   placeholder="Pin Code"
                   className="border rounded px-3 py-2 w-full"
                 />
@@ -188,13 +197,6 @@ const Profile = ({ user }) => {
             </div>
           </div>
         </div>
-
-        <button
-          onClick={submitData}
-          className="mt-6 bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600"
-        >
-          Save Changes
-        </button>
       </section>
 
       <section className="w-full border rounded-md shadow-sm bg-white px-6 py-4">
@@ -207,6 +209,7 @@ const Profile = ({ user }) => {
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
+                disabled={!isEditing}
                 placeholder="Full Name"
                 className="border rounded px-3 py-2 w-full"
               />
@@ -217,6 +220,7 @@ const Profile = ({ user }) => {
                 name="secondaryEmail"
                 value={formData.secondaryEmail}
                 onChange={handleChange}
+                disabled={!isEditing}
                 placeholder="Secondary Email"
                 className="border rounded px-3 py-2 w-full"
               />
@@ -230,6 +234,7 @@ const Profile = ({ user }) => {
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
+                disabled={!isEditing}
                 placeholder="Phone Number"
                 className="border rounded px-3 py-2 w-full"
               />
@@ -240,6 +245,7 @@ const Profile = ({ user }) => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                disabled={!isEditing}
                 placeholder="Email"
                 className="border rounded px-3 py-2 w-full"
               />
@@ -253,6 +259,7 @@ const Profile = ({ user }) => {
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
+                disabled={!isEditing}
                 className="border rounded px-3 py-2 w-full"
               >
                 <option>Bangladesh</option>
@@ -265,6 +272,7 @@ const Profile = ({ user }) => {
                 name="state"
                 value={formData.state}
                 onChange={handleChange}
+                disabled={!isEditing}
                 placeholder="State"
                 className="border rounded px-3 py-2 w-full"
               />
@@ -272,9 +280,10 @@ const Profile = ({ user }) => {
             <div>
               <label className="block text-sm font-medium mb-1">Zip Code</label>
               <input
-                name="zipCode"
-                value={formData.zipCode}
+                name="zipcode"
+                value={formData.zipcode}
                 onChange={handleChange}
+                disabled={!isEditing}
                 placeholder="Zip Code"
                 className="border rounded px-3 py-2 w-full"
               />
@@ -287,6 +296,7 @@ const Profile = ({ user }) => {
               name="address"
               value={formData.address}
               onChange={handleChange}
+              disabled={!isEditing}
               placeholder="Full Address"
               className="border rounded px-3 py-2 w-full"
             />
@@ -298,18 +308,29 @@ const Profile = ({ user }) => {
               name="landmark"
               value={formData.landmark}
               onChange={handleChange}
+              disabled={!isEditing}
               placeholder="e.g., Near City Mall or Opposite Central Park"
               className="border rounded px-3 py-2 w-full"
             />
           </div>
         </div>
 
-        <button
-          onClick={submitData}
-          className="mt-6 bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600"
-        >
-          Save Changes
-        </button>
+        {/* Action Button */}
+        {isEditing ? (
+          <button
+            onClick={submitData}
+            className="mt-6 bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600"
+          >
+            Save Changes
+          </button>
+        ) : (
+          <button
+            onClick={() => setIsEditing(true)}
+            className="mt-6 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+          >
+            Edit Profile
+          </button>
+        )}
       </section>
     </div>
   );
