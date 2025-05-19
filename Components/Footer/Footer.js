@@ -80,16 +80,16 @@ const Footer = () => {
           <nav className="text-center max-md:w-[80vw] max-md:flex  max-md:flex-col max-md:items-center max-md:justify-center ">
             <h2 className="text-lg font-bold max-md:text-white">FOLLOW US</h2>
             <div className="flex justify-center gap-4 mt-3 text-2xl">
-              <a href="#" className="transition duration-300 ease-in-out hover:text-white">
+              <a href="https://x.com/papapet__?s=21" className="transition duration-300 ease-in-out hover:text-white">
                 <i className="ri-twitter-x-line"></i>
               </a>
-              <a href="#" className="transition duration-300 ease-in-out hover:text-white">
+              <a href="http://www.youtube.com/@PaPaPet" className="transition duration-300 ease-in-out hover:text-white">
                 <i className="ri-youtube-fill"></i>
               </a>
-              <a href="#" className="transition duration-300 ease-in-out hover:text-white">
+              <a href="https://www.facebook.com/share/19DY5r2SqQ/?mibextid=wwXIfr" className="transition duration-300 ease-in-out hover:text-white">
                 <i className="ri-facebook-fill"></i>
               </a>
-              <a href="#" className="transition duration-300 ease-in-out hover:text-white">
+              <a href="https://www.instagram.com/papapet_official/" className="transition duration-300 ease-in-out hover:text-white">
                 <i className="ri-instagram-line"></i>
               </a>
             </div>
