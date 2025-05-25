@@ -1,15 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function PhantomConnect() {
   const [walletAddress, setWalletAddress] = useState(null);
 
-  // Connect wallet
   const connectWallet = async () => {
     if (window?.solana?.isPhantom) {
       try {
-        const resp = await window.solana.connect();
+        const resp = await window.solana.connect(); // Only connect on button click
         setWalletAddress(resp.publicKey.toString());
       } catch (err) {
         console.error('Connection failed!', err);
@@ -18,23 +17,6 @@ export default function PhantomConnect() {
       alert('Phantom Wallet not found! Install it from https://phantom.app');
     }
   };
-
-  // Auto-connect on page load
-  useEffect(() => {
-    const checkConnection = async () => {
-      if (window?.solana?.isPhantom) {
-        try {
-          const resp = await window.solana.connect({ onlyIfTrusted: true });
-          if (resp.publicKey) {
-            setWalletAddress(resp.publicKey.toString());
-          }
-        } catch (err) {
-          console.log('Not trusted or user rejected auto-connect');
-        }
-      }
-    };
-    checkConnection();
-  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 p-4 absolute left-[74%] top-1/2 -translate-y-1/2 w-fit text-nowrap">
@@ -45,11 +27,6 @@ export default function PhantomConnect() {
       >
         {walletAddress ? 'Connected ✅' : 'Connect Phantom Wallet'}
       </button>
-      {/* {walletAddress && (
-        <p id="wallet-address" className="text-sm text-gray-700">
-          Connected: {walletAddress}
-        </p>
-      )} */}
     </div>
   );
 }

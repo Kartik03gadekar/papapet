@@ -1,146 +1,93 @@
-"use client";
-import { Badge } from "antd";
-import gsap from "gsap";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import {
+  FaMinus,
+  FaPlus,
+  FaFacebookF,
+  FaTwitter,
+  FaPinterestP,
+} from "react-icons/fa";
+import { FiShoppingCart } from "react-icons/fi";
+import { useState } from "react";
 
 const ProductDetail = ({ product }) => {
-  const [quantity, setquantity] = useState(1);
-  const [size, setsize] = useState(product?.stock[0]?.value);
-  const decrease = () => {
+  const [quantity, setQuantity] = useState(1);
+  console.log(product);
+  
+
+  const handleDecrement = () => {
     if (quantity > 1) {
-      setquantity((prevquantity) => prevquantity - 1);
+      setQuantity(quantity - 1);
     }
   };
 
-  const increase = () => {
-    if (quantity < 10) {
-      setquantity((prevquantity) => prevquantity + 1);
-    } else if (quantity == 10) {
-      toast.error("Max Limit of quantity is 10");
-    }
+  const handleIncrement = () => {
+    setQuantity(quantity + 1);
   };
-  const priceAnimation = (i) => {
-    setsize(`${i?.value}`);
-    gsap.from(".selling", {
-      opacity:0,
-      duration:0.5,
-    });
-    gsap.to(".line", {
-      width: "95%",
-      duration: 1,
-    });
-    gsap.to("#skl", {
-      backgroundColor: "transparent",
-      delay: 2,
-      duration:1
-    });
-  };
-  
-  useEffect(() => {
-    gsap.from(".selling", {
-      opacity:0,
-      duration: .5,
-    });
-    gsap.to(".line", {
-      width: "95%",
-      duration: 1,
-    });
-    gsap.to("#skl", {
-      backgroundColor: "transparent",
-      delay: 2,
-      duration:1
-    });
-  }, [size]);
+
   return (
-    <Badge.Ribbon
-      id="pop"
-      text={`Dry Food`}
-      className="font-semibold flex gap-2 p-2 font-[poppins]"
-    >
-      <div className="w-full h-fit flex flex-col items-start gap-4 font-medium p-10">
-        <h1 className="text-lg">PaPaPet</h1>
-        <h1 id="mon" className="text-3xl w-[80%]">
-          {product?.name}
-        </h1>
-        <h1
-          id="gil"
-          className="text-lg text-red-500 w-[80%] font-[gilroy] font-normal"
-        >  
-        
-          <span className="font-extralight text-black">by</span>{" "}
-          {product?.brand}
-        </h1>
-        <div className="flex gap-6">
-          {product?.stock?.map((i, index) => (
-            <button
-              className={`btn btn-square ${
-                size === `${i?.value}` ? "btn-neutral" : "btn-shadow"
-              }  ${i?.quantity === 0 ? "line-through disabled" : ""}`}
-              disabled={`${i?.quantity === 0 ? "disabled" : ""}`}
-              onClick={() => priceAnimation(i)}
-            >
-              {i?.value}
-            </button>
-          ))}
-        </div>
-        <div className="flex flex-col gap-4 font-normal font-[poppins]">
-          <h1>Quantity :</h1>
+    <div>
+      <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-6 capitalize">
+        {product?.name || "PEDIGREE® Chicken and Vegetables for Adult Dogs"}
+      </h1>
+      <p className="text-orange-500 font-semibold text-lg mb-4 capitalize">{product?.stock[0]?.value || "10 Kg"}</p>
+      <p className="text-gray-600 text-sm mb-2 capitalize">
+        <span className="font-semibold">Brand:</span> {product?.brand || "Pedigree"}
+      </p>
+      <p className="text-gray-600 text-sm mb-2 capitalize">
+        <span className="font-semibold">Animal Category:</span> {product?.animalCategory || "Dog"}
+      </p>
+      <p className="text-gray-600 text-sm mb-4 capitalize">
+        <span className="font-semibold">Category:</span> {product?.category || "Dry Food"}
+      </p>
+   {product?.stock?.length > 0 && product.stock[0].quantity > 0 ? (
+  <p className="text-green-600 font-semibold mb-8">In Stock</p>
+) : (
+  <p className="text-red-600 font-semibold mb-8">Out of Stock</p>
+)}
+
+
+      {/* Pricing */}
+      <div className="flex items-center gap-4 mb-8">
+        <p className="text-2xl text-blue-600 font-bold">₹{product?.price || 1699}</p>
+        <p className="text-gray-400 line-through">₹{product?.originalPrice || 1999}</p>
+        <span className="bg-yellow-400 text-xs font-semibold px-2 py-1 rounded">
+          {product?.discount || "21% OFF"}
+        </span>
+      </div>
+
+      {/* Quantity & Action */}
+      <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center border rounded">
           <button
-            className="flex border-2 rounded-lg items-center justify-between border-gray-300 p-3"
-            style={{ width: "9vw", fontSize: "1vw" }}
+            className={`p-2 ${quantity <= 1 ? "text-gray-300 cursor-not-allowed" : "text-gray-600 hover:text-black"}`}
+            onClick={handleDecrement}
+            disabled={quantity <= 1}
           >
-            <i className="ri-subtract-line" onClick={decrease}></i>
-            <h1 className="text-lg">{quantity}</h1>
-            <i className="ri-add-fill" onClick={increase}></i>
+            <FaMinus />
+          </button>
+          <span className="px-4">{quantity < 10 ? `0${quantity}` : quantity}</span>
+          <button
+            className="p-2 text-gray-600 hover:text-black"
+            onClick={handleIncrement}
+          >
+            <FaPlus />
           </button>
         </div>
-        <div className="flex flex-col font-medium text-xl font-[poppins]">
-          {product?.stock?.map((i, index) =>
-            i?.value === size ? (
-              <>
-                <div className="flex items-center gap-4">
-                  <h2 className="text-2xl relative z-20 bg-white">
-                    ₹{i?.price}
-                    .00
-                    <span
-                      className="line w-[0%] h-[2px] -rotate-[8deg] bg-orange-500 absolute top-1/2 left-0"
-                      style={{ transformOrigin: "left bottom" }}
-                    ></span>
-                  </h2>
-                  <div id="skl" className="skeleton h-fit w-fit rounded-none opacity-100">
-                    <h2 className="selling text-2xl opacity-100">
-                      ₹{i?.sellingprice}
-                      .00
-                    </h2>
-                  </div>
-                </div>
-              </>
-            ) : (
-              ""
-            )
-          )}
-
-          <h2 className="font-thin text-sm">
-            {"("} incl. of all taxes {")"}{" "}
-          </h2>
-        </div>
-        <div className="divider"></div>
-        <button className="cartbtn uppercase p-4 w-[80%] rounded-sm bg-gray-200 relative overflow-hidden">
-          <h1 className="relative z-40">Add to cart</h1>
+        <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded flex items-center gap-2">
+          <FiShoppingCart /> ADD TO CART
         </button>
-        <button className="uppercase p-4 w-[80%] rounded-sm mt-4 bg-black text-white relative overflow-hidden">
-          <h1 className="relative z-40">Proceed to buy</h1>
+        <button className="border border-orange-500 hover:bg-orange-50 text-orange-500 font-semibold px-6 py-3 rounded">
+          BUY NOW
         </button>
-        <div className="flex gap-2 cursor-pointer mt-3 font-thin text-lg text-gray-400 items-center justify-center">
-          <h2 className="font-thin">Share</h2>
-          <i className="ri-whatsapp-line"></i>
-          <i className="ri-facebook-line"></i>
-          <i className="ri-instagram-line"></i>
-          <i className="ri-telegram-line"></i>
-        </div>
       </div>
-    </Badge.Ribbon>
+
+      {/* Share Options */}
+      <div className="flex items-center gap-4 mb-6">
+        <span className="text-gray-500 text-sm">Share product:</span>
+        <FaFacebookF className="text-gray-500 hover:text-blue-600 cursor-pointer" />
+        <FaTwitter className="text-gray-500 hover:text-blue-400 cursor-pointer" />
+        <FaPinterestP className="text-gray-500 hover:text-red-500 cursor-pointer" />
+      </div>
+    </div>
   );
 };
 
