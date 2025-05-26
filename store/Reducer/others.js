@@ -4,6 +4,7 @@ const initialState = {
   error: [],
   isAuthenticated: false,
   load: false,
+  
   imgLink: "https://papapetbackend.onrender.com/api/v1/admin/get/image",
 };
 
@@ -110,6 +111,10 @@ export const others = createSlice({
       state.load = false,
       state.food = action.payload.food
     },
+     getFoodSuccesscategory:(state,action)=>{
+      state.load = false,
+      state.foodcategory = action.payload.food
+    },
     getFoodByIdSuccess:(state,action)=>{
       state.load = false,
       state.item = action.payload.food
@@ -125,6 +130,7 @@ export const others = createSlice({
 });
 
 export const {
+  getFoodSuccesscategory,
   getHomepageSuccess,
   getHomepageFail,
   getHomepageRequest,

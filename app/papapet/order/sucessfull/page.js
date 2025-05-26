@@ -4,6 +4,7 @@ import React from "react";
 // import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
+import Link from "next/link";
 
 const Page = () => {
   return (
@@ -28,13 +29,17 @@ const Page = () => {
             volutpat mollis nulla non facilisis.
           </p>
           <div className="mt-6 flex justify-center gap-4 flex-wrap">
+            <Link href={"/papapet/dashboard"}> 
             <button className="border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-100">
               GO TO DASHBOARD
             </button>
+            </Link>
+              <Link href={"/papapet/dashboard"}> 
             <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md flex items-center">
               VIEW ORDER 
            
             </button>
+            </Link>
           </div>
         </div>
     

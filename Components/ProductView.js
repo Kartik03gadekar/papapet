@@ -6,6 +6,9 @@ import ProductDetail from "./ProductDetail";
 
 
 const ProductView = ({ data, imgLink, loading }) => {
+
+
+  
   return (
     <div className="w-full min-h-screen flex flex-col p-4 max-md:mt-[10vh] gap-6">
       {loading ? (
@@ -21,7 +24,7 @@ const ProductView = ({ data, imgLink, loading }) => {
           </div>
 
           {/* Bottom section: Description + Features + Related */}
-          <ProductExtraInfo />
+          <ProductExtraInfo food={data}/>
         </>
       )}
     </div>

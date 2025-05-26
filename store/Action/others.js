@@ -183,3 +183,12 @@ export const getFoodById = (id)=>async(dispatch)=>{
     dispatch(otherFail(error.response.data));
   }
 }
+export const getFoodBycategory = (food)=>async(dispatch)=>{
+  dispatch(otherRequest())
+  try {
+    const {data} = await axios.post("/other/product/category",food);
+    dispatch(getFoodSuccesscategory(data));
+  } catch (error) {
+    dispatch(otherFail(error.response.data));
+  }
+}

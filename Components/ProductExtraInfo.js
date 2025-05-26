@@ -4,8 +4,9 @@ import {
   FaTwitter,
   FaPinterestP,
 } from "react-icons/fa";
+import RelatedProduct from "./RelatedProduct";
 
-const ProductExtraInfo = () => {
+const ProductExtraInfo = ({food}) => {
   return (
     <div className="w-full max-w-6xl mx-auto mt-4 mb-4">
       {/* Description + Features */}
@@ -13,13 +14,15 @@ const ProductExtraInfo = () => {
         {/* Description */}
         <div className="md:col-span-2">
           <h2 className="text-lg font-semibold mb-2">Description</h2>
-          <ul className="list-disc pl-5 text-gray-700 space-y-2 text-sm">
+<div dangerouslySetInnerHTML={{ __html: food?.discription || "<p > No description </p>" }} />
+
+          {/* <ul className="list-disc pl-5 text-gray-700 space-y-2 text-sm">
             <li>ORAL CARE TREAT: Healthy and tasty oral care dog treat recommended by vets.</li>
             <li>QUALITY INGREDIENTS: Zinc Sulphate & Sodium Tripolyphosphate for oral care.</li>
             <li>SUPPORTS GUM HEALTH: x-shape and abrasive texture to keep teeth and gums strong.</li>
             <li>REDUCES TARTAR BUILD-UP: Helps reduce tartar build-up by up to 80%.</li>
             <li>NO ARTIFICIAL ADDITIVES: No added artificial colours or flavours.</li>
-          </ul>
+          </ul> */}
         </div>
 
         {/* Features */}
@@ -35,19 +38,7 @@ const ProductExtraInfo = () => {
       </div>
 
       {/* Related Products */}
-      <div>
-        <h2 className="text-lg font-semibold mb-4">RELATED PRODUCTS</h2>
-        <div className="grid sm:grid-cols-2 gap-4 text-sm">
-          <div className="border p-4 rounded hover:shadow cursor-pointer">
-            <p>Bose Sport Earbuds - Wireless Earphones</p>
-            <p className="text-blue-600">$1,500</p>
-          </div>
-          <div className="border p-4 rounded hover:shadow cursor-pointer">
-            <p>Simple Mobile 4G LTE Prepaid Smartphone</p>
-            <p className="text-blue-600">$1,500</p>
-          </div>
-        </div>
-      </div>
+      <RelatedProduct foodcategories={food?.categories}/>
     </div>
   );
 };

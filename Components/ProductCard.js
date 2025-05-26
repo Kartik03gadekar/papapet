@@ -25,6 +25,11 @@ const ProductCard = ({ i, imgLink }) => {
         <button className="bg-red-500 max-md:hidden rounded-md text-xs px-4 py-2 text-white mb-1">
           Great Offer
         </button>
+             {/* {i?.discountprice && (
+  <button className="bg-red-500 max-md:hidden rounded-md text-xs px-4 py-2 text-white mb-1">
+    Great Offer
+  </button>
+)} */}
         <h1 className="text-2xl font-[poppins] max-md:text-2sm ">
           <span className="text-lg ">
           M.R.P
