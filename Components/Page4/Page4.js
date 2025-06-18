@@ -142,19 +142,19 @@ const Page4 = () => {
 
       {/* Features Section - Visible on Mobile Only */}
       <div className=" max-md:flex max-md:w-screen   max-md:gap-2 max-md:bg-teal-100 py-4  px-2  max-md:items-center  justify-center  max-md:mt-[4vw]  ">
-        <div className="max-md:justify-center tween  max-md:flex max-md:items-center max-md:gap-2 max-md:w-[40vw] max-md:h-[20vw]
+        <div className="max-md:justify-center tween  max-md:flex max-md:items-center max-md:gap-1 max-md:w-[40vw] max-md:h-[20vw]
          max-md:bg-white  max-md:rounded-lg">
           <img src="/Page41.png" alt="Products" className="w-[7vw] h-[10vw] mx-2 "  />
           <p className="font-semibold">100+  <span className="font-[400]  ">Products</span></p>
         </div>
-        <div className="max-md:justify-center max-md:flex max-md:items-center max-md:gap-2 max-md:w-[40vw] max-md:h-[20vw]
+        <div className="max-md:justify-center max-md:flex max-md:items-center max-md:gap-1 max-md:w-[40vw] max-md:h-[20vw]
          max-md:bg-white max-md:rounded-lg">
-          <img src="/Page42.png" alt="Service" className="w-[7vw] h-[10vw] mx-3" />
+          <img src="/Page42.png" alt="Service" className="w-[7vw] h-[10vw] mx-2" />
           <p className="font-semibold">7+  <span className="font-[400]  "> Service</span> </p>
         </div>
-        <div className="max-md:justify-center  max-md:flex max-md:items-center max-md:gap-2 max-md:w-[40vw] max-md:h-[20vw]
+        <div className="max-md:justify-center  max-md:flex max-md:items-center max-md:gap-1 max-md:w-[40vw] max-md:h-[20vw]
          max-md:bg-white max-md:rounded-lg">
-          <img src="/Page43.png" alt="Fast Delivery" className="w-[7vw] h-[10vw] mx-3"  />
+          <img src="/Page43.png" alt="Fast Delivery" className="w-[7vw] h-[10vw] mx-2"  />
           <p className="font-semibold">Fast  <span className="font-[400]  ">Delivery</span></p>
         </div>
       </div>
