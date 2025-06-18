@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
+import PhantomConnect from "../WalletProvider";
 
 const NavPapaPet = () => {
   const [showNavbar, setShowNavbar] = useState(true);
@@ -94,7 +95,7 @@ const NavPapaPet = () => {
     setMenuVisible(true); // Ensure it's in DOM
     gsap.fromTo(
       mobileMenuRef.current,
-      { y: "-100%", opacity: 0 },
+      { y: "-120%", opacity: 0 },
       { y: "0%", opacity: 1, duration: 0.5, 
         // ease: "power3.out" 
       }
@@ -180,6 +181,8 @@ const NavPapaPet = () => {
                 Sign in
                 <i className="ri-arrow-right-circle-fill text-lg"></i>
               </Link>
+              <PhantomConnect/>
+
             </div>
           )}
         </div>
