@@ -91,7 +91,7 @@ const NavPapaPet = () => {
 
  useEffect(() => {
     if (mobileMenuOpen && mobileMenuRef.current) {
-      gsap.To(
+      gsap.to(
         mobileMenuRef.current,
         { y: "-100%", opacity: 0 },
         { y: "0%", opacity: 1, duration: 0.5, ease: "power3.out" }

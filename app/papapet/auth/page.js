@@ -7,17 +7,15 @@ import React from "react";
 const page = () => {
   return (
     <div className=" w-full h-[100%]">
+      <div className="h-[10%]">
+        <NavPapaPet />
+      </div>
 
-      
-     <div className="h-[10%]"><NavPapaPet/></div>
-
-
-     
-    <div className="h-[80%]" >  <Auth />
+      <div className="h-[80%]">
+        {" "}
+        <Auth />
+      </div>
     </div>
-     
-    </div>
-    
   );
 };
 
