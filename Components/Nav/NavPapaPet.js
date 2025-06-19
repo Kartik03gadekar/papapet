@@ -118,7 +118,7 @@ const NavPapaPet = () => {
 
     if (currentScrollY > prevScrollY.current) {
       // Scroll Down → move up (hide)
-      gsap.to(mobileCircle.current, {
+      gsap.from(mobileCircle.current, {
         y: "-200%", // translateY upward
         duration: 0.6,
         ease: "power2.out",
