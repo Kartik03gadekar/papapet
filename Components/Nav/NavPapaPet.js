@@ -209,7 +209,7 @@ const NavPapaPet = () => {
                 Sign in
                 <i className="ri-arrow-right-circle-fill text-lg"></i>
               </Link>
-              <PhantomConnect/>
+            
 
             </div>
           )}
@@ -230,8 +230,8 @@ const NavPapaPet = () => {
 
         <div
          ref={mobileCircle}
-          className=" md:hidden mobile absolute -top-[180%] -right-[25%] w-[60vw] h-[60vw] bg-[#FFAD22] rounded-full 
-  flex items-center justify-center gap-6 z-10 pr-20 pt-[29%]"
+          className=" md:hidden mobile absolute -top-[160%] -right-[25%] w-[60vw] h-[60vw] bg-[#FFAD22] rounded-full 
+  flex items-center justify-center gap-6 z-10 pr-20 pt-[28%]"
         >
           <div className= "flex items-center gap-4 vsmall">
             <button className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300">
