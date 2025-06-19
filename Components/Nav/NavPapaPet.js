@@ -85,13 +85,14 @@ const NavPapaPet = () => {
       prevScrollY.current = currentScrollY;
     };
 
+    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
  useEffect(() => {
     if (mobileMenuOpen && mobileMenuRef.current) {
-      gsap.to(
+      gsap.fromTo(
         mobileMenuRef.current,
         { y: "-100%", opacity: 0 },
         { y: "0%", opacity: 1, duration: 0.5, ease: "power3.out" }
