@@ -19,6 +19,7 @@ const NavPapaPet = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const prevScrollY = useRef(0);
   const circle = useRef(null);
+  const mobileCircle  = useRef(null)
   const [user, setUser] = useState(null);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -88,29 +89,55 @@ const NavPapaPet = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-  if (!mobileMenuRef.current) return;
+ useEffect(() => {
+    if (mobileMenuOpen && mobileMenuRef.current) {
+      gsap.To(
+        mobileMenuRef.current,
+        { y: "-100%", opacity: 0 },
+        { y: "0%", opacity: 1, duration: 0.5, ease: "power3.out" }
+      );
+    } else if (!mobileMenuOpen && mobileMenuRef.current) {
+      gsap.to(mobileMenuRef.current, {
+        y: "-100%",
+        opacity: 0,
+        duration: 0.4,
+        ease: "power2.in",
+        onComplete: () => setMenuVisible(false),
+      });
+    }
+  }, [mobileMenuOpen]);
 
-  if (mobileMenuOpen) {
-    setMenuVisible(true); // Ensure it's in DOM
-    gsap.fromTo(
-      mobileMenuRef.current,
-      { y: "-120%", opacity: 0 },
-      { y: "0%", opacity: 1, duration: 0.5, 
-        // ease: "power3.out" 
-      }
-    );
-  } else {
-    gsap.to(mobileMenuRef.current, {
-      y: "-100%",
-      opacity: 0,
-      duration: 0.4,
-      // ease: "power2.in",
-      onComplete: () => setMenuVisible(false), // Hide after animation
-    });
-  }
-}, [mobileMenuOpen]);
 
+ useEffect(() => {
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    if (!mobileCircle.current) return;
+
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile) return;
+
+    if (currentScrollY > prevScrollY.current) {
+      // Scroll Down → move up (hide)
+      gsap.from(mobileCircle.current, {
+        y: "-200%", // translateY upward
+        duration: 0.6,
+        ease: "power2.out",
+      });
+    } else {
+      // Scroll Up → move back (show)
+      gsap.to(mobileCircle.current, {
+        y: "0%",
+        duration: 0.6,
+        ease: "power2.out",
+      });
+    }
+
+    prevScrollY.current = currentScrollY;
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
   return (
     <>
@@ -201,8 +228,9 @@ const NavPapaPet = () => {
         </div>
 
         <div
-          className=" md:hidden mobile absolute -top-[160%] -right-[25%] w-[60vw] h-[60vw] bg-[#FFAD22] rounded-full 
-  flex items-center justify-center gap-6 z-10 pr-20 pt-[24%]"
+         ref={mobileCircle}
+          className=" md:hidden mobile absolute -top-[180%] -right-[25%] w-[60vw] h-[60vw] bg-[#FFAD22] rounded-full 
+  flex items-center justify-center gap-6 z-10 pr-20 pt-[29%]"
         >
           <div className= "flex items-center gap-4 vsmall">
             <button className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300">

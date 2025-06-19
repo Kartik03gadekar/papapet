@@ -110,8 +110,8 @@ const Page4 = () => {
     <section className=" hidden max-md:flex max-md:w-full max-md:h-fit    max-md:flex-col max-md:items-center max-md:p-6 max-md:bg-white">
       {/* Title */}
     <div className="bg-linear-to-t [#FFFFF]-[#FFDEBA]  max-md:w-full ">
-    <div>
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-2">
+     <div className="flex items-end justify-center gap-5 ">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center  gap-2">
         Featured <span className="text-teal-500">Products</span>
         <Image src="/serviceDog.png" alt="Dog" width={40} height={40} />
       </h2>
