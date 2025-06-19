@@ -1,0 +1,32 @@
+#   <div className="w-full md:hidden h-[50vh] bg-transparent max-md:hidden bg-black ">
+#         <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
+#           {data?.map((i, index) => (
+#             <SwiperSlide
+#               // className="flex items-center justify-center"
+#               className={style.swiperSlide}
+#             >
+#               <Link href={`${i.link}`}>
+#                 <div className="service cursor-pointer min-h-[24vw] w-[20vw] relative gap-2 p-5 py-4 rounded-lg items-center justify-between 
+#                 flex flex-col bg-white text-black border-2 shrink-0 hover:bg-[#F07905] hover:text-white duration-300 ease-in-out 
+#                 max-md:w-[60vw] max-md:py-0">
+#                   <img
+#                     className="h-[12vw] W-[12vw] left-1/2 -translate-x-1/2 object-contain absolute -top-10 max-md:h-1/2 w-4/5"
+#                     src={i?.img}
+#                     alt=""
+#                   />
+#                   <div className="h-30 max-md:h-16 w-30 shrink-0 bg-transparent rounded-full "></div>
+#                   <h1 className="font-semibold text-[1vw] ">{i?.name}</h1>
+#                   <p className="text-center text-[.9vw] max-md:text-[1.5vw]">
+#                     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+#                     Itaque excepturi delectus reiciendis consequuntur ducimus
+#                     dicta.
+#                   </p>
+#                   <button className="bg-white border-[1px] border-black text-black px-8 w-[80%] font-semibold rounded-md p-2 max-md:text-sm">
+#                     Get Service
+#                   </button>
+#                 </div>
+#               </Link>
+#             </SwiperSlide>
+#           ))}
+#         </Swiper>
+#       </div>
