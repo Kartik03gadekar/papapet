@@ -47,12 +47,12 @@ const Page = () => {
           <img
             src="/GirlDoctor.png"
             alt="Veterinarian with Pet"
-            className="rounded-lg  w-[60vw] md:w-[18vw] max-md:w-[46vw] "
+            className="rounded-lg  w-[60vw] md:w-[18vw] max-md:w-[48vw] "
           />
         </div>
 
         {/* Right Section */}
-        <div className="w-full md:w-1/3 flex flex-col items-center justify-start gap-[8vw] max-md:w-full max-md:items-center max-md:gap-[9vw]">
+        <div className="w-full md:w-1/3 flex flex-col items-center justify-start gap-[8vw] max-md:w-full max-md:items-center max-md:gap-[8vw]">
           <div className="bg-[#FFAD22] p-4 rounded-lg shadow-lg flex items-center space-x-3 max-md:w-[80%]">
             <p className="text-sm font-medium text-gray-700">
               Generate your Pet’s Health Report in just a few clicks
