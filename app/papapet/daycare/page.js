@@ -9,7 +9,7 @@ const page = () => {
   return (
     <div className='w-full h-screen '>
 
-          <nav className="w-full  h-[5vw]  bg-red-200  max-md:w-screen">     <NavPapaPet/> </nav>
+          <nav className="w-full  h-[5vw]   max-md:w-screen">     <NavPapaPet/> </nav>
       <HeroSection/>
        {/* Trusted Doctors Section */}
        <section className="py-20 px-6 text-center bg-[#F4EEE1]">

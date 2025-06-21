@@ -13,7 +13,7 @@ const Page = () => {
 
   return (
     <div className="w-full">
-    <nav className="w-full  h-[5vw]  bg-red-200  max-md:w-screen">     <NavPapaPet/> </nav>
+    <nav className="w-full  h-[5vw]   max-md:w-screen">     <NavPapaPet/> </nav>
 
      {/* Hero Section */}
     
