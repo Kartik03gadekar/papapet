@@ -587,18 +587,18 @@ const NavPapaPet = () => {
       if (currentScrollY === 0) {
         // At top
         setShowNavbar(true);
-        gsap.to(circle.current, { top: "-210%",delay:0., duration:0.8 });
+        gsap.to(circle.current, { top: "-210%", duration:0.8 });
       } else if (currentScrollY > prevScrollY.current) {
         // Scroll down
         setShowNavbar(false);
-        gsap.to(circle.current, { top: "-400%", delay:0.6,duration: 0.8 });
+        gsap.to(circle.current, { top: "-400%", duration: 0.8 });
         if (isMobile) {
           gsap.to(mobileCircle.current, { y: "-100%", duration: 0.8 });
         }
       } else {
         // Scroll up
         setShowNavbar(true);
-        gsap.to(circle.current, { top: "-210%",duration: 1.8 });
+        gsap.to(circle.current, { top: "-210%",duration:0.8 });
         if (isMobile) {
           gsap.to(mobileCircle.current, { y: "0%", duration: 0.6 });
         }
