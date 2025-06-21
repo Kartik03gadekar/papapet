@@ -8,7 +8,7 @@ const HeroSection = () => {
     
       
     {/* Left Content */}
-    <div className="flex flex-col items-start justify-start gap-2  mt-[15vw] w-[70%] h-full text-black   
+    <div className="flex flex-col items-start justify-start gap-2  mt-[20vw] w-[70%] h-full text-black   
             max-md:w-full max-md:text-start max-md:pb-[2vw] max-md:pl-[2vw] max-md:pt-[8vw]    ">
     
   {/* Title */}

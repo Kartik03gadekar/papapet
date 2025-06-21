@@ -4,11 +4,11 @@ import React from 'react'
 const HeroSection = () => {
     return (
       <div className="   relative w-full flex items-center justify-between h-screen px-10  overflow-hidden 
-      max-md:flex-col max-md:px-5  max-md:h-fit  ">
+      max-md:flex-col max-md:px-5 py-1 max-md:h-fit  ">
       
       {/* Left Content */}
-      <div className="flex flex-col items-start justify-start gap-1  mt-[15vw] w-[70%] h-full text-black  px-[2vw]  
-        max-md:w-full max-md:text-start  max-md:pl-[2vw] max-md:pt-[8vw]    ">
+      <div className="flex flex-col items-start justify-start gap-1  mt-[20vw] w-[70%] h-full text-black  px-[2vw]  
+        max-md:w-full max-md:text-start  max-md:pl-[2vw] max-md:pt-[8vw] max-md:px-[6vw]  ">
 
   {/* Title */}
   <h1 className="text-5xl font-bold leading-tight gilroy mt-2   max-md:text-[7vw] "> 
@@ -16,7 +16,7 @@ const HeroSection = () => {
       </h1>
     
       {/* Description */}
-      <p className="text-lg w-[80%] pt-4 max-md:w-full max-md:text-base">
+      <p className="text-lg w-[80%]  pt-4 max-md:w-full max-md:text-base">
       Comfortable overnight stays with attentive caregivers,ensuring a stress-free experience  for your pet.
       </p>
     

@@ -591,7 +591,7 @@ const NavPapaPet = () => {
       } else if (currentScrollY > prevScrollY.current) {
         // Scroll down
         setShowNavbar(false);
-        gsap.to(circle.current, { top: "-400%", duration: 0.8 });
+        gsap.to(circle.current, { top: "-210%", duration: 0.8 });
         if (isMobile) {
           gsap.to(mobileCircle.current, { y: "-100%", duration: 0.8 });
         }
@@ -600,7 +600,7 @@ const NavPapaPet = () => {
         setShowNavbar(true);
         gsap.to(circle.current, { top: "-210%",duration:0.8 });
         if (isMobile) {
-          gsap.to(mobileCircle.current, { y: "0%", duration: 0.6 });
+          gsap.to(mobileCircle.current, { y: "-100%", duration: 0.6 });
         }
       }
 
@@ -707,12 +707,7 @@ const NavPapaPet = () => {
           className="desktop w-[20vw] h-[20vw] absolute -top-[250%] left-1/2 -translate-x-1/2 
              bg-[#FFAD22] rounded-full flex items-center justify-center gap-[2vw]"
         >
-          <button className="text-2xl text-white font-light px-3 py-1 rounded-full transition-all duration-300 hover:bg-white hover:text-[#0D9899]">
-            <i className="ri-search-line"></i>
-          </button>
-          <button className="text-2xl text-white font-light px-3 py-1 rounded-full transition-all duration-300 hover:bg-white hover:text-[#0D9899]">
-            <i className="ri-menu-2-line"></i>
-          </button>
+        
         </div>
 
         <div
@@ -720,7 +715,7 @@ const NavPapaPet = () => {
           className="md:hidden mobile absolute -top-[35vw] -right-[25vw] w-[60vw] h-[60vw] bg-[#FFAD22] rounded-full 
   flex items-center justify-center gap-6 z-10 pr-20 pt-[30%]"
         >
-          <div className="flex items-center gap-4 vsmall">
+          <div className="md:hiddenflex items-center gap-4 vsmall">
             <button className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300">
               <i className="ri-search-line"></i>
             </button>

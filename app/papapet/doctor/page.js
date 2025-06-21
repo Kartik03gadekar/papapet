@@ -20,7 +20,7 @@ const Page = () => {
       px-8 gap-4">
         {/* Left Content */}
         <div className="w-full md:w-1/3 flex flex-col items-start justify-start gap-[5vw] max-md:gap-[2vw] max-md:w-full max-md:text-center 
-        max-md:items-center max-md:pt-[18vw]">
+        max-md:items-center max-md:pt-[16vw]">
           {/* Desktop Heading */}
           <h1 className="hidden md:block text-5xl whitespace-nowrap lg:text-6xl font-bold leading-[1.1] text-black text-left px-[1vw]">
             <span className="text-black block pb-4">The Perfect</span>

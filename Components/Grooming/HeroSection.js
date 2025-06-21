@@ -3,11 +3,11 @@ import React from 'react'
 
 const HeroSection = () => {
     return (
-        <div className="   relative w-full flex items-center justify-center  h-screen px-10  overflow-hidden 
+        <div className="   relative w-full flex items-center justify-center  h-screen px-10 py-1 overflow-hidden 
           max-md:flex-col max-md:px-2  max-md:h-fit  ">
           
           {/* Left Content */}
-          <div className="  flex flex-col items-start justify-start gap-3  mt-[15vw] w-[70%] h-full text-black   
+          <div className="  flex flex-col items-start justify-start gap-3  mt-[20vw] w-[70%] h-full text-black   
             max-md:w-full max-md:text-start  max-md:pl-[2vw] max-md:pt-[5vw]   max-md:gap-0  ">
     
       {/* Title */}
