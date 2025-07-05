@@ -7,8 +7,8 @@ import React from 'react'
 
 const page = () => {
     return (
-        <div className="w-full ">
-        <nav className="w-full  h-[5vw]  max-md:w-screen">     <NavPapaPet/> </nav>
+        <div className="w-full  overflow-x-hidden">
+          <NavPapaPet/>
        
         <HeroSection/>
 

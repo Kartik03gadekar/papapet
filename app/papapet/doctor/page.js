@@ -12,8 +12,8 @@ const Page = () => {
   ];
 
   return (
-    <div className="w-full">
-    <nav className="w-full  h-[5vw]   max-md:w-screen">     <NavPapaPet/> </nav>
+    <div className="w-full overflow-x-hidden">
+       <NavPapaPet/>
 
           {/* Hero Section */}
       <section className="relative w-full h-screen max-md:h-auto max-md:pb-6 text-white flex flex-col md:flex-row justify-between items-center 

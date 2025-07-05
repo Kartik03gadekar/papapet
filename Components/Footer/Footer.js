@@ -29,7 +29,7 @@ const Footer = () => {
             placeholder="EMAIL OR PHONE NUMBER"
             className=" max-md:placeholder:text-sm max-md:px-3 max-md:py-2 w-full px-4 py-2 bg-[#F2F2F2] text-gray-600 outline-none"
           />
-          <button className="bg-orange-500 text-white  max-md:px-3 max-md:py-2 px-5 py-2 font-semibold transition duration-300 ease-in-out hover:bg-orange-600">
+          <button className="bg-[#FFB828] text-white  max-md:px-3 max-md:py-2 px-5 py-2 font-semibold transition duration-300 ease-in-out hover:bg-orange-600">
             Subscribe
           </button>
         </div>

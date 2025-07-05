@@ -530,18 +530,23 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import PhantomConnect from "../WalletProvider";
+import { checkUser } from "@/store/Action/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 const NavPapaPet = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const prevScrollY = useRef(0);
   const circle = useRef(null);
   const mobileCircle = useRef(null);
-  const [user, setUser] = useState(null);
+ const { user } = useSelector((state) => state.auth);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const mobileMenuRef = useRef(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+const dispatch = useDispatch();
 
+
+  
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -560,7 +565,9 @@ const NavPapaPet = () => {
     setMenuVisible(true);
     setMobileMenuOpen(true);
   };
-
+useEffect(() => {
+    dispatch(checkUser());
+   }, []);
   const closeMenu = () => {
     setMobileMenuOpen(false);
   };

@@ -15,6 +15,7 @@ import AccessoiresProduct from '@/Components/Accessoires/AccessoiresProduct';
 const page = () => {
   return (
     <>
+      <div className="overflow-x-hidden">
     <NavPapaPet />
     <div className=" relative">
       <div className="  w-[100%] gap-[20vw] flex items-start justify-between h-screen px-10  
@@ -55,6 +56,7 @@ const page = () => {
     <Types/>
     <AccessoiresProduct/>
     <Footer />
+    </div>
   </>
   )
 }

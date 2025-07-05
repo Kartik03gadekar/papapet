@@ -7,8 +7,9 @@ import React from "react";
 const Page = () => {
   return (
     <>
-      <NavPapaPet />
-      <div className=" mb-6 ">
+     <div className="overflow-x-hidden">
+       <NavPapaPet />
+      <div className=" w-screen mb-6 ">
         <div className="  flex items-center justify-between h-screen px-10 py-[8vw] pl-[4vw]  
         max-md:flex-col max-md:px-5 max-md:gap-[0vw] max-md:h-fit max-md:pt-[1vw] pt-[1vw] ">
           
@@ -32,7 +33,7 @@ const Page = () => {
                 href={"/"}
                 className="border-b-2 font-semibold border-black max-md:hidden"
               >
-                Schedule a call
+               
               </Link>
             </div>
           </div>
@@ -52,6 +53,7 @@ const Page = () => {
         
       </div>
       <Footer />
+     </div>
     </>
   );
 };

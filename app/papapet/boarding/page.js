@@ -7,9 +7,9 @@ import BoardingList from '@/Components/Boarding/BoardingList'
 
 const page = () => {
   return (
-    <div className='w-full h-screen '>
+    <div className='w-full h-screen  overflow-x-hidden'>
 
-    <nav className="w-full  h-[5vw]   max-md:w-screen">     <NavPapaPet/> </nav>
+    <NavPapaPet/>
       <HeroSection/>
        {/* Trusted Doctors Section */}
        <section className="py-20 px-6 text-center bg-[#F4EEE1]">
