@@ -17,24 +17,25 @@ const HomePage = () => {
 
   return (
     <div className="relative max-md:flex max-md:flex-col max-md:items-center max-md:justify-between max-md:pt-[2vw] w-full 
-      overflow-x-hidden flex items-center justify-between min-h-screen px-10 py-[8vw] pl-[3vw] pt-[6vw] gap-4 max-md:gap-1 
+      overflow-hidden flex items-center justify-between min-h-screen px-10 py-[8vw] pl-[3vw] pt-[6vw] gap-4 max-md:gap-0 max-md:overflow-hidden
       max-md:min-h-screen max-md:pb-0 z-10">
 
       {/* Left Side Content */}
-      <div className="max-md:mb-2 w-1/2 text-black max-md:text-start max-md:pb-[8vw] max-md:pl-[2vw] max-md:pt-[5.5vw] 
+      <div className="max-md:mb-4 w-1/2 text-black max-md:text-start max-md:pb-[8vw] max-md:pl-[2vw] max-md:pt-[5vw] 
         flex flex-col gap-4 max-md:gap-2 max-md:w-full max-md:px-4 max-w-[700px]">
         
-        <h1 className="text-5xl font-bold leading-tight text-[gilroy] max-md:text-[7vw] max-md:mb-1">
+        <h1 className="text-5xl font-bold leading-tight text-[gilroy] max-md:text-[7vw]">
           Making Pet's Life <span className="text-[#0D9899]">Better</span>
           <br className="max-md:hidden" /> Together
         </h1>
 
-        <p className="text-lg pt-4 text-gray-600 max-w-[600px] w-full max-md:text-[3.8vw] max-md:pt-1 max-md:text-gray-500 max-md:font-[400]">
-          Premium dog food, veterinary care, pet grooming, accessories, pet walking & daycare.
-          Expert-approved pet essentials for a happy, healthy pet!
-        </p>
+     <p className="text-[4vw] leading-snug text-gray-600 max-w-[600px] w-full md:text-lg max-md:leading-relaxed md:pt-4 md:text-gray-700">
+  Premium dog food, veterinary care, pet grooming, accessories, pet walking & daycare.
+  Expert-approved pet essentials for a happy, healthy pet!
+</p>
 
-        <div className="flex items-center gap-4 pt-[1.7vw] max-md:mt-[0.2vw]">
+
+        <div className="flex items-center gap-4 pt-[1.7vw] max-md:mt-[0.2vw] max-md:mb-2">
           <button
             onClick={scrollToServices}
             className="linear rounded-full font-semibold text-lg px-6 py-2 max-md:text-sm max-md:px-[4vw] max-md:py-[2vw]"
