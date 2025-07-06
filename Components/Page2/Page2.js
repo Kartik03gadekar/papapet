@@ -64,7 +64,8 @@ const Page2 = () => {
   ];
 
   return (
-    <div className="min-h-screen w-full flex items-center max-md:items-start justify-center py-[8vh]  
+   <section id="services">
+     <div className=" min-h-screen w-full flex items-center max-md:items-start justify-center py-[8vh]  
     flex-col gap-20 max-md:gap-8  max-md:h-fit bg-white max-md:py-0  max-md:justify-start max-md:mt-[5vw] mb-[3vw]">
       {/* <SwiperService data={cardData}/> */}
       <div className="flex flex-col items-center justify-center max-md:flex max-md:items-center max-md:justify-center  ">
@@ -133,6 +134,7 @@ const Page2 = () => {
      </div>
       </div>
     </div>
+   </section>
   );
 };
 

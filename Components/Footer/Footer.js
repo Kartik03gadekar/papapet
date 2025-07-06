@@ -4,6 +4,8 @@ import Image from "next/image";
 const Footer = () => {
   return (
     <>
+
+    
       {/* Logo & Quick Info Section */}
       <div className="w-full  flex flex-col md:flex-row justify-between  gap-20  max-md:gap-5 px-2  max-md:flex max-md:flex-col max-md:items-center   mt-8">
       {/* Left Side - Image */}

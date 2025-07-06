@@ -662,7 +662,7 @@ useEffect(() => {
           </div>
 
           {user ? (
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-2 max-md:hidden ">
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -754,10 +754,14 @@ useEffect(() => {
             </button>
           </div>
 
-          <div className="flex flex-col gap-4 mt-4">
-            <button className="bg-[#8B5CF6] text-white px-4 py-2 rounded-full">
-              Connect Phantom Wallet
-            </button>
+          {user ? (
+            <div className="flex items-center gap-4 bg-gray-100 p-3 rounded-xl">
+              <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+              <div className="flex flex-col">
+                <span className="text-lg font-medium">Hi, {user.name}</span>
+              </div>
+            </div>
+          ) : (
             <Link
               href="/papapet/auth"
               onClick={closeMenu}
@@ -765,12 +769,38 @@ useEffect(() => {
             >
               Sign In / Sign Up
             </Link>
+          )}
+          <div className="flex flex-col gap-4">
+            <button className="bg-[#FFB828] text-white px-4 py-2 rounded-full">
+              Connect Phantom Wallet
+            </button>
+
+            {user && (
+              <button
+              onClick={() => {
+                setUser(null);
+                closeMenu();
+              }}
+              className="text-center text-white rounded-full px-4 py-2 bg-[#FFB828]"
+            >
+              Logout
+            </button>
+            )}
 
             <hr className="border-gray-300" />
 
             <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
               Home
             </Link>
+            {user && (
+              <Link
+                href="/papapet/dashboard"
+                className="text-2xl mb-2"
+                onClick={closeMenu}
+              >
+                Dashboard
+              </Link>
+            )}
             <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
               Services
             </Link>
@@ -786,6 +816,7 @@ useEffect(() => {
           </div>
         </div>
       )}
+
     </>
   );
 };

@@ -37,6 +37,7 @@ const Footer = dynamic(() => import("@/Components/Footer/Footer"), {
 });
 
 
+
 const Page = () => {
   const dispatch = useDispatch();
   const { homepage, imgLink } = useSelector((state) => state.others);
