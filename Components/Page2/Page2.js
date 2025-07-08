@@ -62,6 +62,52 @@ const Page2 = () => {
       color: "bg-purple-200" 
     },
   ];
+  const dataTwo = [
+    {
+     
+      img: "/ServiecesAccosaries.png",
+      link: "/papapet/food"
+     
+    },
+    {
+     
+      img: "/ServiecesAccosaries.png",
+      link: "/papapet/accessories"
+     
+    },
+    {
+     
+      img: "/ServiecesDoctor.png",
+      link: "/papapet/doctor"
+    
+    },
+    {
+    
+      link: "/papapet/walking",
+      img: "/ServiecesWalking.png"
+   
+    },
+
+    {
+     
+      link: "/papapet/daycare",
+      img: "/ServiecesDayCare.png"
+    
+    },
+
+    {
+     
+      link: "/papapet/boarding",
+      img: "/ServiecesBoarding.png"
+  
+    },
+    {
+      
+      link: "/papapet/grooming",
+      img: "/ServiecesGromming.png"
+     
+    }
+  ];
 
   return (
    <section id="services">
@@ -82,28 +128,25 @@ const Page2 = () => {
         </p>
       </div>
     
-      <div className="hidden  max-md:grid max-md:grid-cols-2 max-md:gap-4 max-md:w-screen max-md:px-4 max-md:py-2">
-      {data.map((i, index) => (
-        <Link key={index} href={i.link} className="w-full">
+     <div className="hidden  max-md:grid max-md:grid-cols-2 max-md:gap-4 max-md:w-screen max-md:px-4 max-md:py-2">
+      {dataTwo.map((i, index) => (
+        <Link key={index} href={i.link} className=" w-full">
           <div
-            className={`max-md:h-[24vh] max-md:flex max-md:flex-col max-md:items-center 
-              max-md:justify-center max-md:rounded-lg max-md:shadow-lg ${i.color}`}
+            className={`max-md:h-[24vh] max-md:flex max-md:flex-col max-md:items-center
+              max-md:justify-center max-md:rounded-lg max-md:shadow-lg`}
           >
-            <h1 className="max-md:font-semibold max-md:text-[4.5vw] max-md:pb-2 text-center">
-              {i.name}
-            </h1>
-            <img
+           <img
               src={i.img}
-              width={120}
-              height={100}
-              className="max-md:w-auto max-md:h-[12vh] object-contain"
+              width={400}
+              height={170}
+              className="max-md:w-auto max-md:h-[15vh] object-contain"
               alt={i.name}
             />
-          </div>
+            </div>
+          
         </Link>
       ))}
     </div>
-
       <div className="w-full max-md:hidden flex flex-wrap gap-10 items-center justify-center gap-y-20 max-md:grid-cols-1 
       place-content-center place-items-center">
 

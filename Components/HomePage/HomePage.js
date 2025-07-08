@@ -25,8 +25,8 @@ const HomePage = () => {
         flex flex-col gap-4 max-md:gap-2 max-md:w-full max-md:px-4 max-w-[700px]">
         
         <h1 className="text-5xl font-bold leading-tight text-[gilroy] max-md:text-[7vw]">
-          Making Pet's Life <span className="text-[#0D9899]">Better</span>
-          <br className="max-md:hidden" /> Together
+          Making Pet's Life 
+          <br className="max-md:hidden" /> <span className="text-[#0D9899]">Better</span> Together
         </h1>
 
      <p className="text-[4vw] leading-snug text-gray-600 max-w-[600px] w-full md:text-lg max-md:leading-relaxed md:pt-4 md:text-gray-700">
@@ -44,12 +44,7 @@ const HomePage = () => {
             <i className="ri-arrow-right-s-line bg-white rounded-full"></i>
           </button>
 
-          <Link
-            href={"/"}
-            className="border-b-2 font-semibold border-black max-md:hidden"
-          >
-            Schedule a call
-          </Link>
+          
         </div>
       </div>
 

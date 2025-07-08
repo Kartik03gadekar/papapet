@@ -38,7 +38,7 @@ const blogs = [
         Read our latest Blogs and Keep your Pets Super Healthy
       </p>
     </div>
-
+<h3 className='text-end'>View all </h3>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
       {blogs.map((blog) => (
         <div
@@ -53,10 +53,10 @@ const blogs = [
             className="w-full h-42 object-contain"
           />
           <div className="p-4">
-            <span className="max-md:text-[2.5vw] bg-[#0d9899] text-white px-2 py-1 rounded text-lg">
+            <span className="max-md:text-[2.5vw] bg-[#0d9899] text-white px-2 py-1 rounded text-sm">
               Pet Knowledge
             </span>
-            <h3 className="font-semibold text-lg mt-2">{blog.title}</h3>
+            <h3 className="font-semibold text-xl mt-2">{blog.title}</h3>
             <p className="text-gray-600 text-sm mt-1 max-md:hidden">{blog.description}</p>
           </div>
         </div>

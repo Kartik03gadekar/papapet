@@ -32,7 +32,7 @@ const Page = () => {
           {/* Mobile Heading */}
           <h1 className="max-md:block max-md:pb-1 hidden text-3xl leading-tight font-bold text-black text-center px-[4vw]">
             The Perfect
-            <span className="text-teal-400 block pb-1 pt-1">Pet Match,</span>
+            <span className="text-[#0D9899] block pb-1 pt-1">Pet Match,</span>
             Just a Click Away!
           </h1>
 

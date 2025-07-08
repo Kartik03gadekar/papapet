@@ -44,31 +44,7 @@ const Types = () => {
   return (
     <div className="bg-[#F4EEE1] flex flex-col gap-10 py-8 overflow-hidden">
       {/* Brand Types - Swiper */}
-      <section className="py-10 flex flex-col items-center px-8">
-        <h2 className="text-2xl font-bold text-center mb-6">Browse By Types</h2>
-        <div className="w-full h-40 mt-10 flex items-center justify-center">
-          <Swiper
-            slidesPerView={3}
-            spaceBetween={20}
-            navigation={isLargeScreen}
-            pagination={{ clickable: true }}
-            breakpoints={{
-              640: { slidesPerView: 3 },
-              1024: { slidesPerView: 4 },
-            }}
-            modules={[Pagination, Navigation]}
-            className={style.swiper}
-          >
-            {brands.map((brand, index) => (
-              <SwiperSlide key={index} className="flex items-center justify-center">
-                <div className="w-24 h-24 md:w-32 md:h-32 border-4 border-yellow-500 rounded-full flex items-center justify-center">
-                  <img src={brand.img} alt="Brand" width={128} height={128} className="object-contain" />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </section>
+   
 
    {/* Pet Type Section */}
 <div className="flex flex-col gap-8">
@@ -99,7 +75,9 @@ const Types = () => {
 
 
       {/* Products Grid */}
+      <h2 className="text-2xl font-bold text-center mt-2 mb-2">Featured Products</h2>
       <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-6 mt-6  max-w-6xl mx-auto px-[3vw] ">
+         
         {products.map((product, index) => (
           <div key={index} className="h-[17vw]  max-md:h-[60vw] max-md:py-2 w-full px-4 py-2 shadow-md rounded-lg bg-gray-100 flex flex-col items-center ">
             <h6 className="text-sm  max-md:text-[4vw] font-medium text-gray-700">PaPaPet</h6>

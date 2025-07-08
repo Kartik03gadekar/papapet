@@ -30,3 +30,74 @@
 #           ))}
 #         </Swiper>
 #       </div>
+
+
+
+
+
+# const dataTwo = [
+#     {
+     
+#       img: "/ServiecesAccosaries.png",
+#       link: "/papapet/food"
+     
+#     },
+#     {
+     
+#       img: "/ServiecesAccosaries.png",
+#       link: "/papapet/accessories"
+     
+#     },
+#     {
+     
+#       img: "/ServiecesDoctor.png",
+#       link: "/papapet/doctor"
+    
+#     },
+#     {
+    
+#       link: "/papapet/walking",
+#       img: "/ServiecesWalking.png"
+   
+#     },
+
+#     {
+     
+#       link: "/papapet/daycare",
+#       img: "/ServiecesDayCare.png"
+    
+#     },
+
+#     {
+     
+#       link: "/papapet/boarding",
+#       img: "/ServiecesBoarding.png"
+  
+#     },
+#     {
+      
+#       link: "/papapet/grooming",
+#       img: "/ServiecesGromming.png"
+     
+#     }
+#   ];
+
+#   <div className="hidden  max-md:grid max-md:grid-cols-2 max-md:gap-4 max-md:w-screen max-md:px-4 max-md:py-2">
+#       {dataTwo.map((i, index) => (
+#         <Link key={index} href={i.link} className=" w-full">
+#           <div
+#             className={`max-md:h-[24vh] max-md:flex max-md:flex-col max-md:items-center max-md:bg-green-300 
+#               max-md:justify-center max-md:rounded-lg max-md:shadow-lg`}
+#           >
+#            <img
+#               src={i.img}
+#               width={300}
+#               height={150}
+#               className="max-md:w-auto max-md:h-[15vh] object-contain"
+#               alt={i.name}
+#             />
+#             </div>
+          
+#         </Link>
+#       ))}
+#     </div>

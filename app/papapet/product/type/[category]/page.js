@@ -50,14 +50,14 @@ const Page = () => {
    
    <div className='pt-[2vw]'>
    {categoryData ? (
-        <div className="  w-full h-[12vw]  flex items-center justify-center pl-[10vw] gap-[4vw]  ">
+        <div className="  w-full h-[12vw]  flex items-center justify-center  gap-[4vw]  ">
           <div className='flex flex-col items-center gap-[1vw]  '> 
           <h1 className="text-3xl font-bold">{categoryData.title}</h1>
           <p className='text-[1.2vw] '>{categoryData.description}</p>
           <button className='border-2 border-[#FEBC28]  rounded-full px-[2vw] py-[0.4vw] font-bold '>{categoryData.name} </button>
           </div>
          
-          <img src={categoryData.img} alt={categoryData.name} className="w-[10vw]" />
+         
          
         </div>
       ) : (

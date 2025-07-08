@@ -27,7 +27,7 @@ const page = () => {
 
           <h1 className="text-5xl font-bold leading-tight gilroy max-md:text-3xl max-md:pl-0">
             Let Your  <span className="text-[#0D9899]">Pets</span> <br />
-          Enjoy Some Play Time<span className="text-[#FFAD22]">Pets</span>
+          Enjoy Some Play Time Pets
           </h1>
 
           <p className="text-lg w-[80%] max-md:w-full max-md:text-base max-md:px-0">
