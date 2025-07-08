@@ -138,17 +138,7 @@ const Auth = () => {
 
           {isSignup ? <Register /> : <Login />}
 
-          <p className="text-center text-gray-500 text-sm mt-2">Or Continue With</p>
-
-          {/* Social Login */}
-          <div className="flex justify-center mt-2 space-x-4">
-            <button className="p-2 bg-gray-200 rounded-full">
-              <img src="/google-icon.png" alt="Google" className="h-6 w-6" />
-            </button>
-            <button className="p-2 bg-gray-200 rounded-full">
-              <img src="/facebook-icon.png" alt="Facebook" className="h-6 w-6" />
-            </button>
-          </div>
+         
         </div>
       </div>
 
