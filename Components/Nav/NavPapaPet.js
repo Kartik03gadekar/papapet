@@ -513,7 +513,13 @@
 
 // // }
 
-
+// {/* <div
+        // className={`w-full  top-0 left-0 z-40 font-semibold text-black flex items-center px-16 justify-between p-5 flex-col 
+          // transition-transform duration-300 max-md:px-5 ${
+          // showNavbar ? "translate-y-0" : "-translate-y-full"
+        // } bg-white `}
+        // style={{ height: "80px" }} // fixed height for spacing
+      // ></div> */}
 
 "use client";
 
@@ -532,21 +538,23 @@ import Link from "next/link";
 import PhantomConnect from "../WalletProvider";
 import { checkUser } from "@/store/Action/auth";
 import { useDispatch, useSelector } from "react-redux";
+import Search from "@/Components/Search/Search";
 
 const NavPapaPet = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const prevScrollY = useRef(0);
   const circle = useRef(null);
   const mobileCircle = useRef(null);
- const { user } = useSelector((state) => state.auth);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const mobileMenuRef = useRef(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-const dispatch = useDispatch();
+  const [searchOpen, setSearchOpen] = useState(false);
 
+  const { user } = useSelector((state) => state.auth);
 
-  
+  const dispatch = useDispatch();
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -565,9 +573,7 @@ const dispatch = useDispatch();
     setMenuVisible(true);
     setMobileMenuOpen(true);
   };
-useEffect(() => {
-    dispatch(checkUser());
-   }, []);
+
   const closeMenu = () => {
     setMobileMenuOpen(false);
   };
@@ -583,31 +589,26 @@ useEffect(() => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ✅ Unified scroll logic
+  useEffect(() => {
+    dispatch(checkUser());
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const isMobile = window.innerWidth < 768;
 
-      if (!circle.current || !mobileCircle.current) return;
+      if (!mobileCircle.current) return;
 
-      if (currentScrollY === 0) {
-        // At top
-        setShowNavbar(true);
-        gsap.to(circle.current, { top: "-210%", duration:0.8 });
+      if (currentScrollY === 0 || currentScrollY < prevScrollY.current) {
+        // Show the orange circle
+        if (isMobile) {
+          gsap.to(mobileCircle.current, { y: "0%", duration: 0.6 });
+        }
       } else if (currentScrollY > prevScrollY.current) {
-        // Scroll down
-        setShowNavbar(false);
-        gsap.to(circle.current, { top: "-210%", duration: 0.8 });
+        // Hide on scroll down
         if (isMobile) {
           gsap.to(mobileCircle.current, { y: "-100%", duration: 0.8 });
-        }
-      } else {
-        // Scroll up
-        setShowNavbar(true);
-        gsap.to(circle.current, { top: "-210%",duration:0.8 });
-        if (isMobile) {
-          gsap.to(mobileCircle.current, { y: "-100%", duration: 0.6 });
         }
       }
 
@@ -636,15 +637,20 @@ useEffect(() => {
     }
   }, [mobileMenuOpen]);
 
+  // Helper for logout
+  const handleLogout = () => {
+    window.location.reload();
+  };
+
   return (
     <>
-
+      <Search open={searchOpen} onClose={() => setSearchOpen(false)} />
       <div
         className={`w-full  top-0 left-0 z-40 font-semibold text-black flex items-center px-16 justify-between p-5 flex-col 
-          transition-transform duration-300 max-md:px-5 ${
+          // transition-transform duration-300 max-md:px-5 ${
           showNavbar ? "translate-y-0" : "-translate-y-full"
-        } bg-white `}
-        style={{ height: "80px" }} // fixed height for spacing
+        } bg-white`}
+        style={{ height: "80px" }}
       >
         <div className="w-full flex items-center justify-between">
           <Link href="/">
@@ -653,7 +659,7 @@ useEffect(() => {
               <h1 className="text-2xl font-semibold text-[#0D9899]">PaPaPet</h1>
             </div>
           </Link>
-          <div className="flex items-center justify-center gap-7 relative z-20 max-md:hidden">
+          <div className="flex items-center justify-center gap-5 relative z-20 max-md:hidden">
             <Link href="/">Home</Link>
             <Link href="/">Services</Link>
             <Link href="/">Pet Supplies</Link>
@@ -661,83 +667,99 @@ useEffect(() => {
             <Link href="/">About Us</Link>
           </div>
 
-          {user ? (
-            <div className="flex items-center justify-center gap-2 max-md:hidden ">
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="User Avatar"
-                      src="/static/images/avatar/2.jpg"
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  keepMounted
-                  transformOrigin={{ vertical: "top", horizontal: "right" }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {settings.map((setting) => (
-                    <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                      <Link href={setting.link}>
-                        <Typography textAlign="center">{setting.name}</Typography>
-                      </Link>
+          {/* Desktop right controls: search, user (no hamburger menu on desktop) */}
+          <div className="flex items-center gap-2">
+            {/* Desktop Search Icon */}
+            <button
+              className="hidden md:flex text-2xl text-[#0D9899] p-2 hover:bg-[#FFAD22]/20 rounded-full transition-all duration-300"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Open search"
+              type="button"
+            >
+              <i className="ri-search-line"></i>
+            </button>
+            {user ? (
+              <div className="flex items-center justify-center gap-2 max-md:hidden">
+                <Box sx={{ flexGrow: 0 }}>
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar
+                        alt="User Avatar"
+                        src="/static/images/avatar/2.jpg"
+                      />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    keepMounted
+                    transformOrigin={{ vertical: "top", horizontal: "right" }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    {settings.map((setting) => (
+                      <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                        <Link href={setting.link}>
+                          <Typography textAlign="center">
+                            {setting.name}
+                          </Typography>
+                        </Link>
+                      </MenuItem>
+                    ))}
+                    <MenuItem key="Logout" onClick={handleLogout}>
+                      <Typography textAlign="center">Logout</Typography>
                     </MenuItem>
-                  ))}
-                  <MenuItem key="Logout" onClick={() => setUser(null)}>
-                    <Typography textAlign="center">Logout</Typography>
-                  </MenuItem>
-                </Menu>
-              </Box>
-              <h1 className="font-semibold text-black">Hi, {user?.name}</h1>
-            </div>
-          ) : (
-            <div className="flex">
-              <Link
-                href="/papapet/auth"
-                className="max-md:hidden text-lg flex items-center justify-center gap-2"
-              >
-                Sign in
-                <i className="ri-arrow-right-circle-fill text-lg"></i>
-              </Link>
-            </div>
-          )}
+                  </Menu>
+                </Box>
+                <h1 className="font-semibold text-black">Hi, {user?.name}</h1>
+              </div>
+            ) : (
+              <div className="flex">
+                <Link
+                  href="/papapet/auth"
+                  className="max-md:hidden text-lg flex items-center justify-center gap-2"
+                >
+                  Sign in
+                  <i className="ri-arrow-right-circle-fill text-lg"></i>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         <div
           ref={circle}
           className="desktop w-[20vw] h-[20vw] absolute -top-[250%] left-1/2 -translate-x-1/2 
              bg-[#FFAD22] rounded-full flex items-center justify-center gap-[2vw]"
-        >
-        
-        </div>
+        ></div>
 
         <div
           ref={mobileCircle}
           className="md:hidden mobile absolute -top-[35vw] -right-[25vw] w-[60vw] h-[60vw] bg-[#FFAD22] rounded-full 
   flex items-center justify-center gap-6 z-10 pr-20 pt-[30%]"
         >
-          <div className="md:hiddenflex items-center gap-4 vsmall">
-            <button className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300">
+          <div className="flex items-center pl-3">
+            <button
+              className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Open search"
+              type="button"
+            >
               <i className="ri-search-line"></i>
             </button>
             <button
               onClick={openMenu}
               className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
+              aria-label="Open menu"
+              type="button"
             >
               <i className="ri-menu-4-fill"></i>
             </button>
           </div>
         </div>
       </div>
-
-      {/* ✅ Add pt-[80px] to your content wrapper */}
-      {/* <div className="pt-[80px]">Your page content here</div> */}
 
       {menuVisible && (
         <div
@@ -777,14 +799,14 @@ useEffect(() => {
 
             {user && (
               <button
-              onClick={() => {
-                setUser(null);
-                closeMenu();
-              }}
-              className="text-center text-white rounded-full px-4 py-2 bg-[#FFB828]"
-            >
-              Logout
-            </button>
+                onClick={() => {
+                  handleLogout();
+                  closeMenu();
+                }}
+                className="text-center text-white rounded-full px-4 py-2 bg-[#FFB828]"
+              >
+                Logout
+              </button>
             )}
 
             <hr className="border-gray-300" />
@@ -816,7 +838,6 @@ useEffect(() => {
           </div>
         </div>
       )}
-
     </>
   );
 };
