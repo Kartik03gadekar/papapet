@@ -10,7 +10,10 @@ let socket;
 const getSocket = () => {   
   if (!socket) {
     // socket = io("http://localhost:5001/", { path: "/socket.io" });
-    socket = io("https://api.mycozee.in/", {
+    // socket = io("https://api.mycozee.in/", {
+    //   path: "/socket.io",
+    // });
+     socket = io("https://papapetbackend-1.onrender.com/api/v1/", {
       path: "/socket.io",
     });
   }
