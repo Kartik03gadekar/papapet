@@ -13,7 +13,7 @@ const getSocket = () => {
     // socket = io("https://api.mycozee.in/", {
     //   path: "/socket.io",
     // });
-     socket = io("https://papapetbackend-1.onrender.com/api/v1/", {
+     socket = io("https://papapetbackend-1.onrender.com", {
       path: "/socket.io",
     });
   }
