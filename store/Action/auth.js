@@ -7,15 +7,17 @@ export const checkUser = ()=>async(dispatch)=>{
     dispatch(isUserRequest());
     try {
         const {data} = await axios.get("/user/user");
+        console.log(data);
+        
     dispatch(isUser(data));
 
     } catch (error) {
-    dispatch(isUserRequest());
+      dispatch(isUserFail());
         
     }
 }
 export const registerUser = (info) => async (dispatch) => {
- 
+  dispatch(isUserRequest());
   try {
     const { data } = await axios.post("/user/register", info);
   } catch (error) {
@@ -25,6 +27,8 @@ export const loginUser = (info) => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.post("/user/login", info);
+    console.log(data);
+    
     dispatch(isUser(data));
   } catch (error) {
     dispatch(isUserFail());
