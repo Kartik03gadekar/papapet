@@ -14,6 +14,7 @@ const getSocket = () => {
     //   path: "/socket.io",
     // });
      socket = io("https://papapetbackend-1.onrender.com", {
+        credentials: true,
       path: "/socket.io",
     });
   }
