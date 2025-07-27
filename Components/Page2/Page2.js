@@ -114,36 +114,42 @@ const Page2 = () => {
      <div className=" min-h-screen w-full flex items-center max-md:items-start justify-center py-[8vh]  
     flex-col gap-20 max-md:gap-8  max-md:h-fit bg-white max-md:py-0  max-md:justify-start max-md:mt-[5vw] mb-[3vw]">
       {/* <SwiperService data={cardData}/> */}
-      <div className="flex flex-col items-center justify-center max-md:flex max-md:items-center max-md:justify-center  ">
-        <div className=" flex items-end justify-center gap-5 max-md:flex max-md:items-center max-md:justify-center max-md:ml-[18vw] ">
-          <h1 className="text-5xl text-[gilroy] font-semibold   max-md:text-4xl">
-            Our   <span  className="text-[#0D9899]" >Services </span>
-          </h1>
-          <img src="/serviceDog.png" className="max-md:h-[15vw] " alt="" />
+      <div className="flex flex-col items-center justify-center w-full">
+        <div className="flex items-center justify-center gap-5 w-full mt-20">
+          <div className="flex items-center justify-center gap-5 mx-auto">
+            <h1 className="text-5xl text-[gilroy] font-semibold max-md:text-4xl text-center">
+              Our <span className="text-[#0D9899]">Services </span>
+            </h1>
+            <img src="/serviceDog.png" className="max-md:h-[15vw]" alt="" />
+          </div>
         </div>
-
-        <p className="text-center max-md:hidden ">
+        <p className="text-center text-black max-md:hidden">
           Discover the perfect pet heating solutions to keep your beloved <br />
           companions cozy and content all year round.
         </p>
       </div>
     
-     <div className="hidden  max-md:grid max-md:grid-cols-2 max-md:gap-4 max-md:w-screen max-md:px-4 max-md:py-2">
+
+    {/*currently using */}
+     <div className="w-full flex flex-wrap md:hidden gap-4 px-0 py-0">
       {dataTwo.map((i, index) => (
-        <Link key={index} href={i.link} className=" w-full">
-          <div
-            className={`max-md:h-[24vh] max-md:flex max-md:flex-col max-md:items-center
-              max-md:justify-center max-md:rounded-lg max-md:shadow-lg`}
-          >
-           <img
-              src={i.img}
-              width={400}
-              height={170}
-              className="max-md:w-auto max-md:h-[15vh] object-contain"
-              alt={i.name}
-            />
+        <Link
+          key={index}
+          href={i.link}
+          className={`
+            flex-[1_1_100%] min-w-[100%] max-w-full
+            sm:flex-[1_1_48%] sm:min-w-[48%] sm:max-w-[48%]
+          `}
+        >
+          <div className="flex items-center justify-center rounded-lg h-[24vh] w-full p-3 m-0 overflow-hidden">
+            <div className="w-full h-full rounded-lg">
+              <img
+                src={i.img}
+                className="w-full h-full object-contain"
+                alt={i.name}
+              />
             </div>
-          
+          </div>
         </Link>
       ))}
     </div>
@@ -151,29 +157,35 @@ const Page2 = () => {
       place-content-center place-items-center">
 
 
-     <div className="w-screen flex  items-center justify-center gap-40 shrink-0 flex-wrap ">
-     {data?.map((i, index) => (
-          <Link href={`${i.link}`}>
-            <div className="service  cursor-pointer h-[15vw] w-[15vw]   items-center relative gap-1    rounded-full  justify-center flex flex-col 
-            text-black border-2 shrink-0 hover:bg-[#0D9899] hover:text-white duration-300 ease-in-out max-md:w-[60vw]">
-              <img
-                className="h-[7vw] W-[7vw]  object-contain absolute   -top-2 max-md:h-1/2 w-4/5 left-1/2 -translate-x-1/2 "
-                src={i?.img}
-                alt=""
-              />
-              {/**/}
-              <div className="h-32 max-md:h-16 w-full shrink-0 bg-transparent rounded-full   "></div>
-              <h1 className="font-semibold text-[1.2vw] pb-[4vw] max-md:text-[1vw]  max-lg:pb-[6vw] max-lg:text-[1vw] max-md:pb-[5vw]">{i?.name}</h1>
-              {/* <p className="text-center text-[.9vw] max-md:text-[1.5vw]">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque
-                excepturi delectus reiciendis consequuntur ducimus dicta.
-              </p>
-              <button className="bg-white border-[1px] border-black text-black px-8 w-[80%] font-semibold rounded-md p-2 max-md:text-sm">
-                Get Service
-              </button> */}
-            </div>
-          </Link>
-        ))}
+     <div className="w-screen flex items-center justify-center gap-40 shrink-0 flex-wrap">
+       {data?.map((i, index) => (
+         <Link href={`${i.link}`} key={index}>
+           <div className="service cursor-pointer h-[15vw] w-[15vw] items-center relative gap-1 rounded-full justify-center flex flex-col 
+             text-black border-2 shrink-0 hover:bg-[#0D9899] hover:text-white duration-300 ease-in-out 
+             max-lg:h-[22vw] max-lg:w-[22vw] max-md:w-[60vw] max-md:h-[32vw]">
+             <img
+               className="h-[7vw] w-[7vw] object-contain absolute -top-2 max-lg:h-[10vw] max-lg:w-[10vw] max-md:h-[16vw] max-md:w-[40vw] left-1/2 -translate-x-1/2"
+               src={i?.img}
+               alt=""
+             />
+             <div className="h-32 max-lg:h-40 max-md:h-16 w-full shrink-0 bg-transparent rounded-full"></div>
+             <h1
+               className="
+                 font-semibold 
+                 text-[1.2vw] 
+                 pb-[4vw] 
+                 max-lg:text-[2vw] 
+                 max-lg:pb-[6vw] 
+                 max-md:text-[4vw] 
+                 max-md:pb-[5vw] 
+                 text-center
+               "
+             >
+               {i?.name}
+             </h1>
+           </div>
+         </Link>
+       ))}
      </div>
       </div>
     </div>

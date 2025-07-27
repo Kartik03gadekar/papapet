@@ -72,10 +72,8 @@ const Footer = () => {
 
           {/* Learn More */}
           <nav className="space-y-2">
-            <h2 className="text-lg font-bold">Learn More</h2>
-            <a className="block transition duration-300 ease-in-out hover:text-white max-md:text-white">Privacy</a>
-            <a className="block transition duration-300 ease-in-out hover:text-white max-md:text-white">Security</a>
-            <a className="block transition duration-300 ease-in-out hover:text-white max-md:text-white">Terms</a>
+            <h2 className="text-lg font-bold mb-2">Learn More</h2>
+            <a href = "/papapet/termsandconditions" className="block transition duration-300 ease-in-out hover:text-white max-md:text-white">Terms and Conditions</a>
           </nav>
 
           {/* Social Links */}
