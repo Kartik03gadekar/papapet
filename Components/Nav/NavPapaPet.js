@@ -506,14 +506,6 @@
 
 // // }
 
-// {/* <div
-// className={`w-full  top-0 left-0 z-40 font-semibold text-black flex items-center px-16 justify-between p-5 flex-col
-// transition-transform duration-300 max-md:px-5 ${
-// showNavbar ? "translate-y-0" : "-translate-y-full"
-// } bg-white `}
-// style={{ height: "80px" }} // fixed height for spacing
-// ></div> */}
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -533,9 +525,7 @@ import PhantomConnect from "../WalletProvider";
 import { checkUser } from "@/store/Action/auth";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "@/Components/Search/Search";
-import { CiShoppingBasket } from "react-icons/ci";
 
-import { CiSearch } from "react-icons/ci";
 const NavPapaPet = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const prevScrollY = useRef(0);
@@ -659,7 +649,7 @@ const NavPapaPet = () => {
               <h1 className="text-2xl font-semibold text-[#0D9899]">PaPaPet</h1>
             </div>
           </Link>
-          <div className="flex items-center justify-center gap-5 relative z-20 max-md:hidden pl-12 text-xs lg:text-sm">
+          <div className="flex items-center justify-center gap-5 relative z-20 max-md:hidden">
             <Link href="/">Home</Link>
             <Link href="/">Services</Link>
             <Link href="/">Pet Supplies</Link>
@@ -668,25 +658,27 @@ const NavPapaPet = () => {
           </div>
 
           {/* Desktop right controls: search, cart, user (no hamburger menu on desktop) */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             {/* Desktop Search Icon */}
             <button
-              className="hidden md:flex text-2xl text-[#0D9899]  hover:bg-[#FFAD22]/20 rounded-full transition-all duration-300"
+              className="hidden md:flex text-2xl text-[#0D9899] p-2 hover:bg-[#FFAD22]/20 rounded-full transition-all duration-300"
               onClick={() => setSearchOpen(true)}
               aria-label="Open search"
               type="button"
             >
-              <CiSearch/>
+              <i className="ri-search-line"></i>
             </button>
             {/* Desktop Cart Icon */}
-            <button
-              className="hidden md:flex text-2xl text-[#0D9899] hover:bg-[#FFAD22]/20 rounded-full transition-all duration-300"
-              onClick={handleCartClick}
-              aria-label="Open cart"
-              type="button"
-            >
-             <CiShoppingBasket/>
-            </button>
+            {user && (
+              <button
+                className="hidden md:flex text-2xl text-[#0D9899] p-2 hover:bg-[#FFAD22]/20 rounded-full transition-all duration-300"
+                onClick={handleCartClick}
+                aria-label="Open cart"
+                type="button"
+              >
+                <i className="ri-shopping-cart-2-line"></i>
+              </button>
+            )}
             {user ? (
               <div className="flex items-center justify-center gap-2 max-md:hidden">
                 <Box sx={{ flexGrow: 0 }}>
@@ -709,10 +701,7 @@ const NavPapaPet = () => {
                     onClose={handleCloseUserMenu}
                   >
                     {settings.map((setting) => (
-                      <MenuItem
-                        key={setting.name}
-                        onClick={handleCloseUserMenu}
-                      >
+                      <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
                         <Link href={setting.link}>
                           <Typography textAlign="center">
                             {setting.name}
@@ -731,7 +720,7 @@ const NavPapaPet = () => {
               <div className="flex">
                 <Link
                   href="/papapet/auth"
-                  className="max-md:hidden text-sm lg:text-lg flex items-center justify-center gap-2"
+                  className="max-md:hidden text-lg flex items-center justify-center gap-2"
                 >
                   Sign in
                   <i className="ri-arrow-right-circle-fill text-lg"></i>
@@ -743,7 +732,7 @@ const NavPapaPet = () => {
 
         <div
           ref={circle}
-          className="desktop w-[30vw] h-[30vw] absolute md:-top-[130%] lg:-top-[250%] xl:-top-[380%] 2xl:-top-[550%] left-1/2 -translate-x-1/2 
+          className="desktop w-[20vw] h-[20vw] absolute -top-[250%] left-1/2 -translate-x-1/2 
              bg-[#FFAD22] rounded-full flex items-center justify-center gap-[2vw]"
         ></div>
 
@@ -762,14 +751,16 @@ const NavPapaPet = () => {
               <i className="ri-search-line"></i>
             </button>
             {/* Mobile Cart Icon */}
-            <button
-              className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
-              onClick={handleCartClick}
-              aria-label="Open cart"
-              type="button"
-            >
-              <i className="ri-shopping-cart-2-line"></i>
-            </button>
+            {user && (
+              <button
+                className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
+                onClick={handleCartClick}
+                aria-label="Open cart"
+                type="button"
+              >
+                <i className="ri-shopping-cart-2-line"></i>
+              </button>
+            )}
             <button
               onClick={openMenu}
               className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
@@ -814,9 +805,9 @@ const NavPapaPet = () => {
             </Link>
           )}
           <div className="flex flex-col gap-4">
-            {/* <button className="bg-[#FFB828] text-white px-4 py-2 rounded-full">
+            <button className="bg-[#FFB828] text-white px-4 py-2 rounded-full">
               Connect Phantom Wallet
-            </button> */}
+            </button>
 
             {user && (
               <button
@@ -855,9 +846,6 @@ const NavPapaPet = () => {
             </Link>
             <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
               About Us
-            </Link>
-            <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
-              Terms and Conditions.
             </Link>
           </div>
         </div>
