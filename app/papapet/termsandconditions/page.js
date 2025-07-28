@@ -8,7 +8,9 @@ const terms = [
     title: "1. Acceptance of Terms",
     content: (
       <>
-        By accessing or using PaPaPet, you agree to comply with and be legally bound by these Terms and our Privacy Policy. If you do not agree with any part of these terms, please do not use our services.
+        By accessing or using PaPaPet, you agree to comply with and be legally
+        bound by these Terms and our Privacy Policy. If you do not agree with
+        any part of these terms, please do not use our services.
       </>
     ),
   },
@@ -18,12 +20,16 @@ const terms = [
       <>
         <ul className="list-disc pl-5 mt-1 space-y-1">
           <li>Sale of pet food, accessories, and wellness products</li>
-          <li>Booking of services such as grooming, walking, vet visits, and boarding</li>
+          <li>
+            Booking of services such as grooming, walking, vet visits, and
+            boarding
+          </li>
           <li>AI-based health reports and consultations</li>
           <li>Same-day delivery and home visits (in select locations)</li>
         </ul>
         <p className="mt-2 text-neutral-500 text-xs">
-          We reserve the right to modify or discontinue services without prior notice.
+          We reserve the right to modify or discontinue services without prior
+          notice.
         </p>
       </>
     ),
@@ -32,7 +38,9 @@ const terms = [
     title: "3. User Account",
     content: (
       <ul className="list-disc pl-5 space-y-1">
-        <li>To use certain features, you must register and create an account:</li>
+        <li>
+          To use certain features, you must register and create an account:
+        </li>
         <ul className="list-[circle] pl-5 space-y-1">
           <li>Provide accurate, current, and complete information</li>
           <li>Maintain the confidentiality of your account credentials</li>
@@ -77,7 +85,8 @@ const terms = [
         <div>
           <span className="font-medium">D. Data Security</span>
           <p className="text-neutral-700">
-            We use encryption, secure servers, and access controls. However, 100% internet security cannot be guaranteed.
+            We use encryption, secure servers, and access controls. However,
+            100% internet security cannot be guaranteed.
           </p>
         </div>
         <div>
@@ -91,7 +100,8 @@ const terms = [
             </ul>
           </ul>
           <p className="mt-1 text-xs text-neutral-500">
-            Contact: <span className="font-mono">papapetofficial03@gmail.com</span>
+            Contact:{" "}
+            <span className="font-mono">papapetofficial03@gmail.com</span>
           </p>
         </div>
       </div>
@@ -147,16 +157,15 @@ const terms = [
     title: "8. Intellectual Property",
     content: (
       <>
-        All content is owned by PaPaPet. Do not reproduce without written permission.
+        All content is owned by PaPaPet. Do not reproduce without written
+        permission.
       </>
     ),
   },
   {
     title: "9. Third-Party Services",
     content: (
-      <>
-        We’re not responsible for third-party policies or performance.
-      </>
+      <>We’re not responsible for third-party policies or performance.</>
     ),
   },
   {
@@ -190,7 +199,8 @@ const terms = [
     title: "12. Governing Law",
     content: (
       <>
-        Terms governed by Indian law. Disputes will be handled in <span className="font-mono font-bold">Bhopal,MP</span>.
+        Terms governed by Indian law. Disputes will be handled in{" "}
+        <span className="font-mono font-bold">Bhopal,MP</span>.
       </>
     ),
   },
@@ -209,7 +219,9 @@ const terms = [
         </div>
         <div>
           <span className="font-medium">Address:</span>{" "}
-          <span className="font-bold">Awadthpuri phase 2 , Hn no 52,53 , Bhopal</span>
+          <span className="font-bold">
+            Awadthpuri phase 2 , Hn no 52,53 , Bhopal
+          </span>
         </div>
       </div>
     ),
@@ -219,32 +231,33 @@ const terms = [
 export default function TermsAndConditionsPage() {
   return (
     <>
-      <NavPapaPet />
-      <div className="flex flex-col items-center justify-center py-10 pt-40 px-4">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-[#FFAD22] mb-2 text-center tracking-tight">
-          Terms & Conditions
-        </h1>
-        <p className="text-neutral-500 mb-8 text-sm sm:text-base text-center max-w-xl mx-auto">
-          Please read these terms carefully before using PaPaPet. By accessing
-          or using our website, app, or services, you agree to these terms.
-        </p>
-        <main className="w-full flex flex-col items-center">
-          <div className="w-full max-w-5xl bg-white rounded-2xl shadow border border-neutral-200 px-6 pt-2 sm:p-10">
-            <div className="divide-y divide-neutral-200">
-              {terms.map((section, idx) => (
-                <section key={section.title} className="py-5">
-                  <h2 className="text-base sm:text-lg font-medium text-[#FFAD22] mb-1 tracking-tight">
-                    {section.title}
-                  </h2>
-                  <div className="text-neutral-700 text-sm sm:text-base leading-relaxed ">
-                    {section.content}
-                  </div>
-                </section>
-              ))}
+        <NavPapaPet />
+        <div className="flex flex-col items-center justify-center py-10 max-md:pt-30 pt-[5%] px-4 max-md:overflow-hidden">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-[#FFAD22] mb-2 text-center tracking-tight">
+            Terms & Conditions
+          </h1>
+          <p className="text-neutral-500 mb-8 text-sm sm:text-base text-center max-w-xl mx-auto">
+            Please read these terms carefully before using PaPaPet. By accessing
+            or using our website, app, or services, you agree to these terms.
+          </p>
+          <main className="w-full flex flex-col items-center">
+            <div className="w-full max-w-5xl bg-white rounded-2xl shadow border border-neutral-200 px-6 pt-2 sm:p-10">
+              <div className="divide-y divide-neutral-200">
+                {terms.map((section, idx) => (
+                  <section key={section.title} className="py-5">
+                    <h2 className="text-base sm:text-lg font-medium text-[#FFAD22] mb-1 tracking-tight">
+                      {section.title}
+                    </h2>
+                    <div className="text-neutral-700 text-sm sm:text-base leading-relaxed ">
+                      {section.content}
+                    </div>
+                  </section>
+                ))}
+              </div>
             </div>
-          </div>
-        </main>
-      </div>
+          </main>
+        </div>
+      
     </>
   );
 }

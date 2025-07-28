@@ -21,120 +21,156 @@ const Page2 = () => {
       name: "Food ",
       img: "/FoodnAcces.png",
       link: "/papapet/food",
-      color: "bg-orange-200",
+      color: "bg-orange-200" 
     },
     {
       name: "Accessories",
       img: "/FoodnAcces.png",
       link: "/papapet/accessories",
-      color: "bg-gray-200",
+      color: "bg-gray-200" 
     },
     {
       name: "Veteniary Doctor",
       img: "/doctorPapaper.png",
       link: "/papapet/doctor",
-      color: "bg-green-200",
+      color: "bg-green-200" 
     },
     {
       name: "Pet Walking",
       link: "/papapet/walking",
       img: "/walkingPet.png",
-      color: "bg-red-200",
+    color: "bg-red-200" 
     },
 
     {
       name: "Pet DayCare",
       link: "/papapet/daycare",
       img: "/dayCare.png",
-      color: "bg-lime-200",
+      color: "bg-lime-200" 
     },
 
     {
       name: "Pet Boarding",
       link: "/papapet/boarding",
       img: "/Boarding.png",
-      color: "bg-orange-300",
+      color: "bg-orange-300"
     },
     {
       name: "Pet Grooming",
       link: "/papapet/grooming",
       img: "/grooming.png",
-      color: "bg-purple-200",
+      color: "bg-purple-200" 
     },
+  ];
+  const dataTwo = [
+    {
+     
+      img: "/ServiecesAccosaries.png",
+      link: "/papapet/food"
+     
+    },
+    {
+     
+      img: "/ServiecesAccosaries.png",
+      link: "/papapet/accessories"
+     
+    },
+    {
+     
+      img: "/ServiecesDoctor.png",
+      link: "/papapet/doctor"
+    
+    },
+    {
+    
+      link: "/papapet/walking",
+      img: "/ServiecesWalking.png"
+   
+    },
+
+    {
+     
+      link: "/papapet/daycare",
+      img: "/ServiecesDayCare.png"
+    
+    },
+
+    {
+     
+      link: "/papapet/boarding",
+      img: "/ServiecesBoarding.png"
+  
+    },
+    {
+      
+      link: "/papapet/grooming",
+      img: "/ServiecesGromming.png"
+     
+    }
   ];
 
   return (
-    <section id = "services">
-      <div
-        className="min-h-screen w-full flex items-center max-md:items-start justify-center py-[8vh]  
-    flex-col gap-20 max-md:gap-8  max-md:h-fit bg-white max-md:py-0  max-md:justify-start max-md:mt-[5vw] mb-[3vw]"
-      >
+    <section id="services">
+      <div className="min-h-screen w-full flex items-center max-md:items-start justify-center py-[8vh]  
+        flex-col gap-20 max-md:gap-8  max-md:h-fit bg-white max-md:py-0  max-md:justify-start max-md:mt-[5vw] mb-[3vw]">
         {/* <SwiperService data={cardData}/> */}
-        <div className="flex flex-col items-center justify-center max-md:flex max-md:items-center max-md:justify-center  ">
-          <div className=" flex items-end justify-center gap-5 max-md:flex max-md:items-center max-md:justify-center max-md:ml-[18vw] ">
-            <h1 className="text-5xl text-[gilroy] font-semibold   max-md:text-4xl">
+        <div className="flex flex-col items-center justify-center max-md:flex max-md:items-center max-md:justify-center">
+          <div className="flex items-end justify-center gap-5 max-md:flex max-md:items-center max-md:justify-center max-md:ml-[18vw]">
+            <h1 className="text-5xl text-[gilroy] font-semibold max-md:text-4xl">
               Our <span className="text-[#0D9899]">Services </span>
             </h1>
-            <img src="/serviceDog.png" className="max-md:h-[15vw] " alt="" />
+            <img src="/serviceDog.png" className="max-md:h-[15vw]" alt="" />
           </div>
 
-          <p className="text-center max-md:hidden ">
-            Discover the perfect pet heating solutions to keep your beloved{" "}
-            <br />
+          <p className="text-center max-md:hidden">
+            Discover the perfect pet heating solutions to keep your beloved <br />
             companions cozy and content all year round.
           </p>
         </div>
 
-        <div className="hidden  max-md:grid max-md:grid-cols-2 max-md:gap-4 max-md:w-screen max-md:px-4 max-md:py-2">
-          {data.map((i, index) => (
+        <div className="hidden max-md:grid max-md:grid-cols-2 max-md:gap-4 max-md:w-screen max-md:px-4 max-md:py-2">
+          {dataTwo.map((i, index) => (
             <Link key={index} href={i.link} className="w-full">
               <div
-                className={`max-md:h-[24vh] max-md:flex max-md:flex-col max-md:items-center 
-              max-md:justify-center max-md:rounded-lg max-md:shadow-lg ${i.color}`}
+                className={`max-md:h-[22vh] max-md:flex max-md:flex-col max-md:items-center
+                  max-md:justify-center max-md:rounded-lg max-md:shadow-lg`}
               >
-                <h1 className="max-md:font-semibold max-md:text-[4.5vw] max-md:pb-2 text-center">
-                  {i.name}
-                </h1>
                 <img
                   src={i.img}
-                  width={120}
-                  height={100}
-                  className="max-md:w-auto max-md:h-[12vh] object-contain"
+                  width={450}
+                  height={300}
+                  className="max-md:w-auto max-md:h-[15vh] object-contain"
                   alt={i.name}
                 />
               </div>
             </Link>
           ))}
         </div>
+        <div className="w-full max-md:hidden flex flex-wrap gap-10 items-center justify-center gap-y-20 max-md:grid-cols-1 
+        place-content-center place-items-center">
 
-        <div
-          className="w-full max-md:hidden flex flex-wrap gap-10 items-center justify-center gap-y-20 max-md:grid-cols-1 
-      place-content-center place-items-center"
-        >
-          <div className="w-screen flex  items-center justify-center gap-40 shrink-0 flex-wrap ">
+          <div className="w-screen flex items-center justify-center gap-40 shrink-0 flex-wrap ">
             {data?.map((i, index) => (
-              <Link href={`${i.link}`}>
-                <div
-                  className="service  cursor-pointer h-[15vw] w-[15vw]   items-center relative gap-1    rounded-full  justify-center flex flex-col 
-            text-black border-2 shrink-0 hover:bg-[#0D9899] hover:text-white duration-300 ease-in-out max-md:w-[60vw]"
-                >
+              <Link key={index} href={i.link}>
+                <div className="service cursor-pointer h-[15vw] w-[15vw] items-center relative gap-1 rounded-full justify-center flex flex-col 
+                  text-black border-2 shrink-0 hover:bg-[#0D9899] hover:text-white duration-300 ease-in-out max-md:w-[60vw]">
                   <img
-                    className="h-[7vw] W-[7vw]  object-contain absolute   -top-2 max-md:h-1/2 w-4/5 left-1/2 -translate-x-1/2 "
+                    className="h-[7vw] W-[7vw] object-contain absolute -top-2 max-md:h-1/2 w-4/5 left-1/2 -translate-x-1/2"
                     src={i?.img}
                     alt=""
                   />
-                  {/**/}
-                  <div className="h-32 max-md:h-16 w-full shrink-0 bg-transparent rounded-full   "></div>
-                  <h1 className="font-semibold text-[1.2vw] pb-[4vw] max-md:text-[1vw]  max-lg:pb-[6vw] max-lg:text-[1vw] max-md:pb-[5vw]">
+
+                  <div className="h-32 max-md:h-16 w-full shrink-0 bg-transparent rounded-full"></div>
+                  <h1 className="font-semibold text-[1.2vw] pb-[4vw] max-md:text-[1vw] max-lg:pb-[6vw] max-lg:text-[1vw] max-md:pb-[5vw]">
                     {i?.name}
                   </h1>
                   {/* <p className="text-center text-[.9vw] max-md:text-[1.5vw]">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque
-                excepturi delectus reiciendis consequuntur ducimus dicta.
-              </p>
-              <button className="bg-white border-[1px] border-black text-black px-8 w-[80%] font-semibold rounded-md p-2 max-md:text-sm">
-                Get Service
-              </button> */}
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque
+                    excepturi delectus reiciendis consequuntur ducimus dicta.
+                  </p>
+                  <button className="bg-white border-[1px] border-black text-black px-8 w-[80%] font-semibold rounded-md p-2 max-md:text-sm">
+                    Get Service
+                  </button> */}
                 </div>
               </Link>
             ))}
@@ -143,6 +179,5 @@ const Page2 = () => {
       </div>
     </section>
   );
-};
-
-export default Page2;
+}
+export default Page2

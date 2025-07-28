@@ -581,31 +581,31 @@ const NavPapaPet = () => {
   }, []);
 
   // Animate desktop orange circle on scroll, keep mobile static
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const isMobile = window.innerWidth < 768;
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const currentScrollY = window.scrollY;
+  //     const isMobile = window.innerWidth < 768;
 
-      if (!circle.current) return;
+  //     if (!circle.current) return;
 
-      if (!isMobile) {
-        // Desktop: move the orange circle up on scroll down, down on scroll up
-        if (currentScrollY === 0 || currentScrollY < prevScrollY.current) {
-          // Show the orange circle (move down to original position)
-          gsap.to(circle.current, { y: "0%", duration: 0.6 });
-        } else if (currentScrollY > prevScrollY.current) {
-          // Hide the orange circle (move up)
-          gsap.to(circle.current, { y: "-100%", duration: 0.8 });
-        }
-      }
-      // On mobile, do nothing (static)
+  //     if (!isMobile) {
+  //       // Desktop: move the orange circle up on scroll down, down on scroll up
+  //       if (currentScrollY === 0 || currentScrollY < prevScrollY.current) {
+  //         // Show the orange circle (move down to original position)
+  //         gsap.to(circle.current, { y: "0%", duration: 0.6 });
+  //       } else if (currentScrollY > prevScrollY.current) {
+  //         // Hide the orange circle (move up)
+  //         gsap.to(circle.current, { y: "-100%", duration: 0.8 });
+  //       }
+  //     }
+  //     // On mobile, do nothing (static)
 
-      prevScrollY.current = currentScrollY;
-    };
+  //     prevScrollY.current = currentScrollY;
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   useEffect(() => {
     if (mobileMenuOpen && mobileMenuRef.current) {
@@ -635,12 +635,34 @@ const NavPapaPet = () => {
     router.push("/papapet/cart");
   };
 
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleNavbarScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY <= 0) {
+        setShowNavbar(true);
+      } else if (currentScrollY > lastScrollY.current) {
+        // Scrolling down
+        setShowNavbar(false);
+      } else if (currentScrollY < lastScrollY.current) {
+        // Scrolling up
+        setShowNavbar(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+    window.addEventListener("scroll", handleNavbarScroll);
+    return () => window.removeEventListener("scroll", handleNavbarScroll);
+  }, []);
+
   return (
     <>
       <Search open={searchOpen} onClose={() => setSearchOpen(false)} />
       <div
-        className="w-full fixed top-0 left-0 z-40 font-semibold text-black flex items-center px-10 justify-between p-5 flex-col bg-white max-md:px-5"
-        style={{ height: "80px" }}
+        className={`h-auto w-full  top-0 left-0 z-40 font-semibold text-black flex items-center px-10 justify-between p-5 flex-col bg-white max-md:px-5 transition-transform duration-500 ease-in-out overflow-x-hidden`}
+        style={{
+          transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
+        }}
       >
         <div className="w-full flex items-center justify-between">
           <Link href="/">
@@ -732,7 +754,7 @@ const NavPapaPet = () => {
 
         <div
           ref={circle}
-          className="desktop w-[20vw] h-[20vw] absolute -top-[250%] left-1/2 -translate-x-1/2 
+          className="desktop w-[17vw] h-[17vw] absolute -top-[250%] left-1/2 -translate-x-1/2 
              bg-[#FFAD22] rounded-full flex items-center justify-center gap-[2vw]"
         ></div>
 
@@ -805,9 +827,6 @@ const NavPapaPet = () => {
             </Link>
           )}
           <div className="flex flex-col gap-4">
-            <button className="bg-[#FFB828] text-white px-4 py-2 rounded-full">
-              Connect Phantom Wallet
-            </button>
 
             {user && (
               <button
@@ -846,6 +865,12 @@ const NavPapaPet = () => {
             </Link>
             <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
               About Us
+            </Link>
+            <Link href="/papapet/termsandconditions" onClick={closeMenu} className="text-2xl mb-2">
+              Terms and Conditions
+            </Link>
+            <Link href="/papapet/privacy-policy" onClick={closeMenu} className="text-2xl mb-2">
+              Privacy Policy
             </Link>
           </div>
         </div>
