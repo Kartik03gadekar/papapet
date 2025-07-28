@@ -128,9 +128,9 @@ const privacySections = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <>
+ <div  className="w-full  overflow-hidden"  >
       <NavPapaPet />
-      <div className="flex flex-col items-center justify-center py-10 max-md:pt-28 pt-[5%] px-4 max-md:overflow-hidden bg-[#FAFAFA] min-h-screen">
+     <div className="flex flex-col items-center justify-center py-10 max-md:pt-30 pt-[5%] px-4 max-md:overflow-hidden">
         <h1 className="text-2xl sm:text-3xl font-semibold text-[#FFAD22] mb-2 text-center tracking-tight">
           Privacy Policy
         </h1>
@@ -157,6 +157,6 @@ export default function PrivacyPolicyPage() {
           &copy; {new Date().getFullYear()} PaPaPet. All rights reserved.
         </div>
       </div>
-    </>
+     </div>
   );
 }

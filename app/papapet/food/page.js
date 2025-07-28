@@ -7,7 +7,7 @@ import React from "react";
 const Page = () => {
   return (
     <>
-     <div className="overflow-x-hidden">
+     <div className="overflow-hidden">
        <NavPapaPet />
       <div className=" w-screen mb-6 ">
         <div className="  flex items-center justify-between h-screen px-10 py-[8vw] pl-[3vw]  
