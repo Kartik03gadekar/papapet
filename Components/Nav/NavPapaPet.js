@@ -659,10 +659,11 @@ const NavPapaPet = () => {
     <>
       <Search open={searchOpen} onClose={() => setSearchOpen(false)} />
       <div
-        className={`h-auto w-full  top-0 left-0 z-40 font-semibold text-black flex items-center px-10 justify-between p-5 flex-col bg-white max-md:px-5 transition-transform duration-500 ease-in-out overflow-x-hidden`}
-        style={{
-          transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
-        }}
+        className={`h-auto w-full  top-0 left-0 z-40 font-semibold text-black flex items-center px-14 justify-between p-5 flex-col bg-white
+           max-md:px-5 transition-transform duration-500 ease-in-out overflow-x-hidden`}
+        // style={{
+        //   transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
+        // }}
       >
         <div className="w-full flex items-center justify-between">
           <Link href="/">
@@ -760,8 +761,8 @@ const NavPapaPet = () => {
 
         <div
           ref={mobileCircle}
-          className="md:hidden mobile absolute -top-[35vw] -right-[25vw] w-[60vw] h-[60vw] bg-[#FFAD22] rounded-full 
-  flex items-center justify-center gap-6 z-10 pr-20 pt-[30%]"
+          className="md:hidden mobile absolute -top-[38vw] -right-[25vw] w-[60vw] h-[60vw] bg-[#FFAD22] rounded-full 
+  flex items-center justify-center gap-6 z-10 pr-20 pt-[35%]"
         >
           <div className="flex items-center pl-3">
             <button
