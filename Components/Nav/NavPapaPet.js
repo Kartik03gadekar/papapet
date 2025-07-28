@@ -683,14 +683,21 @@ const NavPapaPet = () => {
           {/* Desktop right controls: search, cart, user (no hamburger menu on desktop) */}
           <div className="flex items-center gap-2">
             {/* Desktop Search Icon */}
-            <button
-              className="hidden md:flex text-2xl text-[#0D9899] p-2 hover:bg-[#FFAD22]/20 rounded-full transition-all duration-300"
-              onClick={() => setSearchOpen(true)}
-              aria-label="Open search"
-              type="button"
-            >
-              <i className="ri-search-line"></i>
-            </button>
+          <button
+  className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
+  onClick={() => {
+    if (user) {
+      setSearchOpen(true);  // ✅ Only opens if logged in
+    } else {
+      router.push("/papapet/auth"); // 🚀 Redirect to login page
+    }
+  }}
+  aria-label="Open search"
+  type="button"
+>
+  <i className="ri-search-line"></i>
+</button>
+
             {/* Desktop Cart Icon */}
             {user && (
               <button
@@ -765,14 +772,21 @@ const NavPapaPet = () => {
   flex items-center justify-center gap-6 z-10 pr-20 pt-[35%]"
         >
           <div className="flex items-center pl-3">
-            <button
-              className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
-              onClick={() => setSearchOpen(true)}
-              aria-label="Open search"
-              type="button"
-            >
-              <i className="ri-search-line"></i>
-            </button>
+        <button
+  className="text-white text-2xl p-2  hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
+  onClick={() => {
+    if (user) {
+      setSearchOpen(true);  // ✅ Only opens if logged in
+    } else {
+      router.push("/papapet/auth"); // 🚀 Redirect to login page
+    }
+  }}
+  aria-label="Open search"
+  type="button"
+>
+  <i className="ri-search-line"></i>
+</button>
+
             {/* Mobile Cart Icon */}
             {user && (
               <button
