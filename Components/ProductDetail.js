@@ -11,6 +11,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkUser } from "@/store/Action/auth";
+import { addToCart } from "@/store/slices/cartSlices";
 
 // ✅ Razorpay Script Loader
 const loadScript = (src) => {
@@ -44,50 +45,92 @@ const ProductDetail = ({ product }) => {
 
   // ✅ Razorpay Payment Handler
   const handleBuyNow = async () => {
-    const res = await loadScript(
+    const razorpayLoaded = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
-
-    if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
+    if (!razorpayLoaded) {
+      alert("Failed to load Razorpay SDK.");
       return;
     }
 
     const amount = (product?.discountprice || product?.price || 0) * quantity;
 
+    // 1️⃣ Create order from backend
+    const backendOrderRes = await fetch("/api/payment/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount }),
+    });
+
+    const order = await backendOrderRes.json();
+
+    if (!order.id) {
+      alert("Failed to create Razorpay order");
+      return;
+    }
+
+    // 2️⃣ Razorpay Payment options
     const options = {
-      key: "rzp_test_q6BbMtempA0k7h", // Use your test/live key
-      amount: amount * 100, // Razorpay works with paise
-      currency: "INR",
+      key: "rzp_test_29scEy2F7YK7wF",
+      amount: order.amount,
+      currency: order.currency,
       name: "Papapet",
       description: product?.name || "Product Purchase",
-      image: "https://your-logo-url.com/logo.png", // Optional
-      handler: function (response) {
+      order_id: order.id, // ✅ VERY IMPORTANT
+      handler: async function (response) {
+        // 3️⃣ Verify signature with backend
+        const verifyRes = await fetch("/api/payment/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          }),
+        });
+
+        const verifyData = await verifyRes.json();
+        if (!verifyData.success) {
+          alert("Payment verification failed.");
+          return;
+        }
+
+        // 4️⃣ Optional: Create internal order record here
         alert(
-          `Payment Successful!\nPayment ID: ${response.razorpay_payment_id}`
+          `✅ Payment Success!\nPayment ID: ${response.razorpay_payment_id}`
         );
-        window.location.href = "/papapet/order/sucessfull";
+        window.location.href = "/papapet/order/successful";
       },
       prefill: {
-        name: user?.name || "hey",
-        email: user?.email || user?.secondaryEmail,
-        contact: user?.phone,
+        name: user?.name || "Customer",
+        email: user?.email || "test@example.com",
+        contact: user?.phone || "9999999999",
       },
       notes: {
         product_id: product?._id,
         quantity: quantity,
       },
-      theme: {
-        color: "#f97316", // Tailwind orange-500
-      },
+      theme: { color: "#f97316" },
     };
 
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
 
     paymentObject.on("payment.failed", function (response) {
-      alert(`Payment Failed: ${response.error.description}`);
+      alert("❌ Payment failed: " + response.error.description);
     });
+  };
+
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    const item = {
+      ...product,
+      quantity,
+    };
+
+    dispatch(addToCart(item));
+    alert("Item added to cart!");
   };
 
   return (
@@ -165,7 +208,10 @@ const ProductDetail = ({ product }) => {
           </button>
         </div>
         <div className="flex items-center justify-start gap-5 py-5">
-          <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded flex items-center gap-2">
+          <button
+            onClick={handleAddToCart}
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded flex items-center gap-2"
+          >
             <FiShoppingCart /> ADD TO CART
           </button>
 
