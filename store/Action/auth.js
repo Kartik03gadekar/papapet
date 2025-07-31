@@ -19,8 +19,11 @@ export const checkUser = ()=>async(dispatch)=>{
 export const registerUser = (info) => async (dispatch) => {
   dispatch(isUserRequest());
   try {
+    console.log(info)
     const { data } = await axios.post("/user/register", info);
+    console.log(data)
   } catch (error) {
+    dispatch(isUserFail());
   }
 };
 export const loginUser = (info) => async (dispatch) => {

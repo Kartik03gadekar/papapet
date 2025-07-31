@@ -227,6 +227,7 @@ const handleCheckout = useCallback(async () => {
         }
 
         const orderPayload = {
+          waybill: "",
           order: "ORD" + Date.now().toString().slice(-6),
           order_date: new Date().toISOString().split("T")[0],
           total_amount: total,

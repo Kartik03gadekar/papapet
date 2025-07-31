@@ -98,7 +98,7 @@ const cancellationSections = [
       <div className="space-y-1 text-neutral-700">
         <div>
           <span className="font-medium">Email:</span>{" "}
-          <span className="font-bold">support@papapet.in</span>
+          <span className="font-bold">papapetofficial03@gmail.com</span>
         </div>
         <div>
           <span className="font-medium">Phone:</span>{" "}
