@@ -226,6 +226,7 @@ const terms = [
       </div>
     ),
   },
+  
 ];
 
 export default function TermsAndConditionsPage() {
