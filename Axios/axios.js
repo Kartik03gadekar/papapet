@@ -15,9 +15,9 @@ import axios from "axios";
 // Create an axios instance
 const instance = axios.create({
   // Base URL for backend API (adjust for prod/dev)
-  baseURL: "https://papapetbackend-1.onrender.com/api/v1/",
+  // baseURL: "https://papapetbackend-1.onrender.com/api/v1/",
   // If using localhost for dev:
-  // baseURL: "http://localhost:8080/api/v1/",
+  baseURL: "http://localhost:8080/api/v1/",
 
   withCredentials: true, // Send cookies with every request
 });

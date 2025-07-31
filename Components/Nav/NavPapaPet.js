@@ -683,20 +683,20 @@ const NavPapaPet = () => {
           {/* Desktop right controls: search, cart, user (no hamburger menu on desktop) */}
           <div className="flex items-center gap-2">
             {/* Desktop Search Icon */}
-          <button
-  className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
-  onClick={() => {
-    if (user) {
-      setSearchOpen(true);  // ✅ Only opens if logged in
-    } else {
-      router.push("/papapet/auth"); // 🚀 Redirect to login page
-    }
-  }}
-  aria-label="Open search"
-  type="button"
->
-  <i className="ri-search-line"></i>
-</button>
+            <button
+              className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
+              onClick={() => {
+                if (user) {
+                  setSearchOpen(true); // ✅ Only opens if logged in
+                } else {
+                  router.push("/papapet/auth"); // 🚀 Redirect to login page
+                }
+              }}
+              aria-label="Open search"
+              type="button"
+            >
+              <i className="ri-search-line"></i>
+            </button>
 
             {/* Desktop Cart Icon */}
             {user && (
@@ -731,7 +731,10 @@ const NavPapaPet = () => {
                     onClose={handleCloseUserMenu}
                   >
                     {settings.map((setting) => (
-                      <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                      <MenuItem
+                        key={setting.name}
+                        onClick={handleCloseUserMenu}
+                      >
                         <Link href={setting.link}>
                           <Typography textAlign="center">
                             {setting.name}
@@ -772,20 +775,20 @@ const NavPapaPet = () => {
   flex items-center justify-center gap-6 z-10 pr-20 pt-[35%]"
         >
           <div className="flex items-center pl-3">
-        <button
-  className="text-white text-2xl p-2  hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
-  onClick={() => {
-    if (user) {
-      setSearchOpen(true);  // ✅ Only opens if logged in
-    } else {
-      router.push("/papapet/auth"); // 🚀 Redirect to login page
-    }
-  }}
-  aria-label="Open search"
-  type="button"
->
-  <i className="ri-search-line"></i>
-</button>
+            <button
+              className="text-white text-2xl p-2  hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
+              onClick={() => {
+                if (user) {
+                  setSearchOpen(true); // ✅ Only opens if logged in
+                } else {
+                  router.push("/papapet/auth"); // 🚀 Redirect to login page
+                }
+              }}
+              aria-label="Open search"
+              type="button"
+            >
+              <i className="ri-search-line"></i>
+            </button>
 
             {/* Mobile Cart Icon */}
             {user && (
@@ -842,7 +845,6 @@ const NavPapaPet = () => {
             </Link>
           )}
           <div className="flex flex-col gap-4">
-
             {user && (
               <button
                 onClick={() => {
@@ -881,11 +883,26 @@ const NavPapaPet = () => {
             <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
               About Us
             </Link>
-            <Link href="/papapet/termsandconditions" onClick={closeMenu} className="text-2xl mb-2">
+            <Link
+              href="/papapet/termsandconditions"
+              onClick={closeMenu}
+              className="text-2xl mb-2"
+            >
               Terms and Conditions
             </Link>
-            <Link href="/papapet/privacy-policy" onClick={closeMenu} className="text-2xl mb-2">
+            <Link
+              href="/papapet/privacy-policy"
+              onClick={closeMenu}
+              className="text-2xl mb-2"
+            >
               Privacy Policy
+            </Link>
+            <Link
+              href="/papapet/cancellation-refund"
+              onClick={closeMenu}
+              className="text-2xl mb-2"
+            >
+              Cancellation and Refund
             </Link>
           </div>
         </div>

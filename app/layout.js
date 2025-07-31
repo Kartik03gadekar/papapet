@@ -1,22 +1,23 @@
 import "remixicon/fonts/remixicon.css";
-import Nav from "@/Components/Nav/Nav";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Wrapper from "@/Components/Wrapper/Wrapper";
 import NextTopLoader from "nextjs-toploader";
+import Wrapper from "@/Components/Wrapper/Wrapper";
+import ReduxProvider from "@/store/ReduxProvider"; 
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-      <body suppressHydrationWarning>
-        <Wrapper>
-          <NextTopLoader />
-          {/* <Nav/> */}
-          {children}
-          <ToastContainer />
-        </Wrapper>
+      <body suppressHydrationWarning={true}>
+        <ReduxProvider>
+          <Wrapper>
+            <NextTopLoader />
+            {children}
+            <ToastContainer />
+          </Wrapper>
+        </ReduxProvider>
       </body>
     </html>
   );
