@@ -522,7 +522,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PhantomConnect from "../WalletProvider";
-import { checkUser } from "@/store/Action/auth";
+import { checkUser, logoutUser } from "@/store/Action/auth"; // <-- import logoutUser
 import { useDispatch, useSelector } from "react-redux";
 import Search from "@/Components/Search/Search";
 
@@ -578,7 +578,7 @@ const NavPapaPet = () => {
 
   useEffect(() => {
     dispatch(checkUser());
-  }, []);
+  }, [dispatch]);
 
   // Animate desktop orange circle on scroll, keep mobile static
   // useEffect(() => {
@@ -626,9 +626,11 @@ const NavPapaPet = () => {
   }, [mobileMenuOpen]);
 
   // Helper for logout
-  const handleLogout = () => {
-    window.location.reload();
-  };
+  // Helper for logout
+const handleLogout = ()=>{
+  dispatch(logoutUser())
+}
+
 
   // Handler for cart icon click
   const handleCartClick = () => {
@@ -660,7 +662,7 @@ const NavPapaPet = () => {
       <Search open={searchOpen} onClose={() => setSearchOpen(false)} />
       <div
         className={`h-auto w-full  top-0 left-0 z-40 font-semibold text-black flex items-center px-14 justify-between p-5 flex-col bg-white
-           max-md:px-5 transition-transform duration-500 ease-in-out overflow-visible`}
+           max-md:px-5 transition-transform duration-500 ease-in-out overflow-visible `}
         style={{
           transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
         }}
@@ -684,7 +686,7 @@ const NavPapaPet = () => {
           <div className="flex items-center gap-2">
             {/* Desktop Search Icon */}
             <button
-              className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
+              className="text-2xl p-2 text-[#0D9899] rounded-full transition-all duration-300"
               onClick={() => {
                 if (user) {
                   setSearchOpen(true); // ✅ Only opens if logged in
@@ -742,7 +744,13 @@ const NavPapaPet = () => {
                         </Link>
                       </MenuItem>
                     ))}
-                    <MenuItem key="Logout" onClick={handleLogout}>
+                    <MenuItem
+                      key="Logout"
+                      onClick={() => {
+                        handleLogout();
+                        handleCloseUserMenu();
+                      }}
+                    >
                       <Typography textAlign="center">Logout</Typography>
                     </MenuItem>
                   </Menu>

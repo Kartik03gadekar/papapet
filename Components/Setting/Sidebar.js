@@ -98,7 +98,7 @@ export default function Sidebar({ setopen, activeIndex }) {
       </div>
 
       {/* Sidebar for Desktop */}
-      <div className="hidden md:block w-[200px] h-[calc(100vh-10vh)] bg-red-500 shadow-sm border-r">
+      <div className="hidden md:block w-[200px] h-[calc(100vh-10vh)] shadow-sm border-r">
         <nav className="px-4 py-4">
           {navItems.map((item) => {
             const isLogout = item.name === 'LogOut';

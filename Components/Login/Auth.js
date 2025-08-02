@@ -109,7 +109,7 @@ const Auth = () => {
   }, [isAuthencticated, router]);
 
   return (
-    <div className="h-screen w-full flex flex-col md:flex-row  pt-[4vw]">
+    <div className="h-screen w-full flex flex-col md:flex-row ">
       {/* Left Section (Form) */}
       <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-6">
         <div className="w-full max-w-md">

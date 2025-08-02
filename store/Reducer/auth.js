@@ -42,14 +42,21 @@ export const auth = createSlice({
       (state.loading = false), (state.message = action.payload.message);
     },
     fail: (state, action) => {
-      state.loading = false,
-      state.error = action.payload.message
+      (state.loading = false), (state.error = action.payload.message);
     },
-    removeMsg :(state, action) => {
-      state.message = null
+    removeMsg: (state, action) => {
+      state.message = null;
     },
-    removeErr :(state, action) => {
-      state.error = null
+    removeErr: (state, action) => {
+      state.error = null;
+    },
+    logout: (state) => {
+      state.isAuthencticated = false;
+      state.user = null;
+      state.loading = false;
+      state.consult = null;
+      state.ofconsult = null;
+      state.network = null;
     },
   },
 });
@@ -67,6 +74,7 @@ export const {
   getNetworkSuccess,
   removeErr,
   removeMsg,
-  getOffConsultation
+  getOffConsultation,
+  logout,
 } = auth.actions;
 export default auth.reducer;
