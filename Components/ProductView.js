@@ -10,7 +10,7 @@ const ProductView = ({ data, imgLink, loading }) => {
 
   
   return (
-    <div className="w-full min-h-screen flex flex-col p-4 max-md:mt-[10vh] gap-6">
+    <div className="w-full min-h-screen flex flex-col p-4 max-md:mt-[10vh] gap-6  overflow-hidden">
       {loading ? (
         <Loading />
       ) : (

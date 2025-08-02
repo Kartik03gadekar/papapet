@@ -16,15 +16,15 @@ const page = () => {
     dispatch(getFoodById(id));
   }, []);
   return (
-    <>
-      <div className="w-full">
+  
+      <div className="w-full overflow-hidden">
         <NavPapaPet />
-        <div className="w-full min-h-screen translate-y-[10vh] pb-10">
+        <div className="w-full min-h-screen translate-y-[10vh] pb-10 overflow-hidden">
           <ProductView data={item} loading={load} imgLink={imgLink} />
         </div>
         <Footer />
       </div>
-    </>
+    
   );
 };
 

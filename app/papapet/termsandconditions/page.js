@@ -226,6 +226,7 @@ const terms = [
       </div>
     ),
   },
+  
 ];
 
 export default function TermsAndConditionsPage() {
@@ -233,7 +234,7 @@ export default function TermsAndConditionsPage() {
   
        <div  className="w-full  overflow-hidden"  >
          <NavPapaPet />
-        <div className="flex flex-col items-center justify-center py-10 max-md:pt-30 pt-[5%] px-4 max-md:overflow-hidden">
+        <div className="flex flex-col items-center justify-center py-10 max-md:pt-30 pt-[5%]  overflow-hidden px-4 max-md:overflow-hidden">
           <h1 className="text-2xl sm:text-3xl font-semibold text-[#FFAD22] mb-2 text-center tracking-tight">
             Terms & Conditions
           </h1>
