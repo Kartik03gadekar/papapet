@@ -1,4 +1,4 @@
-"use client";
+do "use client";
 
 import React from "react";
 
@@ -33,7 +33,7 @@ export default function TrackOrder({ user, order }) {
   };
 
   return (
-    <div className="w-screen mx-auto px-20 sm:px-6 py-5 rounded-2xl shadow-sm border border-[#e6f4f4] bg-white">
+    <div className="w-[80vw] mx-auto px-20 sm:px-6 py-5 rounded-2xl shadow-sm border border-[#e6f4f4] bg-white">
       {/* Order Summary */}
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center border-b border-[#e6f4f4] pb-4 mb-4 w-full bg-white">
         <div>

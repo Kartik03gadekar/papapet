@@ -82,8 +82,7 @@ export default function TrackOrderPage() {
                 key={order.id}
                 onClick={() =>
                   router.push(
-                    `/papapet/dashboard/trackorder/${order.id}?data=${encodeURIComponent(
-                      JSON.stringify(order)
+                    `/papapet/dashboard/trackorder/${order.id}
                     )}`
                   )
                 }
