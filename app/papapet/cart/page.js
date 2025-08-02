@@ -5,10 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart } from "@/store/slices/cartSlices";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
-
-
-
-// Modern minimal: subtle colors, more whitespace, less border, soft shadow, rounded corners, clean font, less clutter
+import axios from "@/Axios/axios"; // This is the axios instance with baseURL set
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -91,11 +88,9 @@ export default function CheckoutPage() {
     setAppliedCoupon(null);
 
     try {
-      const res = await fetch(`/api/coupons?code=${encodeURIComponent(code)}`);
-      if (!res.ok) {
-        throw new Error("Coupon not found or invalid.");
-      }
-      const coupon = await res.json();
+      // Use axios instance with baseURL
+      const res = await axios.get(`coupons?code=${encodeURIComponent(code)}`);
+      const coupon = res.data;
 
       const now = new Date();
       if (!coupon.isActive) {
@@ -137,7 +132,7 @@ export default function CheckoutPage() {
       }
     } catch (err) {
       setCouponError(
-        err?.message === "Coupon not found or invalid."
+        err?.response?.status === 404 || err?.message === "Coupon not found or invalid."
           ? "Invalid coupon code."
           : "Failed to validate coupon. Please try again."
       );
@@ -178,128 +173,126 @@ export default function CheckoutPage() {
     ));
   };
 
-  
-const handleCheckout = useCallback(async () => {
-  const razorpayLoaded = await loadRazorpayScript();
-  if (!razorpayLoaded) {
-    alert("Failed to load Razorpay SDK.");
-    return;
-  }
+  const handleCheckout = useCallback(async () => {
+    const razorpayLoaded = await loadRazorpayScript();
+    if (!razorpayLoaded) {
+      alert("Failed to load Razorpay SDK.");
+      return;
+    }
 
-  const backendOrderRes = await fetch("http://localhost:8080/api/payment/create-order", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({ amount: total.toFixed(2) }),
-  });
+    try {
+      // Create Razorpay order using axios instance (use /payment/create-order, not /api/v1/)
+      const backendOrderRes = await axios.post(
+        "/payment/create-order",
+        { amount: total.toFixed(2) }
+      );
+      const order = backendOrderRes.data;
 
-  const order = await backendOrderRes.json();
-
-  if (!order.id) {
-    alert("Failed to create Razorpay order");
-    return;
-  }
-
-  const options = {
-    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-    amount: order.amount,
-    currency: order.currency,
-    name: "Papapet",
-    description: "Order Payment",
-    order_id: order.id,
-    handler: async function (response) {
-      try {
-        const verifyRes = await fetch("http://localhost:8080/api/payment/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          }),
-        });
-
-        const verifyData = await verifyRes.json();
-        if (!verifyData.success) {
-          alert("Payment verification failed.");
-          return;
-        }
-
-        const orderPayload = {
-          waybill: "",
-          order: "ORD" + Date.now().toString().slice(-6),
-          order_date: new Date().toISOString().split("T")[0],
-          total_amount: total,
-          name: user?.name || "Rohit",
-          add: user?.address || "123 MG Road",
-          pin: user?.pincode || "462001",
-          phone: user?.phone || "9876543210",
-          billing_name: user?.billing_name || user?.name || "Rohit",
-          billing_add: user?.billing_address || user?.address || "123 MG Road",
-          billing_pin: user?.billing_pincode || user?.pincode || "462001",
-          billing_phone: user?.billing_phone || user?.phone || "9876543210",
-          email: user?.email || "rm459567@gmail.com",
-          userId: user?._id || "68238557a668edc0ee872d33",
-          products: cartItems.map((item) => ({
-            product_name: item.name,
-            product_quantity: item.quantity || 1,
-            product_price: item.discountprice || item.price,
-          })),
-          shipment_length: 20,
-          shipment_width: 10,
-          shipment_height: 5,
-          weight: 1.5,
-          payment_id: response.razorpay_payment_id,
-        };
-
-        const saveOrder = await fetch("http://localhost:8080/api/v1/delivery/order_creation", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(orderPayload),
-        });
-
-        const orderResult = await saveOrder.json();
-        if (!saveOrder.ok) {
-          console.error("Order saving failed:", orderResult);
-          alert("Order could not be saved. Please contact support.");
-          return;
-        }
-
-        alert("Order placed successfully!");
-        window.location.href = "/thank-you";
-      } catch (error) {
-        console.error("Error in order handler:", error);
-        alert("Something went wrong. Please try again.");
+      if (!order.id) {
+        alert("Failed to create Razorpay order");
+        return;
       }
-    },
-    prefill: {
-      name: "Customer",
-      email: "test@example.com",
-      contact: "9999999999",
-    },
-    theme: { color: "#f97316" },
-  };
 
-  const paymentObject = new window.Razorpay(options);
-  paymentObject.open();
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: order.currency,
+        name: "Papapet",
+        description: "Order Payment",
+        order_id: order.id,
+        handler: async function (response) {
+          try {
+            // Verify payment using axios instance (use /payment/verify, not /api/v1/)
+            const verifyRes = await axios.post(
+              "/payment/verify",
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }
+            );
 
-  paymentObject.on("payment.failed", function (response) {
-    alert("Payment failed.");
-    console.error(response.error);
-  });
-}, [user, cartItems, total]);
+            const verifyData = verifyRes.data;
+            if (!verifyData.success) {
+              alert("Payment verification failed.");
+              return;
+            }
+
+            const orderPayload = {
+              waybill: "",
+              order: "ORD" + Date.now().toString().slice(-6),
+              order_date: new Date().toISOString().split("T")[0],
+              total_amount: total,
+              name: user?.name || "Rohit",
+              add: user?.address || "123 MG Road",
+              pin: user?.pincode || "462001",
+              phone: user?.phone || "9876543210",
+              billing_name: user?.billing_name || user?.name || "Rohit",
+              billing_add: user?.billing_address || user?.address || "123 MG Road",
+              billing_pin: user?.billing_pincode || user?.pincode || "462001",
+              billing_phone: user?.billing_phone || user?.phone || "9876543210",
+              email: user?.email || "rm459567@gmail.com",
+              userId: user?._id || "68238557a668edc0ee872d33",
+              products: cartItems.map((item) => ({
+                product_name: item.name,
+                product_quantity: item.quantity || 1,
+                product_price: item.discountprice || item.price,
+              })),
+              shipment_length: 20,
+              shipment_width: 10,
+              shipment_height: 5,
+              weight: 1.5,
+              payment_id: response.razorpay_payment_id,
+            };
+
+            // Save order using axios instance (this is under /delivery/order_creation, so relative to baseURL)
+            const saveOrder = await axios.post(
+              "delivery/order_creation",
+              orderPayload
+            );
+
+            const orderResult = saveOrder.data;
+            if (!saveOrder.status || saveOrder.status < 200 || saveOrder.status >= 300) {
+              console.error("Order saving failed:", orderResult);
+              alert("Order could not be saved. Please contact support.");
+              return;
+            }
+
+            alert("Order placed successfully!");
+            window.location.href = "/thank-you";
+          } catch (error) {
+            console.error("Error in order handler:", error);
+            alert("Something went wrong. Please try again.");
+          }
+        },
+        prefill: {
+          name: "Customer",
+          email: "test@example.com",
+          contact: "9999999999",
+        },
+        theme: { color: "#f97316" },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+
+      paymentObject.on("payment.failed", function (response) {
+        alert("Payment failed.");
+        console.error(response.error);
+      });
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("Something went wrong during checkout. Please try again.");
+    }
+  }, [user, cartItems, total]);
 
   // --- UI ---
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       <NavPapaPet />
-      <main className="bg-neutral-50 min-h-screen pt-28 pb-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-8">
+      <main className="bg-white min-h-screen pt-28 pb-16 overflow-x-hidden">
+        <div className="max-w-full mx-auto px-4 sm:px-8">
           <h1 className="font-semibold text-2xl sm:text-3xl md:text-4xl text-neutral-900 mb-8 tracking-tight">
             Shopping Cart
           </h1>
@@ -336,7 +329,7 @@ const handleCheckout = useCallback(async () => {
                                 ? typeof item.image === "string"
                                   ? item.image
                                   : item.image[0]?.filename
-                                  ? `http://localhost:8080/api/v1/admin/get/image/${
+                                  ? `${axios.defaults.baseURL}admin/get/image/${
                                       item.image[0]?.filename
                                     }/${
                                       item.image[0]?.mimetype?.split("/")[0]
@@ -413,13 +406,13 @@ const handleCheckout = useCallback(async () => {
                 )}
               </div>
               {/* Cart Actions */}
-              <div className="flex flex-col xs:flex-row gap-3 mt-2">
-                <button className="flex items-center justify-center gap-2 px-6 py-2 border border-neutral-200 text-neutral-700 rounded-lg font-medium hover:bg-neutral-100 transition w-full xs:w-auto shadow-sm">
+              <div className="flex flex-col md:flex-row xs:flex-row gap-3 mt-2">
+                <button className="flex items-center justify-center gap-2 px-6 py-2 border border-neutral-200 text-white rounded-full font-medium transition w-full xs:w-auto shadow-sm bg-[#FB923C] hover:bg-[#FB923C]/80">
                   <ArrowLeft size={18} />
                   <span className="hidden xs:inline">Return to Shop</span>
                   <span className="inline xs:hidden">Shop</span>
                 </button>
-                <button className="flex items-center justify-center gap-2 px-6 py-2 border border-neutral-200 text-neutral-700 rounded-lg font-medium hover:bg-neutral-100 transition w-full xs:w-auto shadow-sm">
+                <button className="flex items-center justify-center gap-2 px-6 py-2 border border-neutral-200 text-neutral-700 rounded-full font-medium hover:bg-neutral-100 transition w-full xs:w-auto shadow-sm">
                   Update Cart
                 </button>
               </div>
@@ -596,6 +589,6 @@ const handleCheckout = useCallback(async () => {
           </section>
         </div>
       </main>
-    </>
+    </div>
   );
 }
