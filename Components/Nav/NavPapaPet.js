@@ -625,8 +625,6 @@ const NavPapaPet = () => {
     }
   }, [mobileMenuOpen]);
 
-  // Helper for logout
-  // Helper for logout
 const handleLogout = ()=>{
   dispatch(logoutUser())
 }

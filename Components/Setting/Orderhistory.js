@@ -1,39 +1,74 @@
-'use client';
+"use client";
 
-
-import React, { useState } from 'react';
-
-const ordersData = [
-  { id: '#96459761', status: 'IN PROGRESS', date: 'Dec 30, 2019 07:52', total: '$80 (5 Products)' },
-  { id: '#71667167', status: 'COMPLETED', date: 'Dec 7, 2019 23:26', total: '$70 (4 Products)' },
-  { id: '#95214362', status: 'CANCELED', date: 'Dec 7, 2019 23:26', total: '$2,300 (2 Products)' },
-  { id: '#71667167', status: 'COMPLETED', date: 'Feb 2, 2019 19:28', total: '$250 (1 Products)' },
-  { id: '#51746385', status: 'COMPLETED', date: 'Dec 30, 2019 07:52', total: '$360 (2 Products)' },
-  { id: '#51746385', status: 'CANCELED', date: 'Dec 4, 2019 21:42', total: '$220 (7 Products)' },
-  { id: '#673971743', status: 'COMPLETED', date: 'Feb 2, 2019 19:28', total: '$80 (1 Products)' },
-  { id: '#673971743', status: 'COMPLETED', date: 'Mar 20, 2019 23:14', total: '$160 (1 Products)' },
-  { id: '#673971743', status: 'COMPLETED', date: 'Dec 4, 2019 21:42', total: '$1,500 (3 Products)' },
-  { id: '#673971743', status: 'COMPLETED', date: 'Dec 30, 2019 07:52', total: '$1,200 (19 Products)' },
-  { id: '#673971743', status: 'CANCELED', date: 'Dec 30, 2019 05:18', total: '$1,500 (1 Products)' },
-  { id: '#673971743', status: 'COMPLETED', date: 'Dec 30, 2019 07:52', total: '$80 (1 Products)' },
-];
-
+import React, { useEffect, useState } from "react";
+import axiosInstance from "@/Axios/axios";
+import { useRouter } from "next/navigation" // your axios setup
+import { useSelector } from "react-redux";
 
 const statusClasses = {
-  'IN PROGRESS': 'text-orange-500',
-  'COMPLETED': 'text-green-600',
-  'CANCELED': 'text-red-500',
+  "IN PROGRESS": "text-orange-500",
+  COMPLETED: "text-green-600",
+  CANCELED: "text-red-500",
 };
 
-const orderhistory = () => {
+const OrderHistory = () => {
+  const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [trackingData, setTrackingData] = useState({});
   const itemsPerPage = 6;
-  const totalPages = Math.ceil(ordersData.length / itemsPerPage);
+  const router = useRouter();
 
-  const paginateData = ordersData.slice(
+  // Fetch user from redux state
+  const { user } = useSelector((state) => state.auth); // ✅ correct slice
+  const userId = user?._id;
+
+  // 1️⃣ Fetch user orders on mount
+  useEffect(() => {
+    if (!userId) return;
+    const fetchOrders = async () => {
+      try {
+        const res = await axiosInstance.post("/delivery/getOrders", { userId });
+
+        if (res.data.success) {
+          const fetchedOrders = Array.isArray(res.data.orders)
+            ? res.data.orders
+            : Object.values(res.data.orders || {});
+          setOrders(fetchedOrders);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchOrders();
+  }, [userId]);
+
+  // 2️⃣ Pagination logic
+  const totalPages = Math.ceil(orders.length / itemsPerPage);
+  const paginateData = orders.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  // 3️⃣ Fetch tracking for a single order on click
+  const handleViewDetails = async (awb) => {
+    if (!awb) return;
+
+    try {
+      // Fetch tracking info
+      const trackRes = await axiosInstance.post("/delivery/order_tracking", {
+        awb_number_list: awb,
+      });
+
+      // Merge into state
+      setTrackingData((prev) => ({
+        ...prev,
+        [awb]: trackRes.data.data || trackRes.data,
+      }));
+    } catch (err) {
+      console.error("Error fetching tracking:", err);
+    }
+  };
 
   return (
     <div className="w-full p-4 overflow-x-auto bg-white rounded-lg shadow">
@@ -51,20 +86,39 @@ const orderhistory = () => {
         <tbody>
           {paginateData.map((order, index) => (
             <tr key={index} className="border-b">
-              <td className="py-2 px-4">{order.id}</td>
-              <td className={`py-2 px-4 ${statusClasses[order.status]}`}>{order.status}</td>
-              <td className="py-2 px-4">{order.date}</td>
-              <td className="py-2 px-4">{order.total}</td>
-              <td className="py-2 px-4 text-blue-600 cursor-pointer">View Details →</td>
+              <td className="py-2 px-4">{order.order}</td>
+              <td
+                className={`py-2 px-4 ${
+                  statusClasses[order.status || "IN PROGRESS"]
+                }`}
+              >
+                {order.status || "IN PROGRESS"}
+              </td>
+              <td className="py-2 px-4">
+                {order.date ? new Date(order.date).toLocaleString() : ""}
+              </td>
+              <td className="py-2 px-4">
+                ₹{order.totalAmount} ({order.products?.length || 0} Products)
+              </td>
+              <td
+                className="py-2 px-4 text-blue-600 cursor-pointer"
+                onClick={() =>
+                  router.push(`/papapet/dashboard/trackorder/${order.order}`)
+                }
+              >
+                View Details →
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
 
+      {/* 4️⃣ Pagination */}
       <div className="flex justify-center items-center gap-2 mt-4">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           className="px-3 py-1 border rounded hover:bg-gray-200"
+          disabled={currentPage === 1}
         >
           ←
         </button>
@@ -73,21 +127,40 @@ const orderhistory = () => {
           <button
             key={i}
             onClick={() => setCurrentPage(i + 1)}
-            className={`px-3 py-1 border rounded ${currentPage === i + 1 ? 'bg-orange-500 text-white' : 'hover:bg-gray-200'}`}
+            className={`px-3 py-1 border rounded ${
+              currentPage === i + 1
+                ? "bg-orange-500 text-white"
+                : "hover:bg-gray-200"
+            }`}
           >
             {`0${i + 1}`}
           </button>
         ))}
 
         <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
           className="px-3 py-1 border rounded hover:bg-gray-200"
+          disabled={currentPage === totalPages || totalPages === 0}
         >
           →
         </button>
       </div>
+
+      {/* 5️⃣ Tracking Info Modal (Optional inline display) */}
+      {Object.entries(trackingData).map(([awb, data]) => (
+        <div key={awb} className="mt-4 p-3 border rounded bg-gray-50">
+          <h3 className="font-semibold text-lg mb-2">
+            Tracking for AWB: {awb}
+          </h3>
+          <pre className="text-sm overflow-x-auto">
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        </div>
+      ))}
     </div>
   );
 };
 
-export default orderhistory
+export default OrderHistory;

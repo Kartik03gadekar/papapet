@@ -54,7 +54,7 @@ export const logoutUser = () => async (dispatch) => {
     await axios.post("/user/signout", { withCredentials: true });
 
     dispatch(logout()); // 👈 clears auth state
-    await persistor.purge(); // 👈 clears localStorage
+    // await persistor.purge(); // 👈 clears localStorage
 
     window.location.href = "/papapet/auth";
   } catch (error) {

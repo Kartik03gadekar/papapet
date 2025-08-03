@@ -47,7 +47,7 @@ export default function Sidebar({ setopen, activeIndex }) {
   return (
     <>
       {/* Mobile Menu Button */}
-      <div className="md:hidden px-4 py-2 bg-white shadow z-20">
+      <div className="md:hidden px-4 py-2 bg-white  z-20">
         <button
           onClick={() => setOpenSidebar(true)}
           aria-label="Open menu"
@@ -98,7 +98,7 @@ export default function Sidebar({ setopen, activeIndex }) {
       </div>
 
       {/* Sidebar for Desktop */}
-      <div className="hidden md:block w-[200px] h-[calc(100vh-10vh)] shadow-sm border-r">
+      <div className="hidden md:block w-[200px] h-[calc(100vh-10vh)] border-r fixed">
         <nav className="px-4 py-4">
           {navItems.map((item) => {
             const isLogout = item.name === 'LogOut';

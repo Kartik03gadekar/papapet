@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useCallback } from "react";
@@ -17,13 +18,25 @@ const loadRazorpayScript = () => {
   });
 };
 
+// Function to update quantity in cartItems array (local state update)
+function updateQuantity(cartItems, id, newQuantity) {
+  return cartItems.map((item) => {
+    if ((item._id || item.id) === id) {
+      return { ...item, quantity: newQuantity };
+    }
+    return item;
+  });
+}
+
 export default function CheckoutPage() {
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponError, setCouponError] = useState("");
   const [isCouponLoading, setIsCouponLoading] = useState(false);
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.cartItems || []);
+  // Use local state for cartItems to allow quantity update without redux
+  const reduxCartItems = useSelector((state) => state.cart.cartItems || []);
+  const [cartItems, setCartItems] = useState(reduxCartItems);
   const user = useSelector((state) => state.auth.user);
   const browsingHistory = [
     {
@@ -61,20 +74,45 @@ export default function CheckoutPage() {
     },
   ];
 
-  // Redux-based quantity update
+  // Quantity update handlers using local state
   const handleIncrement = (id) => {
-    dispatch(incrementQuantity(id));
+    setCartItems((prev) => {
+      const item = prev.find((item) => (item._id || item.id) === id);
+      if (item) {
+        return updateQuantity(prev, id, (item.quantity || 1) + 1);
+      }
+      return prev;
+    });
   };
 
   const handleDecrement = (id) => {
-    dispatch(decrementQuantity(id));
+    setCartItems((prev) => {
+      const item = prev.find((item) => (item._id || item.id) === id);
+      if (item && (item.quantity || 1) > 1) {
+        return updateQuantity(prev, id, (item.quantity || 1) - 1);
+      }
+      return prev;
+    });
   };
 
   const handleRemove = (id) => {
+    setCartItems((prev) => prev.filter((item) => (item._id || item.id) !== id));
     dispatch(removeFromCart(id));
   };
 
   // Coupon logic (fetch from backend)
+  const subtotal =
+    cartItems && cartItems.length
+      ? cartItems.reduce(
+          (sum, item) =>
+            sum +
+            (item.discountprice
+              ? item.discountprice * (item.quantity || 1)
+              : item.price * (item.quantity || 1)),
+          0
+        )
+      : 0;
+
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
     const code = couponCode.trim().toUpperCase();
@@ -142,23 +180,10 @@ export default function CheckoutPage() {
     }
   };
 
-  // Calculate subtotal
-  const subtotal =
-    cartItems && cartItems.length
-      ? cartItems.reduce(
-          (sum, item) =>
-            sum +
-            (item.discountprice
-              ? item.discountprice * (item.quantity || 1)
-              : item.price * (item.quantity || 1)),
-          0
-        )
-      : 0;
-
   const shipping = 0;
   const discount = appliedCoupon ? appliedCoupon.value : 0;
-  const tax = subtotal > 0 ? subtotal * 0.18 : 0;
-  const total = subtotal + shipping - discount + tax;
+  const tax = subtotal > 0 ? Math.round(subtotal * 0.18) : 0;
+  const total = Math.round(subtotal + shipping - discount + tax);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -202,7 +227,6 @@ export default function CheckoutPage() {
         order_id: order.id,
         handler: async function (response) {
           try {
-            // Verify payment using axios instance (use /payment/verify, not /api/v1/)
             const verifyRes = await axios.post(
               "/payment/verify",
               {
@@ -218,11 +242,15 @@ export default function CheckoutPage() {
               return;
             }
 
+            // Parse all these data also (from @file_context_0)
             const orderPayload = {
               waybill: "",
               order: "ORD" + Date.now().toString().slice(-6),
               order_date: new Date().toISOString().split("T")[0],
-              total_amount: total,
+              total_amount: Math.round(total),
+              shipping: shipping,
+              discount: discount,
+              tax: tax,
               name: user?.name || "Rohit",
               add: user?.address || "123 MG Road",
               pin: user?.pincode || "462001",
@@ -237,7 +265,16 @@ export default function CheckoutPage() {
                 product_name: item.name,
                 product_quantity: item.quantity || 1,
                 product_price: item.discountprice || item.price,
+                product_id: item._id || item.id || "",
+                product_sku: item.sku || "",
+                product_image: item.image || item.img || "",
+                product_category: item.category || "",
+                product_brand: item.brand || "",
               })),
+              applied_coupon: appliedCoupon ? {
+                code: appliedCoupon.code,
+                value: appliedCoupon.value,
+              } : null,
               shipment_length: 20,
               shipment_width: 10,
               shipment_height: 5,
@@ -259,7 +296,7 @@ export default function CheckoutPage() {
             }
 
             alert("Order placed successfully!");
-            window.location.href = "/thank-you";
+            window.location.href = "/papapet/order/sucessfull";
           } catch (error) {
             console.error("Error in order handler:", error);
             alert("Something went wrong. Please try again.");
@@ -284,7 +321,7 @@ export default function CheckoutPage() {
       console.error("Checkout error:", error);
       alert("Something went wrong during checkout. Please try again.");
     }
-  }, [user, cartItems, total]);
+  }, [user, cartItems, total, appliedCoupon, shipping, discount, tax]);
 
   // --- UI ---
 
