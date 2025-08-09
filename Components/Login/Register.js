@@ -6,9 +6,11 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth } from "@/Firebase/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
@@ -85,6 +87,7 @@ const Register = () => {
 
       await dispatch(registerUser(formData));
       toast.success("Registration successful");
+      router.push("/papapet/auth/login");
     } catch (error) {
       console.error("OTP verify error:", error);
       toast.error("Invalid OTP");
