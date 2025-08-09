@@ -185,7 +185,7 @@ const Login = () => {
               />
             </div>
 
-            <div className="text-right text-sm text-green-500 cursor-pointer mb-3">
+            <div className="text-right text-sm text-red-500 cursor-pointer mb-3">
               Forgot Password?
             </div>
           </>
