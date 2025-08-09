@@ -681,7 +681,7 @@ const handleLogout = ()=>{
           </div>
 
           {/* Desktop right controls: search, cart, user (no hamburger menu on desktop) */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             {/* Desktop Search Icon */}
             <button
               className="text-2xl p-2 text-[#0D9899] rounded-full transition-all duration-300"
