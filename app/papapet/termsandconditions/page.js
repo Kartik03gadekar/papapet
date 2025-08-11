@@ -157,7 +157,7 @@ const terms = [
     title: "8. Intellectual Property",
     content: (
       <>
-        All content is owned by PaPaPet. Do not reproduce without written
+        All content is owned by PaPaPet and Thrivetrillion Innovations Pvt. ltd. Do not reproduce without written
         permission.
       </>
     ),

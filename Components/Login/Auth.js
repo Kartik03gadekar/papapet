@@ -93,35 +93,46 @@ const Auth = () => {
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
-  
-  const { isAuthencticated } = useSelector((state) => state.auth);
+
+  const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
 
   // Check user status on initial load
-  useEffect(() => {
-    dispatch(checkUser());
-  }, [dispatch]);
 
   // Redirect if authenticated
   useEffect(() => {
-    if (isAuthencticated === true) {
-      router.push("/mediensure/verifyauth");
+    // Only redirect if:
+    // 1) Not loading
+    // 2) Authenticated
+    // 3) User object is present
+    if (
+      !loading &&
+      isAuthenticated &&
+      user &&
+      window.location.pathname === "/mediensure/auth"
+    ) {
+      router.replace("/mediensure/verifyauth");
     }
-  }, [isAuthencticated, router]);
-
+  }, [isAuthenticated, user, loading, router]);
   return (
     <div className="h-screen w-full flex flex-col md:flex-row ">
       {/* Left Section (Form) */}
       <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-6">
         <div className="w-full max-w-md">
           <img src="/logo.png" alt="Logo" className="h-10 mb-2 mx-auto" />
-          <h2 className="text-2xl font-bold text-gray-800 text-center">Welcome Back</h2>
-          <p className="text-sm text-gray-500 text-center mb-4">Please enter your details</p>
+          <h2 className="text-2xl font-bold text-gray-800 text-center">
+            Welcome Back
+          </h2>
+          <p className="text-sm text-gray-500 text-center mb-4">
+            Please enter your details
+          </p>
 
           <div className="flex justify-center space-x-2 w-full mb-6">
             <button
               onClick={() => setIsSignup(false)}
               className={`py-1 px-6 rounded-full font-semibold transition ${
-                !isSignup ? "bg-teal-500 text-white" : "bg-gray-200 text-gray-600"
+                !isSignup
+                  ? "bg-teal-500 text-white"
+                  : "bg-gray-200 text-gray-600"
               }`}
             >
               Sign In
@@ -129,7 +140,9 @@ const Auth = () => {
             <button
               onClick={() => setIsSignup(true)}
               className={`py-1 px-6 rounded-full font-semibold transition ${
-                isSignup ? "bg-teal-500 text-white" : "bg-gray-200 text-gray-600"
+                isSignup
+                  ? "bg-teal-500 text-white"
+                  : "bg-gray-200 text-gray-600"
               }`}
             >
               Sign Up
@@ -137,14 +150,16 @@ const Auth = () => {
           </div>
 
           {isSignup ? <Register /> : <Login />}
-
-         
         </div>
       </div>
 
       {/* Right Section (Image) */}
       <div className="hidden md:block w-1/2">
-        <img src="/authImage.png" className="w-full h-full object-cover" alt="Auth Background" />
+        <img
+          src="/authImage.png"
+          className="w-full h-full object-cover"
+          alt="Auth Background"
+        />
       </div>
     </div>
   );

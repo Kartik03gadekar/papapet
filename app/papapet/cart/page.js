@@ -245,7 +245,6 @@ export default function CheckoutPage() {
     setCartItems((prev) => {
       const item = prev.find((item) => (item._id || item.id) === id);
       if (item) {
-        toast.success("Quantity increased.");
         return updateQuantity(prev, id, (item.quantity || 1) + 1);
       }
       return prev;
@@ -256,7 +255,6 @@ export default function CheckoutPage() {
     setCartItems((prev) => {
       const item = prev.find((item) => (item._id || item.id) === id);
       if (item && (item.quantity || 1) > 1) {
-        toast.success("Quantity decreased.");
         return updateQuantity(prev, id, (item.quantity || 1) - 1);
       }
       return prev;
@@ -425,56 +423,64 @@ export default function CheckoutPage() {
     ));
   };
 
-  // Helper: get selected address object
   const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
 
-  // Pass the selected address to the checkout page via sessionStorage
-  const handleGoToCheckout = () => {
-    if (!cartItems || cartItems.length === 0) {
-      toast.error("Your cart is empty. Please add items before checkout.");
-      return;
-    }
-    // Prepare the data to send
-    const checkoutData = {
-      products: cartItems.map((item) => ({
-        id: item._id || item.id,
-        name: item.name,
-        price: item.discountprice || item.price,
-        quantity: item.quantity || 1,
-        image: item.image || item.img || "",
-        sku: item.sku || "",
-        category: item.category || "",
-        brand: item.brand || "",
-      })),
-      subtotal,
-      shipping,
-      discount,
-      tax,
-      total,
-      appliedCoupon: appliedCoupon
-        ? {
-            code: appliedCoupon.code,
-            value: appliedCoupon.value,
-          }
-        : null,
-      user: authUser
-        ? {
-            name: authUser.name,
-            email: authUser.email,
-            phone: authUser.phone,
-          }
-        : null,
-      address: selectedAddress || null, // Pass the selected address object
-    };
-
+  const checkUserLoggedIn = () => {
     if (typeof window !== "undefined") {
-      window.sessionStorage.setItem(
-        "papapet_checkout_data",
-        JSON.stringify(checkoutData)
-      );
-    }
+      const user = window.localStorage.getItem("papapet_user");
+      if (user) {
+        // User is logged in, proceed to checkout
+        if (!cartItems || cartItems.length === 0) {
+          toast.error("Your cart is empty. Please add items before checkout.");
+          return;
+        }
+        // Prepare the data to send
+        const checkoutData = {
+          products: cartItems.map((item) => ({
+            id: item._id || item.id,
+            name: item.name,
+            price: item.discountprice || item.price,
+            quantity: item.quantity || 1,
+            image: item.image || item.img || "",
+            sku: item.sku || "",
+            category: item.category || "",
+            brand: item.brand || "",
+          })),
+          subtotal,
+          shipping,
+          discount,
+          tax,
+          total,
+          appliedCoupon: appliedCoupon
+            ? {
+                code: appliedCoupon.code,
+                value: appliedCoupon.value,
+              }
+            : null,
+          user: authUser
+            ? {
+                name: authUser.name,
+                email: authUser.email,
+                phone: authUser.phone,
+              }
+            : null,
+          address: selectedAddress || null, // Pass the selected address object
+        };
 
-    router.push("/papapet/cart/checkout");
+        window.sessionStorage.setItem(
+          "papapet_checkout_data",
+          JSON.stringify(checkoutData)
+        );
+
+        router.push("/papapet/cart/checkout");
+        return true;
+      } else {
+        // Not logged in, redirect to login page
+        router.push("/papapet/auth");
+        return false;
+      }
+    }
+    return false;
   };
 
   return (
@@ -500,7 +506,7 @@ export default function CheckoutPage() {
                     </div>
                     <button
                       type="button"
-                      className="text-white bg-[#FB923C] px-3 py-2 rounded-full text-sm flex items-center gap-2 w-1/4"
+                      className="text-white bg-[#FB923C] px-3 py-2 rounded-full text-sm flex items-center gap-2 md:w-1/4"
                       onClick={() => setShowAddAddressModal(true)}
                     >
                       <Plus size={16} />
@@ -1055,7 +1061,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <button
-                  onClick={handleGoToCheckout}
+                  onClick={checkUserLoggedIn}
                   className="w-full mt-6 px-6 py-3 bg-orange-400 text-white rounded-lg font-semibold hover:bg-orange-500 transition flex items-center justify-center gap-2 text-base shadow-md"
                   disabled={addresses.length === 0}
                   title={

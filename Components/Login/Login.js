@@ -47,7 +47,7 @@ import { loginUser } from "@/store/Action/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/Firebase/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -121,7 +121,6 @@ const Login = () => {
     try {
       setLoading(true);
       const result = await confirmationResult.confirm(otp);
-      console.log("Firebase user:", result.user);
 
       // Dispatch login to backend
       const formData = new FormData();
@@ -246,10 +245,8 @@ const Login = () => {
           {useOTP ? (otpSent ? "Verify OTP" : "Send OTP") : "Login"}
         </button>
 
-        {/* Required for Firebase Recaptcha */}
         <div id="recaptcha-container"></div>
       </form>
-      <ToastContainer position="top-center" autoClose={3000} />
     </>
   );
 };

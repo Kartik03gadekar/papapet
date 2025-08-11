@@ -8,9 +8,9 @@ import "swiper/css/pagination";
 
 const Page3 = () => {
   const data = [
-    { name: "Dog", img: "/Page31.jpg" },
-    { name: "Cat", img: "/Page32.jpg" },
-    { name: "Fish", img: "/Page33.jpg" },
+    { name: "Dog", img: "/Categories/dogCategory.jpg" },
+    { name: "Cat", img: "/Categories/catCategory.png" },
+    { name: "Fish", img: "/Categories/fishCategory.png" },
   ];
 
   return (

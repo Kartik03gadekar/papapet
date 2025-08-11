@@ -46,7 +46,7 @@ const Footer = () => {
         {/* Footer Links */}
         <div className="w-full max-md:bg-[#FFB828] bg-[#0d9899] text-black ">
           <div className=" flex items-center  gap-3 max-md:flex max-md:items-center max-md:justify-between max-md:gap-3 max-md:pt-[5vw] max-md:pl-[5vw]  pl-[2vw] pt-[2vw] ">
-            <div className = "flex items-center justify-center gap-5">
+            <div className="flex items-center justify-center gap-5">
               <img
                 className="object-contain h-10 max-md:h-[10vw]"
                 src="/logo.png"
@@ -178,6 +178,11 @@ const Footer = () => {
         <div className="w-full text-center  max-md:bg-[#FFB828] bg-[#0d9899] max-md:text-black text-zinc-800 py-4 text-lg">
           {/* &copy; {new Date().getFullYear()} PaPaPet. All rights reserved. */}
           ISO Certified MSME Registered ©all right reserve
+        </div>
+        <div>
+          <h1 className="w-full text-center  max-md:bg-[#FFB828] bg-[#0d9899] max-md:text-black text-zinc-800 py-2 text-lg font-bold">
+            Thrivetrillion Innovations Pvt. Ltd.
+          </h1>
         </div>
       </footer>
       <footer className="max-md:hidden">
@@ -340,6 +345,11 @@ const Footer = () => {
         <div className="w-full text-center  max-md:bg-[#FFB828] bg-[#0d9899] max-md:text-black text-zinc-800 py-4 text-lg">
           {/* &copy; {new Date().getFullYear()} PaPaPet. All rights reserved. */}
           ISO Certified MSME Registered ©all right reserve
+        </div>
+        <div>
+          <h1 className="w-full text-center  max-md:bg-[#FFB828] bg-[#0d9899] max-md:text-black text-zinc-800 py-2 text-lg font-bold">
+            Thrivetrillion Innovations Pvt. Ltd.
+          </h1>
         </div>
       </footer>
     </>

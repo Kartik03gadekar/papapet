@@ -536,6 +536,7 @@ const NavPapaPet = () => {
   const mobileMenuRef = useRef(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const { user } = useSelector((state) => state.auth);
 
@@ -577,8 +578,16 @@ const NavPapaPet = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(checkUser());
-  }, [dispatch]);
+    // Only run if not authenticated AND we haven't checked before
+    if (
+      !isAuthenticated &&
+      !sessionStorage.getItem("userChecked") &&
+      localStorage.getItem("persist:auth")
+    ) {
+      sessionStorage.setItem("userChecked", "true");
+      dispatch(checkUser());
+    }
+  }, [dispatch, isAuthenticated]);
 
   // Animate desktop orange circle on scroll, keep mobile static
   // useEffect(() => {
@@ -625,10 +634,23 @@ const NavPapaPet = () => {
     }
   }, [mobileMenuOpen]);
 
-const handleLogout = ()=>{
-  dispatch(logoutUser())
-}
-
+  const handleLogout = async () => {
+    console.log("Attempting to log out...");
+    try {
+      await dispatch(logoutUser());
+      console.log("Logout dispatched. Checking user state...");
+      setTimeout(() => {
+        // You may want to check the user state here if available
+        if (!user) {
+          console.log("User is successfully logged out.");
+        } else {
+          console.log("User is still present after logout attempt:", user);
+        }
+      }, 500);
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
 
   // Handler for cart icon click
   const handleCartClick = () => {

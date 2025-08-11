@@ -53,7 +53,7 @@ const HomePage = () => {
         -right-[5%] max-md:-left-[25%] bg-[#0D9899] max-md:w-[156vw] max-md:h-[156vw] z-[-1]">
         <img
           src="/blackDog.png"
-          className="absolute -top-[40%] right-16 h-[120%] object-contain max-md:-top-[37%] max-md:right-[17%] max-md:h-[120%]"
+          className="absolute -top-[40%] right-10 h-[120%] object-contain max-md:-top-[25%] max-md:right-[17%] max-md:h-[120%]"
           alt="Black Dog"
         />
       </div>

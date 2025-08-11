@@ -87,7 +87,7 @@ const Register = () => {
 
       await dispatch(registerUser(formData));
       toast.success("Registration successful");
-      router.push("/papapet/auth/login");
+      router.push("/papapet/auth");
     } catch (error) {
       console.error("OTP verify error:", error);
       toast.error("Invalid OTP");

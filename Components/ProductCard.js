@@ -1,43 +1,103 @@
 import Link from "next/link";
 import React from "react";
 
-const ProductCard = ({ i, imgLink }) => {
+const ProductCard = ({ i }) => {
+  // Calculate discount percent if discountprice exists
+  const hasDiscount = i?.discountprice && i?.discountprice < i?.price;
+  const discountPercent = hasDiscount
+    ? Math.round(((i.price - i.discountprice) / i.price) * 100)
+    : null;
+
   return (
-    <Link href={`/papapet/product/${i._id}`}>
-      <div className="w-[80%] h-fit flex rounded-xl flex-col overflow-hidden  p-2 items-center justify-center bg-white gap-1 max-md:h-fit max-md:overflow-hidden max-md:w-full max-md:border-2 max-md:rounded-md">
-        <div className="w-full h-[20vh]  relative ">
+    <Link
+      href={`/papapet/product/${i._id}`}
+      className="no-underline w-full block"
+      tabIndex={0}
+    >
+      <div
+        className="
+          w-full h-full bg-white rounded-lg border border-[#FFD36A] shadow-sm
+          p-3 sm:p-4 flex gap-3 sm:gap-4
+          transition hover:shadow-lg
+          min-h-[180px]
+        "
+      >
+        {/* Image on the left (top on mobile) */}
+        <div className="flex-shrink-0 flex items-center justify-center mb-2 sm:mb-0">
           <img
-            className="h-full rounded-lg w-full object-contain"
-            src={`http://localhost:8080/api/v1/admin/get/image/${i?.image[0]?.filename}/${i?.image[0]?.mimetype.split("/")[0]}/${i?.image[0]?.mimetype.split("/")[1]}`}
-            alt=""
+            className="
+              h-[80px] w-[80px] sm:h-[90px] sm:w-[90px]
+              object-contain rounded
+              mx-auto
+            "
+            src={
+              i?.image && i?.image[0]
+                ? `http://localhost:8080/api/v1/admin/get/image/${
+                    i?.image[0]?.filename
+                  }/${i?.image[0]?.mimetype.split("/")[0]}/${
+                    i?.image[0]?.mimetype.split("/")[1]
+                  }`
+                : "/no-image.png"
+            }
+            alt={i?.name || "Product"}
           />
-        
         </div>
-
-       <h1 className={`text-lg mb-1 font-semibold font-[poppins] ${i?.stock?.some(item => item.quantity > 0) ? 'text-green-700' : 'text-red-600'}`}>
-  {i?.stock?.some(item => item.quantity > 0) ? 'Available' : 'Out of Stock'}
-</h1>
-
-        <h1 className="font-semibold text-xs capitalize   ">{i?.name}</h1>
-        
-      
-        <h1 className="font-semibold text-xs max-md:hidden mb-2 capitalize">Category : {i?.categories}</h1>
-        <button className="bg-red-500 max-md:hidden rounded-md text-xs px-4 py-2 text-white mb-1">
-          Great Offer
-        </button>
-             {/* {i?.discountprice && (
-  <button className="bg-red-500 max-md:hidden rounded-md text-xs px-4 py-2 text-white mb-1">
-    Great Offer
-  </button>
-)} */}
-        <h1 className="text-2xl font-[poppins] max-md:text-2sm ">
-          <span className="text-lg ">
-          M.R.P
-          </span> 
-           &nbsp; ₹ {i?.price}  </h1>
-        {/* <h3 className="text-xs opacity-80">
-          Brand : <span className="font-semibold">{i?.brand}</span>
-        </h3> */}
+        {/* Text on the right (below image on mobile) */}
+        <div className="flex flex-col flex-1 justify-between h-full">
+          {/* Title and weight/size */}
+          <div>
+            <h2
+              className="text-[15px] sm:text-[16px] font-semibold text-[#222] leading-tight mb-0.5"
+              style={{ fontFamily: "Poppins, sans-serif" }}
+            >
+              {i?.name}
+            </h2>
+            <div className="text-[13px] sm:text-[14px] text-[#666] font-normal mb-1">
+              {i?.weight || i?.size || ""}
+            </div>
+          </div>
+          {/* Brand and Category Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs mb-1 gap-1">
+            <span className="text-black/50 font-medium">
+              Brand: <span className = "text-orange-400">{i?.brand || "Pedigree"}</span>
+            </span>
+            <span className="text-[#222] bg-[#F5F5F5] px-2 py-0.5 rounded w-fit">
+              Category: {i?.categories || "Dry Food"}
+            </span>
+          </div>
+          {/* Price Row */}
+          <div className="flex items-center justify-start gap-2 mb-1 flex-wrap">
+            <span className="text-[#1E90FF] text-[20px] sm:text-[22px] font-bold">
+              Rs. {hasDiscount ? i.discountprice : i.price}
+            </span>
+            {hasDiscount && (
+              <>
+                <span className="text-[#888] text-[13px] line-through font-medium ml-2">
+                  Rs.{i.price}
+                </span>
+                <span className="bg-[#FFD36A] text-[#222] text-[11px] font-semibold px-2 py-0.5 rounded">
+                  {discountPercent}% OFF
+                </span>
+              </>
+            )}
+          </div>
+          {/* Add to Cart Button */}
+          <button
+            className="
+              w-full bg-[#FF7F2A] hover:bg-[#ff6600] text-white text-[15px] font-semibold rounded
+              px-4 py-2 flex items-center justify-center gap-2 transition mt-2 sm:mt-auto
+            "
+            style={{ fontFamily: "Poppins, sans-serif" }}
+          >
+            ADD TO CART
+            <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+              <path
+                d="M7.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM7.7 14.3a.75.75 0 01-.7-.5L4.1 6.6A.75.75 0 014.8 5.5h10.4a.75.75 0 01.7 1.1l-2.9 7.2a.75.75 0 01-.7.5H7.7z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </Link>
   );
