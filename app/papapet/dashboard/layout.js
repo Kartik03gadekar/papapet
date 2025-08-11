@@ -48,12 +48,12 @@ export default function DashboardLayout({ children }) {
         style={{ minHeight: "calc(100vh - 10vh)" }}
       >
         {/* Sidebar for large screens */}
-        <div className="hidden lg:block w-[200px] h-full shadow-lg z-10">
+        <div className="hidden lg:block w-[200px] h-full z-10 border-r border-gray-600">
           <Sidebar activeIndex={activeIndex} setopen={setActiveIndex} />
         </div>
 
         {/* Main content */}
-        <div className="flex-1 flex flex-col items-center overflow-y-auto p-4 lg:p-5 w-full bg-red-400">
+        <div className="flex-1 flex flex-col items-center overflow-y-auto p-4 lg:p-5 w-full ">
           {/* Mobile Pill Navigation */}
           <div className="lg:hidden mb-4 w-5/6 relative z-10 flex items-center justify-center">
             <div className="w-5/6">

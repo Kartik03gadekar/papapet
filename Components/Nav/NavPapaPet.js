@@ -536,6 +536,7 @@ const NavPapaPet = () => {
   const mobileMenuRef = useRef(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const { user } = useSelector((state) => state.auth);
 
@@ -577,8 +578,16 @@ const NavPapaPet = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(checkUser());
-  }, [dispatch]);
+    // Only run if not authenticated AND we haven't checked before
+    if (
+      !isAuthenticated &&
+      !sessionStorage.getItem("userChecked") &&
+      localStorage.getItem("persist:auth")
+    ) {
+      sessionStorage.setItem("userChecked", "true");
+      dispatch(checkUser());
+    }
+  }, [dispatch, isAuthenticated]);
 
   // Animate desktop orange circle on scroll, keep mobile static
   // useEffect(() => {
@@ -625,12 +634,23 @@ const NavPapaPet = () => {
     }
   }, [mobileMenuOpen]);
 
-  // Helper for logout
-  // Helper for logout
-const handleLogout = ()=>{
-  dispatch(logoutUser())
-}
-
+  const handleLogout = async () => {
+    console.log("Attempting to log out...");
+    try {
+      await dispatch(logoutUser());
+      console.log("Logout dispatched. Checking user state...");
+      setTimeout(() => {
+        // You may want to check the user state here if available
+        if (!user) {
+          console.log("User is successfully logged out.");
+        } else {
+          console.log("User is still present after logout attempt:", user);
+        }
+      }, 500);
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
 
   // Handler for cart icon click
   const handleCartClick = () => {
@@ -683,7 +703,7 @@ const handleLogout = ()=>{
           </div>
 
           {/* Desktop right controls: search, cart, user (no hamburger menu on desktop) */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             {/* Desktop Search Icon */}
             <button
               className="text-2xl p-2 text-[#0D9899] rounded-full transition-all duration-300"
@@ -703,7 +723,7 @@ const handleLogout = ()=>{
             {/* Desktop Cart Icon */}
             {user && (
               <button
-                className="hidden md:flex text-2xl text-[#0D9899] p-2 hover:bg-[#FFAD22]/20 rounded-full transition-all duration-300"
+                className="hidden md:flex text-2xl text-[#0D9899] p-2 rounded-full transition-all duration-300"
                 onClick={handleCartClick}
                 aria-label="Open cart"
                 type="button"

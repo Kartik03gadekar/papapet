@@ -65,7 +65,7 @@ const Page2 = () => {
   const dataTwo = [
     {
      
-      img: "/ServiecesAccosaries.png",
+      img: "/servicesfood.png",
       link: "/papapet/food"
      
     },
@@ -111,11 +111,11 @@ const Page2 = () => {
 
   return (
     <section id="services">
-      <div className="min-h-screen w-full flex items-center max-md:items-start justify-center py-[8vh]  
+      <div className="min-h-auto w-full flex items-center max-md:items-start justify-center py-[8vh]  
         flex-col gap-20 max-md:gap-8  max-md:h-fit bg-white max-md:py-0  max-md:justify-start max-md:mt-[5vw] mb-[3vw]">
         {/* <SwiperService data={cardData}/> */}
-        <div className="flex flex-col items-center justify-center max-md:flex max-md:items-center max-md:justify-center">
-          <div className="flex items-end justify-center gap-5 max-md:flex max-md:items-center max-md:justify-center max-md:ml-[18vw]">
+        <div className="w-full flex flex-col items-center justify-center max-md:flex max-md:items-center max-md:justify-center">
+          <div className="flex items-end justify-center gap-5 max-md:flex max-md:items-center max-md:justify-center">
             <h1 className="text-5xl text-[gilroy] font-semibold max-md:text-4xl">
               Our <span className="text-[#0D9899]">Services </span>
             </h1>
@@ -128,23 +128,24 @@ const Page2 = () => {
           </p>
         </div>
 
-        <div className="hidden max-md:grid max-md:grid-cols-2 max-md:gap-4 max-md:w-screen max-md:px-4 max-md:py-2">
-          {dataTwo.map((i, index) => (
-            <Link key={index} href={i.link} className="w-full">
-              <div
-                className={`max-md:h-[22vh] max-md:flex max-md:flex-col max-md:items-center
-                  max-md:justify-center max-md:rounded-lg max-md:shadow-lg`}
-              >
-                <img
-                  src={i.img}
-                  width={450}
-                  height={300}
-                  className="max-md:w-auto max-md:h-[15vh] object-contain"
-                  alt={i.name}
-                />
-              </div>
-            </Link>
-          ))}
+        <div className="hidden max-md:flex max-md:justify-center max-md:items-center max-md:w-screen max-md:px-4">
+          <div className="grid grid-cols-2 gap-1">
+            {dataTwo.map((i, index) => (
+              <Link key={index} href={i.link} className="w-full">
+                <div
+                  className="flex flex-col items-center justify-center"
+                >
+                  <img
+                    src={i.img}
+                    width={450}
+                    height={300}
+                    className="w-auto object-contain"
+                    alt={i.name}
+                  />
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
         <div className="w-full max-md:hidden flex flex-wrap gap-10 items-center justify-center gap-y-20 max-md:grid-cols-1 
         place-content-center place-items-center">

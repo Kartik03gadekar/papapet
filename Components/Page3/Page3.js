@@ -8,17 +8,17 @@ import "swiper/css/pagination";
 
 const Page3 = () => {
   const data = [
-    { name: "Dog", img: "/Page31.jpg" },
-    { name: "Cat", img: "/Page32.jpg" },
-    { name: "Fish", img: "/Page33.jpg" },
+    { name: "Dog", img: "/Categories/dogCategory.jpg" },
+    { name: "Cat", img: "/Categories/catCategory.png" },
+    { name: "Fish", img: "/Categories/fishCategory.png" },
   ];
 
   return (
-    <div className="h-fit  max-md:h-fit w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:my-[3vw]  ">
+    <div className="h-fit max-md:h-fit w-full flex items-center justify-center py-[10vh] flex-col gap-16 max-md:py-[3vh] max-md:my-[3vw] bg-gradient-to-t from-[#FFDEBA] to-white">
       {/* Title Section */}
       <div className="flex flex-col items-center justify-center text-center px-4">
         <div className="flex items-end justify-center gap-5">
-          <h1 className="text-5xl font-semibold pb-5 max-md:text-3xl">
+          <h1 className="text-5xl font-semibold max-md:text-3xl">
             Shop by <span className="text-[#0D9899]">Category</span>
           </h1>
           <img src="/serviceDog.png" className="max-md:h-[15vw] h-16" alt="Service Dog" />

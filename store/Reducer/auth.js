@@ -1,24 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isAuthencticated: false,
+  isAuthenticated: false, // ✅ fixed spelling
   loading: false,
+  user: null,
+  consult: null,
+  ofconsult: null,
+  network: null,
+  message: null,
+  error: null,
 };
 
 export const auth = createSlice({
   name: "Mediensure",
   initialState,
   reducers: {
-    isUserRequest: (state, action) => {
-      state.loading = false;
+    isUserRequest: (state) => {
+      state.loading = true;
     },
     isUser: (state, action) => {
-      (state.isAuthencticated = true),
-        (state.user = action.payload),
-        (state.loading = false);
-    },
-    isUserFail: (state, acction) => {
+      state.isAuthenticated = true; // ✅ fixed spelling
+      state.user = action.payload;
       state.loading = false;
+    },
+    isUserFail: (state) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
     },
     getConsultation: (state, action) => {
       state.consult = action.payload.consult;
@@ -26,32 +34,35 @@ export const auth = createSlice({
     getOffConsultation: (state, action) => {
       state.ofconsult = action.payload.consult;
     },
-    getNetworkRequest: (state, action) => {
+    getNetworkRequest: (state) => {
       state.loading = true;
     },
     getNetworkSuccess: (state, action) => {
-      (state.loading = false), (state.network = action.payload.network);
+      state.loading = false;
+      state.network = action.payload.network;
     },
-    getNetworkFail: (state, action) => {
-      state.loading = true;
+    getNetworkFail: (state) => {
+      state.loading = false;
     },
-    request: (state, action) => {
+    request: (state) => {
       state.loading = true;
     },
     success: (state, action) => {
-      (state.loading = false), (state.message = action.payload.message);
+      state.loading = false;
+      state.message = action.payload.message;
     },
     fail: (state, action) => {
-      (state.loading = false), (state.error = action.payload.message);
+      state.loading = false;
+      state.error = action.payload.message;
     },
-    removeMsg: (state, action) => {
+    removeMsg: (state) => {
       state.message = null;
     },
-    removeErr: (state, action) => {
+    removeErr: (state) => {
       state.error = null;
     },
     logout: (state) => {
-      state.isAuthencticated = false;
+      state.isAuthenticated = false; // ✅ now matches login
       state.user = null;
       state.loading = false;
       state.consult = null;
@@ -77,4 +88,5 @@ export const {
   getOffConsultation,
   logout,
 } = auth.actions;
+
 export default auth.reducer;
