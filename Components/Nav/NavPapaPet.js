@@ -723,7 +723,7 @@ const NavPapaPet = () => {
             {/* Desktop Cart Icon */}
             {user && (
               <button
-                className="hidden md:flex text-2xl text-[#0D9899] p-2 hover:bg-[#FFAD22]/20 rounded-full transition-all duration-300"
+                className="hidden md:flex text-2xl text-[#0D9899] p-2 rounded-full transition-all duration-300"
                 onClick={handleCartClick}
                 aria-label="Open cart"
                 type="button"
