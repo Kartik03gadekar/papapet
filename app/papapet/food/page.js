@@ -7,6 +7,7 @@ import React from "react";
 const Page = () => {
   return (
     <>
+
      <div className="overflow-hidden">
        <NavPapaPet />
       <div className=" w-screen mb-6 ">
@@ -24,6 +25,7 @@ const Page = () => {
               Because your pet deserves more than just a meal—they deserve a
               bowl full of love, care, and premium nutrition every day.
             </p>
+            
             <div className="flex items-center gap-4  pt-[1.7vw]  max-md:w-full max-md:justify-start">
               <button className="linear rounded-full font-semibold text-lg px-6 py-2 max-md:text-sm max-md:px-4 max-md:py-2">
                 Explore Now{" "}
