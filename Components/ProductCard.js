@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import axios from "@/Axios/axios"; // import axios instance
 
 const ProductCard = ({ i }) => {
   // Calculate discount percent if discountprice exists
@@ -7,6 +8,17 @@ const ProductCard = ({ i }) => {
   const discountPercent = hasDiscount
     ? Math.round(((i.price - i.discountprice) / i.price) * 100)
     : null;
+
+  // Helper to get image URL using axios instance baseURL
+  const getImageUrl = () => {
+    if (i?.image && i?.image[0]) {
+      const { filename, mimetype } = i.image[0];
+      const [type, subtype] = mimetype.split("/");
+      // Use axios instance baseURL
+      return `${axios.defaults.baseURL}admin/get/image/${filename}/${type}/${subtype}`;
+    }
+    return "/no-image.png";
+  };
 
   return (
     <Link
@@ -30,15 +42,7 @@ const ProductCard = ({ i }) => {
               object-contain rounded
               mx-auto
             "
-            src={
-              i?.image && i?.image[0]
-                ? `http://localhost:8080/api/v1/admin/get/image/${
-                    i?.image[0]?.filename
-                  }/${i?.image[0]?.mimetype.split("/")[0]}/${
-                    i?.image[0]?.mimetype.split("/")[1]
-                  }`
-                : "/no-image.png"
-            }
+            src={getImageUrl()}
             alt={i?.name || "Product"}
           />
         </div>
