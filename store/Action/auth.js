@@ -59,9 +59,10 @@ export const loginUser = (info) => async (dispatch) => {
 export const logoutUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
-    await axios.post("/user/signout", {}, );
+    await axios.post("/user/signout");
 
-    dispatch(logout()); // clear Redux in-memory
+    dispatch(logout());        // clear Redux in-memory
+   
     localStorage.removeItem("persist:auth"); // clear persisted state
 
     window.location.href = "/papapet/auth";
@@ -70,6 +71,9 @@ export const logoutUser = () => async (dispatch) => {
     console.error("Logout error:", error);
   }
 };
+
+
+
 // ✅ Book online consultation
 export const bookConsultation = (id, info) => async (dispatch) => {
   dispatch(request());
