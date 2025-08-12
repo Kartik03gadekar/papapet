@@ -95,24 +95,25 @@ const Auth = () => {
   const router = useRouter();
 
   const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
+  const [hasRedirected, setHasRedirected] = useState(false);
 
   // Check user status on initial load
 
   // Redirect if authenticated
   useEffect(() => {
-    // Only redirect if:
-    // 1) Not loading
-    // 2) Authenticated
-    // 3) User object is present
+    if (loading) return; // Wait until auth loading finishes
+
     if (
-      !loading &&
+      !hasRedirected &&
       isAuthenticated &&
       user &&
       window.location.pathname === "/mediensure/auth"
     ) {
+      setHasRedirected(true);
       router.replace("/mediensure/verifyauth");
     }
-  }, [isAuthenticated, user, loading, router]);
+  }, [isAuthenticated, user, loading, hasRedirected, router]);
+  
   return (
     <div className="h-screen w-full flex flex-col md:flex-row ">
       {/* Left Section (Form) */}
