@@ -38,7 +38,7 @@ const ProductCard = ({ i }) => {
         <div className="flex-shrink-0 flex items-center justify-center mb-2 sm:mb-0">
        <img
   className="
-    w-[100px] h-[100px] sm:w-[110px] sm:h-[110px]
+    w-[100px] h-[100px] sm:w-[140px] sm:h-[140px]
     object-contain rounded
     mx-auto
   "
