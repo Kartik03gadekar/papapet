@@ -10,6 +10,7 @@ import { Pagination } from "swiper/modules";
 import Footer from '@/Components/Footer/Footer';
 import Types from '@/Components/Accessoires/Types';
 import AccessoiresProduct from '@/Components/Accessoires/AccessoiresProduct';
+import FoodContainer from '@/Components/Food/FoodContainer';
 
 
 const page = () => {
@@ -57,7 +58,7 @@ const page = () => {
         
     </div>
     <Types/>
-    <AccessoiresProduct/>
+ <FoodContainer />  
     <Footer />
     </div>
   </>
