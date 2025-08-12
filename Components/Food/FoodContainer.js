@@ -272,7 +272,7 @@ const FoodContainer = () => {
     );
   } else {
     productList = (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
         {sorted.map((item, idx) => (
           <ProductCard
             key={item._id || item.id || idx}
@@ -659,7 +659,7 @@ const FoodContainer = () => {
           {/* Main content grid */}
           <section
             aria-labelledby="products-heading"
-            className="pt-4 md:pt-6 pb-16 md:pb-24 w-full max-w-full"
+            className=" b pt-4 md:pt-6 pb-16 md:pb-24 w-full max-w-full"
           >
             <div className="grid grid-cols-1 gap-x-0 md:gap-x-8 gap-y-8 md:gap-y-10 lg:grid-cols-6 w-full">
               {/* Desktop sidebar */}
@@ -770,7 +770,7 @@ const FoodContainer = () => {
               </aside>
 
               {/* Product list */}
-              <div className="overflow-y-auto pr-0 md:pr-2 w-full min-h-[400px] lg:col-span-5">
+              <div className="bg-green-300 overflow-y-auto pr-0 md:pr-2 w-full min-h-[400px] lg:col-span-5">
                 {productList}
               </div>
             </div>

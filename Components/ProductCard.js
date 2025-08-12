@@ -36,15 +36,16 @@ const ProductCard = ({ i }) => {
       >
         {/* Image on the left (top on mobile) */}
         <div className="flex-shrink-0 flex items-center justify-center mb-2 sm:mb-0">
-          <img
-            className="
-              h-[80px] w-[80px] sm:h-[90px] sm:w-[90px]
-              object-contain rounded
-              mx-auto
-            "
-            src={getImageUrl()}
-            alt={i?.name || "Product"}
-          />
+       <img
+  className="
+    w-[100px] h-[100px] sm:w-[110px] sm:h-[110px]
+    object-contain rounded
+    mx-auto
+  "
+  src={getImageUrl()}
+  alt={i?.name || 'Product'}
+/>
+
         </div>
         {/* Text on the right (below image on mobile) */}
         <div className="flex flex-col flex-1 justify-between h-full">
