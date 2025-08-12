@@ -11,6 +11,12 @@ const page = () => {
 
     <NavPapaPet/>
       <HeroSection/>
+                <div className="w-full h-[28vw] flex items-center justify-center  ">
+
+  <img 
+   className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
+   src={"/poster (2).png"} alt="" />
+</div>
        {/* Trusted Doctors Section */}
        <section className="py-20 px-6 text-center bg-[#F4EEE1]">
         <h2 className="text-3xl font-semibold">Reliable Pet Boarding Near you</h2>

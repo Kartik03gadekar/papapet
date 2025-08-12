@@ -94,6 +94,12 @@ const Page = () => {
         </div>
 
       </section>
+    <div className="w-full h-[28vw] flex items-center justify-center  ">
+
+  <img 
+   className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
+   src={"/9.png"} alt="" />
+</div>
 
       {/* Services Section */}
       <section className="py-8 text-center bg-[#F4EEE1]">

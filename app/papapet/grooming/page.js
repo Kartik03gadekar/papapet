@@ -42,6 +42,12 @@ const page = () => {
 
      <NavPapaPet/> 
      <HeroSection/>
+               <div className="w-full h-[28vw] flex items-center justify-center  ">
+
+  <img 
+   className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
+   src={"/12.png"} alt="" />
+</div>
      {/* Trusted Doctors Section */}
 
 <div className='w-full bg-[#F4EEE1]'>

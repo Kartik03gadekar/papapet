@@ -11,8 +11,8 @@ const Page = () => {
      <div className="overflow-hidden">
        <NavPapaPet />
       <div className=" w-screen mb-6 ">
-        <div className="  flex items-center justify-between h-screen px-10 py-[8vw] pl-[3vw]  
-        max-md:flex-col max-md:px-5  max-md:gap-[0vw] max-md:h-fit max-md:pt-[1vw] pt-[6vw] ">
+        <div className="  flex items-center justify-between h-screen px-10 py-[6vw] pl-[3vw]  
+        max-md:flex-col max-md:px-5  max-md:gap-[0vw] max-md:h-fit max-md:pt-[1vw] pt-[5vw] ">
           
           {/* Left Content */}
           <div className=" flex flex-col gap-6 w-1/2 text-black  
@@ -45,9 +45,10 @@ const Page = () => {
           </div>
         </div>
 
-<div className="w-full h-[30vw] flex items-center justify-center   mb-1">
+<div className="w-full h-[28vw] flex items-center justify-center  ">
+
   <img 
-   className="w-[70%] h-[70%] max-md:w-[90%]  max-md:h-[90%]"
+   className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
    src={"/6 (1).png"} alt="" />
 </div>
      
