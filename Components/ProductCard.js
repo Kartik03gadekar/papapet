@@ -50,7 +50,7 @@ const ProductCard = ({ i }) => {
 
         </div>
         {/* Text on the right (below image on mobile) */}
-        <div className="flex flex-col flex-1 justify-between h-full">
+        <div className="flex flex-col gap-1 flex-1 justify-between h-full">
           {/* Title and weight/size */}
           <div>
             <h2
@@ -64,7 +64,7 @@ const ProductCard = ({ i }) => {
             </div>
           </div>
           {/* Brand and Category Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs mb-1 gap-1">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs mb-1 gap-2">
             <span className="text-black/50 font-medium">
               Brand: <span className = "text-orange-400">{i?.brand || "Pedigree"}</span>
             </span>
@@ -74,36 +74,57 @@ const ProductCard = ({ i }) => {
           </div>
           {/* Price Row */}
           <div className="flex items-center justify-start gap-2 mb-1 flex-wrap">
-            <span className="text-[#1E90FF] text-[20px] sm:text-[15px] font-bold">
+            <span className="text-[#1E90FF] text-[20px] sm:text-[16px] font-bold">
               Rs. {hasDiscount ? i.discountprice : i.price}
             </span>
             {hasDiscount && (
               <>
-                <span className="text-[#888] text-[12px] line-through font-medium ml-2">
+                <span className="text-[#888] text-[13px] line-through font-medium ml-2">
                   Rs.{i.price}
                 </span>
-                <span className="bg-[#FFD36A] text-[#222] text-[10px] font-semibold px-2 py-0.5 rounded">
+                <span className="bg-[#FFD36A] text-[#222] text-[11px] font-semibold px-2 py-0.5 rounded">
                   {discountPercent}% OFF
                 </span>
               </>
             )}
           </div>
           {/* Add to Cart Button */}
-          <button
-            className="
-              w-full bg-[#FF7F2A] hover:bg-[#ff6600] text-white text-[15px] font-semibold rounded
-              px-2 py-2 flex items-center justify-center gap-2 transition mt-2 sm:mt-auto
-            "
-            style={{ fontFamily: "Poppins, sans-serif" }}
-          >
-            ADD TO CART
-            <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
-              <path
-                d="M7.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM7.7 14.3a.75.75 0 01-.7-.5L4.1 6.6A.75.75 0 014.8 5.5h10.4a.75.75 0 01.7 1.1l-2.9 7.2a.75.75 0 01-.7.5H7.7z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
+         <div className="flex gap-2 mt-2 sm:mt-auto">
+  {/* BUY NOW Button */}
+  <button
+    className="
+      flex-1 bg-[#FF7F2A] hover:bg-[#ff6600]
+      text-white text-[15px] font-semibold
+      rounded px-4 py-2 flex items-center justify-center
+      transition
+    "
+    style={{ fontFamily: "Poppins, sans-serif" }}
+  >
+    BUY NOW
+  </button>
+
+  {/* Cart Icon Button */}
+  <button
+    className="
+      bg-[#FF7F2A] hover:bg-[#ff6600]
+      p-2 rounded flex items-center justify-center
+      transition
+    "
+  >
+    <svg
+      width="20"
+      height="20"
+      fill="none"
+      viewBox="0 0 20 20"
+    >
+      <path
+        d="M7.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM7.7 14.3a.75.75 0 01-.7-.5L4.1 6.6A.75.75 0 014.8 5.5h10.4a.75.75 0 01.7 1.1l-2.9 7.2a.75.75 0 01-.7.5H7.7z"
+        fill="white"
+      />
+    </svg>
+  </button>
+</div>
+
         </div>
       </div>
     </Link>
