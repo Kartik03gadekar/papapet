@@ -29,7 +29,7 @@ const ProductCard = ({ i }) => {
       <div
         className="
           w-full h-full bg-b rounded-lg border border-[#FFD36A] shadow-sm
-          px-4 py-4 sm:p-4 flex gap-4 sm:gap-8 sm:justify-center
+          px-4 py-4 sm:p-4 flex gap-4 sm:gap-10 sm:justify-center
           transition hover:shadow-lg
           min-h-[180px]
         "
