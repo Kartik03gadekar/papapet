@@ -382,7 +382,8 @@ const FoodContainer = () => {
             Explore all our food categories
           </h1>
           {/* Header and controls */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between border-b border-gray-200 pt-20 pb-4 md:pt-24 md:pb-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between border-b 
+          border-gray-200 pt-20 pb-4 md:pt-24 md:pb-6">
             <h1
               className="text-2xl md:text-3xl lg:text-4xl head font-bold tracking-tight text-gray-900"
               style={{
@@ -442,7 +443,9 @@ const FoodContainer = () => {
                   as="div"
                   className="relative inline-block text-left w-full md:w-44 sm:w-auto"
                 >
-                  <Menu.Button className="group inline-flex justify-start items-center text-sm font-medium hover:text-gray-700 transition-colors w-full sm:w-auto px-2 py-1 rounded-md border border-transparent hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#c9a74d]">
+                  <Menu.Button className="group inline-flex justify-start items-center text-sm font-medium
+                   hover:text-gray-700 transition-colors w-full sm:w-auto px-2 py-1 rounded-md border 
+                   border-transparent hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#c9a74d]">
                     <span className="hidden sm:inline">Sort</span>
                     <span className="sm:hidden">Sort</span>
                     <ChevronDownIcon className="-mr-1 ml-1 size-5 group-hover:text-gray-700" />
@@ -456,7 +459,8 @@ const FoodContainer = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black/5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md
+                     bg-white shadow-2xl ring-1 ring-black/5 focus:outline-none">
                       <div className="py-1">
                         {sortOptions.map((option) => (
                           <Menu.Item key={option.value}>
@@ -770,7 +774,7 @@ const FoodContainer = () => {
               </aside>
 
               {/* Product list */}
-              <div className="bg-green-300 overflow-y-auto pr-0 md:pr-2 w-full min-h-[400px] lg:col-span-5">
+              <div className="overflow-y-auto pr-0 md:pr-2 w-full min-h-[400px] lg:col-span-5">
                 {productList}
               </div>
             </div>

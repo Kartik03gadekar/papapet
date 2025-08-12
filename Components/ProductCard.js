@@ -35,7 +35,7 @@ const ProductCard = ({ i }) => {
         "
       >
         {/* Image on the left (top on mobile) */}
-        <div className="w-[130px] h-[130px] bg-red-500 flex-shrink-0 flex items-center justify-center 
+        <div className="w-[130px] h-[130px] flex-shrink-0 flex items-center justify-center 
       mb-2 sm:mb-0">
        <img
   className="
