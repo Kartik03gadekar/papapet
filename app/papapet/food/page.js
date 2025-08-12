@@ -35,8 +35,7 @@ const Page = () => {
             </div>
           </div>
 
-
-          
+     
           <div className="w-1/2 flex justify-end max-md:w-full max-md:justify-center max-md:mr-8">
             <img
               src="/foodBg.png"
@@ -46,8 +45,19 @@ const Page = () => {
           </div>
         </div>
 
+<div className="w-full h-[30vw] flex items-center justify-center   mb-1">
+  <img 
+   className="w-[70%] h-[70%] max-md:w-[90%]  max-md:h-[90%]"
+   src={"/6 (1).png"} alt="" />
+</div>
+     
+
+
+
+
         <FoodContainer />   
         
+
       </div>
       <Footer />
      </div>

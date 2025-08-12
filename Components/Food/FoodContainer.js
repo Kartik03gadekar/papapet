@@ -290,7 +290,7 @@ const FoodContainer = () => {
   return (
     <>
       {/* Browse By Brands */}
-      <div className="flex flex-col gap-[4vw] items-center justify-center mt-2 bg-[#F4EEE1] py-8">
+      <div className="flex flex-col gap-[4vw] items-center justify-center mt-2 bg-[#F4EEE1] py-8 ">
         <div className="flex items-center text-center justify-center">
           <h1 className="text-4xl font-semibold relative z-10 text-center max-md:text-3xl max-md:pb-6">
             Browse By Brands
