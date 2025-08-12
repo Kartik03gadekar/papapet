@@ -35,14 +35,16 @@ const ProductCard = ({ i }) => {
         "
       >
         {/* Image on the left (top on mobile) */}
-        <div className="flex-shrink-0 flex items-center justify-center mb-2 sm:mb-0">
+        <div className="w-[130px] h-[140px] bg-red-500 flex-shrink-0 flex items-center justify-center 
+      mb-2 sm:mb-0">
        <img
   className="
-    w-[100px] h-[100px] sm:w-[140px] sm:h-[140px]
+    w-full h-full sm:w-full sm:h-full
     object-contain rounded
     mx-auto
   "
   src={getImageUrl()}
+  // src={"/aa.jpg"}
   alt={i?.name || 'Product'}
 />
 
