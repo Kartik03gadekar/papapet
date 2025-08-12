@@ -11,6 +11,7 @@
 
 import axios from "axios";
 
+
 // Create an axios instance
 const instance = axios.create({
   // Base URL for backend API (adjust for prod/dev)
@@ -36,5 +37,9 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+
+
+
 
 export default instance;

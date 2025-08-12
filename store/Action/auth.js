@@ -17,16 +17,21 @@ import {
 import { persistor } from "../store";
 import { PURGE } from "redux-persist";
 
+
+
 // ✅ Check if persisted auth exists before hitting backend
 export const checkUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
-    const { data } = await axios.get("/user/user", { withCredentials: true });
+    const { data } = await axios.get("/user/user");
     dispatch(isUser(data)); // sets isAuthenticated true only here
   } catch {
     dispatch(isUserFail()); // sets false here
   }
 };
+
+
+
 
 // ✅ Register new user
 export const registerUser = (info) => async (dispatch) => {
@@ -54,7 +59,7 @@ export const loginUser = (info) => async (dispatch) => {
 export const logoutUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
-    await axios.post("/user/signout", {}, { withCredentials: true });
+    await axios.post("/user/signout", {}, );
 
     dispatch(logout()); // clear Redux in-memory
     localStorage.removeItem("persist:auth"); // clear persisted state
