@@ -3,8 +3,9 @@ import React from 'react'
 
 const HeroSection = () => {
     return (
-         <div className=" relative   max-md:flex max-md:flex-col max-md:items-center max-md:justify-start max-md:pt-[2vw] w-full 
-    overflow-hidden flex items-center justify-between h-screen px-8 py-[8vw] pl-[3vw]   pt-[6vw]  max-md:gap-2   max-md:h-[100vh] max-md:pb-0 ">
+         <div className=" relative   max-md:flex max-md:flex-col max-md:items-center max-md:justify-start 
+         max-md:pt-[2vw] w-full overflow-hidden flex items-center justify-between h-screen px-8 py-[6vw] pl-[3vw] 
+           pt-[5vw]  max-md:gap-1   max-md:h-[100vh] max-md:pb-0 ">
     
       {/* Left Content */}
       <div className="  max-md:mb-2 w-1/2 text-black  max-md:text-start max-md:pb-[2vw] max-md:pl-[2vw] max-md:pt-[5.5vw] 
