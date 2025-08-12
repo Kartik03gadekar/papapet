@@ -28,14 +28,14 @@ const ProductCard = ({ i }) => {
     >
       <div
         className="
-          w-full h-full bg-white rounded-lg border border-[#FFD36A] shadow-sm
-          p-3 sm:p-4 flex gap-3 sm:gap-4
+          w-full h-full bg-b rounded-lg border border-[#FFD36A] shadow-sm
+          px-4 py-4 sm:p-4 flex gap-4 sm:gap-8 sm:justify-center
           transition hover:shadow-lg
           min-h-[180px]
         "
       >
         {/* Image on the left (top on mobile) */}
-        <div className="w-[140px] h-[140px] bg-red-500 flex-shrink-0 flex items-center justify-center 
+        <div className="w-[130px] h-[130px] bg-red-500 flex-shrink-0 flex items-center justify-center 
       mb-2 sm:mb-0">
        <img
   className="
@@ -74,15 +74,15 @@ const ProductCard = ({ i }) => {
           </div>
           {/* Price Row */}
           <div className="flex items-center justify-start gap-2 mb-1 flex-wrap">
-            <span className="text-[#1E90FF] text-[20px] sm:text-[22px] font-bold">
+            <span className="text-[#1E90FF] text-[20px] sm:text-[15px] font-bold">
               Rs. {hasDiscount ? i.discountprice : i.price}
             </span>
             {hasDiscount && (
               <>
-                <span className="text-[#888] text-[13px] line-through font-medium ml-2">
+                <span className="text-[#888] text-[12px] line-through font-medium ml-2">
                   Rs.{i.price}
                 </span>
-                <span className="bg-[#FFD36A] text-[#222] text-[11px] font-semibold px-2 py-0.5 rounded">
+                <span className="bg-[#FFD36A] text-[#222] text-[10px] font-semibold px-2 py-0.5 rounded">
                   {discountPercent}% OFF
                 </span>
               </>
@@ -92,7 +92,7 @@ const ProductCard = ({ i }) => {
           <button
             className="
               w-full bg-[#FF7F2A] hover:bg-[#ff6600] text-white text-[15px] font-semibold rounded
-              px-4 py-2 flex items-center justify-center gap-2 transition mt-2 sm:mt-auto
+              px-2 py-2 flex items-center justify-center gap-2 transition mt-2 sm:mt-auto
             "
             style={{ fontFamily: "Poppins, sans-serif" }}
           >
