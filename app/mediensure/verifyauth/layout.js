@@ -2,33 +2,36 @@
 
 import { checkUser } from '@/store/Action/auth';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-const layout = ({children}) => {
-const {user,isAuthencticated} = useSelector((state)=>state.auth);
-const dispatch = useDispatch();
-const router = useRouter();
-useEffect(() => {
-    const fetchData = async () => {
+const Layout = ({ children }) => {
+  const { isAuthencticated } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true); 
+
+  useEffect(() => {
+    const verifyUser = async () => {
       await dispatch(checkUser());
-      if (!isAuthencticated) {
-        setTimeout(() => {
-          router.push("/mediensure/auth");
-        }, 1000);
-      } else {
-        setTimeout(() => {
-          router.push("/");
-        }, 1000);
-      }
+      setLoading(false); 
     };
+    verifyUser();
+  }, [dispatch]);
 
-    fetchData();
-  }, []);
+  useEffect(() => {
+    if (loading) return;
 
-  return (
-    children
-  )
-}
+    if (!isAuthencticated) {
+      router.replace("/mediensure/auth"); 
+    } else {
+      router.replace("/"); 
+    }
+  }, [loading, isAuthencticated, router]);
 
-export default layout
+  if (loading) return <div></div>;
+
+  return children;
+};
+
+export default Layout;
