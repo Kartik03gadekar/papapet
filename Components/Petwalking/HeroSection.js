@@ -2,6 +2,7 @@
 import React from "react";
 
 const HeroSection = () => {
+  
   return (
      <div className=" relative   max-md:flex max-md:flex-col max-md:items-center max-md:justify-start
       max-md:pt-[2vw] w-full 
