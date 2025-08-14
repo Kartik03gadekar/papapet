@@ -24,7 +24,6 @@ export const checkUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.get("/user/user");
-    console.log(data);
     dispatch(isUser(data)); 
     
     
@@ -56,7 +55,7 @@ export const loginUser = (info) => async (dispatch) => {
   try {
     const { data } = await axios.post("/user/login", info);
     dispatch(isUser(data));
-    console.log(data);
+    
     
   } catch {
     dispatch(isUserFail());
