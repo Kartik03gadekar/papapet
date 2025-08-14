@@ -20,7 +20,7 @@ const Nav = () => {
   const settings = [
     {
       name: "Profile",
-      link: "/mediensure/profile",
+      link: "/papapet/dashboard",
     },
   ];
   const dispatch = useDispatch();
