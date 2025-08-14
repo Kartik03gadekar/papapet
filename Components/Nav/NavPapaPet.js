@@ -539,7 +539,7 @@ const NavPapaPet = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const { user } = useSelector((state) => state.auth);
-console.log(user);
+
 
   const dispatch = useDispatch();
   const router = useRouter();

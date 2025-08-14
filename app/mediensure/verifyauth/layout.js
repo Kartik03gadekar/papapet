@@ -58,7 +58,7 @@ const Layout = ({ children }) => {
     if (loading) return;
 
     if (!isAuthencticated) {
-      router.replace("/papapet/auth");
+      router.replace("/");
     } else {
       router.replace("/");
     }

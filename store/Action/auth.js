@@ -24,7 +24,8 @@ export const checkUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.get("/user/user");
-    dispatch(isUser(data)); 
+    console.log(data +"data");
+   
     
     
     // sets isAuthenticated true only here
