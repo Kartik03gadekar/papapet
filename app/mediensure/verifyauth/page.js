@@ -8,7 +8,7 @@ const page = () => {
       router.push("/")
     
       
-    }, [router])
+    }, [])
     
   return (
     <div></div>
