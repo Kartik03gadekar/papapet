@@ -107,7 +107,7 @@ const Auth = () => {
       !hasRedirected &&
       isAuthenticated &&
       user &&
-      window.location.pathname === "/mediensure/auth"
+      window.location.pathname === "/mediensure/verifyauth"
     ) {
       setHasRedirected(true);
       router.replace("/mediensure/verifyauth");
