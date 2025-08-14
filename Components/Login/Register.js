@@ -90,9 +90,9 @@ const Register = () => {
       const response = await dispatch(registerUser(formData));
 
       // Assuming backend returns token in response.payload.token
-      const token = response?.payload?.token;
+      // const token = response?.payload?.token;
       if (token) {
-        Cookies.set("token", token, { expires: 7 }); // 7 days
+        // Cookies.set("token", token, { expires: 7 }); // 7 days
       }
 
       toast.success("Registration successful");
