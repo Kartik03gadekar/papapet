@@ -127,7 +127,8 @@ const Login = () => {
       formData.append("phone", result.user.phoneNumber.replace("+91", ""));
       await dispatch(loginUser(formData));
 
-      router.push("/mediensure/verifyauth");
+      // router.push("/mediensure/verifyauth");
+      router.push("/")
     } catch (error) {
       console.error("OTP Verify Error:", error);
       toast.error("Invalid OTP. Try again.");
