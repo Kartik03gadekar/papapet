@@ -137,7 +137,7 @@ const Nav = () => {
               <h1 className="font-semibold text-black">Hi, {user?.name}</h1>
             </>
           ) : (
-            <Link href={"/mediensure/auth"}>
+            <Link href={"/papapet/auth"}>
               {" "}
               <Button variant="outlined" className="h-fit w-fit  ">
                 Login/Register{" "}
