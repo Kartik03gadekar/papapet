@@ -421,7 +421,7 @@ export default function CheckoutPage() {
 
   const checkUserLoggedIn = () => {
     // Check user authentication from Redux state
-    if (!user || !user._id) {
+    if (!user || !user?._id) {
       // Not logged in, redirect to login page
       router.push("/papapet/auth");
       return false;

@@ -21,9 +21,7 @@ const Auth = () => {
   // ✅ Redirect if already logged in
   useEffect(() => {
     if (loading) return; // wait until auth check is done
-if (!isAuthenticated) {
-      router.replace("/papapet/auth"); // go to auth if  not logged in
-    }
+
     if (isAuthenticated) {
       router.replace("/"); // go to home if logged in
     }
