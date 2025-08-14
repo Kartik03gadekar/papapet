@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
     if (loading) return;
 
     if (!isAuthencticated) {
-      router.replace("/mediensure/auth"); 
+      router.replace("/papapet/auth"); 
     } else {
       router.replace("/"); 
     }
