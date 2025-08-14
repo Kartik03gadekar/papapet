@@ -539,6 +539,7 @@ const NavPapaPet = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const { user } = useSelector((state) => state.auth);
+console.log(user);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -860,7 +861,7 @@ const NavPapaPet = () => {
             <div className="flex items-center gap-4 bg-gray-100 p-3 rounded-xl">
               <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
               <div className="flex flex-col">
-                <span className="text-lg font-medium">Hi, {user.name}</span>
+                <span className="text-lg font-medium">Hi, {user?.name}</span>
               </div>
             </div>
           ) : (

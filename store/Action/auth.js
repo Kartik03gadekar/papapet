@@ -24,7 +24,11 @@ export const checkUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.get("/user/user");
-    dispatch(isUser(data)); // sets isAuthenticated true only here
+    console.log(data);
+    dispatch(isUser(data)); 
+    
+    
+    // sets isAuthenticated true only here
   } catch {
     dispatch(isUserFail()); // sets false here
   }
@@ -52,6 +56,8 @@ export const loginUser = (info) => async (dispatch) => {
   try {
     const { data } = await axios.post("/user/login", info);
     dispatch(isUser(data));
+    console.log(data);
+    
   } catch {
     dispatch(isUserFail());
   }
