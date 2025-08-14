@@ -293,25 +293,20 @@ export default function CheckoutPage() {
     setAppliedCoupon(null);
 
     try {
-      const res = await axiosInstance.get(
-        `coupons?code=${encodeURIComponent(code)}`
-      );
+      // Use POST method with the coupon code in the request body
+      const res = await axiosInstance.post("/coupon/applyCoupon", {
+        couponCode: code,
+        price: subtotal,
+      });
       const coupon = res.data;
 
       const now = new Date();
-      if (!coupon.isActive) {
-        setCouponError("This coupon is not active.");
-        toast.error("This coupon is not active.");
-      } else if (coupon.expiresAt && new Date(coupon.expiresAt) < now) {
+      const validityDate = new Date(coupon.validity);
+      
+      // Check if coupon has expired
+      if (validityDate < now) {
         setCouponError("This coupon has expired.");
         toast.error("This coupon has expired.");
-      } else if (
-        typeof coupon.usageLimit === "number" &&
-        typeof coupon.usedCount === "number" &&
-        coupon.usedCount >= coupon.usageLimit
-      ) {
-        setCouponError("This coupon has reached its usage limit.");
-        toast.error("This coupon has reached its usage limit.");
       } else if (
         typeof coupon.minPurchase === "number" &&
         subtotal < coupon.minPurchase
@@ -323,39 +318,38 @@ export default function CheckoutPage() {
           `Minimum purchase of ₹${coupon.minPurchase} required for this coupon.`
         );
       } else {
-        let discountValue = 0;
-        if (coupon.discountType === "fixed") {
-          discountValue = coupon.discountValue;
-        } else if (coupon.discountType === "percentage") {
-          discountValue = (subtotal * coupon.discountValue) / 100;
-          if (
-            typeof coupon.maxDiscount === "number" &&
-            coupon.maxDiscount > 0
-          ) {
-            discountValue = Math.min(discountValue, coupon.maxDiscount);
-          }
+        // Calculate discount based on the coupon structure
+        // Assuming discount is a percentage value
+        let discountValue = (subtotal * coupon.discount) / 100;
+        
+        // If there's a maxDiscount limit, apply it
+        if (typeof coupon.maxDiscount === "number" && coupon.maxDiscount > 0) {
+          discountValue = Math.min(discountValue, coupon.maxDiscount);
         }
+        
         setAppliedCoupon({
-          code: coupon.code,
+          code: coupon.couponCode,
           value: Math.floor(discountValue),
           details: coupon,
         });
         setCouponError("");
         toast.success(
-          `Coupon ${coupon.code} applied! You saved ₹${Math.floor(discountValue)}.`
+          `Coupon ${coupon.couponCode} applied! You saved ₹${Math.floor(discountValue)}.`
         );
       }
     } catch (err) {
       setCouponError(
         err?.response?.status === 404 ||
-          err?.message === "Coupon not found or invalid."
+          err?.response?.data?.message?.includes("not found") ||
+          err?.message?.includes("not found")
           ? "Invalid coupon code."
           : "Failed to validate coupon. Please try again."
       );
       setAppliedCoupon(null);
       toast.error(
         err?.response?.status === 404 ||
-          err?.message === "Coupon not found or invalid."
+          err?.response?.data?.message?.includes("not found") ||
+          err?.message?.includes("not found")
           ? "Invalid coupon code."
           : "Failed to validate coupon. Please try again."
       );
@@ -426,61 +420,60 @@ export default function CheckoutPage() {
   const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
 
   const checkUserLoggedIn = () => {
-    if (typeof window !== "undefined") {
-      const user = window.localStorage.getItem("papapet_user");
-      if (user) {
-        // User is logged in, proceed to checkout
-        if (!cartItems || cartItems.length === 0) {
-          toast.error("Your cart is empty. Please add items before checkout.");
-          return;
-        }
-        // Prepare the data to send
-        const checkoutData = {
-          products: cartItems.map((item) => ({
-            id: item._id || item.id,
-            name: item.name,
-            price: item.discountprice || item.price,
-            quantity: item.quantity || 1,
-            image: item.image || item.img || "",
-            sku: item.sku || "",
-            category: item.category || "",
-            brand: item.brand || "",
-          })),
-          subtotal,
-          shipping,
-          discount,
-          tax,
-          total,
-          appliedCoupon: appliedCoupon
-            ? {
-                code: appliedCoupon.code,
-                value: appliedCoupon.value,
-              }
-            : null,
-          user: authUser
-            ? {
-                name: authUser.name,
-                email: authUser.email,
-                phone: authUser.phone,
-              }
-            : null,
-          address: selectedAddress || null, // Pass the selected address object
-        };
-
-        window.sessionStorage.setItem(
-          "papapet_checkout_data",
-          JSON.stringify(checkoutData)
-        );
-
-        router.push("/papapet/cart/checkout");
-        return true;
-      } else {
-        // Not logged in, redirect to login page
-        router.push("/papapet/auth");
-        return false;
-      }
+    // Check user authentication from Redux state
+    if (!authUser || !authUser._id) {
+      // Not logged in, redirect to login page
+      router.push("/papapet/auth");
+      return false;
     }
-    return false;
+
+    // User is logged in, proceed to checkout
+    if (!cartItems || cartItems.length === 0) {
+      toast.error("Your cart is empty. Please add items before checkout.");
+      return;
+    }
+    // Prepare the data to send
+    const checkoutData = {
+      products: cartItems.map((item) => ({
+        id: item._id || item.id,
+        name: item.name,
+        price: item.discountprice || item.price,
+        quantity: item.quantity || 1,
+        image: item.image || item.img || "",
+        sku: item.sku || "",
+        category: item.category || "",
+        brand: item.brand || "",
+      })),
+      subtotal,
+      shipping,
+      discount,
+      tax,
+      total,
+      // Send the full coupon details to the checkout page
+      appliedCoupon: appliedCoupon
+        ? {
+            code: couponCode,
+            value: appliedCoupon.value,
+            details: appliedCoupon.details, // Pass the full coupon object
+          }
+        : null,
+      user: authUser
+        ? {
+            name: authUser.name,
+            email: authUser.email,
+            phone: authUser.phone,
+          }
+        : null,
+      address: selectedAddress || null, // Pass the selected address object
+    };
+
+    window.sessionStorage.setItem(
+      "papapet_checkout_data",
+      JSON.stringify(checkoutData)
+    );
+
+    router.push("/papapet/cart/checkout");
+    return true;
   };
 
   return (

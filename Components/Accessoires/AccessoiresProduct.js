@@ -1,7 +1,11 @@
 "use client";
 import React, { useEffect, useState, Fragment } from "react";
 import { Dialog, Transition, Menu } from "@headlessui/react";
-import { FunnelIcon, XMarkIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import {
+  FunnelIcon,
+  XMarkIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../ProductCard";
 import { getFood } from "@/store/Action/others";
@@ -27,11 +31,12 @@ const AccessoiresProduct = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   // For price slider
-  const prices = food?.map((item) =>
-    item.discountprice && item.discountprice < item.price
-      ? item.discountprice
-      : item.price
-  ) || [];
+  const prices =
+    food?.map((item) =>
+      item.discountprice && item.discountprice < item.price
+        ? item.discountprice
+        : item.price
+    ) || [];
   const minPrice = prices.length ? Math.min(...prices) : 0;
   const maxPrice = prices.length ? Math.max(...prices) : 10000;
 
@@ -63,8 +68,7 @@ const AccessoiresProduct = () => {
 
     // Brand
     const matchesBrand =
-      selectedBrand === "All" ||
-      (item.brand && item.brand === selectedBrand);
+      selectedBrand === "All" || (item.brand && item.brand === selectedBrand);
 
     // Price
     const price =
@@ -107,73 +111,83 @@ const AccessoiresProduct = () => {
 
   return (
     <div className="w-full min-h-screen">
-      <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
-        <h1 className="text-center pt-10 md:pt-20 text-xl md:text-2xl lg:text-3xl font-bold capitalize">
-          Explore all our Accessories
+      <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pt-20">
+        <h1
+          className="text-4xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
+          style={{
+            lineHeight: "1.1",
+            letterSpacing: "-0.01em",
+            wordBreak: "break-word",
+          }}
+        >
+          Pets Accessories
         </h1>
         {/* Header and controls */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between border-b border-gray-200 pt-20 pb-4 md:pt-24 md:pb-6">
-          <h1
-            className="text-2xl md:text-3xl lg:text-4xl head font-bold tracking-tight text-gray-900"
-            style={{
-              lineHeight: "1.1",
-              letterSpacing: "-0.01em",
-              wordBreak: "break-word",
-            }}
-          >
-            Accessories
-          </h1>
-          <div className="flex flex-col gap-2 w-full sm:w-auto sm:flex-row sm:items-center sm:justify-end">
-            {/* Search Bar */}
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white w-full sm:w-auto"
-              style={{ minWidth: 0, maxWidth: 320 }}
-            >
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="outline-none border-none bg-transparent text-sm flex-1 min-w-0"
-                aria-label="Search products"
-                style={{
-                  padding: "0.25rem 0",
-                  fontSize: "1rem",
-                  lineHeight: "1.5",
-                }}
-              />
-              <button
-                type="submit"
-                className="ml-2 text-gray-500 hover:text-gray-700"
-                aria-label="Search"
+        <div className="flex items-center justify-center gap-4 border-b border-gray-200 ">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 w-full sm:w-auto">
+            {/* Animal Category filter for mobile */}
+            <div className="flex flex-col items-center mt-4 px-4">
+              <label className="text-sm font-medium mb-1 w-full">
+                Category
+              </label>
+              <select
+                className="border rounded-xl px-2 py-1 w-full "
+                value={selectedAnimalCategory}
+                onChange={(e) => setSelectedAnimalCategory(e.target.value)}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+                {animalCategories.map((animal) => (
+                  <option key={animal.value} value={animal.value}>
+                    {animal.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col items-center mt-6 px-4">
+              <div className=" mb-2 w-full">
+                <label className="block text-sm font-medium mb-1">Brand</label>
+                <select
+                  className="border rounded-xl px-2 py-1 w-full "
+                  value={selectedBrand}
+                  onChange={(e) => setSelectedBrand(e.target.value)}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"
-                  />
-                </svg>
-              </button>
-            </form>
-            {/* Sort Dropdown (optional, can be implemented if needed) */}
-            {/* Mobile filter button */}
-            <div className="flex items-center justify-center">
+                  <option value="All">All</option>
+                  {brands.map((brand) => (
+                    <option key={brand.name} value={brand.name}>
+                      {brand.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center mt-4 px-4">
+              <label className="block text-sm font-medium mb-1">Age</label>
+              <select
+                className="border rounded-xl px-2 py-1 w-full "
+                value={selectedAnimalCategory}
+                onChange={(e) => setSelectedAnimalCategory(e.target.value)}
+              >
+                {petAges.map((animal, idx) => (
+                  <option
+                    key={animal.value || idx}
+                    value={animal.value || animal.lable}
+                  >
+                    {animal.lable}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="flex items-center justify-center mt-4  bg-[#FD890E] rounded">
               <button
                 type="button"
                 onClick={() => setMobileFiltersOpen(true)}
-                className="flex items-center justify-center -m-2 ml-0 sm:ml-4 p-2 text-gray-400 hover:text-gray-500 lg:hidden transition-colors"
+                className="flex items-center justify-center p-2 text-gray-400 hover:text-gray-500 transition-colors"
                 aria-label="Open filters"
               >
-                <FunnelIcon className="size-5" />
+                <HiFilter className="text-white text-2xl" />
               </button>
             </div>
           </div>
@@ -211,7 +225,7 @@ const AccessoiresProduct = () => {
                 <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
                   <div className="flex items-center justify-between px-4 pt-20 md:pt-40">
                     <h2 className="text-lg font-medium text-gray-900">
-                      Filters
+                      Categories
                     </h2>
                     <button
                       type="button"
@@ -227,7 +241,7 @@ const AccessoiresProduct = () => {
                       <li key="all">
                         <button
                           type="button"
-                          onClick={() => handleMobileCategoryClick("All")}
+                          onClick={() => handleCategoryClick("All")}
                           className={classNames(
                             "text-left w-full px-2 py-2 rounded transition-colors",
                             selectedCategory === "All"
@@ -239,17 +253,17 @@ const AccessoiresProduct = () => {
                             letterSpacing: "-0.01em",
                           }}
                         >
-                          All Categories
+                          All
                         </button>
                       </li>
-                      {categories.map((cat) => (
-                        <li key={cat}>
+                      {subCategories.map((cat) => (
+                        <li key={cat.value}>
                           <button
                             type="button"
-                            onClick={() => handleMobileCategoryClick(cat)}
+                            onClick={() => handleCategoryClick(cat.value)}
                             className={classNames(
                               "text-left w-full px-2 py-2 rounded transition-colors",
-                              selectedCategory === cat
+                              selectedCategory === cat.name
                                 ? "text-[#c9a74d] bg-gray-100 font-semibold"
                                 : "text-gray-700 hover:bg-gray-50"
                             )}
@@ -258,11 +272,30 @@ const AccessoiresProduct = () => {
                               letterSpacing: "-0.01em",
                             }}
                           >
-                            {cat}
+                            {cat.label}
                           </button>
                         </li>
                       ))}
                     </ul>
+                  </div>
+                  {/* Animal Category filter for mobile */}
+                  <div className="mt-4 px-4">
+                    <label className="block text-sm font-medium mb-1">
+                      Animal Category
+                    </label>
+                    <select
+                      className="border rounded px-2 py-1 w-full"
+                      value={selectedAnimalCategory}
+                      onChange={(e) =>
+                        setSelectedAnimalCategory(e.target.value)
+                      }
+                    >
+                      {animalCategories.map((animal) => (
+                        <option key={animal.value} value={animal.value}>
+                          {animal.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   {/* Brand and Price filters for mobile */}
                   <div className="mt-6 px-4">
@@ -277,8 +310,8 @@ const AccessoiresProduct = () => {
                       >
                         <option value="All">All</option>
                         {brands.map((brand) => (
-                          <option key={brand} value={brand}>
-                            {brand}
+                          <option key={brand.name} value={brand.name}>
+                            {brand.name}
                           </option>
                         ))}
                       </select>
@@ -296,9 +329,7 @@ const AccessoiresProduct = () => {
                           min={minPrice}
                           max={maxPrice}
                           value={selectedPrice}
-                          onChange={(e) =>
-                            setSelectedPrice(Number(e.target.value))
-                          }
+                          onChange={handlePriceSliderChange}
                           className="flex-1 accent-[#c9a74d]"
                           step={1}
                         />
@@ -323,101 +354,35 @@ const AccessoiresProduct = () => {
           </Dialog>
         </Transition>
 
-        {/* Main content grid with sidebar for desktop */}
+        {/* Main content grid */}
+
+        <section>
+          <div className="flex flex-col gap-[4vw] items-center justify-center ">
+            <div className="flex items-center text-center justify-center"></div>
+            <div className="w-full flex items-center justify-center gap-8 py-2">
+              <Swiper
+                pagination={{ clickable: true }}
+                modules={[Pagination]}
+                className="w-full"
+              >
+                <SwiperSlide className="flex flex-col items-center justify-center text-center">
+                   <div className="w-full flex items-center justify-center  ">
+                            <img
+                              className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
+                              src={"/pt11.png"}
+                              alt=""
+                            />
+                          </div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+          </div>
+        </section>
         <section
           aria-labelledby="products-heading"
-          className="pt-4 md:pt-6 pb-16 md:pb-24 w-full max-w-full"
+          className=" b pt-4 md:pt-6 pb-16 md:pb-24 w-full max-w-full"
         >
-          <div className="grid grid-cols-1 gap-x-0 md:gap-x-8 gap-y-8 md:gap-y-10 lg:grid-cols-6 w-full">
-            {/* Desktop sidebar */}
-            <aside className="hidden lg:block sticky top-24 self-start h-fit min-w-[220px] max-w-[250px] col-span-1">
-              <h3 className="sr-only">Categories</h3>
-              <ul className="space-y-2 border-r-2 border-gray-200 pb-6 text-base font-medium">
-                <li key="all">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedCategory("All")}
-                    className={classNames(
-                      "text-left w-full px-2 py-2 rounded transition-colors",
-                      selectedCategory === "All"
-                        ? "text-[#c9a74d] bg-gray-100 font-semibold"
-                        : "text-gray-700 hover:bg-gray-50"
-                    )}
-                    style={{
-                      fontSize: "1rem",
-                      letterSpacing: "-0.01em",
-                    }}
-                  >
-                    All Categories
-                  </button>
-                </li>
-                {categories.map((cat) => (
-                  <li key={cat}>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedCategory(cat)}
-                      className={classNames(
-                        "text-left w-full px-2 py-2 rounded transition-colors",
-                        selectedCategory === cat
-                          ? "text-[#c9a74d] bg-gray-100 font-semibold"
-                          : "text-gray-700 hover:bg-gray-50"
-                      )}
-                      style={{
-                        fontSize: "1rem",
-                        letterSpacing: "-0.01em",
-                      }}
-                    >
-                      {cat}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              {/* Brand and Price filters */}
-              <div className="mt-6">
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1">
-                    Brand
-                  </label>
-                  <select
-                    className="border rounded px-2 py-1 w-full"
-                    value={selectedBrand}
-                    onChange={(e) => setSelectedBrand(e.target.value)}
-                  >
-                    <option value="All">All</option>
-                    {brands.map((brand) => (
-                      <option key={brand} value={brand}>
-                        {brand}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-1">
-                    Max Price (₹{selectedPrice})
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500">₹{minPrice}</span>
-                    <input
-                      type="range"
-                      min={minPrice}
-                      max={maxPrice}
-                      value={selectedPrice}
-                      onChange={(e) => setSelectedPrice(Number(e.target.value))}
-                      className="flex-1 accent-[#c9a74d]"
-                      step={1}
-                    />
-                    <span className="text-xs text-gray-500">₹{maxPrice}</span>
-                  </div>
-                </div>
-                <button
-                  className="w-full mt-2 px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
-                  onClick={resetFilters}
-                >
-                  Reset Filters
-                </button>
-              </div>
-            </aside>
-            {/* Product list */}
+          <div className="w-full">
             <div className="overflow-y-auto pr-0 md:pr-2 w-full min-h-[400px] lg:col-span-5">
               {productList}
             </div>
