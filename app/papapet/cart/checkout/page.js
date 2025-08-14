@@ -477,11 +477,11 @@ export default function CheckoutPage() {
             <span className="text-foreground font-medium">Review Order</span>
           </div>
 
-          <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-5">
             {/* Left Column - Order Items & Details */}
-            <div className="lg:col-span-2 flex flex-col space-y-4 sm:space-y-6 ">
+            <div className="lg:col-span-2 flex flex-col space-y-4 sm:space-y-2 ">
               {/* Items Section */}
-              <div className="bg-card h-[50vh] rounded-lg border border-border shadow-sm overflow-y-auto">
+              <div className="bg-card h-[45vh] rounded-lg border border-border shadow-sm overflow-y-auto">
                 <div className="p-4 sm:p-6 pb-2 sm:pb-4 ">
                   <h2 className="text-base sm:text-lg font-semibold text-card-foreground">
                     Items
@@ -541,7 +541,7 @@ export default function CheckoutPage() {
               </div>
 
               {/* Address Sections */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-2">
                 {/* Billing Address */}
                 <div className="bg-card rounded-lg border border-border shadow-sm">
                   <div className="p-4 sm:p-6 pb-2 sm:pb-4 flex items-center justify-between">
@@ -679,14 +679,6 @@ export default function CheckoutPage() {
                             {billingAddress.phone || (
                               <span className="text-muted-foreground">
                                 No phone
-                              </span>
-                            )}
-                          </p>
-                          <p className="text-xs sm:text-sm text-foreground">
-                            <span className="font-medium">Email:</span>{" "}
-                            {billingAddress.email || (
-                              <span className="text-muted-foreground">
-                                No email
                               </span>
                             )}
                           </p>
@@ -834,14 +826,6 @@ export default function CheckoutPage() {
                             {shippingAddress.phone || (
                               <span className="text-muted-foreground">
                                 No phone
-                              </span>
-                            )}
-                          </p>
-                          <p className="text-xs sm:text-sm text-foreground">
-                            <span className="font-medium">Email:</span>{" "}
-                            {shippingAddress.email || (
-                              <span className="text-muted-foreground">
-                                No email
                               </span>
                             )}
                           </p>

@@ -17,6 +17,7 @@ import { Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { HiFilter } from "react-icons/hi";
 
 // Dummy data for category carousel
 const categoryCarouselData = [
@@ -54,6 +55,13 @@ const animalCategories = [
   { label: "Cat", value: "cat" },
   { label: "Fish", value: "fish" },
   // Add more as needed
+];
+
+const petAges = [
+  { lable: "Baby (NB to 1 year)" },
+  { lable: "Young (1-3 years)" },
+  { lable: "Adult (4-7 years)" },
+  { lable: "Senior (8+ years)" },
 ];
 
 // Sort options
@@ -284,13 +292,12 @@ const FoodContainer = () => {
     );
   }
 
-  // For slider: ensure min <= max, and min/max are not undefined
   const [minPrice, maxPrice] = priceRange;
 
   return (
     <>
       {/* Browse By Brands */}
-      <div className="flex flex-col gap-[4vw] items-center justify-center mt-2 bg-[#F4EEE1] py-8 ">
+      {/* <div className="flex flex-col gap-[4vw] items-center justify-center mt-2 bg-[#F4EEE1] py-8 ">
         <div className="flex items-center text-center justify-center">
           <h1 className="text-4xl font-semibold relative z-10 text-center max-md:text-3xl max-md:pb-6">
             Browse By Brands
@@ -312,9 +319,7 @@ const FoodContainer = () => {
             {brands.map((brand, index) => (
               <SwiperSlide key={index}>
                 <div className="w-[20vw] max-md:w-[30vw] flex flex-col items-center justify-center">
-                  <div
-                    className="h-[20vh] w-[20vh] max-md:h-[10vh] max-md:w-[10vh] rounded-full border-2 overflow-hidden flex flex-col items-center justify-center"
-                  >
+                  <div className="h-[20vh] w-[20vh] max-md:h-[10vh] max-md:w-[10vh] rounded-full border-2 overflow-hidden flex flex-col items-center justify-center">
                     <img
                       src={brand.img}
                       className="w-full h-full object-cover"
@@ -329,10 +334,10 @@ const FoodContainer = () => {
             ))}
           </Swiper>
         </div>
-      </div>
+      </div> */}
 
       {/* Browse By Category */}
-      <div className="flex flex-col gap-[4vw] items-center justify-center mt-[10vw] max-md:mt-[14vw]">
+      {/* <div className="flex flex-col gap-[4vw] items-center justify-center mt-[10vw] max-md:mt-[14vw]">
         <div className="flex items-center text-center justify-center">
           <h1 className="text-4xl font-semibold relative z-10 bg-white text-center max-md:text-3xl max-md:pb-6">
             Browse By Category
@@ -357,11 +362,13 @@ const FoodContainer = () => {
                 className="flex flex-col items-center justify-center text-center"
               >
                 <div className="w-[20vw] max-md:w-[30vw] flex flex-col items-center justify-center">
-                  <div
-                    className="h-[20vh] w-[20vh] max-md:h-[10vh] max-md:w-[10vh] rounded border-2 overflow-hidden flex flex-col items-center justify-center"
-                  >
+                  <div className="h-[20vh] w-[20vh] max-md:h-[10vh] max-md:w-[10vh] rounded border-2 overflow-hidden flex flex-col items-center justify-center">
                     <img
-                      src={category.img.startsWith("/") ? category.img : `/${category.img}`}
+                      src={
+                        category.img.startsWith("/")
+                          ? category.img
+                          : `/${category.img}`
+                      }
                       className="h-full w-full object-contain"
                       alt={category.name}
                     />
@@ -374,126 +381,88 @@ const FoodContainer = () => {
             ))}
           </Swiper>
         </div>
-      </div>
-      <div className="w-full min-h-screen">
-        <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
+      </div> */}
 
-          <h1 className="text-center pt-10 md:pt-20 text-xl md:text-2xl lg:text-3xl font-bold capitalize">
-            Explore all our food categories
+      <div className="w-full min-h-screen">
+        <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pt-20">
+          <h1
+            className="text-4xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
+            style={{ 
+              lineHeight: "1.1",
+              letterSpacing: "-0.01em",
+              wordBreak: "break-word",
+            }}
+          >
+            Food & Treats
           </h1>
           {/* Header and controls */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between border-b 
-          border-gray-200 pt-20 pb-4 md:pt-24 md:pb-6">
-            <h1
-              className="text-2xl md:text-3xl lg:text-4xl head font-bold tracking-tight text-gray-900"
-              style={{
-                lineHeight: "1.1",
-                letterSpacing: "-0.01em",
-                wordBreak: "break-word",
-              }}
-            >
-              Food & Treats
-            </h1>
-
-            <div className="flex flex-col gap-2 w-full sm:w-auto sm:flex-row sm:items-center sm:justify-end">
-              {/* Search Bar */}
-              <form
-                onSubmit={handleSearchSubmit}
-                className="flex items-center border border-gray-300 rounded-md px-2 py-1 bg-white w-full sm:w-auto"
-                style={{ minWidth: 0, maxWidth: 320 }}
-              >
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  className="outline-none border-none bg-transparent text-sm flex-1 min-w-0"
-                  aria-label="Search products"
-                  style={{
-                    padding: "0.25rem 0",
-                    fontSize: "1rem",
-                    lineHeight: "1.5",
-                  }}
-                />
-                <button
-                  type="submit"
-                  className="ml-2 text-gray-500 hover:text-gray-700"
-                  aria-label="Search"
+          <div className="flex items-center justify-center gap-4 border-b border-gray-200 ">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 w-full sm:w-auto">
+              {/* Animal Category filter for mobile */}
+              <div className="flex flex-col items-center mt-4 px-4">
+                <label className="text-sm font-medium mb-1 w-full">
+                  Category
+                </label>
+                <select
+                  className="border rounded-xl px-2 py-1 w-full "
+                  value={selectedAnimalCategory}
+                  onChange={(e) => setSelectedAnimalCategory(e.target.value)}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
+                  {animalCategories.map((animal) => (
+                    <option key={animal.value} value={animal.value}>
+                      {animal.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col items-center mt-6 px-4">
+                <div className=" mb-2 w-full">
+                  <label className="block text-sm font-medium mb-1">
+                    Brand
+                  </label>
+                  <select
+                    className="border rounded-xl px-2 py-1 w-full "
+                    value={selectedBrand}
+                    onChange={(e) => setSelectedBrand(e.target.value)}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"
-                    />
-                  </svg>
-                </button>
-              </form>
+                    <option value="All">All</option>
+                    {brands.map((brand) => (
+                      <option key={brand.name} value={brand.name}>
+                        {brand.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center mt-4 px-4">
+                <label className="block text-sm font-medium mb-1">Age</label>
+                <select
+                  className="border rounded-xl px-2 py-1 w-full "
+                  value={selectedAnimalCategory}
+                  onChange={(e) => setSelectedAnimalCategory(e.target.value)}
+                >
+                  {petAges.map((animal, idx) => (
+                    <option
+                      key={animal.value || idx}
+                      value={animal.value || animal.lable}
+                    >
+                      {animal.lable}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
               {/* Sort Dropdown */}
-              <div className="flex items-center justify-center">
-                <Menu
-                  as="div"
-                  className="relative inline-block text-left w-full md:w-44 sm:w-auto"
-                >
-                  <Menu.Button className="group inline-flex justify-start items-center text-sm font-medium
-                   hover:text-gray-700 transition-colors w-full sm:w-auto px-2 py-1 rounded-md border 
-                   border-transparent hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#c9a74d]">
-                    <span className="hidden sm:inline">Sort</span>
-                    <span className="sm:hidden">Sort</span>
-                    <ChevronDownIcon className="-mr-1 ml-1 size-5 group-hover:text-gray-700" />
-                  </Menu.Button>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md
-                     bg-white shadow-2xl ring-1 ring-black/5 focus:outline-none">
-                      <div className="py-1">
-                        {sortOptions.map((option) => (
-                          <Menu.Item key={option.value}>
-                            {({ active }) => (
-                              <button
-                                type="button"
-                                onClick={() => handleSortChange(option)}
-                                className={classNames(
-                                  sort === option.value
-                                    ? "font-medium text-gray-900"
-                                    : "text-gray-500",
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm w-full text-left"
-                                )}
-                              >
-                                {option.name}
-                              </button>
-                            )}
-                          </Menu.Item>
-                        ))}
-                      </div>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-
-                {/* Mobile filter button */}
+              <div className="flex items-center justify-center mt-4  bg-[#FD890E] rounded">
                 <button
                   type="button"
                   onClick={() => setMobileFiltersOpen(true)}
-                  className="flex items-center justify-center -m-2 ml-0 sm:ml-4 p-2 text-gray-400 hover:text-gray-500 lg:hidden transition-colors"
+                  className="flex items-center justify-center p-2 text-gray-400 hover:text-gray-500 transition-colors"
                   aria-label="Open filters"
                 >
-                  <FunnelIcon className="size-5" />
+                  <HiFilter className="text-white text-2xl" />
                 </button>
               </div>
             </div>
@@ -661,119 +630,34 @@ const FoodContainer = () => {
           </Transition>
 
           {/* Main content grid */}
+
+          <section>
+            <div className="flex flex-col gap-[4vw] items-center justify-center ">
+              <div className="flex items-center text-center justify-center"></div>
+              <div className="w-full flex items-center justify-center gap-8 py-2">
+                <Swiper
+                  pagination={{ clickable: true }}
+                  modules={[Pagination]}
+                  className="w-full"
+                >
+                  <SwiperSlide className="flex flex-col items-center justify-center text-center">
+                    <div className="w-full h-[28vw] flex items-center justify-center  ">
+                      <img
+                        className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
+                        src={"/6 (1).png"}
+                        alt=""
+                      />
+                    </div>
+                  </SwiperSlide>
+                </Swiper>
+              </div>
+            </div>
+          </section>
           <section
             aria-labelledby="products-heading"
             className=" b pt-4 md:pt-6 pb-16 md:pb-24 w-full max-w-full"
           >
-            <div className="grid grid-cols-1 gap-x-0 md:gap-x-8 gap-y-8 md:gap-y-10 lg:grid-cols-6 w-full">
-              {/* Desktop sidebar */}
-              <aside className="hidden lg:block sticky top-24 self-start h-fit min-w-[220px] max-w-[250px] col-span-1">
-                <h3 className="sr-only">Categories</h3>
-                <ul className="space-y-2 border-r-2 border-gray-200 pb-6 text-base font-medium">
-                  <li key="all">
-                    <button
-                      type="button"
-                      onClick={() => handleCategoryClick("All")}
-                      className={classNames(
-                        "text-left w-full px-2 py-2 rounded transition-colors",
-                        selectedCategory === "All"
-                          ? "text-[#c9a74d] bg-gray-100 font-semibold"
-                          : "text-gray-700 hover:bg-gray-50"
-                      )}
-                      style={{
-                        fontSize: "1rem",
-                        letterSpacing: "-0.01em",
-                      }}
-                    >
-                      All
-                    </button>
-                  </li>
-                  {subCategories.map((cat) => (
-                    <li key={cat.value}>
-                      <button
-                        type="button"
-                        onClick={() => handleCategoryClick(cat.value)}
-                        className={classNames(
-                          "text-left w-full px-2 py-2 rounded transition-colors",
-                          selectedCategory === cat.name
-                            ? "text-[#c9a74d] bg-gray-100 font-semibold"
-                            : "text-gray-700 hover:bg-gray-50"
-                        )}
-                        style={{
-                          fontSize: "1rem",
-                          letterSpacing: "-0.01em",
-                        }}
-                      >
-                        {cat.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                {/* Animal Category filter */}
-                <div className="mt-6">
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">
-                      Animal Category
-                    </label>
-                    <select
-                      className="border rounded px-2 py-1 w-full"
-                      value={selectedAnimalCategory}
-                      onChange={(e) =>
-                        setSelectedAnimalCategory(e.target.value)
-                      }
-                    >
-                      {animalCategories.map((animal) => (
-                        <option key={animal.value} value={animal.value}>
-                          {animal.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">
-                      Brand
-                    </label>
-                    <select
-                      className="border rounded px-2 py-1 w-full"
-                      value={selectedBrand}
-                      onChange={(e) => setSelectedBrand(e.target.value)}
-                    >
-                      <option value="All">All</option>
-                      {brands.map((brand) => (
-                        <option key={brand.name} value={brand.name}>
-                          {brand.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-1">
-                      Max Price (₹{selectedPrice})
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-gray-500">₹{minPrice}</span>
-                      <input
-                        type="range"
-                        min={minPrice}
-                        max={maxPrice}
-                        value={selectedPrice}
-                        onChange={handlePriceSliderChange}
-                        className="flex-1 accent-[#c9a74d]"
-                        step={1}
-                      />
-                      <span className="text-xs text-gray-500">₹{maxPrice}</span>
-                    </div>
-                  </div>
-                  <button
-                    className="w-full mt-2 px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
-                    onClick={resetFilters}
-                  >
-                    Reset Filters
-                  </button>
-                </div>
-              </aside>
-
-              {/* Product list */}
+            <div className="w-full">
               <div className="overflow-y-auto pr-0 md:pr-2 w-full min-h-[400px] lg:col-span-5">
                 {productList}
               </div>
