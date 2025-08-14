@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { auth } from "@/Firebase/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie"; // npm install js-cookie
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -85,9 +86,17 @@ const Register = () => {
         if (key !== "confirmPassword") formData.append(key, value);
       });
 
-      await dispatch(registerUser(formData));
+      // Dispatch to backend and get token
+      const response = await dispatch(registerUser(formData));
+
+      // Assuming backend returns token in response.payload.token
+      const token = response?.payload?.token;
+      if (token) {
+        Cookies.set("token", token, { expires: 7 }); // 7 days
+      }
+
       toast.success("Registration successful");
-      router.push("/papapet/auth");
+      router.push("/"); // redirect to home
     } catch (error) {
       console.error("OTP verify error:", error);
       toast.error("Invalid OTP");

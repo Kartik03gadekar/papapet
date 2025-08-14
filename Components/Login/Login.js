@@ -1,45 +1,3 @@
-// "use client";
-// import React from "react";
-// import { useDispatch } from "react-redux";
-// import { loginUser } from "@/store/Action/auth";
-// import { useRouter } from "next/navigation";
-
-// const Login = () => {
-//   const dispatch = useDispatch();
-//   const router = useRouter();
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     const target = e.target;
-//     const formData = new FormData();
-//     formData.append("phone", target.phone.value);
-
-//     dispatch(loginUser(formData));
-//     router.push("/mediensure/verifyauth");
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit} className="w-full">
-//       <div className="flex flex-col gap-1">
-//         <label className="text-sm text-gray-600">Phone Number</label>
-//         <input
-//           type="tel"
-//           name="phone"
-//           placeholder="+91 - 9876543201"
-//           className="border rounded-lg px-3 py-2 w-full  outline-none"
-//           required
-//         />
-//       </div>
-
-//       <button type="submit" className="bg-teal-500 w-full text-white font-bold py-2 rounded-md mt-4">
-//         Continue
-//       </button>
-//     </form>
-//   );
-// };
-
-// export default Login;
-
 "use client";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -47,6 +5,7 @@ import { loginUser } from "@/store/Action/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/Firebase/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+// import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -56,8 +15,8 @@ const Login = () => {
 
   const [useOTP, setUseOTP] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState(""); // ✅ Always controlled
-  const [phone, setPhone] = useState(""); // ✅ Always controlled
+  const [otp, setOtp] = useState("");
+  const [phone, setPhone] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -65,15 +24,14 @@ const Login = () => {
   const setupRecaptcha = () => {
     if (typeof window === "undefined") return null;
 
-    // ✅ Clear old verifier if exists
+    // Prevent duplicate instances
     if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear();
-      window.recaptchaVerifier = null;
+      return window.recaptchaVerifier;
     }
 
     window.recaptchaVerifier = new RecaptchaVerifier(
-      auth, // ✅ auth first
-      "recaptcha-container", // ✅ container second
+      auth,
+      "recaptcha-container",
       {
         size: "invisible",
         callback: () => console.log("Recaptcha solved"),
@@ -81,8 +39,6 @@ const Login = () => {
       }
     );
 
-    // ✅ Must render
-    window.recaptchaVerifier.render();
     return window.recaptchaVerifier;
   };
 
@@ -122,12 +78,17 @@ const Login = () => {
       setLoading(true);
       const result = await confirmationResult.confirm(otp);
 
-      // Dispatch login to backend
+      // Send phone number to backend
       const formData = new FormData();
       formData.append("phone", result.user.phoneNumber.replace("+91", ""));
-      await dispatch(loginUser(formData));
+      const response = await dispatch(loginUser(formData));
 
-      router.push("/mediensure/verifyauth");
+      // Assuming backend returns a token
+      if (response?.payload?.token) {
+        // Cookies.set("token", response.payload.token, { expires: 7 });
+        toast.success("Login successful");
+        router.push("/"); // Redirect to home
+      }
     } catch (error) {
       console.error("OTP Verify Error:", error);
       toast.error("Invalid OTP. Try again.");
@@ -136,11 +97,27 @@ const Login = () => {
     }
   };
 
-  // ✅ Handle Form Submit
-  const handleSubmit = async (e) => {
+  // ✅ Handle Email/Password login
+  const handleEmailPasswordLogin = async (e) => {
     e.preventDefault();
     const target = e.target;
 
+    const formData = new FormData();
+    formData.append("email", target.email.value);
+    formData.append("password", target.password.value);
+
+    const response = await dispatch(loginUser(formData));
+
+    if (response?.payload?.token) {
+      // Cookies.set("token", response.payload.token, { expires: 7 });
+      toast.success("Login successful");
+      router.push("/"); // Redirect to home
+    }
+  };
+
+  // ✅ Main Submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (useOTP) {
       if (!otpSent) {
         await handleSendOtp();
@@ -148,12 +125,7 @@ const Login = () => {
         await handleVerifyOtp();
       }
     } else {
-      const formData = new FormData();
-      formData.append("email", target.email.value);
-      formData.append("password", target.password.value);
-
-      await dispatch(loginUser(formData));
-      router.push("/mediensure/verifyauth");
+      await handleEmailPasswordLogin(e);
     }
   };
 
@@ -190,7 +162,6 @@ const Login = () => {
           </>
         ) : (
           <>
-            {/* Phone Number */}
             <div className="flex flex-col gap-1 mb-4">
               <label className="text-sm text-gray-600">Phone Number</label>
               <input
@@ -242,7 +213,13 @@ const Login = () => {
           disabled={loading}
           className="bg-teal-500 w-full text-white font-bold py-2 rounded-md"
         >
-          {useOTP ? (otpSent ? "Verify OTP" : "Send OTP") : "Login"}
+          {loading
+            ? "Please wait..."
+            : useOTP
+            ? otpSent
+              ? "Verify OTP"
+              : "Send OTP"
+            : "Login"}
         </button>
 
         <div id="recaptcha-container"></div>

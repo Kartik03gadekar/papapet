@@ -38,6 +38,8 @@ export const registerUser = (info) => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     await axios.post("/user/register", info);
+    dispatch(isUser(data)); // sets isAuthenticated true only here
+
     // You might want to auto-login here with dispatch(isUser(data));
   } catch {
     dispatch(isUserFail());
@@ -63,8 +65,8 @@ export const logoutUser = () => async (dispatch) => {
 
     dispatch(logout());        // clear Redux in-memory
    
-    localStorage.removeItem("persist:auth"); // clear persisted state
-
+    // localStorage.removeItem("persist:auth"); // clear persisted state
+await persistor.purge();
     window.location.href = "/papapet/auth";
   } catch (error) {
     dispatch(isUserFail());
