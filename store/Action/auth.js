@@ -20,29 +20,6 @@ export const checkUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.get("/user/user");
-<<<<<<< HEAD
-  
-    dispatch(isUser(data)); 
-
-    // sets isAuthenticated true only here
-  } catch {
-    dispatch(isUserFail()); // sets false here
-  }
-};
-
-
-
-
-// ✅ Register new user
-export const registerUser = (info) => async (dispatch) => {
-  dispatch(isUserRequest());
-  try {
-    await axios.post("/user/register", info);
-    dispatch(isUser(data)); // sets isAuthenticated true only here
-
-    // You might want to auto-login here with dispatch(isUser(data));
-  } catch {
-=======
     console.log(data);
 
     dispatch(isUser(data));
@@ -57,7 +34,6 @@ export const registerUser = (info) => async (dispatch) => {
     const { data } = await axios.post("/user/register", info);
     console.log(data);
   } catch (error) {
->>>>>>> 5e2bbdfd6c111e498341f951317cbaf1edd53d6d
     dispatch(isUserFail());
   }
 };
@@ -68,13 +44,7 @@ export const loginUser = (info) => async (dispatch) => {
     console.log(data);
 
     dispatch(isUser(data));
-<<<<<<< HEAD
-    
-    
-  } catch {
-=======
   } catch (error) {
->>>>>>> 5e2bbdfd6c111e498341f951317cbaf1edd53d6d
     dispatch(isUserFail());
   }
 };
@@ -83,17 +53,10 @@ export const logoutUser = () => async (dispatch) => {
   try {
     await axios.post("/user/signout", {}, { withCredentials: true });
 
-<<<<<<< HEAD
-    dispatch(logout());        // clear Redux in-memory
-   
-    // localStorage.removeItem("persist:auth"); // clear persisted state
-await persistor.purge();
-=======
     dispatch(logout());
     localStorage.removeItem("persist:auth"); // 👈 clears auth state
     await persistor.purge(); // 👈 clears localStorage
 
->>>>>>> 5e2bbdfd6c111e498341f951317cbaf1edd53d6d
     window.location.href = "/papapet/auth";
   } catch (error) {
     dispatch(isUserFail());
