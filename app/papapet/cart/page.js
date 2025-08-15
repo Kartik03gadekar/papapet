@@ -54,7 +54,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const reduxCartItems = useSelector((state) => state.cart.cartItems || []);
   const [cartItems, setCartItems] = useState(reduxCartItems);
-  const {user} = useSelector((state) => state.auth);
+  const authUser = useSelector((state) => state.auth.user);
 
   // Address management
   const [addresses, setAddresses] = useState([]);
@@ -82,9 +82,9 @@ export default function CheckoutPage() {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        if (user?._id) {
+        if (authUser?._id) {
           const { data } = await axiosInstance.get(
-            `/user/getAllAddresses/${user._id}`
+            `/user/getAllAddresses/${authUser._id}`
           );
           // Ensure each address has a unique id property
           const addressesWithId = (data.addresses || []).map((addr, idx) => ({
@@ -108,7 +108,7 @@ export default function CheckoutPage() {
 
     fetchAddresses();
     // Only refetch when user._id changes
-  }, [user?._id]);
+  }, [authUser?._id]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -134,7 +134,7 @@ export default function CheckoutPage() {
   const deleteAddress = async (addressId) => {
     try {
       const { data } = await axiosInstance.delete("/user/deleteAddress", {
-        data: { userId: user._id, addressId },
+        data: { userId: authUser._id, addressId },
       });
       // Ensure each address has a unique id property
       const addressesWithId = (data.addresses || []).map((addr, idx) => ({
@@ -162,7 +162,7 @@ export default function CheckoutPage() {
     try {
       // Prepare payload as per backend schema
       const payload = {
-        userId: user._id,
+        userId: authUser._id,
         fullName: newAddress.fullName,
         phoneNumber: newAddress.phoneNumber,
         pincode: newAddress.pincode,
@@ -421,7 +421,7 @@ export default function CheckoutPage() {
 
   const checkUserLoggedIn = () => {
     // Check user authentication from Redux state
-    if (!user || !user?._id) {
+    if (!authUser || !authUser._id) {
       // Not logged in, redirect to login page
       router.push("/papapet/auth");
       return false;
@@ -457,11 +457,11 @@ export default function CheckoutPage() {
             details: appliedCoupon.details, // Pass the full coupon object
           }
         : null,
-      user: user
+      user: authUser
         ? {
-            name: user.name,
-            email: user.email,
-            phone: user.phone,
+            name: authUser.name,
+            email: authUser.email,
+            phone: authUser.phone,
           }
         : null,
       address: selectedAddress || null, // Pass the selected address object
@@ -1064,7 +1064,7 @@ export default function CheckoutPage() {
                   Proceed to Checkout
                   <ArrowRight size={18} />
                 </button>
-                {addresses?.length === 0 && (
+                {addresses.length === 0 && (
                   <div className="text-red-500 text-xs mt-2">
                     Please add address first to proceed.
                   </div>
