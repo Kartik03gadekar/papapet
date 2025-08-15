@@ -1,6 +1,7 @@
+"use client"
+
 import CustomizedAccordions from "@/Components/Food/Filter";
 import Footer from "@/Components/Footer/Footer";
-import Nav from "@/Components/Nav/Nav";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import ProductCard from "@/Components/ProductCard";
 import React from "react";
