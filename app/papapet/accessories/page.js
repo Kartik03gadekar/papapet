@@ -57,7 +57,7 @@ const page = () => {
         </div> */}
 
         {/* <Types/> */}
-        <FoodContainer />
+        <AccessoiresProduct/>
         <Footer />
       </div>
     </>

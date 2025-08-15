@@ -50,7 +50,7 @@ const Profile = ({ user }) => {
         country: user.country || "",
         state: user.state || "",
         zipcode: user.zipcode || "",
-        address: user.address || "",
+        address: user.address?.[0]?.streetAddress || "",
         landmark: user.landmark || "",
       });
     }
@@ -294,7 +294,7 @@ const Profile = ({ user }) => {
             <label className="block text-sm font-medium mb-1">Address</label>
             <input
               name="address"
-              value={formData.address}
+              value={formData.address.streetAddress}
               onChange={handleChange}
               disabled={!isEditing}
               placeholder="Full Address"

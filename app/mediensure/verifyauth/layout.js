@@ -41,7 +41,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const Layout = ({ children }) => {
-  const { isAuthencticated } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -57,12 +57,17 @@ const Layout = ({ children }) => {
   useEffect(() => {
     if (loading) return;
 
+<<<<<<< HEAD
     if (!isAuthencticated) {
       router.replace("/");
+=======
+    if (!isAuthenticated) {
+      router.replace("/papapet/auth");
+>>>>>>> 5e2bbdfd6c111e498341f951317cbaf1edd53d6d
     } else {
       router.replace("/");
     }
-  }, [loading, isAuthencticated, router]);
+  }, [loading, isAuthenticated, router]);
 
   if (loading) return <div></div>;
 
