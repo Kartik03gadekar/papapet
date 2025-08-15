@@ -1,32 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isAuthenticated: false, // ✅ fixed spelling
+  isAuthenticated: false,
   loading: false,
-  user: null,
-  consult: null,
-  ofconsult: null,
-  network: null,
-  message: null,
-  error: null,
 };
 
 export const auth = createSlice({
   name: "Mediensure",
   initialState,
   reducers: {
-    isUserRequest: (state) => {
-      state.loading = true;
+    isUserRequest: (state, action) => {
+      state.loading = false;
     },
     isUser: (state, action) => {
-      state.isAuthenticated = true; // ✅ fixed spelling
+      state.isAuthenticated = true;
       state.user = action.payload;
       state.loading = false;
     },
-    isUserFail: (state) => {
+    isUserFail: (state, acction) => {
       state.loading = false;
-      state.isAuthenticated = false;
-      state.user = null;
     },
     getConsultation: (state, action) => {
       state.consult = action.payload.consult;
@@ -34,35 +26,32 @@ export const auth = createSlice({
     getOffConsultation: (state, action) => {
       state.ofconsult = action.payload.consult;
     },
-    getNetworkRequest: (state) => {
+    getNetworkRequest: (state, action) => {
       state.loading = true;
     },
     getNetworkSuccess: (state, action) => {
-      state.loading = false;
-      state.network = action.payload.network;
+      (state.loading = false), (state.network = action.payload.network);
     },
-    getNetworkFail: (state) => {
-      state.loading = false;
+    getNetworkFail: (state, action) => {
+      state.loading = true;
     },
-    request: (state) => {
+    request: (state, action) => {
       state.loading = true;
     },
     success: (state, action) => {
-      state.loading = false;
-      state.message = action.payload.message;
+      (state.loading = false), (state.message = action.payload.message);
     },
     fail: (state, action) => {
-      state.loading = false;
-      state.error = action.payload.message;
+      (state.loading = false), (state.error = action.payload.message);
     },
-    removeMsg: (state) => {
+    removeMsg: (state, action) => {
       state.message = null;
     },
-    removeErr: (state) => {
+    removeErr: (state, action) => {
       state.error = null;
     },
     logout: (state) => {
-      state.isAuthenticated = false; // ✅ now matches login
+      state.isAuthenticated = false;
       state.user = null;
       state.loading = false;
       state.consult = null;
@@ -88,5 +77,4 @@ export const {
   getOffConsultation,
   logout,
 } = auth.actions;
-
 export default auth.reducer;

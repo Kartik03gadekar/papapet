@@ -15,55 +15,47 @@ import {
 } from "../Reducer/auth";
 
 import { persistor } from "../store";
-import { PURGE } from "redux-persist";
 
-
-
-// ✅ Check if persisted auth exists before hitting backend
 export const checkUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.get("/user/user");
-    dispatch(isUser(data)); // sets isAuthenticated true only here
-  } catch {
-    dispatch(isUserFail()); // sets false here
-  }
-};
+    console.log(data);
 
-
-
-
-// ✅ Register new user
-export const registerUser = (info) => async (dispatch) => {
-  dispatch(isUserRequest());
-  try {
-    await axios.post("/user/register", info);
-    // You might want to auto-login here with dispatch(isUser(data));
-  } catch {
+    dispatch(isUser(data));
+  } catch (error) {
     dispatch(isUserFail());
   }
 };
-
-// ✅ Login user
+export const registerUser = (info) => async (dispatch) => {
+  dispatch(isUserRequest());
+  try {
+    console.log(info);
+    const { data } = await axios.post("/user/register", info);
+    console.log(data);
+  } catch (error) {
+    dispatch(isUserFail());
+  }
+};
 export const loginUser = (info) => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.post("/user/login", info);
+    console.log(data);
+
     dispatch(isUser(data));
-  } catch {
+  } catch (error) {
     dispatch(isUserFail());
   }
 };
-
-// ✅ Logout user
 export const logoutUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
-    await axios.post("/user/signout");
+    await axios.post("/user/signout", {}, { withCredentials: true });
 
-    dispatch(logout());        // clear Redux in-memory
-   
-    localStorage.removeItem("persist:auth"); // clear persisted state
+    dispatch(logout());
+    localStorage.removeItem("persist:auth"); // 👈 clears auth state
+    await persistor.purge(); // 👈 clears localStorage
 
     window.location.href = "/papapet/auth";
   } catch (error) {
@@ -71,71 +63,64 @@ export const logoutUser = () => async (dispatch) => {
     console.error("Logout error:", error);
   }
 };
+// BOOK CONSULTATION
 
-
-
-// ✅ Book online consultation
 export const bookConsultation = (id, info) => async (dispatch) => {
   dispatch(request());
   try {
     const { data } = await axios.post(`/user/book/consultation/${id}`, info);
     dispatch(success(data));
   } catch (error) {
-    dispatch(fail(error?.response?.data || { message: "Booking failed" }));
+    dispatch(fail(error.response.data));
   }
 };
 
-// ✅ Get all online consultations
 export const getAllConsultation = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.get("/user/get/consultation");
     dispatch(getConsultation(data));
-  } catch {
+  } catch (error) {
     dispatch(isUserFail());
   }
 };
-
-// ✅ Get all offline consultations
 export const getAllOfflineConsultation = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.get("/user/get/offline/consultation");
     dispatch(getOffConsultation(data));
-  } catch {
+  } catch (error) {
     dispatch(isUserFail());
   }
 };
-
-// ✅ Get doctor network by PIN
 export const getNetwork = (pin) => async (dispatch) => {
   dispatch(getNetworkRequest());
   try {
     const { data } = await axios.get(`/network/get/doctors/${pin}`);
     dispatch(getNetworkSuccess(data));
-  } catch {
+  } catch (error) {
     dispatch(getNetworkFail());
   }
 };
 
-// ✅ Book consultation via network
 export const bookConsultationNetwork = (id, info) => async (dispatch) => {
   dispatch(request());
+
   try {
     const { data } = await axios.post(`/network/book/consultation/${id}`, info);
     dispatch(success(data));
   } catch (error) {
-    dispatch(fail(error?.response?.data || { message: "Booking failed" }));
+    dispatch(fail(error.response.data));
   }
 };
 
-// ✅ Update user details
 export const updateDetails = (info) => async (dispatch) => {
   dispatch(isUserRequest());
+  console.log(info);
   try {
     const { data } = await axios.post("/user/profile/update", info);
     dispatch(isUser(data));
   } catch (error) {
-    dispatch(isUserFail(error?.response?.data || { message: "Update failed" }));
+    dispatch(isUserFail(error.response.data));
   }
 };

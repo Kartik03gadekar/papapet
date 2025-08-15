@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "@/store/Action/auth";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth } from "@/Firebase/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
@@ -198,8 +198,6 @@ const Register = () => {
 
         <div id="recaptcha-container"></div>
       </form>
-
-      <ToastContainer position="top-center" autoClose={3000} />
     </>
   );
 };

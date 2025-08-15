@@ -9,6 +9,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../ProductCard";
 import { getFood } from "@/store/Action/others";
+import { HiFilter } from "react-icons/hi";
+import Loading from "../loading";
+
+// Swiper imports for carousels
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 // Helper for unique values
 const getUnique = (arr, key) => {
@@ -19,95 +28,268 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+// Filter options
+const brands = [
+  { name: "Royal Canin", img: "/royal.webp" },
+  { name: "Arden Grance", img: "/arden.png" },
+  { name: "Sniffy", img: "/sniffy.jpg" },
+  { name: "Drools", img: "/drools.png" },
+  { name: "Happy Dog", img: "/happy.avif" },
+  { name: "MERA", img: "/mera.webp" },
+];
+const categories = [
+  { name: "All", value: "All", label: "All" },
+  { name: "Dry Food", value: "dry", label: "Dry Food" },
+  { name: "Wet Food", value: "wet", label: "Wet Food" },
+  { name: "Treats", value: "treats", label: "Treats" },
+  { name: "Other", value: "other", label: "Other" },
+];
+
+// Animal category filter options
+const animalCategories = [
+  { label: "All", value: "All" },
+  { label: "Dog", value: "dog" },
+  { label: "Cat", value: "cat" },
+  { label: "Fish", value: "fish" },
+  // Add more as needed
+];
+
+const petAges = [
+  { lable: "Baby (NB to 1 year)" },
+  { lable: "Young (1-3 years)" },
+  { lable: "Adult (4-7 years)" },
+  { lable: "Senior (8+ years)" },
+];
+
+// Sort options
+const sortOptions = [
+  { name: "Relevance", value: "relevance" },
+  { name: "Price: Low to High", value: "priceLow" },
+  { name: "Price: High to Low", value: "priceHigh" },
+  { name: "Name: A-Z", value: "nameAZ" },
+  { name: "Name: Z-A", value: "nameZA" },
+];
+
+const FOOD_MIN_PRICE = 0;
+const FOOD_MAX_PRICE = 25000;
+
 const AccessoiresProduct = () => {
   const { load, food, imgLink } = useSelector((state) => state.others);
   const dispatch = useDispatch();
 
+  // Set min and max price to 0 and 25000
+  const [priceRange, setPriceRange] = useState([
+    FOOD_MIN_PRICE,
+    FOOD_MAX_PRICE,
+  ]);
+  const [selectedPrice, setSelectedPrice] = useState(FOOD_MAX_PRICE);
+  const [priceRangeInitialized, setPriceRangeInitialized] = useState(false);
+
   // Filter state
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedBrand, setSelectedBrand] = useState("All");
-  const [selectedPrice, setSelectedPrice] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedAnimalCategory, setSelectedAnimalCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sort, setSort] = useState("relevance");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  // For price slider
-  const prices =
-    food?.map((item) =>
-      item.discountprice && item.discountprice < item.price
-        ? item.discountprice
-        : item.price
-    ) || [];
-  const minPrice = prices.length ? Math.min(...prices) : 0;
-  const maxPrice = prices.length ? Math.max(...prices) : 10000;
+  // For category sidebar and mobile
+  const subCategories = categories.filter((cat) => cat.value !== "All");
 
-  // Get unique categories and brands
-  const categories = getUnique(food || [], "categories");
-  const brands = getUnique(food || [], "brand");
+  // Responsive check for Swiper navigation
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Compute min/max price from food data (but always use 0 and 25000)
+  useEffect(() => {
+    setPriceRange([FOOD_MIN_PRICE, FOOD_MAX_PRICE]);
+    if (!priceRangeInitialized) {
+      setSelectedPrice(FOOD_MAX_PRICE);
+      setPriceRangeInitialized(true);
+    }
+  }, [food, priceRangeInitialized]);
 
   useEffect(() => {
     dispatch(getFood());
   }, [dispatch]);
 
-  // Reset price slider when food changes
-  useEffect(() => {
-    setSelectedPrice(maxPrice);
-  }, [maxPrice]);
-
   // Filtering logic
-  const filteredProducts = (food || []).filter((item) => {
-    // Search
-    const matchesSearch =
-      !searchTerm ||
-      item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.brand?.toLowerCase().includes(searchTerm.toLowerCase());
+  const filterProducts = (products) => {
+    if (!Array.isArray(products)) return [];
 
-    // Category
-    const matchesCategory =
-      selectedCategory === "All" ||
-      (item.categories && item.categories === selectedCategory);
+    return products.filter((item) => {
+      // --- Brand filter ---
+      if (selectedBrand !== "All" && item.brand !== selectedBrand) {
+        return false;
+      }
 
-    // Brand
-    const matchesBrand =
-      selectedBrand === "All" || (item.brand && item.brand === selectedBrand);
+      // --- Category filter ---
+      if (selectedCategory !== "All") {
+        const cat = selectedCategory.toLowerCase();
+        if (
+          !(
+            (item.categories && item.categories.toLowerCase().includes(cat)) ||
+            (item.animalCategory &&
+              item.animalCategory.toLowerCase().includes(cat)) ||
+            (item.name && item.name.toLowerCase().includes(cat))
+          )
+        ) {
+          return false;
+        }
+      }
 
-    // Price
-    const price =
-      item.discountprice && item.discountprice < item.price
-        ? item.discountprice
-        : item.price;
-    const matchesPrice = price <= selectedPrice;
+      // --- Animal Category filter ---
+      if (selectedAnimalCategory !== "All") {
+        const animalCat = selectedAnimalCategory.toLowerCase();
+        if (
+          !(
+            (item.animalCategory &&
+              item.animalCategory.toLowerCase().includes(animalCat)) ||
+            (item.categories &&
+              item.categories.toLowerCase().includes(animalCat)) ||
+            (item.name && item.name.toLowerCase().includes(animalCat))
+          )
+        ) {
+          return false;
+        }
+      }
 
-    return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
-  });
+      // --- Price filter (slider) ---
+      const price = Number(item.discountprice || item.price);
+      if (isNaN(price)) return false;
+      if (price < priceRange[0] || price > selectedPrice) {
+        return false;
+      }
 
-  // Reset filters
-  const resetFilters = () => {
-    setSearchTerm("");
-    setSelectedCategory("All");
-    setSelectedBrand("All");
-    setSelectedPrice(maxPrice);
+      // --- Search filter ---
+      if (
+        searchTerm &&
+        !(
+          (item.name &&
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (item.brand &&
+            item.brand.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (item.categories &&
+            item.categories.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (item.animalCategory &&
+            item.animalCategory
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()))
+        )
+      ) {
+        return false;
+      }
+
+      return true;
+    });
   };
 
-  // Handlers for mobile sidebar
-  const handleMobileCategoryClick = (cat) => {
-    setSelectedCategory(cat);
+  // Sorting logic
+  const sortProducts = (products) => {
+    if (!Array.isArray(products)) return [];
+    let sorted = [...products];
+    switch (sort) {
+      case "priceLow":
+        sorted.sort((a, b) => Number(a.price) - Number(b.price));
+        break;
+      case "priceHigh":
+        sorted.sort((a, b) => Number(b.price) - Number(a.price));
+        break;
+      case "nameAZ":
+        sorted.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+        break;
+      case "nameZA":
+        sorted.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+        break;
+      default:
+        // relevance: do nothing
+        break;
+    }
+    return sorted;
+  };
+
+  // Handlers
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+  };
+  const handleSortChange = (option) => setSort(option.value);
+
+  // Category click for sidebar/mobile
+  const handleCategoryClick = (catValue) => {
+    setSelectedCategory(
+      catValue === "All"
+        ? "All"
+        : categories.find((c) => c.value === catValue)?.name || "All"
+    );
     setMobileFiltersOpen(false);
   };
 
-  // Main product grid
-  const productList = (
-    <div className="w-full grid grid-cols-4 px-10 gap-8 max-md:grid-cols-2 max-md:w-full max-md:rounded-xl max-md:gap-4 max-md:px-4">
-      {filteredProducts.length === 0 ? (
-        <div className="col-span-4 text-center text-gray-500 py-10">
-          No products found.
-        </div>
-      ) : (
-        filteredProducts.map((i, index) => (
-          <ProductCard key={index} i={i} imgLink={imgLink} />
-        ))
-      )}
-    </div>
-  );
+  // Animal category click for sidebar/mobile
+  const handleAnimalCategoryClick = (animalValue) => {
+    setSelectedAnimalCategory(
+      animalValue === "All"
+        ? "All"
+        : animalCategories.find((a) => a.value === animalValue)?.label || "All"
+    );
+    setMobileFiltersOpen(false);
+  };
+
+  // Price slider handler (single slider for max price)
+  const handlePriceSliderChange = (e) => {
+    const value = Number(e.target.value);
+    setSelectedPrice(value);
+  };
+
+  // Reset filters
+  const resetFilters = () => {
+    setSelectedBrand("All");
+    setSelectedCategory("All");
+    setSelectedAnimalCategory("All");
+    setSearchTerm("");
+    setSelectedPrice(priceRange[1]);
+  };
+
+  // Compose filtered and sorted product list
+  const filtered = filterProducts(food);
+  const sorted = sortProducts(filtered);
+
+  // Product list rendering
+  let productList;
+  if (load) {
+    productList = (
+      <div className="flex justify-center items-center min-h-[300px]">
+        <Loading />
+      </div>
+    );
+  } else if (!sorted || sorted.length === 0) {
+    productList = (
+      <div className="text-center text-gray-500 py-12 text-lg">
+        No products found.
+      </div>
+    );
+  } else {
+    productList = (
+      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+        {sorted.map((item, idx) => (
+          <ProductCard
+            key={item._id || item.id || idx}
+            i={item}
+            imgLink={imgLink}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  const [minPrice, maxPrice] = priceRange;
 
   return (
     <div className="w-full min-h-screen">
@@ -123,81 +305,83 @@ const AccessoiresProduct = () => {
           Pets Accessories
         </h1>
         {/* Header and controls */}
-        <div className="flex items-center justify-center gap-4 border-b border-gray-200 ">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 w-full sm:w-auto">
-            {/* Animal Category filter for mobile */}
-            <div className="flex flex-col items-center mt-4 px-4">
-              <label className="text-sm font-medium mb-1 w-full">
-                Category
-              </label>
-              <select
-                className="border rounded-xl px-2 py-1 w-full "
-                value={selectedAnimalCategory}
-                onChange={(e) => setSelectedAnimalCategory(e.target.value)}
-              >
-                {animalCategories.map((animal) => (
-                  <option key={animal.value} value={animal.value}>
-                    {animal.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex flex-col items-center mt-6 px-4">
-              <div className=" mb-2 w-full">
-                <label className="block text-sm font-medium mb-1">Brand</label>
-                <select
-                  className="border rounded-xl px-2 py-1 w-full "
-                  value={selectedBrand}
-                  onChange={(e) => setSelectedBrand(e.target.value)}
-                >
-                  <option value="All">All</option>
-                  {brands.map((brand) => (
-                    <option key={brand.name} value={brand.name}>
-                      {brand.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center mt-4 px-4">
-              <label className="block text-sm font-medium mb-1">Age</label>
-              <select
-                className="border rounded-xl px-2 py-1 w-full "
-                value={selectedAnimalCategory}
-                onChange={(e) => setSelectedAnimalCategory(e.target.value)}
-              >
-                {petAges.map((animal, idx) => (
-                  <option
-                    key={animal.value || idx}
-                    value={animal.value || animal.lable}
-                  >
-                    {animal.lable}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Sort Dropdown */}
-            <div className="flex items-center justify-center mt-4  bg-[#FD890E] rounded">
-              <button
-                type="button"
-                onClick={() => setMobileFiltersOpen(true)}
-                className="flex items-center justify-center p-2 text-gray-400 hover:text-gray-500 transition-colors"
-                aria-label="Open filters"
-              >
-                <HiFilter className="text-white text-2xl" />
-              </button>
-            </div>
-          </div>
-        </div>
+        <div className="flex items-center justify-center gap-4 border-b border-gray-200 py-10">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2 w-full ">
+                      {/* Animal Category filter for mobile */}
+                      <div className="flex flex-col items-center mt-4 px-4 md:w-1/3">
+                        <label className="text-sm font-medium mb-1 w-full">
+                          Category
+                        </label>
+                        <select
+                          className="border rounded-xl px-2 py-1 w-full "
+                          value={selectedAnimalCategory}
+                          onChange={(e) => setSelectedAnimalCategory(e.target.value)}
+                        >
+                          {animalCategories.map((animal) => (
+                            <option key={animal.value} value={animal.value}>
+                              {animal.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+        
+                      <div className="flex flex-col items-center mt-6 px-4 md:w-1/3">
+                        <div className=" mb-2 w-full">
+                          <label className="block text-sm font-medium mb-1">
+                            Brand
+                          </label>
+                          <select
+                            className="border rounded-xl px-2 py-1 w-full "
+                            value={selectedBrand}
+                            onChange={(e) => setSelectedBrand(e.target.value)}
+                          >
+                            <option value="All">All</option>
+                            {brands.map((brand) => (
+                              <option key={brand.name} value={brand.name}>
+                                {brand.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+        
+                      <div className="flex flex-col items-start mt-4 px-4 md:w-1/3">
+                        <label className="block text-sm font-medium mb-1">Age</label>
+                        <select
+                          className="border rounded-xl px-2 py-1 w-full "
+                          value={selectedAnimalCategory}
+                          onChange={(e) => setSelectedAnimalCategory(e.target.value)}
+                        >
+                          {petAges.map((animal, idx) => (
+                            <option
+                              key={animal.value || idx}
+                              value={animal.value || animal.lable}
+                            >
+                              {animal.lable}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+        
+                      {/* Sort Dropdown */}
+                      <div className="flex items-center justify-center mt-4  bg-[#FD890E] rounded max-md:fixed bottom-10 right-5 mr-4">
+                        <button
+                          type="button"
+                          onClick={() => setMobileFiltersOpen(true)}
+                          className="flex items-center justify-center p-2 text-gray-400 hover:text-gray-500 transition-colors"
+                          aria-label="Open filters"
+                        >
+                          <HiFilter className="text-white text-2xl" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
 
         {/* Mobile filter dialog */}
         <Transition show={mobileFiltersOpen} as={Fragment}>
           <Dialog
             as="div"
-            className="relative z-40 lg:hidden"
+            className="relative z-40"
             onClose={setMobileFiltersOpen}
           >
             <Transition.Child
@@ -366,13 +550,13 @@ const AccessoiresProduct = () => {
                 className="w-full"
               >
                 <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                   <div className="w-full flex items-center justify-center  ">
-                            <img
-                              className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
-                              src={"/pt11.png"}
-                              alt=""
-                            />
-                          </div>
+                  <div className="w-full flex items-center justify-center  ">
+                    <img
+                      className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
+                      src={"/pt11.png"}
+                      alt=""
+                    />
+                  </div>
                 </SwiperSlide>
               </Swiper>
             </div>

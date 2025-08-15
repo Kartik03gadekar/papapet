@@ -396,10 +396,10 @@ const FoodContainer = () => {
             Food & Treats
           </h1>
           {/* Header and controls */}
-          <div className="flex items-center justify-center gap-4 border-b border-gray-200 ">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 w-full sm:w-auto">
+          <div className="flex items-center justify-center gap-4 border-b border-gray-200 py-10">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 w-full ">
               {/* Animal Category filter for mobile */}
-              <div className="flex flex-col items-center mt-4 px-4">
+              <div className="flex flex-col items-center mt-4 px-4 md:w-1/3">
                 <label className="text-sm font-medium mb-1 w-full">
                   Category
                 </label>
@@ -416,7 +416,7 @@ const FoodContainer = () => {
                 </select>
               </div>
 
-              <div className="flex flex-col items-center mt-6 px-4">
+              <div className="flex flex-col items-center mt-6 px-4 md:w-1/3">
                 <div className=" mb-2 w-full">
                   <label className="block text-sm font-medium mb-1">
                     Brand
@@ -436,7 +436,7 @@ const FoodContainer = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col items-center mt-4 px-4">
+              <div className="flex flex-col items-start mt-4 px-4 md:w-1/3">
                 <label className="block text-sm font-medium mb-1">Age</label>
                 <select
                   className="border rounded-xl px-2 py-1 w-full "
@@ -455,7 +455,7 @@ const FoodContainer = () => {
               </div>
 
               {/* Sort Dropdown */}
-              <div className="flex items-center justify-center mt-4  bg-[#FD890E] rounded">
+              <div className="flex items-center justify-center mt-4  bg-[#FD890E] rounded max-md:fixed bottom-10 right-5 mr-4">
                 <button
                   type="button"
                   onClick={() => setMobileFiltersOpen(true)}
@@ -472,7 +472,7 @@ const FoodContainer = () => {
           <Transition show={mobileFiltersOpen} as={Fragment}>
             <Dialog
               as="div"
-              className="relative z-40 lg:hidden"
+              className="relative z-40"
               onClose={setMobileFiltersOpen}
             >
               <Transition.Child
