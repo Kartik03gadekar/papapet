@@ -57,13 +57,8 @@ const Layout = ({ children }) => {
   useEffect(() => {
     if (loading) return;
 
-<<<<<<< HEAD
-    if (!isAuthencticated) {
-      router.replace("/");
-=======
     if (!isAuthenticated) {
       router.replace("/papapet/auth");
->>>>>>> 5e2bbdfd6c111e498341f951317cbaf1edd53d6d
     } else {
       router.replace("/");
     }
