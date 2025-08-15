@@ -11,7 +11,7 @@ const page = () => {
           <NavPapaPet/>
        
         <HeroSection/>
-    <div className="bg-red-200 w-full h-[28vw] flex items-center justify-center  ">
+    <div className=" w-full h-[28vw] flex items-center justify-center  ">
 
   <img 
    className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"

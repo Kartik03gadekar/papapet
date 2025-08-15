@@ -148,6 +148,7 @@ export const checkUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.get("/user/user");
+    console.log(data.user);
     dispatch(isUser(data));
   } catch (error) {
     dispatch(isUserFail());

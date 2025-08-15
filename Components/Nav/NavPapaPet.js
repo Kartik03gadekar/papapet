@@ -636,21 +636,17 @@ const NavPapaPet = () => {
   }, [mobileMenuOpen]);
 
   const handleLogout = async () => {
-    console.log("Attempting to log out...");
-    try {
-      await dispatch(logoutUser());
-      console.log("Logout dispatched. Checking user state...");
-      setTimeout(() => {
-        // You may want to check the user state here if available
-        if (!user) {
-          console.log("User is successfully logged out.");
-        } else {
-          console.log("User is still present after logout attempt:", user);
-        }
-      }, 500);
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
+  await dispatch(logoutUser()); // Clears Redux auth state
+
+  // Clear persisted auth from localStorage/sessionStorage if you are using redux-persist
+  localStorage.removeItem("persist:auth");
+  sessionStorage.removeItem("userChecked");
+
+  // Redirect to home (or auth page)
+  router.push("/"); // Change to "/papapet/auth" if you want login page instead
+
+  // Optional: Hard reload the page to fully reset state
+  window.location.reload();
   };
 
   // Handler for cart icon click
