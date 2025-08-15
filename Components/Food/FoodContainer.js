@@ -384,7 +384,7 @@ const FoodContainer = () => {
       </div> */}
 
       <div className="w-full min-h-screen">
-        <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pt-20">
+        <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pt-10">
           <h1
             className="text-4xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
             style={{ 
@@ -393,80 +393,57 @@ const FoodContainer = () => {
               wordBreak: "break-word",
             }}
           >
-            Food & Treats
+            Food
           </h1>
-          {/* Header and controls */}
-          <div className="flex items-center justify-center gap-4 border-b border-gray-200 py-10">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 w-full ">
-              {/* Animal Category filter for mobile */}
-              <div className="flex flex-col items-center mt-4 px-4 md:w-1/3">
-                <label className="text-sm font-medium mb-1 w-full">
-                  Category
-                </label>
-                <select
-                  className="border rounded-xl px-2 py-1 w-full "
-                  value={selectedAnimalCategory}
-                  onChange={(e) => setSelectedAnimalCategory(e.target.value)}
-                >
-                  {animalCategories.map((animal) => (
-                    <option key={animal.value} value={animal.value}>
-                      {animal.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        
+{/* Animal Category */} 
+<div className="flex items-center justify-around pt-6 "  >
+  <div className="flex flex-col w-full md:w-1/4 "> 
 
-              <div className="flex flex-col items-center mt-6 px-4 md:w-1/3">
-                <div className=" mb-2 w-full">
-                  <label className="block text-sm font-medium mb-1">
-                    Brand
-                  </label>
-                  <select
-                    className="border rounded-xl px-2 py-1 w-full "
-                    value={selectedBrand}
-                    onChange={(e) => setSelectedBrand(e.target.value)}
-                  >
-                    <option value="All">All</option>
-                    {brands.map((brand) => (
-                      <option key={brand.name} value={brand.name}>
-                        {brand.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+<label className="text-sm font-medium mb-1">Category</label>
 
-              <div className="flex flex-col items-start mt-4 px-4 md:w-1/3">
-                <label className="block text-sm font-medium mb-1">Age</label>
-                <select
-                  className="border rounded-xl px-2 py-1 w-full "
-                  value={selectedAnimalCategory}
-                  onChange={(e) => setSelectedAnimalCategory(e.target.value)}
-                >
-                  {petAges.map((animal, idx) => (
-                    <option
-                      key={animal.value || idx}
-                      value={animal.value || animal.lable}
-                    >
-                      {animal.lable}
-                    </option>
-                  ))}
-                </select>
-              </div>
+ <select className="border rounded-xl px-3 py-2 text-sm w-full" 
+ value={selectedAnimalCategory} 
+ onChange={(e) => setSelectedAnimalCategory(e.target.value)} > 
+ {animalCategories.map((animal) => ( <option key={animal.value}
+  value={animal.value}> {animal.label} </option> ))}
+   </select> 
 
-              {/* Sort Dropdown */}
-              <div className="flex items-center justify-center mt-4  bg-[#FD890E] rounded max-md:fixed bottom-10 right-5 mr-4">
-                <button
-                  type="button"
-                  onClick={() => setMobileFiltersOpen(true)}
-                  className="flex items-center justify-center p-2 text-gray-400 hover:text-gray-500 transition-colors"
-                  aria-label="Open filters"
-                >
-                  <HiFilter className="text-white text-2xl" />
-                </button>
-              </div>
-            </div>
+  </div> 
+  {/* Brand */}
+   <div className="flex flex-col w-full md:w-1/4">
+   <label className="text-sm font-medium mb-1">Brand</label> 
+   <select className="border rounded-xl px-3 py-2 text-sm w-full"
+    value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)} >
+       <option value="All">All</option> 
+       {brands.map((brand) => ( <option key={brand.name} value={brand.name}>
+         {brand.name} </option> ))}
+          </select>
           </div>
+
+          {/* Age */}
+          <div className="flex flex-col w-full md:w-1/4">
+           <label className="text-sm font-medium mb-1">Age</label>
+            <select className="border rounded-xl px-3 py-2 text-sm w-full"
+             value={selectedAnimalCategory} onChange={(e) => setSelectedAnimalCategory(e.target.value)} >
+               {petAges.map((animal, idx) => ( <option key={animal.value || idx} value={animal.value || animal.lable} >
+                 {animal.lable} </option> ))} 
+                 </select> 
+                 </div>
+</div>
+
+{/* Mobile Filter Button */}
+<div className="flex md:hidden justify-end p-4">
+  <button
+    onClick={() => setMobileFiltersOpen(true)}
+    className="flex items-center gap-2 px-4 py-2 bg-[#FD890E] text-white rounded-lg shadow-md"
+  >
+    <HiFilter className="text-lg" /> Filters
+  </button>
+</div>
+        
+          
+
 
           {/* Mobile filter dialog */}
           <Transition show={mobileFiltersOpen} as={Fragment}>

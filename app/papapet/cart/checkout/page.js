@@ -481,7 +481,10 @@ export default function CheckoutPage() {
             {/* Left Column - Order Items & Details */}
             <div className="lg:col-span-2 flex flex-col space-y-4 sm:space-y-2 ">
               {/* Items Section */}
-              <div className="bg-card h-[45vh] rounded-lg border border-border shadow-sm overflow-y-auto">
+               {/* //  h-[45vh] */}
+              <div className="bg-card
+              //  h-fit
+                rounded-lg border border-border shadow-sm overflow-y-auto py-2">
                 <div className="p-4 sm:p-6 pb-2 sm:pb-4 ">
                   <h2 className="text-base sm:text-lg font-semibold text-card-foreground">
                     Items

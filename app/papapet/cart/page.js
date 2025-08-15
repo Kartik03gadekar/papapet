@@ -15,6 +15,7 @@ import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import axiosInstance from "@/Axios/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify"; // Import toastify
+import { isUserRequest } from "@/store/Reducer/auth";
 
 // Simple Modal component
 function Modal({ open, onClose, children }) {
@@ -81,20 +82,22 @@ export default function CheckoutPage() {
   // Fetch all addresses from DB for the logged-in user
   useEffect(() => {
     const fetchAddresses = async () => {
+        dispatch(isUserRequest());
       try {
+
         if (authUser?._id) {
           const { data } = await axiosInstance.get(
-            `/user/getAllAddresses/${authUser._id}`
+            `/user/getAllAddresses/${authUser?._id}`
           );
           // Ensure each address has a unique id property
-          const addressesWithId = (data.addresses || []).map((addr, idx) => ({
+          const addressesWithId = (data?.addresses || []).map((addr, idx) => ({
             ...addr,
             id: addr.id || addr._id || idx + 1,
           }));
           setAddresses(addressesWithId);
           // Set default selected address if not set
-          if (addressesWithId.length > 0) {
-            setSelectedAddressId(addressesWithId[0].id);
+          if (addressesWithId?.length > 0) {
+            setSelectedAddressId(addressesWithId[0]?.id);
           } else {
             setSelectedAddressId(null);
           }
@@ -134,18 +137,18 @@ export default function CheckoutPage() {
   const deleteAddress = async (addressId) => {
     try {
       const { data } = await axiosInstance.delete("/user/deleteAddress", {
-        data: { userId: authUser._id, addressId },
+        data: { userId: authUser?._id, addressId },
       });
       // Ensure each address has a unique id property
-      const addressesWithId = (data.addresses || []).map((addr, idx) => ({
+      const addressesWithId = (data?.addresses || []).map((addr, idx) => ({
         ...addr,
         id: addr.id || addr._id || idx + 1,
       }));
       setAddresses(addressesWithId);
       // If the deleted address was selected, select another
       if (selectedAddressId === addressId) {
-        if (addressesWithId.length > 0) {
-          setSelectedAddressId(addressesWithId[0].id);
+        if (addressesWithId?.length > 0) {
+          setSelectedAddressId(addressesWithId[0]?.id);
         } else {
           setSelectedAddressId(null);
         }
@@ -479,7 +482,7 @@ export default function CheckoutPage() {
   return (
     <div className="overflow-x-hidden">
       <NavPapaPet />
-      <main className="bg-white min-h-screen pt-5 lg:pt-10 pb-16 overflow-x-hidden">
+      <main className="bg-white min-h-screen pt-3 lg:pt-10 pb-16 overflow-x-hidden">
         <div className="max-w-full mx-auto px-4 sm:px-8">
           <h1 className="font-semibold text-2xl sm:text-3xl md:text-4xl text-neutral-900 mb-8 tracking-tight">
             Shopping Cart
@@ -943,16 +946,20 @@ export default function CheckoutPage() {
                 )}
               </div>
               {/* Cart Actions */}
-              <div className="flex flex-col md:flex-row xs:flex-row gap-3 mt-2">
-                <button className="flex items-center justify-center gap-2 px-6 py-2 border border-neutral-200 text-white rounded-full font-medium transition w-full xs:w-auto shadow-sm bg-[#FB923C] hover:bg-[#FB923C]/80">
+              {/* <div className="flex flex-col md:flex-row xs:flex-row gap-3 mt-2">
+                <button className="flex items-center justify-center gap-2 px-6 py-2 border border-neutral-200
+                 text-white rounded-full font-medium transition w-full xs:w-auto shadow-sm bg-[#FB923C]
+                  hover:bg-[#FB923C]/80">
                   <ArrowLeft size={18} />
                   <span className="hidden xs:inline">Return to Shop</span>
                   <span className="inline xs:hidden">Shop</span>
                 </button>
-                <button className="flex items-center justify-center gap-2 px-6 py-2 border border-neutral-200 text-neutral-700 rounded-full font-medium hover:bg-neutral-100 transition w-full xs:w-auto shadow-sm">
+                <button className="flex items-center justify-center gap-2 px-6 py-2 border border-neutral-200
+                 text-neutral-700 rounded-full font-medium hover:bg-neutral-100 transition w-full xs:w-auto 
+                 shadow-sm">
                   Update Cart
                 </button>
-              </div>
+              </div> */}
             </section>
             {/* Cart Summary */}
             <aside className="lg:col-span-1">
