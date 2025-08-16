@@ -92,6 +92,52 @@
 
 
 
+// import { configureStore } from "@reduxjs/toolkit";
+// import auth from "./Reducer/auth";
+// import others from "./Reducer/others";
+// import cart from "./slices/cartSlices";
+// import {
+//   persistStore,
+//   persistReducer,
+//   FLUSH,
+//   REHYDRATE,
+//   PAUSE,
+//   PERSIST,
+//   PURGE,
+//   REGISTER,
+// } from "redux-persist";
+// import storage from "redux-persist/lib/storage"; // uses localStorage
+
+// const cartPersistConfig = {
+//   key: "cart",
+//   storage,
+// };
+
+// const authPersistConfig = {
+//   key: "auth",
+//   storage,
+// };
+
+// const persistedCartReducer = persistReducer(cartPersistConfig, cart);
+// const persistedAuthReducer = persistReducer(authPersistConfig, auth);
+
+// export const store = configureStore({
+//   reducer: {
+//     auth: persistedAuthReducer, // 👈 persist auth
+//     others,
+//     cart: persistedCartReducer, // 👈 persist cart
+//   },
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: {
+//         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+//       },
+//     }),
+//   devTools: process.env.NODE_ENV !== "production",
+// });
+
+// export const persistor = persistStore(store);
+
 import { configureStore } from "@reduxjs/toolkit";
 import auth from "./Reducer/auth";
 import others from "./Reducer/others";
@@ -113,19 +159,20 @@ const cartPersistConfig = {
   storage,
 };
 
-const authPersistConfig = {
-  key: "auth",
-  storage,
-};
+// Removed auth persist config 👇
+// const authPersistConfig = {
+//   key: "auth",
+//   storage,
+// };
 
+// Persist only cart
 const persistedCartReducer = persistReducer(cartPersistConfig, cart);
-const persistedAuthReducer = persistReducer(authPersistConfig, auth);
 
 export const store = configureStore({
   reducer: {
-    auth: persistedAuthReducer, // 👈 persist auth
+    auth,   // 👈 just normal reducer, no persistence
     others,
-    cart: persistedCartReducer, // 👈 persist cart
+    cart: persistedCartReducer, // 👈 persist cart only
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

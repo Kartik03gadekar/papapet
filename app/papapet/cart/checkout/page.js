@@ -455,7 +455,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <div className="">
+      <div className="overflow-hidden">
         <NavPapaPet />
       </div>
       <div className="max-h-screen bg-surface p-2  sm:p-4 md:px-6 md:py-8 mb-4 lg:p-8  mt-8 md:mt-4 ">
