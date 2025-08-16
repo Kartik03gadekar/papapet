@@ -578,22 +578,14 @@ const NavPapaPet = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // useEffect(() => { 
-  // // Only run if not authenticated AND we haven't checked before 
-  // if ( !isAuthenticated && !sessionStorage.getItem("userChecked")
-  //  && localStorage.getItem("persist:auth") ) 
-  // { 
-  // sessionStorage.setItem("userChecked", "true");
-  //  dispatch(checkUser());
-  //  } }, [dispatch, isAuthenticated]);
-
-  
   useEffect(() => {
     // Only run if not authenticated AND we haven't checked before
     if (
-      !isAuthenticated &&!user
+      !isAuthenticated &&
+      !sessionStorage.getItem("userChecked") &&
+      localStorage.getItem("persist:auth")
     ) {
-      // sessionStorage.setItem("userChecked", "true");
+      sessionStorage.setItem("userChecked", "true");
       dispatch(checkUser());
     }
   }, [dispatch, isAuthenticated]);
@@ -647,8 +639,8 @@ const NavPapaPet = () => {
   await dispatch(logoutUser()); // Clears Redux auth state
 
   // Clear persisted auth from localStorage/sessionStorage if you are using redux-persist
-  // localStorage.removeItem("persist:auth");
-  // sessionStorage.removeItem("userChecked");
+  localStorage.removeItem("persist:auth");
+  sessionStorage.removeItem("userChecked");
 
   // Redirect to home (or auth page)
   router.push("/"); // Change to "/papapet/auth" if you want login page instead

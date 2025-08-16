@@ -176,16 +176,14 @@ export const loginUser = (info) => async (dispatch) => {
     dispatch(isUserFail());
   }
 };
-
 export const logoutUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
-    await axios.post("/user/signout", {},  {withCredentials: true});
+    await axios.post("/user/signout", {}, { withCredentials: true });
 
-    dispatch(logout()); // clears auth state from Redux store
-
-    // No need to remove "persist:auth" because auth is not persisted
-    // No need to call persistor.purge() because that clears cart too
+    dispatch(logout());
+    localStorage.removeItem("persist:auth"); // 👈 clears auth state
+    await persistor.purge(); // 👈 clears localStorage
 
     window.location.href = "/papapet/auth";
   } catch (error) {
@@ -193,22 +191,6 @@ export const logoutUser = () => async (dispatch) => {
     console.error("Logout error:", error);
   }
 };
-
-// export const logoutUser = () => async (dispatch) => {
-//   dispatch(isUserRequest());
-//   try {
-//     await axios.post("/user/signout", {});
-
-//     dispatch(logout());
-//     localStorage.removeItem("persist:auth"); // 👈 clears auth state
-//     await persistor.purge(); // 👈 clears localStorage
-
-//     window.location.href = "/papapet/auth";
-//   } catch (error) {
-//     dispatch(isUserFail());
-//     console.error("Logout error:", error);
-//   }
-// };
 // BOOK CONSULTATION
 
 export const bookConsultation = (id, info) => async (dispatch) => {
