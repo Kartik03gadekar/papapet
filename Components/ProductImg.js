@@ -36,7 +36,7 @@ const ProductImg = ({ img, imgLink }) => {
             <img
               // src={`${imgLink}/${i?.filename}/${i?.mimetype}`}
               // src={`http://localhost:8080/api/v1/admin/get/image${i?.filename}/${i?.mimetype}`}
-              src={`http://localhost:8080/api/v1/admin/get/image/${i?.filename}/${i?.mimetype.split("/")[0]}/${i?.mimetype.split("/")[1]}`}
+              src={`https://papapetbackend-1.onrender.com/api/v1/admin/get/image/${i?.filename}/${i?.mimetype.split("/")[0]}/${i?.mimetype.split("/")[1]}`}
               className={`h-full w-full object-contain  `}
               alt=""
               onClick={() => slide(index)}
@@ -55,7 +55,7 @@ const ProductImg = ({ img, imgLink }) => {
 
             <Image
               //   src={`${imgLink}/${i?.filename}/${i?.mimetype}`}
-             src={`http://localhost:8080/api/v1/admin/get/image/${i?.filename}/${i?.mimetype.split("/")[0]}/${i?.mimetype.split("/")[1]}`}
+             src={`https://papapetbackend-1.onrender.com/api/v1/admin/get/image/${i?.filename}/${i?.mimetype.split("/")[0]}/${i?.mimetype.split("/")[1]}`}
               style={{ height: "100%", width: "100%" }}
               height={"100%"}
               width={"100%"}

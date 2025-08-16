@@ -4,6 +4,7 @@ import axios from "@/Axios/axios";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addToCart, clearCart } from "@/store/slices/cartSlices";
+import { toast } from "react-toastify";
 
 const ProductCard = ({ i, product }) => {
   const router = useRouter();
@@ -26,17 +27,31 @@ const ProductCard = ({ i, product }) => {
   };
 
   // Add to cart handler using redux
-  const handleAddToCart = () => {
-      if (!product) return;
-  
-      const item = {
-        ...product,
-        quantity,
-      };
-  
-      dispatch(addToCart(item));
-      toast.success("Item added to cart!");
+
+  //  const handleAddToCart = () => {
+
+  //    if (!product) return;
+ 
+  //    const item = {
+  //      ...product,
+  //      quantity,
+  //    };
+ 
+  //    dispatch(addToCart(item));
+  //    toast.success("Item added to cart!");
+  //  };
+ 
+
+
+  const handleAddToCart = (e) => {
+    e.preventDefault(); // stop Link navigation
+    const item = {
+      ...i,
+      quantity: 1, // default to 1 item
     };
+    dispatch(addToCart(item));
+    toast.success("Item added to cart!");
+  };
 
   // Buy now handler using redux
   const handleBuyNow = (e) => {

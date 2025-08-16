@@ -484,7 +484,7 @@ export default function CheckoutPage() {
       <NavPapaPet />
       <main className="bg-white min-h-screen pt-3 lg:pt-10 pb-16 overflow-x-hidden">
         <div className="max-w-full mx-auto px-4 sm:px-8">
-          <h1 className="font-semibold text-2xl sm:text-3xl md:text-4xl text-neutral-900 mb-8 tracking-tight">
+          <h1 className="font-semibold text-2xl pl-6  sm:pl-1 md:pl-2 sm:text-3xl md:text-4xl text-neutral-900 mb-8 tracking-tight">
             Shopping Cart
           </h1>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -779,7 +779,7 @@ export default function CheckoutPage() {
                       className="border-b last:border-b-0 border-neutral-100"
                     >
                       {/* Mobile Card */}
-                      <div className="flex flex-col gap-2 px-2 py-4 md:hidden">
+                      <div className=" flex flex-col gap-2 px-2 py-4 md:hidden">
                         <div className="flex gap-3">
                           <div className="w-20 h-20 bg-neutral-100 rounded-xl flex-shrink-0 overflow-hidden border border-neutral-100">
                             <img
@@ -812,13 +812,13 @@ export default function CheckoutPage() {
                               </div>
                             </div>
                             <div className="flex items-center gap-2 mt-2">
-                              <span className="font-semibold text-lg text-neutral-900">
+                              <span className="font-semibold text-xl text-neutral-900">
                                 ₹{item.discountprice ? item.discountprice : item.price}
                               </span>
                               {item.price &&
                                 item.discountprice &&
                                 item.discountprice < item.price && (
-                                  <span className="text-neutral-300 line-through text-xs">
+                                  <span className="text-neutral-700 line-through text-sm">
                                     ₹{item.price}
                                   </span>
                                 )}
@@ -900,7 +900,7 @@ export default function CheckoutPage() {
                             {item.price &&
                               item.discountprice &&
                               item.discountprice < item.price && (
-                                <span className="text-neutral-300 line-through text-sm">
+                                <span className="text-neutral-700 line-through text-sm">
                                   ₹{item.price}
                                 </span>
                               )}

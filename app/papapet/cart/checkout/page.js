@@ -455,27 +455,30 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full z-50">
+      <div className="">
         <NavPapaPet />
       </div>
-      <div className="max-h-screen bg-surface p-2 sm:p-4 md:p-6 lg:p-8 mt-28 md:mt-16 ">
+      <div className="max-h-screen bg-surface p-2  sm:p-4 md:px-6 md:py-8 mb-4 lg:p-8  mt-8 md:mt-4 ">
         <div className="mx-auto">
-          <h1 className="text-3xl font-semibold lg:text-4xl text-foreground mb-4 tracking-wide">
-            Checkout 
-          </h1>
-          {/* Breadcrumb */}
-          <div className="flex flex-wrap items-center gap-2 text-md sm:text-sm text-muted-foreground mb-4 sm:mb-6">
-            <ArrowLeft size = "15"/>
-            <span
-              onClick={goToCart}
-              className="text-warning"
-              style={{ cursor: "pointer" }}
-            >
-              Cart
-            </span>
-            <span>/</span>
-            <span className="text-foreground font-medium">Review Order</span>
-          </div>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl  pl-2 font-semibold text-black mb-4 tracking-wide">
+  Checkout
+</h1>
+
+{/* Breadcrumb */}
+<div className="flex flex-wrap items-center gap-2  pl-2 text-sm sm:text-base md:text-lg text-black mb-4 sm:mb-6">
+  <span
+    onClick={goToCart}
+    className="font-medium text-black hover:text-warning cursor-pointer 
+               text-base sm:text-lg md:text-xl"
+  >
+    Cart
+  </span>
+  <span className="text-black font-medium text-base sm:text-lg md:text-xl">/</span>
+  <span className="text-black font-medium text-base sm:text-lg md:text-xl">
+    Review Order
+  </span>
+</div>
+
 
           <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-5">
             {/* Left Column - Order Items & Details */}
@@ -490,61 +493,76 @@ export default function CheckoutPage() {
                     Items
                   </h2>
                 </div>
-                <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-3 sm:space-y-4">
-                  {!cart.cartItems || cart.cartItems.length === 0 ? (
-                    <div className="text-center text-muted-foreground py-8">
-                      No items in cart.
-                    </div>
-                  ) : (
-                    cart.cartItems.map((item) => (
-                      <div
-                        key={item._id}
-                        className="flex max-md:flex-col xs:flex-row items-start xs:items-center gap-3 xs:gap-4 p-3 sm:p-4 rounded-lg bg-surface border border-border "
-                      >
-                        <div className="w-16 h-16 rounded-lg bg-muted flex-shrink-0 overflow-hidden mb-2 xs:mb-0 ">
-                          <img
-                            src={getImageUrl(item)}
-                            alt={item.name}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                            onError={(e) => {
-                              e.target.src = "/placeholder.svg";
-                            }}
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-foreground mb-1 text-sm sm:text-base">
-                            {item.name}
-                          </h3>
-                          {item.attributes && (
-                            <div className="space-y-1">
-                              {item.attributes.map((attr, index) => (
-                                <p
-                                  key={index}
-                                  className="text-xs sm:text-sm text-warning"
-                                >
-                                  {attr}
-                                </p>
-                              ))}
-                            </div>
-                          )}
-                          <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                            Qty: {item.quantity}
-                          </p>
-                        </div>
-                        <div className="text-right mt-2 xs:mt-0">
-                          <p className="font-semibold text-foreground text-sm sm:text-base">
-                            Rs. {Number(item.price).toFixed(2)}
-                          </p>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
+              <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-3 sm:space-y-4">
+  {!cart.cartItems || cart.cartItems.length === 0 ? (
+    <div className="text-center text-muted-foreground py-8">
+      No items in cart.
+    </div>
+  ) : (
+    cart.cartItems.map((item) => (
+      <div
+  key={item._id}
+  className="
+    flex flex-row
+    items-start md:items-center
+    gap-3 sm:gap-4 p-3 sm:p-4
+    rounded-lg bg-surface border border-border
+  "
+>
+  {/* Product Image */}
+  <div className="w-20 h-20 md:w-16 md:h-16 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
+    <img
+      src={getImageUrl(item)}
+      alt={item.name}
+      className="w-full h-full object-cover"
+      loading="lazy"
+      onError={(e) => {
+        e.target.src = '/placeholder.svg';
+      }}
+    />
+  </div>
+
+  {/* Content (Details + Price) */}
+  <div className="flex flex-1 flex-col md:flex-row md:items-center md:justify-between min-w-0">
+    {/* Product Details */}
+    <div className="min-w-0">
+      <h3 className="font-medium text-foreground mb-1 text-sm sm:text-base">
+        {item.name}
+      </h3>
+      {item.attributes && (
+        <div className="space-y-1">
+          {item.attributes.map((attr, index) => (
+            <p
+              key={index}
+              className="text-xs sm:text-sm text-warning"
+            >
+              {attr}
+            </p>
+          ))}
+        </div>
+      )}
+      <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+        Qty: {item.quantity}
+      </p>
+    </div>
+
+    {/* Price */}
+    <div className="text-right mt-2 md:mt-0 md:ml-4 shrink-0">
+      <p className="font-semibold text-foreground text-sm sm:text-base">
+        Rs. {Number(item.price).toFixed(2)}
+      </p>
+    </div>
+  </div>
+</div>
+
+    ))
+  )}
+</div>
+
               </div>
 
               {/* Address Sections */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-2  md:pb-6 ">
                 {/* Billing Address */}
                 <div className="bg-card rounded-lg border border-border shadow-sm">
                   <div className="p-4 sm:p-6 pb-2 sm:pb-4 flex items-center justify-between">
@@ -877,7 +895,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* Right Column - Order Summary */}
-            <div className="lg:col-span-1 mt-4 lg:mt-0">
+            <div className="lg:col-span-1 mt-4 lg:mt-0 pb-10">
               <div className="bg-card rounded-lg border border-border shadow-sm sticky top-4 lg:top-6">
                 <div className="p-4 sm:p-6 pb-2 sm:pb-4">
                   <h2 className="text-base sm:text-lg font-semibold text-card-foreground">
