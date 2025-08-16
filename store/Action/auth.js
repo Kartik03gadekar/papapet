@@ -180,7 +180,7 @@ export const loginUser = (info) => async (dispatch) => {
 export const logoutUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
-    await axios.post("/user/signout", {});
+    await axios.post("/user/signout", {},  {withCredentials: true});
 
     dispatch(logout()); // clears auth state from Redux store
 
