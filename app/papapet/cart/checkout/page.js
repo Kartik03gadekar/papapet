@@ -379,7 +379,7 @@ export default function CheckoutPage() {
                 tax: tax,
                 notes: orderNotes,
                 userId: userId || null,
-                  email: authUser?.email,
+                
                 payment: verifyPayload,
               };
 
