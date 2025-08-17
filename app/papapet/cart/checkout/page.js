@@ -313,7 +313,7 @@ export default function CheckoutPage() {
         userPhone = userPhone.slice(userPhone.length - 10);
       }
       if (!/^[6-9]\d{9}$/.test(userPhone)) {
-        userPhone = user?.phone;
+        userPhone = "9123456789";
       }
 
       // 4️⃣ Open Razorpay Checkout
@@ -333,15 +333,12 @@ export default function CheckoutPage() {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
             };
-console.log(verifyPayload);
 
             const { data: verifyRes } = await axios.post(
               "/payment/verify",
               verifyPayload
             );
 
-            console.log(verifyRes);
-            
             if (verifyRes.success) {
               // 6️⃣ Create order in your backend after payment verification
               let userId = null;
@@ -358,7 +355,6 @@ console.log(verifyPayload);
                 order_date: new Date().toISOString().slice(0, 10),
                 total_amount: total,
                 name: shippingAddress.name,
-               
                 add: shippingAddress.street,
                 pin: shippingAddress.pin || "462022",
                 phone: shippingAddress.phone,
@@ -383,18 +379,15 @@ console.log(verifyPayload);
                 tax: tax,
                 notes: orderNotes,
                 userId: userId || null,
-               email: authUser?.email,
+                  email: authUser?.email,
                 payment: verifyPayload,
               };
-console.log(payload);
 
               const { data: createRes } = await axios.post(
                 "delivery/order_creation",
                 payload
               );
 
-              console.log(createRes);
-              
               if (!createRes.success) {
                 window.alert(
                   createRes.message ||
