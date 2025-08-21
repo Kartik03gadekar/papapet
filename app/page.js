@@ -96,11 +96,13 @@ const getSocket = () => {
     // socket = io("https://api.mycozee.in/", {
     //   path: "/socket.io",
     // });
-     socket = io("https://papapetbackend-1.onrender.com/", {
+     socket = io("https://pa-pa-pet-backend.vercel.app/", {
         withCredentials: true,
       path: "/socket.io",
     });
+
   }
+  
   return socket;
 };
 
