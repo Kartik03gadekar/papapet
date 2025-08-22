@@ -10,12 +10,12 @@ import {
   Plus,
 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart } from "@/store/slices/cartSlices";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import axiosInstance from "@/Axios/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify"; // Import toastify
 import { isUserRequest } from "@/store/Reducer/auth";
+import { setSelectedAddress } from "@/store/slices/cartSlices";
 
 // Simple Modal component
 function Modal({ open, onClose, children }) {
@@ -53,8 +53,7 @@ export default function CheckoutPage() {
   const [isCouponLoading, setIsCouponLoading] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
-  const reduxCartItems = useSelector((state) => state.cart.cartItems || []);
-  const [cartItems, setCartItems] = useState(reduxCartItems);
+  const [cartItems, setCartItems] = useState([]);
   const authUser = useSelector((state) => state.auth.user);
 
   // Address management
@@ -82,9 +81,8 @@ export default function CheckoutPage() {
   // Fetch all addresses from DB for the logged-in user
   useEffect(() => {
     const fetchAddresses = async () => {
-        dispatch(isUserRequest());
+      dispatch(isUserRequest());
       try {
-
         if (authUser?._id) {
           const { data } = await axiosInstance.get(
             `/user/getAllAddresses/${authUser?._id}`
@@ -264,10 +262,39 @@ export default function CheckoutPage() {
     });
   };
 
-  const handleRemove = (id) => {
-    setCartItems((prev) => prev.filter((item) => (item._id || item.id) !== id));
-    dispatch(removeFromCart(id));
-    toast.info("Item removed from cart.");
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        if (!authUser?._id) return; // only if logged in
+        const { data } = await axiosInstance.get(
+          `/user/getCart?userId=${authUser._id}`
+        );
+        setCartItems(data.cart || []);
+      } catch (err) {
+        console.error("Error fetching cart items:", err);
+        toast.error("Failed to load cart.");
+      }
+    };
+
+    fetchCartItems();
+  }, [authUser?._id]);
+
+  const handleRemove = async (id) => {
+    try {
+      await axiosInstance.post("/user/removeFromCart", {
+        foodId: id,
+      });
+
+      const { data } = await axiosInstance.get(
+        `/user/getCart?userId=${authUser._id}`
+      );
+      setCartItems(data.cart || []);
+
+      toast.success("Item removed from cart.");
+    } catch (err) {
+      console.error("Error removing from cart:", err);
+      toast.error("Failed to remove item.");
+    }
   };
 
   const subtotal =
@@ -305,7 +332,7 @@ export default function CheckoutPage() {
 
       const now = new Date();
       const validityDate = new Date(coupon.validity);
-      
+
       // Check if coupon has expired
       if (validityDate < now) {
         setCouponError("This coupon has expired.");
@@ -324,12 +351,12 @@ export default function CheckoutPage() {
         // Calculate discount based on the coupon structure
         // Assuming discount is a percentage value
         let discountValue = (subtotal * coupon.discount) / 100;
-        
+
         // If there's a maxDiscount limit, apply it
         if (typeof coupon.maxDiscount === "number" && coupon.maxDiscount > 0) {
           discountValue = Math.min(discountValue, coupon.maxDiscount);
         }
-        
+
         setAppliedCoupon({
           code: coupon.couponCode,
           value: Math.floor(discountValue),
@@ -337,7 +364,9 @@ export default function CheckoutPage() {
         });
         setCouponError("");
         toast.success(
-          `Coupon ${coupon.couponCode} applied! You saved ₹${Math.floor(discountValue)}.`
+          `Coupon ${coupon.couponCode} applied! You saved ₹${Math.floor(
+            discountValue
+          )}.`
         );
       }
     } catch (err) {
@@ -400,6 +429,10 @@ export default function CheckoutPage() {
       addressType: "Home",
       isDefault: false,
     });
+  };
+
+  const handleSelectAddress = (address) => {
+    dispatch(setSelectedAddress(address));
   };
 
   const shipping = 0;
@@ -570,6 +603,7 @@ export default function CheckoutPage() {
                             )}
                           </span>
                         </button>
+
                         {showAddressDropdown && (
                           <div className="absolute left-0 right-0 mt-2 z-20 bg-white border border-neutral-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                             {addresses.map((addr) => (
@@ -598,6 +632,7 @@ export default function CheckoutPage() {
                                     : ""}, {addr.city}, {addr.state} -{" "}
                                   {addr.pincode}
                                 </span>
+
                                 <button
                                   type="button"
                                   className="absolute top-2 right-2 text-red-500 hover:text-red-700 p-1 rounded"
@@ -609,12 +644,19 @@ export default function CheckoutPage() {
                                 >
                                   <Trash2 size={16} />
                                 </button>
+                                <button
+                                  className="absolute top-2 right-10 text-white bg-[#FB923C] px-3 py-2 rounded-full text-sm flex items-center gap-2"
+                                  onClick={() => handleSelectAddress(addr)}
+                                >
+                                  Use this address
+                                </button>
                               </div>
                             ))}
                           </div>
                         )}
                       </div>
                     </div>
+
                     <div className="flex items-center gap-2 mt-2">
                       <button
                         type="button"
@@ -794,7 +836,9 @@ export default function CheckoutPage() {
                                         item.image[0]?.filename
                                       }/${
                                         item.image[0]?.mimetype?.split("/")[0]
-                                      }/${item.image[0]?.mimetype?.split("/")[1]}`
+                                      }/${
+                                        item.image[0]?.mimetype?.split("/")[1]
+                                      }`
                                     : "/placeholder.svg"
                                   : "/placeholder.svg"
                               }
@@ -813,7 +857,10 @@ export default function CheckoutPage() {
                             </div>
                             <div className="flex items-center gap-2 mt-2">
                               <span className="font-semibold text-xl text-neutral-900">
-                                ₹{item.discountprice ? item.discountprice : item.price}
+                                ₹
+                                {item.discountprice
+                                  ? item.discountprice
+                                  : item.price}
                               </span>
                               {item.price &&
                                 item.discountprice &&
@@ -828,7 +875,9 @@ export default function CheckoutPage() {
                         <div className="flex items-center justify-between mt-2">
                           <div className="flex items-center bg-neutral-100 rounded-full px-2 py-1 border border-neutral-200">
                             <button
-                              onClick={() => handleDecrement(item._id || item.id)}
+                              onClick={() =>
+                                handleDecrement(item._id || item.id)
+                              }
                               className="w-8 h-8 flex items-center justify-center text-neutral-500 hover:bg-neutral-200 rounded-full transition"
                               disabled={item.quantity <= 1}
                               aria-label="Decrease quantity"
@@ -839,7 +888,9 @@ export default function CheckoutPage() {
                               {(item.quantity || 1).toString().padStart(2, "0")}
                             </span>
                             <button
-                              onClick={() => handleIncrement(item._id || item.id)}
+                              onClick={() =>
+                                handleIncrement(item._id || item.id)
+                              }
                               className="w-8 h-8 flex items-center justify-center text-neutral-500 hover:bg-neutral-200 rounded-full transition"
                               aria-label="Increase quantity"
                             >
@@ -880,7 +931,9 @@ export default function CheckoutPage() {
                                         item.image[0]?.filename
                                       }/${
                                         item.image[0]?.mimetype?.split("/")[0]
-                                      }/${item.image[0]?.mimetype?.split("/")[1]}`
+                                      }/${
+                                        item.image[0]?.mimetype?.split("/")[1]
+                                      }`
                                     : "/placeholder.svg"
                                   : "/placeholder.svg"
                               }
@@ -916,7 +969,9 @@ export default function CheckoutPage() {
                         <div className="md:col-span-2 flex items-center justify-center mt-2 md:mt-0">
                           <div className="flex items-center bg-neutral-100 rounded-lg px-2 py-1">
                             <button
-                              onClick={() => handleDecrement(item._id || item.id)}
+                              onClick={() =>
+                                handleDecrement(item._id || item.id)
+                              }
                               className="w-8 h-8 flex items-center justify-center text-neutral-500 hover:bg-neutral-200 rounded transition"
                               disabled={item.quantity <= 1}
                               aria-label="Decrease quantity"
@@ -927,7 +982,9 @@ export default function CheckoutPage() {
                               {(item.quantity || 1).toString().padStart(2, "0")}
                             </span>
                             <button
-                              onClick={() => handleIncrement(item._id || item.id)}
+                              onClick={() =>
+                                handleIncrement(item._id || item.id)
+                              }
                               className="w-8 h-8 flex items-center justify-center text-neutral-500 hover:bg-neutral-200 rounded transition"
                               aria-label="Increase quantity"
                             >

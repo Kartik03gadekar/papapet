@@ -31,26 +31,52 @@ const ProductCard = ({ i, product }) => {
   //  const handleAddToCart = () => {
 
   //    if (!product) return;
- 
+
   //    const item = {
   //      ...product,
   //      quantity,
   //    };
- 
+
   //    dispatch(addToCart(item));
   //    toast.success("Item added to cart!");
   //  };
- 
 
+  // const handleAddToCart = (e) => {
+  //   e.preventDefault();
+  //   const item = {
+  //     ...i,
+  //     quantity: 1,
+  //   };
+  //   dispatch(addToCart(item));
+  //   toast.success("Item added to cart!");
+  // };
 
-  const handleAddToCart = (e) => {
-    e.preventDefault(); // stop Link navigation
-    const item = {
-      ...i,
-      quantity: 1, // default to 1 item
-    };
-    dispatch(addToCart(item));
-    toast.success("Item added to cart!");
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await axios.post("/user/addToCart", {
+        foodId: i._id, 
+        quantity: 1, 
+      });
+
+      if (data.success) {
+        const item = {
+          ...i,
+          quantity: 1,
+        };
+        dispatch(addToCart(item));
+
+        toast.success("Item added to cart!");
+      } else {
+        toast.error(data.message || "Failed to add item");
+      }
+    } catch (error) {
+      console.error("Add to cart error:", error);
+      toast.error(
+        error.response?.data?.message || "Something went wrong. Try again!"
+      );
+    }
   };
 
   // Buy now handler using redux
@@ -77,8 +103,10 @@ const ProductCard = ({ i, product }) => {
         "
       >
         {/* Image on the left (top on mobile) */}
-        <div className="w-[130px] h-[130px] flex-shrink-0 flex items-center justify-center 
-      mb-2 sm:mb-0">
+        <div
+          className="w-[130px] h-[130px] flex-shrink-0 flex items-center justify-center 
+      mb-2 sm:mb-0"
+        >
           <img
             className="
               w-full h-full sm:w-full sm:h-full
@@ -106,7 +134,8 @@ const ProductCard = ({ i, product }) => {
           {/* Brand and Category Row */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs mb-1 gap-2">
             <span className="text-black/50 font-medium">
-              Brand: <span className="text-orange-400">{i?.brand || "Pedigree"}</span>
+              Brand:{" "}
+              <span className="text-orange-400">{i?.brand || "Pedigree"}</span>
             </span>
             <span className="text-[#222] bg-[#F5F5F5] px-2 py-0.5 rounded w-fit">
               Category: {i?.categories || "Dry Food"}
@@ -154,12 +183,7 @@ const ProductCard = ({ i, product }) => {
               onClick={handleAddToCart}
               aria-label="Add to cart"
             >
-              <svg
-                width="20"
-                height="20"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
+              <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
                 <path
                   d="M7.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM7.7 14.3a.75.75 0 01-.7-.5L4.1 6.6A.75.75 0 014.8 5.5h10.4a.75.75 0 01.7 1.1l-2.9 7.2a.75.75 0 01-.7.5H7.7z"
                   fill="white"

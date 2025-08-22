@@ -6,6 +6,7 @@ const initialState = {
   discount: 0,
   total: 0,
   appliedCoupon: null,
+  shippingAddress: null,
 };
 
 const cartSlice = createSlice({
@@ -13,7 +14,9 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const exists = state.cartItems.find(item => item._id === action.payload._id);
+      const exists = state.cartItems.find(
+        (item) => item._id === action.payload._id
+      );
       if (exists) {
         exists.quantity = action.payload.quantity; // Update quantity
       } else {
@@ -22,7 +25,9 @@ const cartSlice = createSlice({
       cartSlice.caseReducers.calculateTotals(state);
     },
     removeFromCart: (state, action) => {
-      state.cartItems = state.cartItems.filter(item => item._id !== action.payload);
+      state.cartItems = state.cartItems.filter(
+        (item) => item._id !== action.payload
+      );
       cartSlice.caseReducers.calculateTotals(state);
     },
     clearCart: (state) => {
@@ -45,8 +50,17 @@ const cartSlice = createSlice({
       );
       state.total = state.subtotal - state.discount;
     },
+    setSelectedAddress: (state, action) => {
+      state.shippingAddress = action.payload;
+    },
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, applyCoupon } = cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  clearCart,
+  applyCoupon,
+  setSelectedAddress,
+} = cartSlice.actions;
 export default cartSlice.reducer;

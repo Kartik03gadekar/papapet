@@ -2,13 +2,12 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Edit, Plus, X, Save, XCircle, ArrowLeft } from "lucide-react";
+import { Edit, Plus, X, Save, XCircle } from "lucide-react";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import { applyCoupon } from "@/store/slices/cartSlices";
 import axios from "@/Axios/axios";
 import { useRouter } from "next/navigation";
 
-// Razorpay script loader (idempotent)
 function loadRazorpayScript(src) {
   return new Promise((resolve) => {
     if (document.querySelector(`script[src="${src}"]`)) {
@@ -22,31 +21,6 @@ function loadRazorpayScript(src) {
     script.onerror = () => resolve(false);
     document.body.appendChild(script);
   });
-}
-
-// Helper: get address from cart or fallback, using payload mapping from cart/page.js
-function getAddressFromCart(cart, type) {
-  const addr = cart?.[`${type}Address`];
-  if (addr && typeof addr === "object") {
-    return {
-      name: addr.fullName || addr.name || "",
-      street: addr.streetAddress || addr.street || addr.addressLine || "",
-      city: addr.city || "",
-      pin: addr.pincode || addr.pin || "",
-      phone: addr.phoneNumber || addr.phone || "",
-      email: addr.email || "",
-      addressId: addr._id || addr.addressId || undefined,
-    };
-  }
-  return {
-    name: "",
-    street: "",
-    city: "",
-    pin: "",
-    phone: "",
-    email: "",
-    addressId: undefined,
-  };
 }
 
 function getImageUrl(item) {
@@ -64,9 +38,9 @@ function getImageUrl(item) {
 }
 
 export default function CheckoutPage() {
-  const router = useRouter(); // <-- useRouter must be called inside the component
-
+  const router = useRouter();
   const cart = useSelector((state) => state.cart);
+  const selectedAddress = cart.shippingAddress;
   const authUser = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
@@ -76,34 +50,44 @@ export default function CheckoutPage() {
 
   const couponCode = cart.appliedCoupon;
   const couponDiscount = cart.discount;
+  console.log(selectedAddress)
 
-  // Map address from cart page, and update if cart changes
-  const [billingAddress, setBillingAddress] = useState(() =>
-    getAddressFromCart(cart, "billing")
-  );
-  const [shippingAddress, setShippingAddress] = useState(() =>
-    getAddressFromCart(cart, "shipping")
+  // ✅ Only shipping address
+
+  const [shippingAddress, setShippingAddress] = useState(
+    selectedAddress || {
+      name: "",
+      street: "",
+      city: "",
+      pin: "",
+      phone: "",
+      email: "",
+      addressId: undefined,
+    }
   );
 
   useEffect(() => {
-    setBillingAddress(getAddressFromCart(cart, "billing"));
-  }, [cart?.billingAddress]);
-  useEffect(() => {
-    setShippingAddress(getAddressFromCart(cart, "shipping"));
-  }, [cart?.shippingAddress]);
+    if (selectedAddress) {
+      setShippingAddress(selectedAddress);
+    }
+  }, [selectedAddress]);
 
-  // Fetch default address from backend if user is logged in
+  // Fetch default shipping address
   useEffect(() => {
     const fetchDefaultAddress = async () => {
       if (!authUser || !authUser._id) return;
+      if (selectedAddress) return; // 👈 skip if user already picked one
+
       try {
-        const { data } = await axios.get(`/user/getAllAddresses/${authUser._id}`);
+        const { data } = await axios.get(
+          `/user/getAllAddresses/${authUser._id}`
+        );
         const defaultAddress =
           data?.addresses?.find((addr) => addr.isDefault) ||
           data?.addresses?.[0];
 
         if (defaultAddress) {
-          const formatted = {
+          setShippingAddress({
             name: defaultAddress.fullName,
             street: defaultAddress.streetAddress,
             city: defaultAddress.city,
@@ -111,43 +95,27 @@ export default function CheckoutPage() {
             phone: defaultAddress.phoneNumber,
             email: defaultAddress.email,
             addressId: defaultAddress._id,
-          };
-          setShippingAddress(formatted);
-          setBillingAddress(formatted);
+          });
         }
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error("Failed to load address:", error);
       }
     };
 
     fetchDefaultAddress();
-  }, [authUser]);
+  }, [authUser, selectedAddress]);
 
-  // Edit state for addresses
-  const [editAddressType, setEditAddressType] = useState(null); // "billing" | "shipping" | null
-  const [editAddress, setEditAddress] = useState({
-    name: "",
-    street: "",
-    city: "",
-    pin: "",
-    phone: "",
-    email: "",
-    addressId: undefined,
-  });
+  // Edit state
+  const [editAddressType, setEditAddressType] = useState(null); // only "shipping"
+  const [editAddress, setEditAddress] = useState(shippingAddress);
   const [editAddressId, setEditAddressId] = useState(undefined);
   const [isSavingAddress, setIsSavingAddress] = useState(false);
 
-  // When edit is triggered, populate editAddress with current values and store addressId
-  const handleEditAddress = useCallback(
-    (type) => {
-      let addressObj = type === "billing" ? billingAddress : shippingAddress;
-      setEditAddressType(type);
-      setEditAddress({ ...addressObj });
-      setEditAddressId(addressObj.addressId);
-    },
-    [billingAddress, shippingAddress]
-  );
+  const handleEditAddress = useCallback(() => {
+    setEditAddressType("shipping");
+    setEditAddress({ ...shippingAddress });
+    setEditAddressId(shippingAddress.addressId);
+  }, [shippingAddress]);
 
   const handleCancelEditAddress = useCallback(() => {
     setEditAddressType(null);
@@ -171,16 +139,13 @@ export default function CheckoutPage() {
     }));
   }, []);
 
-  // Integrate API to edit and save address
   const handleSaveEditAddress = useCallback(async () => {
     if (!authUser || !authUser._id) {
       window.alert("You must be logged in to edit your address.");
       return;
     }
     if (!editAddressId) {
-      window.alert(
-        "Could not determine which address to update (missing addressId)."
-      );
+      window.alert("Missing addressId.");
       return;
     }
     setIsSavingAddress(true);
@@ -196,35 +161,24 @@ export default function CheckoutPage() {
           phoneNumber: editAddress.phone,
           email: editAddress.email,
         },
-        type: editAddressType,
       };
 
       const { data } = await axios.put("/user/editAddress", payload);
 
       if (data && data.success) {
-        if (editAddressType === "billing") {
-          setBillingAddress({ ...editAddress, addressId: editAddressId });
-        } else if (editAddressType === "shipping") {
-          setShippingAddress({ ...editAddress, addressId: editAddressId });
-        }
+        setShippingAddress({ ...editAddress, addressId: editAddressId });
         setEditAddressType(null);
         setEditAddressId(undefined);
       } else {
-        window.alert(
-          data?.message || "Failed to update address. Please try again."
-        );
+        window.alert(data?.message || "Failed to update address.");
       }
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error(err);
-      window.alert(
-        err?.response?.data?.message ||
-          "Failed to update address. Please try again."
-      );
+      window.alert("Failed to update address.");
     } finally {
       setIsSavingAddress(false);
     }
-  }, [authUser, editAddress, editAddressId, editAddressType]);
+  }, [authUser, editAddress, editAddressId]);
 
   const handleAddNotes = useCallback(() => setShowNotesInput(true), []);
   const handleNotesChange = useCallback(
@@ -248,7 +202,7 @@ export default function CheckoutPage() {
     [subtotal, shipping, discount, tax]
   );
 
-  // Place Order with Razorpay + Backend order creation
+  // ✅ Place order only with shipping address
   const handlePlaceOrder = useCallback(async () => {
     if (isPlacingOrder) return;
     if (!authUser || !authUser._id) {
@@ -261,26 +215,17 @@ export default function CheckoutPage() {
     }
     if (
       !shippingAddress ||
-      !shippingAddress.name ||
-      !shippingAddress.street ||
-      !shippingAddress.pin
+      !shippingAddress.fullName ||
+      !shippingAddress.streetAddress ||
+      !shippingAddress.pincode
     ) {
       window.alert("Please provide a valid shipping address.");
       return;
     }
-    if (
-      !billingAddress ||
-      !billingAddress.name ||
-      !billingAddress.street ||
-      !billingAddress.pin
-    ) {
-      window.alert("Please provide a valid billing address.");
-      return;
-    }
+
     setIsPlacingOrder(true);
 
     try {
-      // 1️⃣ Load Razorpay SDK
       const res = await loadRazorpayScript(
         "https://checkout.razorpay.com/v1/checkout.js"
       );
@@ -290,36 +235,25 @@ export default function CheckoutPage() {
         return;
       }
 
-      // 2️⃣ Create Razorpay Order from backend
       const { data: backendOrder } = await axios.post("/payment/create-order", {
-        amount: total, // total in INR
+        amount: total * 100,
       });
 
       if (!backendOrder || !backendOrder.id) {
-        window.alert("Failed to create Razorpay order. Please try again.");
+        window.alert("Failed to create Razorpay order.");
         setIsPlacingOrder(false);
         return;
       }
 
-      // 3️⃣ Normalize phone number for Razorpay prefill
       let userPhone =
+        shippingAddress.phone ||
         cart.user?.phone ||
         cart.user?.mobile ||
-        cart.user?.contact ||
-        billingAddress.phone ||
-        "";
-      userPhone = String(userPhone).replace(/\D/g, "");
-      if (userPhone.length > 10 && userPhone.startsWith("91")) {
-        userPhone = userPhone.slice(userPhone.length - 10);
-      }
-      if (!/^[6-9]\d{9}$/.test(userPhone)) {
-        userPhone = "9123456789";
-      }
+        "9123456789";
 
-      // 4️⃣ Open Razorpay Checkout
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: backendOrder.amount, // amount in paise from backend
+        amount: backendOrder.amount,
         currency: "INR",
         name: "PapaPet",
         description: "Payment for checkout",
@@ -327,7 +261,6 @@ export default function CheckoutPage() {
         order_id: backendOrder.id,
         handler: async function (response) {
           try {
-            // 5️⃣ Verify payment with backend
             const verifyPayload = {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
@@ -340,29 +273,19 @@ export default function CheckoutPage() {
             );
 
             if (verifyRes.success) {
-              // 6️⃣ Create order in your backend after payment verification
-              let userId = null;
-              if (
-                authUser &&
-                authUser._id &&
-                /^[a-f\d]{24}$/i.test(authUser._id)
-              ) {
-                userId = authUser._id;
-              }
-
               const payload = {
                 order: `ORD-${Date.now()}`,
                 order_date: new Date().toISOString().slice(0, 10),
                 total_amount: total,
-                name: shippingAddress.name,
-                add: shippingAddress.street,
-                pin: shippingAddress.pin || "462022",
-                phone: shippingAddress.phone,
-                email: shippingAddress.email,
-                billing_name: billingAddress.name,
-                billing_add: billingAddress.street,
-                billing_pin: billingAddress.pin || "462022",
-                billing_phone: billingAddress.phone,
+                name: shippingAddress.fullName,
+                add: shippingAddress.streetAddress,
+                pin: shippingAddress.pincode,
+                phone: shippingAddress.phoneNumber,
+                email: authUser.email,
+                billing_name: shippingAddress.fullName,
+                billing_add: shippingAddress.streetAddress,
+                billing_pin: shippingAddress.pincode,
+                billing_phone: shippingAddress.phoneNumber,
                 products: cart.cartItems.map((item) => ({
                   product_name: item.name,
                   product_quantity: item.quantity,
@@ -378,8 +301,7 @@ export default function CheckoutPage() {
                 shipping: shipping,
                 tax: tax,
                 notes: orderNotes,
-                userId: userId || null,
-                
+                userId: authUser._id,
                 payment: verifyPayload,
               };
 
@@ -389,51 +311,39 @@ export default function CheckoutPage() {
               );
 
               if (!createRes.success) {
-                window.alert(
-                  createRes.message ||
-                    "Order creation failed after payment. Please contact support."
-                );
+                window.alert(createRes.message || "Order creation failed.");
                 setIsPlacingOrder(false);
                 return;
               }
 
-              // On successful order creation, redirect to success page
               window.location.href = "/papapet/order/sucessfull";
             } else {
               window.alert("Payment verification failed.");
             }
           } catch (err) {
-            // eslint-disable-next-line no-console
             console.error(err);
-            window.alert("Payment verification failed. Please try again.");
+            window.alert("Payment verification failed.");
           } finally {
             setIsPlacingOrder(false);
           }
         },
         prefill: {
-          name: billingAddress.name,
-          email: billingAddress.email,
+          name: shippingAddress.name,
+          email: shippingAddress.email,
           contact: userPhone,
         },
         notes: {
-          billingAddress: JSON.stringify(billingAddress),
           shippingAddress: JSON.stringify(shippingAddress),
         },
         theme: { color: "#f59e42" },
         modal: { ondismiss: () => setIsPlacingOrder(false) },
       };
 
-      if (typeof window.Razorpay !== "function") {
-        window.alert("Razorpay SDK not available. Please try again.");
-        setIsPlacingOrder(false);
-        return;
-      }
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error(err?.response?.data || err?.message || err);
-      window.alert(err?.response?.data?.message || "Something went wrong");
+      window.alert("Something went wrong");
       setIsPlacingOrder(false);
     }
   }, [
@@ -441,7 +351,6 @@ export default function CheckoutPage() {
     authUser,
     cart,
     shippingAddress,
-    billingAddress,
     total,
     discount,
     shipping,
@@ -449,7 +358,6 @@ export default function CheckoutPage() {
     orderNotes,
   ]);
 
-  // Move goToCart inside the component so it can use the router hook
   const goToCart = useCallback(() => {
     router.push("/papapet/cart");
   }, [router]);
@@ -462,110 +370,111 @@ export default function CheckoutPage() {
       <div className="max-h-screen bg-surface p-2  sm:p-4 md:px-6 md:py-8 mb-4 lg:p-8  mt-8 md:mt-4 ">
         <div className="mx-auto">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl  pl-2 font-semibold text-black mb-4 tracking-wide">
-  Checkout
-</h1>
+            Checkout
+          </h1>
 
-{/* Breadcrumb */}
-<div className="flex flex-wrap items-center gap-2  pl-2 text-sm sm:text-base md:text-lg text-black mb-4 sm:mb-6">
-  <span
-    onClick={goToCart}
-    className="font-medium text-black hover:text-warning cursor-pointer 
+          {/* Breadcrumb */}
+          <div className="flex flex-wrap items-center gap-2  pl-2 text-sm sm:text-base md:text-lg text-black mb-4 sm:mb-6">
+            <span
+              onClick={goToCart}
+              className="font-medium text-black hover:text-warning cursor-pointer 
                text-base sm:text-lg md:text-xl"
-  >
-    Cart
-  </span>
-  <span className="text-black font-medium text-base sm:text-lg md:text-xl">/</span>
-  <span className="text-black font-medium text-base sm:text-lg md:text-xl">
-    Review Order
-  </span>
-</div>
-
+            >
+              Cart
+            </span>
+            <span className="text-black font-medium text-base sm:text-lg md:text-xl">
+              /
+            </span>
+            <span className="text-black font-medium text-base sm:text-lg md:text-xl">
+              Review Order
+            </span>
+          </div>
 
           <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-5">
             {/* Left Column - Order Items & Details */}
             <div className="lg:col-span-2 flex flex-col space-y-4 sm:space-y-2 ">
               {/* Items Section */}
-               {/* //  h-[45vh] */}
-              <div className="bg-card
+              {/* //  h-[45vh] */}
+              <div
+                className="bg-card
               //  h-fit
-                rounded-lg border border-border shadow-sm overflow-y-auto py-2">
+                rounded-lg border border-border shadow-sm overflow-y-auto py-2"
+              >
                 <div className="p-4 sm:p-6 pb-2 sm:pb-4 ">
                   <h2 className="text-base sm:text-lg font-semibold text-card-foreground">
                     Items
                   </h2>
                 </div>
-              <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-3 sm:space-y-4">
-  {!cart.cartItems || cart.cartItems.length === 0 ? (
-    <div className="text-center text-muted-foreground py-8">
-      No items in cart.
-    </div>
-  ) : (
-    cart.cartItems.map((item) => (
-      <div
-  key={item._id}
-  className="
+                <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-3 sm:space-y-4">
+                  {!cart.cartItems || cart.cartItems.length === 0 ? (
+                    <div className="text-center text-muted-foreground py-8">
+                      No items in cart.
+                    </div>
+                  ) : (
+                    cart.cartItems.map((item) => (
+                      <div
+                        key={item._id}
+                        className="
     flex flex-row
     items-start md:items-center
     gap-3 sm:gap-4 p-3 sm:p-4
     rounded-lg bg-surface border border-border
   "
->
-  {/* Product Image */}
-  <div className="w-20 h-20 md:w-16 md:h-16 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
-    <img
-      src={getImageUrl(item)}
-      alt={item.name}
-      className="w-full h-full object-cover"
-      loading="lazy"
-      onError={(e) => {
-        e.target.src = '/placeholder.svg';
-      }}
-    />
-  </div>
+                      >
+                        {/* Product Image */}
+                        <div className="w-20 h-20 md:w-16 md:h-16 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
+                          <img
+                            src={getImageUrl(item)}
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            onError={(e) => {
+                              e.target.src = "/placeholder.svg";
+                            }}
+                          />
+                        </div>
 
-  {/* Content (Details + Price) */}
-  <div className="flex flex-1 flex-col md:flex-row md:items-center md:justify-between min-w-0">
-    {/* Product Details */}
-    <div className="min-w-0">
-      <h3 className="font-medium text-foreground mb-1 text-sm sm:text-base">
-        {item.name}
-      </h3>
-      {item.attributes && (
-        <div className="space-y-1">
-          {item.attributes.map((attr, index) => (
-            <p
-              key={index}
-              className="text-xs sm:text-sm text-warning"
-            >
-              {attr}
-            </p>
-          ))}
-        </div>
-      )}
-      <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-        Qty: {item.quantity}
-      </p>
-    </div>
+                        {/* Content (Details + Price) */}
+                        <div className="flex flex-1 flex-col md:flex-row md:items-center md:justify-between min-w-0">
+                          {/* Product Details */}
+                          <div className="min-w-0">
+                            <h3 className="font-medium text-foreground mb-1 text-sm sm:text-base">
+                              {item.name}
+                            </h3>
+                            {item.attributes && (
+                              <div className="space-y-1">
+                                {item.attributes.map((attr, index) => (
+                                  <p
+                                    key={index}
+                                    className="text-xs sm:text-sm text-warning"
+                                  >
+                                    {attr}
+                                  </p>
+                                ))}
+                              </div>
+                            )}
+                            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                              Qty: {item.quantity}
+                            </p>
+                          </div>
 
-    {/* Price */}
-    <div className="text-right mt-2 md:mt-0 md:ml-4 shrink-0">
-      <p className="font-semibold text-foreground text-sm sm:text-base">
-        Rs. {Number(item.price).toFixed(2)}
-      </p>
-    </div>
-  </div>
-</div>
-
-    ))
-  )}
-</div>
-
+                          {/* Price */}
+                          <div className="text-right mt-2 md:mt-0 md:ml-4 shrink-0">
+                            <p className="font-semibold text-foreground text-sm sm:text-base">
+                              Rs. {Number(item.price).toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
 
               {/* Address Sections */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-2  md:pb-6 ">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-2  md:pb-6 ">
                 {/* Billing Address */}
-                <div className="bg-card rounded-lg border border-border shadow-sm">
+                {/* <div className="bg-card rounded-lg border border-border shadow-sm">
                   <div className="p-4 sm:p-6 pb-2 sm:pb-4 flex items-center justify-between">
                     <h2 className="text-sm sm:text-base font-semibold text-card-foreground">
                       Billing Address
@@ -603,7 +512,6 @@ export default function CheckoutPage() {
                     )}
                   </div>
                   <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-1 sm:space-y-2">
-                    {/* Show image for billing address */}
                     <div className="flex items-center mb-2">
                       <img
                         src="/user-billing.png"
@@ -708,7 +616,7 @@ export default function CheckoutPage() {
                       </>
                     )}
                   </div>
-                </div>
+                </div> */}
                 {/* Shipping Address */}
                 <div className="bg-card rounded-lg border border-border shadow-sm">
                   <div className="p-4 sm:p-6 pb-2 sm:pb-4 flex items-center justify-between">
@@ -771,7 +679,7 @@ export default function CheckoutPage() {
                             autoComplete="name"
                           />
                         ) : (
-                          shippingAddress.name || (
+                          shippingAddress.fullName || (
                             <span className="text-muted-foreground">
                               No name
                             </span>
@@ -832,25 +740,33 @@ export default function CheckoutPage() {
                     ) : (
                       <>
                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          {shippingAddress.street || (
+                          {shippingAddress.streetAddress || (
                             <span className="italic">No street</span>
                           )}
                           {shippingAddress.city
                             ? `, ${shippingAddress.city}`
                             : ""}
-                          {shippingAddress.pin
-                            ? `, ${shippingAddress.pin}`
+                          {shippingAddress.pincode
+                            ? `, ${shippingAddress.pincode}`
                             : ""}
                         </p>
                         <div className="space-y-1 pt-1 sm:pt-2">
                           <p className="text-xs sm:text-sm text-foreground">
                             <span className="font-medium">Phone Number:</span>{" "}
-                            {shippingAddress.phone || (
+                            {shippingAddress.phoneNumber || (
                               <span className="text-muted-foreground">
                                 No phone
                               </span>
                             )}
                           </p>
+                          {/* <p className="text-xs sm:text-sm text-foreground">
+                            <span className="font-medium">Email:</span>{" "}
+                            {shippingAddress.email || (
+                              <span className="text-muted-foreground">
+                                No Email
+                              </span>
+                            )}
+                          </p> */}
                         </div>
                       </>
                     )}
