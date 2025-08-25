@@ -14,9 +14,9 @@ import axios from "axios";
 
 // Create an axios instance
 const instance = axios.create({
-  // baseURL: "https://pa-pa-pet-backend.vercel.app/api/v1/",
+  baseURL: "https://pa-pa-pet-backend.vercel.app/api/v1/",
   
-  baseURL: "http://localhost:8080/api/v1/",
+  // baseURL: "http://localhost:8080/api/v1/",
 
   withCredentials: true, 
 });
