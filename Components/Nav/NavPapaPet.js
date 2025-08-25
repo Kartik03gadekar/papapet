@@ -525,6 +525,7 @@ import PhantomConnect from "../WalletProvider";
 import { checkUser, logoutUser } from "@/store/Action/auth"; // <-- import logoutUser
 import { useDispatch, useSelector } from "react-redux";
 import Search from "@/Components/Search/Search";
+import { User, ShoppingCart, Package, Truck, LogOut } from "lucide-react";
 
 const NavPapaPet = () => {
   const [showNavbar, setShowNavbar] = useState(true);
@@ -537,9 +538,12 @@ const NavPapaPet = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [serviceNavOpen, setServiceNavOpen] = useState(false);
 
+  const mobileNavRef = useRef(null);
+  const serviceNavRef = useRef(null);
   const { user } = useSelector((state) => state.auth);
-
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -550,6 +554,63 @@ const NavPapaPet = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const navItems = [
+    { name: "Profile", path: "/papapet/dashboard/profile" },
+    { name: "Order History", path: "/papapet/dashboard/orderhistory" },
+    { name: "Track Order", path: "/papapet/dashboard/trackorder" },
+    { name: "Shopping Cart", path: "/papapet/dashboard/shoppingcart" },
+  ];
+
+  const serviceItems = [
+    { name: "Food", path: "/papapet/food" },
+    { name: "Accessories", path: "/papapet/accessories" },
+    { name: "Doctor", path: "/papapet/doctor" },
+    { name: "Pet Walking", path: "/papapet/walking" },
+    { name: "Pet Boarding", path: "/papapet/boarding" },
+    { name: "Pet Grooming", path: "/papapet/grooming" },
+  ];
+
+  const colors = [
+  "#FF6B6B", // Vibrant Red
+  "#FF922B", // Bright Orange
+  "#FCC419", // Vibrant Yellow
+  "#40C057", // Bright Green
+  "#2F9E44", // Deep Green
+  "#15AABF", // Teal / Aqua
+  "#228BE6", // Vibrant Blue
+  "#4C6EF5", // Indigo Blue
+  "#7950F2", // Vivid Purple
+  "#BE4BDB", // Magenta
+  "#E64980", // Hot Pink
+];
+
+  function getRandomColor(name) {
+    const charCode = name?.charCodeAt(0) || 65;
+    return colors[charCode % colors.length]; // deterministic (same user always same color)
+  }
+
+  // useEffect(() => {
+  //     if (!serviceNavOpen) return;
+  //     function handleClick(e) {
+  //       if (serviceNavRef.current && !serviceNavRef.current.contains(e.target)) {
+  //         setServiceNavOpen(false);
+  //       }
+  //     }
+  //     document.addEventListener("mousedown", handleClick);
+  //     return () => document.removeEventListener("mousedown", handleClick);
+  //   }, [serviceNavOpen]);
+
+  //    useEffect(() => {
+  //       if (!mobileNavOpen) return;
+  //       function handleClick(e) {
+  //         if (mobileNavRef.current && !mobileNavRef.current.contains(e.target)) {
+  //           setMobileNavOpen(false);
+  //         }
+  //       }
+  //       document.addEventListener("mousedown", handleClick);
+  //       return () => document.removeEventListener("mousedown", handleClick);
+  //     }, [mobileNavOpen]);
 
   const settings = [
     {
@@ -636,17 +697,17 @@ const NavPapaPet = () => {
   }, [mobileMenuOpen]);
 
   const handleLogout = async () => {
-  await dispatch(logoutUser()); // Clears Redux auth state
+    await dispatch(logoutUser()); // Clears Redux auth state
 
-  // Clear persisted auth from localStorage/sessionStorage if you are using redux-persist
-  localStorage.removeItem("persist:auth");
-  sessionStorage.removeItem("userChecked");
+    // Clear persisted auth from localStorage/sessionStorage if you are using redux-persist
+    localStorage.removeItem("persist:auth");
+    sessionStorage.removeItem("userChecked");
 
-  // Redirect to home (or auth page)
-  router.push("/"); // Change to "/papapet/auth" if you want login page instead
+    // Redirect to home (or auth page)
+    router.push("/"); // Change to "/papapet/auth" if you want login page instead
 
-  // Optional: Hard reload the page to fully reset state
-  window.location.reload();
+    // Optional: Hard reload the page to fully reset state
+    window.location.reload();
   };
 
   // Handler for cart icon click
@@ -692,11 +753,11 @@ const NavPapaPet = () => {
             </div>
           </Link>
           <div className="flex items-center justify-center gap-5 relative z-20 max-md:hidden">
-            <Link href="/">Home</Link>
-            <Link href="/">Services</Link>
-            <Link href="/">Pet Supplies</Link>
-            <Link href="/">Blogs</Link>
-            <Link href="/">About Us</Link>
+            <a href="/">Home</a>
+            <a href="/#services">Services</a>
+            <a href="/#supplies">Pet Supplies</a>
+            <a href="/#blogs">Blogs</a>
+            <a href="/#about">About Us</a>
           </div>
 
           {/* Desktop right controls: search, cart, user (no hamburger menu on desktop) */}
@@ -734,9 +795,16 @@ const NavPapaPet = () => {
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                       <Avatar
-                        alt="User Avatar"
-                        src="/static/images/avatar/2.jpg"
-                      />
+                        sx={{
+                          bgcolor: getRandomColor(user?.name),
+                          width: 40,
+                          height: 40,
+                          fontSize: "1rem",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {user?.name?.[0]?.toUpperCase()}
+                      </Avatar>
                     </IconButton>
                   </Tooltip>
                   <Menu
@@ -841,7 +909,7 @@ const NavPapaPet = () => {
       {menuVisible && (
         <div
           ref={mobileMenuRef}
-          className="fixed inset-0 z-50 bg-white text-black flex flex-col p-6 gap-6 w-full h-full md:hidden"
+          className="fixed overflow-y-auto inset-0 z-50 bg-white text-black flex flex-col p-6 gap-6 w-full h-full md:hidden"
         >
           <div className="flex justify-between items-center">
             <div className="flex gap-4 items-center">
@@ -855,7 +923,17 @@ const NavPapaPet = () => {
 
           {user ? (
             <div className="flex items-center gap-4 bg-gray-100 p-3 rounded-xl">
-              <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+              <Avatar
+                sx={{
+                  bgcolor: getRandomColor(user?.name),
+                  width: 40,
+                  height: 40,
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                }}
+              >
+                {user?.name?.[0]?.toUpperCase()}
+              </Avatar>
               <div className="flex flex-col">
                 <span className="text-lg font-medium">Hi, {user?.name}</span>
               </div>
@@ -884,51 +962,140 @@ const NavPapaPet = () => {
 
             <hr className="border-gray-300" />
 
-            <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
-              Home
-            </Link>
-            {user && (
-              <Link
-                href="/papapet/dashboard"
-                className="text-2xl mb-2"
-                onClick={closeMenu}
-              >
-                Dashboard
+            <div className="flex-1 overflow-y-auto pt-10 gap-6 flex flex-col">
+              <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
+                Home
               </Link>
-            )}
-            <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
-              Services
-            </Link>
-            <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
-              Pet Supplies
-            </Link>
-            <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
-              Blogs
-            </Link>
-            <Link href="/" onClick={closeMenu} className="text-2xl mb-2">
-              About Us
-            </Link>
-            <Link
-              href="/papapet/termsandconditions"
-              onClick={closeMenu}
-              className="text-2xl mb-2"
-            >
-              Terms and Conditions
-            </Link>
-            <Link
-              href="/papapet/privacy-policy"
-              onClick={closeMenu}
-              className="text-2xl mb-2"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/papapet/cancellation-refund"
-              onClick={closeMenu}
-              className="text-2xl mb-2"
-            >
-              Cancellation and Refund
-            </Link>
+              {user && (
+                <div className="">
+                  <div>
+                    <div
+                      className="cursor-pointer flex items-center justify-between"
+                      onClick={() => setMobileNavOpen((open) => !open)}
+                      tabIndex={0}
+                      aria-haspopup="listbox"
+                      aria-expanded={mobileNavOpen}
+                    >
+                      <h4 className="text-2xl mb-2">DashBoard</h4>
+                      <svg
+                        className={`ml-2 w-4 h-4 transition-transform duration-200 ${
+                          mobileNavOpen ? "rotate-180" : ""
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
+                    {mobileNavOpen && (
+                      <div
+                        ref={mobileNavRef}
+                        className=" mt-2 bg-white rounded-xl border border-neutral-200 z-20"
+                      >
+                        <ul className="list-disc px-10">
+                          {navItems.map((item) => (
+                            <li
+                              key={item.path}
+                              className="py-3 cursor-pointer font-semibold transition-colors text-[#FFAD22] marker:text-[#FFAD22]"
+                              onClick={() => {
+                                setMobileNavOpen(false);
+                                router.push(item.path);
+                              }}
+                            >
+                              {item.name}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              <div className="">
+                <div>
+                  <div
+                    className="cursor-pointer flex items-center justify-between"
+                    onClick={() => setServiceNavOpen((open) => !open)}
+                    tabIndex={0}
+                    aria-haspopup="listbox"
+                    aria-expanded={serviceNavOpen}
+                  >
+                    <h4 className="text-2xl mb-2">Services</h4>
+                    <svg
+                      className={`ml-2 w-4 h-4 transition-transform duration-200 ${
+                        serviceNavOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                  {serviceNavOpen && (
+                    <div
+                      ref={serviceNavRef}
+                      className=" mt-2 bg-white rounded-xl shadow-lg border border-neutral-200 z-20"
+                    >
+                      <ul className="list-disc px-10">
+                        {serviceItems.map((item) => (
+                          <li
+                            key={item.path}
+                            className="py-3 cursor-pointer font-semibold transition-colors text-[#FFAD22] marker:text-[#FFAD22]"
+                            onClick={() => {
+                              setServiceNavOpen(false);
+                              router.push(item.path);
+                            }}
+                          >
+                            {item.name}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <a href="/#blogs" onClick={closeMenu} className="text-2xl mb-2">
+                Blogs
+              </a>
+              {/* <a href="/#about" onClick={closeMenu} className="text-2xl mb-2">
+                About Us
+              </a> */}
+              <Link
+                href="/papapet/termsandconditions"
+                onClick={closeMenu}
+                className="text-2xl mb-2"
+              >
+                Terms and Conditions
+              </Link>
+              <Link
+                href="/papapet/privacy-policy"
+                onClick={closeMenu}
+                className="text-2xl mb-2"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="/papapet/cancellation-refund"
+                onClick={closeMenu}
+                className="text-2xl mb-2"
+              >
+                Cancellation and Refund
+              </Link>
+            </div>
           </div>
         </div>
       )}

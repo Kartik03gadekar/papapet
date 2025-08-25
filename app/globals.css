@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body, html{
+  scroll-behavior: smooth;
+}
+
 @font-face {
   font-family: Sancole;
   src: url("/public/Sancoale\ Softened\ Bold.ttf");

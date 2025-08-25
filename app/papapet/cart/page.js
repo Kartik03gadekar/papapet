@@ -15,7 +15,7 @@ import axiosInstance from "@/Axios/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify"; // Import toastify
 import { isUserRequest } from "@/store/Reducer/auth";
-import { setSelectedAddress } from "@/store/slices/cartSlices";
+import { setSelectedAddress, applyCoupon } from "@/store/slices/cartSlices";
 
 // Simple Modal component
 function Modal({ open, onClose, children }) {
@@ -48,7 +48,7 @@ function updateQuantity(cartItems, id, newQuantity) {
 
 export default function CheckoutPage() {
   const [couponCode, setCouponCode] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const appliedCoupon = useSelector((state) => state.cart.appliedCoupon);
   const [couponError, setCouponError] = useState("");
   const [isCouponLoading, setIsCouponLoading] = useState(false);
   const dispatch = useDispatch();
@@ -242,11 +242,25 @@ export default function CheckoutPage() {
     },
   ];
 
+  const updateCartQuantity = async (id, newQuantity) => {
+    try {
+      await axiosInstance.post("/user/updateCartQuantity", {
+        foodId: id,
+        quantity: newQuantity,
+      });
+    } catch (err) {
+      console.error("Error updating cart quantity:", err);
+      toast.error("Failed to update quantity.");
+    }
+  };
+
   const handleIncrement = (id) => {
     setCartItems((prev) => {
       const item = prev.find((item) => (item._id || item.id) === id);
       if (item) {
-        return updateQuantity(prev, id, (item.quantity || 1) + 1);
+        const updatedQuantity = (item.quantity || 1) + 1;
+        updateCartQuantity(id, updatedQuantity);
+        return updateQuantity(prev, id, updatedQuantity);
       }
       return prev;
     });
@@ -256,7 +270,9 @@ export default function CheckoutPage() {
     setCartItems((prev) => {
       const item = prev.find((item) => (item._id || item.id) === id);
       if (item && (item.quantity || 1) > 1) {
-        return updateQuantity(prev, id, (item.quantity || 1) - 1);
+        const updatedQuantity = (item.quantity || 1) - 1;
+        updateCartQuantity(id, updatedQuantity);
+        return updateQuantity(prev, id, updatedQuantity);
       }
       return prev;
     });
@@ -314,81 +330,75 @@ export default function CheckoutPage() {
     const code = couponCode.trim().toUpperCase();
     if (!code) {
       setCouponError("Please enter a coupon code.");
-      setAppliedCoupon(null);
-      toast.error("Please enter a coupon code.");
+      dispatch(applyCoupon(null));
       return;
     }
+
     setIsCouponLoading(true);
     setCouponError("");
-    setAppliedCoupon(null);
 
     try {
-      // Use POST method with the coupon code in the request body
       const res = await axiosInstance.post("/coupon/applyCoupon", {
         couponCode: code,
         price: subtotal,
       });
-      const coupon = res.data;
+
+      const coupon = res.data.coupon || res.data;
 
       const now = new Date();
       const validityDate = new Date(coupon.validity);
 
-      // Check if coupon has expired
-      if (validityDate < now) {
+      if (validityDate.getTime() < now.getTime()) {
         setCouponError("This coupon has expired.");
-        toast.error("This coupon has expired.");
-      } else if (
-        typeof coupon.minPurchase === "number" &&
-        subtotal < coupon.minPurchase
-      ) {
-        setCouponError(
-          `Minimum purchase of ₹${coupon.minPurchase} required for this coupon.`
-        );
-        toast.error(
-          `Minimum purchase of ₹${coupon.minPurchase} required for this coupon.`
-        );
-      } else {
-        // Calculate discount based on the coupon structure
-        // Assuming discount is a percentage value
-        let discountValue = (subtotal * coupon.discount) / 100;
-
-        // If there's a maxDiscount limit, apply it
-        if (typeof coupon.maxDiscount === "number" && coupon.maxDiscount > 0) {
-          discountValue = Math.min(discountValue, coupon.maxDiscount);
-        }
-
-        setAppliedCoupon({
-          code: coupon.couponCode,
-          value: Math.floor(discountValue),
-          details: coupon,
-        });
-        setCouponError("");
-        toast.success(
-          `Coupon ${coupon.couponCode} applied! You saved ₹${Math.floor(
-            discountValue
-          )}.`
-        );
+        return;
       }
+
+      const minPurchase = Number(coupon.minPurchase) || 0;
+      const currentSubtotal = Number(subtotal) || 0;
+
+      if (currentSubtotal < minPurchase) {
+        setCouponError(
+          `Minimum purchase of ₹${minPurchase} required for this coupon.`
+        );
+        return;
+      }
+
+      let discountValue = (currentSubtotal * Number(coupon.discount)) / 100;
+      const maxDiscount = Number(coupon.maxDiscount) || Infinity;
+      discountValue = Math.min(discountValue, maxDiscount);
+
+      dispatch(
+        applyCoupon({
+          code: coupon.couponCode,
+          discount: Math.floor(discountValue),
+          details: coupon,
+        })
+      );
+
+      setCouponError("");
     } catch (err) {
-      setCouponError(
+      const errorMessage =
         err?.response?.status === 404 ||
-          err?.response?.data?.message?.includes("not found") ||
-          err?.message?.includes("not found")
+        err?.response?.data?.message?.includes("not found") ||
+        err?.message?.includes("not found")
           ? "Invalid coupon code."
-          : "Failed to validate coupon. Please try again."
-      );
-      setAppliedCoupon(null);
-      toast.error(
-        err?.response?.status === 404 ||
-          err?.response?.data?.message?.includes("not found") ||
-          err?.message?.includes("not found")
-          ? "Invalid coupon code."
-          : "Failed to validate coupon. Please try again."
-      );
+          : "Failed to validate coupon. Please try again.";
+
+      setCouponError(errorMessage);
+      dispatch(applyCoupon(null));
     } finally {
       setIsCouponLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!cartItems || cartItems.length === 0) {
+      // Remove coupon if cart is empty
+      dispatch(applyCoupon(null));
+      setCouponCode("");
+      setCouponError("");
+    }
+  }, [cartItems, dispatch]);
 
   // Address form handlers
   const handleAddressInputChange = (e) => {
@@ -435,10 +445,9 @@ export default function CheckoutPage() {
     dispatch(setSelectedAddress(address));
   };
 
-  const shipping = 0;
-  const discount = appliedCoupon ? appliedCoupon.value : 0;
-  const tax = subtotal > 0 ? Math.round(subtotal * 0.18) : 0;
-  const total = Math.round(subtotal + shipping - discount + tax);
+  const shipping = cartItems.length === 0 ? 0 : subtotal > 1000 ? 0 : 99;
+  const discount = useSelector((state) => state.cart.discount);
+  const total = Math.round(subtotal + shipping - discount);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -483,7 +492,6 @@ export default function CheckoutPage() {
       subtotal,
       shipping,
       discount,
-      tax,
       total,
       // Send the full coupon details to the checkout page
       appliedCoupon: appliedCoupon
@@ -656,6 +664,14 @@ export default function CheckoutPage() {
                         )}
                       </div>
                     </div>
+
+                    <h1 className="text-sm text-gray-400">
+                      Please choose the address using{" "}
+                      <span className="capitalize text-[#FB923C]">
+                        use this address
+                      </span>{" "}
+                      button.
+                    </h1>
 
                     <div className="flex items-center gap-2 mt-2">
                       <button
@@ -1058,12 +1074,12 @@ export default function CheckoutPage() {
                     <span>
                       Coupon{" "}
                       <span className="font-bold">{appliedCoupon.code}</span>{" "}
-                      applied! You saved ₹{appliedCoupon.value}.
+                      applied! You saved ₹{appliedCoupon.discount}.
                     </span>
                     <button
                       className="underline text-orange-400 text-xs"
                       onClick={() => {
-                        setAppliedCoupon(null);
+                        dispatch(applyCoupon(null));
                         setCouponCode("");
                         setCouponError("");
                         toast.info("Coupon removed.");
@@ -1089,7 +1105,9 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-neutral-500">Shipping</span>
-                    <span className="font-medium text-green-600">Free</span>
+                    <span className="font-medium text-green-600">
+                      {shipping == 0 ? "Free Shipping" : "₹ 99"}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-neutral-500">Discount</span>
@@ -1101,10 +1119,6 @@ export default function CheckoutPage() {
                         </span>
                       )}
                     </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-500">Tax</span>
-                    <span className="font-medium text-neutral-900">₹{tax}</span>
                   </div>
                   <div className="border-t border-neutral-100 pt-4">
                     <div className="flex justify-between">

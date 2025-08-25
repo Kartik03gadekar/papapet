@@ -33,7 +33,7 @@ const Page = () => {
                   GO TO DASHBOARD
                 </button>
               </Link>
-              <Link href={"/papapet/dashboard"}>
+              <Link href={"/papapet/dashboard/orderhistory"}>
                 <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md flex items-center">
                   VIEW ORDER
                 </button>

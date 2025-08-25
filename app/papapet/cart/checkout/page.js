@@ -4,9 +4,10 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Edit, Plus, X, Save, XCircle } from "lucide-react";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
-import { applyCoupon } from "@/store/slices/cartSlices";
+import { applyCoupon, setSelectedAddress } from "@/store/slices/cartSlices";
 import axios from "@/Axios/axios";
 import { useRouter } from "next/navigation";
+import { fetchCart } from "@/store/slices/cartSlices";
 
 function loadRazorpayScript(src) {
   return new Promise((resolve) => {
@@ -43,14 +44,13 @@ export default function CheckoutPage() {
   const selectedAddress = cart.shippingAddress;
   const authUser = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-
   const [orderNotes, setOrderNotes] = useState("");
   const [showNotesInput, setShowNotesInput] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
   const couponCode = cart.appliedCoupon;
   const couponDiscount = cart.discount;
-  console.log(selectedAddress)
+  console.log(selectedAddress);
 
   // ✅ Only shipping address
 
@@ -65,6 +65,16 @@ export default function CheckoutPage() {
       addressId: undefined,
     }
   );
+
+  const { cartItems, subtotal, discount, shipping, total} = useSelector(
+    (state) => state.cart
+  );
+
+  const appliedCoupon = useSelector((state) => state.cart.appliedCoupon);
+
+  useEffect(() => {
+    dispatch(fetchCart()); // ✅ gets fresh cart from DB
+  }, [dispatch]);
 
   useEffect(() => {
     if (selectedAddress) {
@@ -190,17 +200,17 @@ export default function CheckoutPage() {
     [dispatch]
   );
 
-  const subtotal = useMemo(() => Number(cart.subtotal) || 0, [cart.subtotal]);
-  const shipping = 0;
-  const discount = useMemo(() => Number(cart.discount) || 0, [cart.discount]);
-  const tax = useMemo(
-    () => (subtotal > 0 ? Math.round(subtotal * 0.18) : 0),
-    [subtotal]
-  );
-  const total = useMemo(
-    () => Math.round(subtotal + shipping - discount + tax),
-    [subtotal, shipping, discount, tax]
-  );
+  // const subtotal = useMemo(() => Number(cart.subtotal) || 0, [cart.subtotal]);
+  // const shipping = 0;
+  // const discount = useMemo(() => Number(cart.discount) || 0, [cart.discount]);
+  // const tax = useMemo(
+  //   () => (subtotal > 0 ? Math.round(subtotal * 0.18) : 0),
+  //   [subtotal]
+  // );
+  // const total = useMemo(
+  //   () => Math.round(subtotal + shipping - discount + tax),
+  //   [subtotal, shipping, discount, tax]
+  // );
 
   // ✅ Place order only with shipping address
   const handlePlaceOrder = useCallback(async () => {
@@ -288,7 +298,7 @@ export default function CheckoutPage() {
                 billing_phone: shippingAddress.phoneNumber,
                 products: cart.cartItems.map((item) => ({
                   product_name: item.name,
-                  product_quantity: item.quantity,
+                  product_quantity: item.quantity || 1,
                   product_price: item.price,
                   product_sku: item._id || "",
                   product_img_url: getImageUrl(item),
@@ -299,7 +309,7 @@ export default function CheckoutPage() {
                 weight: "0.5",
                 discount: discount,
                 shipping: shipping,
-                tax: tax,
+                tax: 0,
                 notes: orderNotes,
                 userId: authUser._id,
                 payment: verifyPayload,
@@ -316,7 +326,7 @@ export default function CheckoutPage() {
                 return;
               }
 
-              window.location.href = "/papapet/order/sucessfull";
+              window.location.href = "/papapet/order/successfull";
             } else {
               window.alert("Payment verification failed.");
             }
@@ -354,7 +364,6 @@ export default function CheckoutPage() {
     total,
     discount,
     shipping,
-    tax,
     orderNotes,
   ]);
 
@@ -411,7 +420,7 @@ export default function CheckoutPage() {
                       No items in cart.
                     </div>
                   ) : (
-                    cart.cartItems.map((item) => (
+                    cartItems.map((item) => (
                       <div
                         key={item._id}
                         className="
@@ -824,19 +833,19 @@ export default function CheckoutPage() {
                     <div className="flex justify-between text-xs sm:text-sm">
                       <span className="text-muted-foreground">Sub-total</span>
                       <span className="font-medium">
-                        Rs {subtotal.toFixed(2)}
+                        Rs {subtotal}
                       </span>
                     </div>
                     <div className="flex justify-between text-xs sm:text-sm">
-                      <span className="text-muted-foreground">Tax.</span>
+                      <span className="text-muted-foreground">Shipping.</span>
                       <span className="font-medium text-success">
-                        Rs. {tax}
+                       {subtotal > 1000 ? "Free Shipping" : " Rs. 99"}
                       </span>
                     </div>
                     <div className="flex justify-between text-xs sm:text-sm">
                       <span className="text-muted-foreground">Discount</span>
                       <span className="font-medium">
-                        Rs {discount.toFixed(2)}
+                        Rs {discount}
                       </span>
                     </div>
                   </div>
@@ -845,7 +854,7 @@ export default function CheckoutPage() {
 
                   <div className="flex justify-between text-base sm:text-lg font-semibold">
                     <span>Total</span>
-                    <span>Rs {total.toFixed(2)}</span>
+                    <span>Rs {total}</span>
                   </div>
 
                   <button
@@ -875,7 +884,7 @@ export default function CheckoutPage() {
                         <div>
                           <p className="text-xs sm:text-sm text-warning-foreground">
                             <span className="font-medium">
-                              Coupon applied: {couponCode}
+                              Coupon applied: {appliedCoupon.code}
                             </span>
                           </p>
                           <p className="text-xs text-warning-foreground/80">

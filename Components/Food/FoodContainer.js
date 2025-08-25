@@ -18,6 +18,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { HiFilter } from "react-icons/hi";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // Dummy data for category carousel
 const categoryCarouselData = [
@@ -98,6 +100,40 @@ const FoodContainer = () => {
 
   // For category sidebar and mobile
   const subCategories = categories.filter((cat) => cat.value !== "All");
+
+  const searchParams = useSearchParams();
+  const initialAnimal = searchParams.get("animal"); // "dog" or "cat"
+  const initialCategory = searchParams.get("category");
+  const router = useRouter();
+
+  // set filters from URL on mount
+  useEffect(() => {
+    if (initialAnimal) {
+      setSelectedAnimalCategory(
+        animalCategories.find(
+          (a) => a.value.toLowerCase() === initialAnimal.toLowerCase()
+        )?.label || "All"
+      );
+    }
+
+    if (initialCategory) {
+      // first check if it's an animal category
+      const animalMatch = animalCategories.find(
+        (a) => a.value.toLowerCase() === initialCategory.toLowerCase()
+      );
+
+      if (animalMatch) {
+        setSelectedAnimalCategory(animalMatch.label);
+      } else {
+        // otherwise treat it as food category
+        setSelectedCategory(
+          categories.find(
+            (c) => c.value.toLowerCase() === initialCategory.toLowerCase()
+          )?.name || "All"
+        );
+      }
+    }
+  }, [initialAnimal, initialCategory]);
 
   // Responsive check for Swiper navigation
   const [isLargeScreen, setIsLargeScreen] = useState(false);
@@ -242,6 +278,7 @@ const FoodContainer = () => {
         ? "All"
         : animalCategories.find((a) => a.value === animalValue)?.label || "All"
     );
+    router.push(`/food?animal=${animalValue.toLowerCase()}`);
     setMobileFiltersOpen(false);
   };
 
@@ -385,19 +422,29 @@ const FoodContainer = () => {
 
       <div className="w-full min-h-screen">
         <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pt-10">
-          <h1
-            className="text-4xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
-            style={{ 
-              lineHeight: "1.1",
-              letterSpacing: "-0.01em",
-              wordBreak: "break-word",
-            }}
-          >
-            Food
-          </h1>
-        
-{/* Animal Category */} 
-<div className="flex items-center justify-around pt-6 "  >
+          <div className="flex items-center justify-between mt-10 mb-5 px-5">
+            <h1
+              className="text-5xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
+              style={{
+                lineHeight: "1.1",
+                letterSpacing: "-0.01em",
+                wordBreak: "break-word",
+              }}
+            >
+              Food
+            </h1>
+            <div className="flex  justify-end">
+              <button
+                onClick={() => setMobileFiltersOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-[#FD890E] text-white rounded-lg shadow-md"
+              >
+                <HiFilter className="text-lg" /> Filters
+              </button>
+            </div>
+          </div>
+
+          {/* Animal Category */}
+          {/* <div className="flex items-center justify-around pt-6 "  >
   <div className="flex flex-col w-full md:w-1/4 "> 
 
 <label className="text-sm font-medium mb-1">Category</label>
@@ -410,7 +457,7 @@ const FoodContainer = () => {
    </select> 
 
   </div> 
-  {/* Brand */}
+  
    <div className="flex flex-col w-full md:w-1/4">
    <label className="text-sm font-medium mb-1">Brand</label> 
    <select className="border rounded-xl px-3 py-2 text-sm w-full"
@@ -421,7 +468,7 @@ const FoodContainer = () => {
           </select>
           </div>
 
-          {/* Age */}
+         
           <div className="flex flex-col w-full md:w-1/4">
            <label className="text-sm font-medium mb-1">Age</label>
             <select className="border rounded-xl px-3 py-2 text-sm w-full"
@@ -430,20 +477,9 @@ const FoodContainer = () => {
                  {animal.lable} </option> ))} 
                  </select> 
                  </div>
-</div>
+</div> */}
 
-{/* Mobile Filter Button */}
-<div className="flex md:hidden justify-end p-4">
-  <button
-    onClick={() => setMobileFiltersOpen(true)}
-    className="flex items-center gap-2 px-4 py-2 bg-[#FD890E] text-white rounded-lg shadow-md"
-  >
-    <HiFilter className="text-lg" /> Filters
-  </button>
-</div>
-        
-          
-
+          {/* Mobile Filter Button */}
 
           {/* Mobile filter dialog */}
           <Transition show={mobileFiltersOpen} as={Fragment}>

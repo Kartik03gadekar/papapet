@@ -48,19 +48,21 @@ const Page4 = () => {
 
   return (
     <div>
-      <div className = "">
-        <Swiper
-          pagination={true}
-          modules={[Pagination]}
-          className="mySwiper h-auto w-screen "
-        >
-          <SwiperSlide className="flex justify-center items-center text-center text-[18px] py-8">
-            <div className="hidden max-md:w-screen max-md:flex max-md:items-center max-md:justify-center">
-              <img src={`/6.png`} alt="" />
-            </div>
-          </SwiperSlide>
-        </Swiper>
-      </div>
+      <section id="supplies">
+        <div className="">
+          <Swiper
+            pagination={true}
+            modules={[Pagination]}
+            className="mySwiper h-auto w-screen "
+          >
+            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
+              <div className="hidden max-md:w-screen max-md:flex max-md:items-center max-md:justify-center">
+                <img src={`/6.png`} alt="" />
+              </div>
+            </SwiperSlide>
+          </Swiper>
+        </div>
+      </section>
 
       <div className="w-full flex flex-col items-center py-10 max-md-py-0 px-4 bg-gradient-to-t from-[#84DCC6] to-white">
         {/* Title */}

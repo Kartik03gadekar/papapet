@@ -294,19 +294,29 @@ const AccessoiresProduct = () => {
   return (
     <div className="w-full min-h-screen">
       <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pt-20">
-        <h1
-          className="text-4xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
-          style={{
-            lineHeight: "1.1",
-            letterSpacing: "-0.01em",
-            wordBreak: "break-word",
-          }}
-        >
-          Pets Accessories
-        </h1>
-            
-    {/* Animal Category */} 
-    <div className="flex items-center justify-around pt-6 "  >
+        <div className="flex items-center justify-between mt-10 mb-5 px-5">
+          <h1
+            className="text-3xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
+            style={{
+              lineHeight: "1.1",
+              letterSpacing: "-0.01em",
+              wordBreak: "break-word",
+            }}
+          >
+            Pet Accessories
+          </h1>
+          <div className="flex  justify-end">
+            <button
+              onClick={() => setMobileFiltersOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-[#FD890E] text-white rounded-lg shadow-md"
+            >
+              <HiFilter className="text-lg" /> Filters
+            </button>
+          </div>
+        </div>
+
+        {/* Animal Category */}
+        {/* <div className="flex items-center justify-around pt-6 "  >
       <div className="flex flex-col w-full md:w-1/4 "> 
     
     <label className="text-sm font-medium mb-1">Category</label>
@@ -319,7 +329,7 @@ const AccessoiresProduct = () => {
        </select> 
     
       </div> 
-      {/* Brand */}
+      
        <div className="flex flex-col w-full md:w-1/4">
        <label className="text-sm font-medium mb-1">Brand</label> 
        <select className="border rounded-xl px-3 py-2 text-sm w-full"
@@ -330,7 +340,7 @@ const AccessoiresProduct = () => {
               </select>
               </div>
     
-              {/* Age */}
+           
               <div className="flex flex-col w-full md:w-1/4">
                <label className="text-sm font-medium mb-1">Age</label>
                 <select className="border rounded-xl px-3 py-2 text-sm w-full"
@@ -339,182 +349,170 @@ const AccessoiresProduct = () => {
                      {animal.lable} </option> ))} 
                      </select> 
                      </div>
-    </div>
-    
-    {/* Mobile Filter Button */}
-    <div className="flex md:hidden justify-end p-4">
-      <button
-        onClick={() => setMobileFiltersOpen(true)}
-        className="flex items-center gap-2 px-4 py-2 bg-[#FD890E] text-white rounded-lg shadow-md"
-      >
-        <HiFilter className="text-lg" /> Filters
-      </button>
-    </div>
-            
-              
-    
-    
-              {/* Mobile filter dialog */}
-              <Transition show={mobileFiltersOpen} as={Fragment}>
-                <Dialog
-                  as="div"
-                  className="relative z-40"
-                  onClose={setMobileFiltersOpen}
-                >
-                  <Transition.Child
-                    as={Fragment}
-                    enter="transition-opacity ease-linear duration-300"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="transition-opacity ease-linear duration-300"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    <div className="fixed inset-0 bg-black bg-opacity-25" />
-                  </Transition.Child>
-    
-                  <div className="fixed inset-0 z-40 flex">
-                    <Transition.Child
-                      as={Fragment}
-                      enter="transition ease-in-out duration-300 transform"
-                      enterFrom="-translate-x-full"
-                      enterTo="translate-x-0"
-                      leave="transition ease-in-out duration-300 transform"
-                      leaveFrom="translate-x-0"
-                      leaveTo="-translate-x-full"
+    </div> */}
+
+        {/* Mobile Filter Button */}
+
+        {/* Mobile filter dialog */}
+        <Transition show={mobileFiltersOpen} as={Fragment}>
+          <Dialog
+            as="div"
+            className="relative z-40"
+            onClose={setMobileFiltersOpen}
+          >
+            <Transition.Child
+              as={Fragment}
+              enter="transition-opacity ease-linear duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition-opacity ease-linear duration-300"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 z-40 flex">
+              <Transition.Child
+                as={Fragment}
+                enter="transition ease-in-out duration-300 transform"
+                enterFrom="-translate-x-full"
+                enterTo="translate-x-0"
+                leave="transition ease-in-out duration-300 transform"
+                leaveFrom="translate-x-0"
+                leaveTo="-translate-x-full"
+              >
+                <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+                  <div className="flex items-center justify-between px-4 pt-20 md:pt-40">
+                    <h2 className="text-lg font-medium text-gray-900">
+                      Categories
+                    </h2>
+                    <button
+                      type="button"
+                      className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
+                      onClick={() => setMobileFiltersOpen(false)}
                     >
-                      <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
-                        <div className="flex items-center justify-between px-4 pt-20 md:pt-40">
-                          <h2 className="text-lg font-medium text-gray-900">
-                            Categories
-                          </h2>
+                      <span className="sr-only">Close menu</span>
+                      <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                    </button>
+                  </div>
+                  <div className="mt-4 px-4">
+                    <ul className="space-y-2 text-base font-medium">
+                      <li key="all">
+                        <button
+                          type="button"
+                          onClick={() => handleCategoryClick("All")}
+                          className={classNames(
+                            "text-left w-full px-2 py-2 rounded transition-colors",
+                            selectedCategory === "All"
+                              ? "text-[#c9a74d] bg-gray-100 font-semibold"
+                              : "text-gray-700 hover:bg-gray-50"
+                          )}
+                          style={{
+                            fontSize: "1rem",
+                            letterSpacing: "-0.01em",
+                          }}
+                        >
+                          All
+                        </button>
+                      </li>
+                      {subCategories.map((cat) => (
+                        <li key={cat.value}>
                           <button
                             type="button"
-                            className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
-                            onClick={() => setMobileFiltersOpen(false)}
-                          >
-                            <span className="sr-only">Close menu</span>
-                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                          </button>
-                        </div>
-                        <div className="mt-4 px-4">
-                          <ul className="space-y-2 text-base font-medium">
-                            <li key="all">
-                              <button
-                                type="button"
-                                onClick={() => handleCategoryClick("All")}
-                                className={classNames(
-                                  "text-left w-full px-2 py-2 rounded transition-colors",
-                                  selectedCategory === "All"
-                                    ? "text-[#c9a74d] bg-gray-100 font-semibold"
-                                    : "text-gray-700 hover:bg-gray-50"
-                                )}
-                                style={{
-                                  fontSize: "1rem",
-                                  letterSpacing: "-0.01em",
-                                }}
-                              >
-                                All
-                              </button>
-                            </li>
-                            {subCategories.map((cat) => (
-                              <li key={cat.value}>
-                                <button
-                                  type="button"
-                                  onClick={() => handleCategoryClick(cat.value)}
-                                  className={classNames(
-                                    "text-left w-full px-2 py-2 rounded transition-colors",
-                                    selectedCategory === cat.name
-                                      ? "text-[#c9a74d] bg-gray-100 font-semibold"
-                                      : "text-gray-700 hover:bg-gray-50"
-                                  )}
-                                  style={{
-                                    fontSize: "1rem",
-                                    letterSpacing: "-0.01em",
-                                  }}
-                                >
-                                  {cat.label}
-                                </button>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        {/* Animal Category filter for mobile */}
-                        <div className="mt-4 px-4">
-                          <label className="block text-sm font-medium mb-1">
-                            Animal Category
-                          </label>
-                          <select
-                            className="border rounded px-2 py-1 w-full"
-                            value={selectedAnimalCategory}
-                            onChange={(e) =>
-                              setSelectedAnimalCategory(e.target.value)
-                            }
-                          >
-                            {animalCategories.map((animal) => (
-                              <option key={animal.value} value={animal.value}>
-                                {animal.label}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        {/* Brand and Price filters for mobile */}
-                        <div className="mt-6 px-4">
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium mb-1">
-                              Brand
-                            </label>
-                            <select
-                              className="border rounded px-2 py-1 w-full"
-                              value={selectedBrand}
-                              onChange={(e) => setSelectedBrand(e.target.value)}
-                            >
-                              <option value="All">All</option>
-                              {brands.map((brand) => (
-                                <option key={brand.name} value={brand.name}>
-                                  {brand.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium mb-1">
-                              Max Price (₹{selectedPrice})
-                            </label>
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs text-gray-500">
-                                ₹{minPrice}
-                              </span>
-                              <input
-                                type="range"
-                                min={minPrice}
-                                max={maxPrice}
-                                value={selectedPrice}
-                                onChange={handlePriceSliderChange}
-                                className="flex-1 accent-[#c9a74d]"
-                                step={1}
-                              />
-                              <span className="text-xs text-gray-500">
-                                ₹{maxPrice}
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            className="w-full mt-2 px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
-                            onClick={() => {
-                              resetFilters();
-                              setMobileFiltersOpen(false);
+                            onClick={() => handleCategoryClick(cat.value)}
+                            className={classNames(
+                              "text-left w-full px-2 py-2 rounded transition-colors",
+                              selectedCategory === cat.name
+                                ? "text-[#c9a74d] bg-gray-100 font-semibold"
+                                : "text-gray-700 hover:bg-gray-50"
+                            )}
+                            style={{
+                              fontSize: "1rem",
+                              letterSpacing: "-0.01em",
                             }}
                           >
-                            Reset Filters
+                            {cat.label}
                           </button>
-                        </div>
-                      </Dialog.Panel>
-                    </Transition.Child>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </Dialog>
-              </Transition>
-    
+                  {/* Animal Category filter for mobile */}
+                  <div className="mt-4 px-4">
+                    <label className="block text-sm font-medium mb-1">
+                      Animal Category
+                    </label>
+                    <select
+                      className="border rounded px-2 py-1 w-full"
+                      value={selectedAnimalCategory}
+                      onChange={(e) =>
+                        setSelectedAnimalCategory(e.target.value)
+                      }
+                    >
+                      {animalCategories.map((animal) => (
+                        <option key={animal.value} value={animal.value}>
+                          {animal.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {/* Brand and Price filters for mobile */}
+                  <div className="mt-6 px-4">
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium mb-1">
+                        Brand
+                      </label>
+                      <select
+                        className="border rounded px-2 py-1 w-full"
+                        value={selectedBrand}
+                        onChange={(e) => setSelectedBrand(e.target.value)}
+                      >
+                        <option value="All">All</option>
+                        {brands.map((brand) => (
+                          <option key={brand.name} value={brand.name}>
+                            {brand.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium mb-1">
+                        Max Price (₹{selectedPrice})
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-gray-500">
+                          ₹{minPrice}
+                        </span>
+                        <input
+                          type="range"
+                          min={minPrice}
+                          max={maxPrice}
+                          value={selectedPrice}
+                          onChange={handlePriceSliderChange}
+                          className="flex-1 accent-[#c9a74d]"
+                          step={1}
+                        />
+                        <span className="text-xs text-gray-500">
+                          ₹{maxPrice}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      className="w-full mt-2 px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+                      onClick={() => {
+                        resetFilters();
+                        setMobileFiltersOpen(false);
+                      }}
+                    >
+                      Reset Filters
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </Dialog>
+        </Transition>
 
         {/* Main content grid */}
 

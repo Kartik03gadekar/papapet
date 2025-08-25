@@ -1,26 +1,78 @@
 "use client";
-import React from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
+import axiosInstance from "@/Axios/axios";
+import { toast } from "react-toastify";
 
 const Page = () => {
   const services = [
-    { img: "/doctorimage1.png", name: "Instant Video Consultation", p: "Connect Within 30 sec" },
-    { img: "/doctorimage2.png", name: "Find Doctors Near You", p: "Confirmed Appointment" },
-    { img: "/doctorimage3.png", name: "In-Clinic Services", p: "Best clinic near you" },
-    { img: "/doctorimage4.png", name: "Home Services", p: "Best Home Services" },
+    {
+      img: "/doctorimage1.png",
+      name: "Instant Video Consultation",
+      p: "Connect Within 30 sec",
+    },
+    {
+      img: "/doctorimage2.png",
+      name: "Find Doctors Near You",
+      p: "Confirmed Appointment",
+    },
+    {
+      img: "/doctorimage3.png",
+      name: "In-Clinic Services",
+      p: "Best clinic near you",
+    },
+    {
+      img: "/doctorimage4.png",
+      name: "Home Services",
+      p: "Best Home Services",
+    },
   ];
+
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState({
+    animal: "",
+    breed: "",
+    height: "",
+    weight: "",
+    gender: "",
+    age: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setResult(null);
+
+    try {
+      const { data } = await axiosInstance.post("/AI/AnimalHealth", form);
+      setResult(data);
+      toast.success("Health report generated!");
+    } catch (err) {
+      toast.error("Failed to generate report");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="w-full overflow-x-hidden">
-       <NavPapaPet/>
+      <NavPapaPet />
 
-          {/* Hero Section */}
-      <section className="relative w-full h-screen max-md:h-auto max-md:pb-6 text-white flex flex-col md:flex-row justify-between items-center 
-      px-8 gap-4">
+      {/* Hero Section */}
+      <section
+        className="relative w-full h-screen max-md:h-auto max-md:pb-6 text-white flex flex-col md:flex-row justify-between items-center 
+      px-8 gap-4"
+      >
         {/* Left Content */}
-        <div className="w-full md:w-1/3 flex flex-col items-start justify-start gap-[5vw] max-md:gap-[2vw] max-md:w-full max-md:text-center 
-        max-md:items-center max-md:pt-[16vw]">
+        <div
+          className="w-full md:w-1/3 flex flex-col items-start justify-start gap-[5vw] max-md:gap-[2vw] max-md:w-full max-md:text-center 
+        max-md:items-center max-md:pt-[16vw]"
+        >
           {/* Desktop Heading */}
           <h1 className="hidden md:block text-5xl whitespace-nowrap lg:text-6xl font-bold leading-[1.1] text-black text-left px-[1vw]">
             <span className="text-black block pb-4">The Perfect</span>
@@ -53,10 +105,16 @@ const Page = () => {
 
         {/* Right Section */}
         <div className="w-full md:w-1/3 flex flex-col items-center justify-start gap-[8vw] max-md:w-full max-md:items-center max-md:gap-[8vw]">
-          <div className="bg-[#FFAD22] p-4 rounded-lg shadow-lg flex items-center space-x-3 max-md:w-[80%]">
+          <div className="cursor-pointer bg-[#FFAD22] p-4 rounded-lg shadow-lg flex items-center space-x-3 max-md:w-[80%]">
             <p className="text-sm font-medium text-gray-700">
-              Generate your Pet’s Health Report in just a few clicks
+              Generate your Pet’s Health Report in just a few clicks  
+              <span>
+                <button className=" ml-2 px-2 py-1 rounded-full bg-[#77C5C6]" onClick={() => setOpen(true)}>
+                   Generate Now &rarr;
+                </button>
+              </span>
             </p>
+
             <img
               src="/FloatingBanner.png"
               alt="Health Report"
@@ -65,6 +123,7 @@ const Page = () => {
             />
           </div>
 
+          {/* Existing Appointment Form (unchanged) */}
           <div className="bg-[#77C5C6] w-full md:h-auto rounded-xl flex flex-col items-center px-4 py-2 pb-5">
             <form className="w-full flex flex-col items-start justify-center gap-4">
               <label className="block text-gray-800 font-semibold text-lg">
@@ -91,15 +150,127 @@ const Page = () => {
               />
             </form>
           </div>
+
+          {/* Modal */}
+          {open && (
+            <div
+              onClick={() => setOpen(false)} // click outside to close
+              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+                className="bg-white rounded-xl p-6 w-full max-w-lg shadow-xl relative"
+              >
+                <button
+                  onClick={() => setOpen(false)}
+                  className="absolute top-3 right-3 text-gray-600 hover:text-black"
+                >
+                  ✕
+                </button>
+
+                <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
+                  Pet Health Report
+                </h2>
+
+                <form
+                  onSubmit={handleSubmit}
+                  className="grid grid-cols-1 gap-4 text-black"
+                >
+                  <input
+                    type="text"
+                    name="animal"
+                    placeholder="Animal (Dog / Cat)"
+                    value={form.animal}
+                    onChange={handleChange}
+                    className="border px-3 py-2 rounded-lg"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="breed"
+                    placeholder="Breed"
+                    value={form.breed}
+                    onChange={handleChange}
+                    className="border px-3 py-2 rounded-lg"
+                  />
+                  <input
+                    type="number"
+                    name="height"
+                    placeholder="Height (cm)"
+                    value={form.height}
+                    onChange={handleChange}
+                    className="border px-3 py-2 rounded-lg"
+                  />
+                  <input
+                    type="number"
+                    name="weight"
+                    placeholder="Weight (kg)"
+                    value={form.weight}
+                    onChange={handleChange}
+                    className="border px-3 py-2 rounded-lg"
+                  />
+                  <select
+                    name="gender"
+                    value={form.gender}
+                    onChange={handleChange}
+                    className="border px-3 py-2 rounded-lg"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                  <input
+                    type="number"
+                    name="age"
+                    placeholder="Age (years)"
+                    value={form.age}
+                    onChange={handleChange}
+                    className="border px-3 py-2 rounded-lg"
+                  />
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition"
+                  >
+                    {loading ? "Generating..." : "Generate Report"}
+                  </button>
+                </form>
+
+                {result && (
+                  <div className="mt-6 bg-[#F4EEE1] p-4 rounded-lg">
+                    <h3 className="font-semibold text-gray-800 mb-2">
+                      Health Status:{" "}
+                      <span
+                        className={`${
+                          result.healthStatus === "Healthy"
+                            ? "text-green-600"
+                            : "text-red-500"
+                        }`}
+                      >
+                        {result.healthStatus}
+                      </span>
+                    </h3>
+                    <h4 className="font-semibold">Suggested Products:</h4>
+                    <ul className="list-disc pl-5 text-gray-700">
+                      {result.productSuggestions?.map((p, i) => (
+                        <li key={i}>{p}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
-
       </section>
-    <div className="w-full h-[28vw] flex items-center justify-center  ">
-
-  <img 
-   className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
-   src={"/9.png"} alt="" />
-</div>
+      <div className="w-full h-[28vw] flex items-center justify-center  ">
+        <img
+          className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
+          src={"/9.png"}
+          alt=""
+        />
+      </div>
 
       {/* Services Section */}
       <section className="py-8 text-center bg-[#F4EEE1]">
@@ -165,39 +336,37 @@ const Page = () => {
         </div>
       </section>
 
+      {/* Hero Section */}
+      {/* <section className="relative w-full h-screen max-md:h-auto max-md:pb-6 text-white flex flex-col md:flex-row justify-between items-center px-8 gap-4"> */}
 
-     {/* Hero Section */}
-     {/* <section className="relative w-full h-screen max-md:h-auto max-md:pb-6 text-white flex flex-col md:flex-row justify-between items-center px-8 gap-4"> */}
-  
-  {/* Left Content */}
-  {/* <div className="w-full md:w-1/3 flex flex-col items-start justify-start gap-[5vw] 
+      {/* Left Content */}
+      {/* <div className="w-full md:w-1/3 flex flex-col items-start justify-start gap-[5vw] 
   max-md:gap-[2vw] max-md:w-full max-md:text-center max-md:items-center max-md:pt-[20vw]"> */}
 
-  {/* Desktop Heading */}
-  {/* <h1 className="hidden md:block text-6xl font-bold leading-[1.2] text-black text-left px-[1vw]">
+      {/* Desktop Heading */}
+      {/* <h1 className="hidden md:block text-6xl font-bold leading-[1.2] text-black text-left px-[1vw]">
     <span className="text-black block pb-4">The Perfect</span> 
     <span className="text-teal-400 block pb-4">Pet Match,</span> 
     <span className="text-black block pb-4">Just a Click</span>
     <span className="text-black block pb-4">Away!</span>
   </h1> */}
 
-  {/* Mobile Heading */}
-  {/* <h1 className="max-md:block max-md:pb-1 hidden text-3xl leading-tight font-bold text-black text-center px-[4vw] "> */}
-    {/* The Perfect */}
-    {/* <span className="text-teal-400 block pb-1 pt-1">Pet Match,</span>   */}
-    {/* Just a Click Away! */}
-  {/* </h1> */}
+      {/* Mobile Heading */}
+      {/* <h1 className="max-md:block max-md:pb-1 hidden text-3xl leading-tight font-bold text-black text-center px-[4vw] "> */}
+      {/* The Perfect */}
+      {/* <span className="text-teal-400 block pb-1 pt-1">Pet Match,</span>   */}
+      {/* Just a Click Away! */}
+      {/* </h1> */}
 
-  {/* Button */}
-  {/* <button className="bg-[#FFAD22] px-6 py-3 rounded-full text-black font-semibold shadow-lg">
+      {/* Button */}
+      {/* <button className="bg-[#FFAD22] px-6 py-3 rounded-full text-black font-semibold shadow-lg">
     Book Now
   </button> */}
 
-{/* </div> */}
+      {/* </div> */}
 
-
-  {/* Middle - Image */}
-  {/* <div className="w-full md:w-1/3 flex justify-center relative">
+      {/* Middle - Image */}
+      {/* <div className="w-full md:w-1/3 flex justify-center relative">
     <img
       src="/GirlDoctor.png" // Replace with actual img path
       alt="Veterinarian with Pet"
@@ -205,10 +374,10 @@ const Page = () => {
     />
   </div> */}
 
-  {/* Right Section */}
-  {/* <div className="w-full md:w-1/3 flex flex-col items-center justify-start gap-[8vw] max-md:w-full max-md:items-center max-md:gap-[6vw]"> */}
+      {/* Right Section */}
+      {/* <div className="w-full md:w-1/3 flex flex-col items-center justify-start gap-[8vw] max-md:w-full max-md:items-center max-md:gap-[6vw]"> */}
 
-    {/* <div className="bg-[#FFAD22] p-4 rounded-lg shadow-lg flex items-center space-x-3 max-md:w-[80%]">
+      {/* <div className="bg-[#FFAD22] p-4 rounded-lg shadow-lg flex items-center space-x-3 max-md:w-[80%]">
       <p className="text-sm font-medium text-gray-700">
         Generate your Pet’s Health Report in just a few clicks
       </p>
@@ -219,7 +388,7 @@ const Page = () => {
         height={40}
       />
     </div> */}
-{/*   
+      {/*   
     <div className="bg-[#77C5C6] w-[90%] np  h-[20vw] max-md:h-auto rounded-xl flex flex-col items-center px-4 py-2">
       <form className="w-full flex flex-col items-start justify-center gap-4">
         <label className="block text-gray-800 font-semibold text-lg">Owner Name</label>
@@ -244,14 +413,10 @@ const Page = () => {
   </div>
 </section> */}
 
-
-   
-   
-
-     {/* Services Section */}
-{/* <section className="py-8 text-center bg-[#F4EEE1]"> */}
-  {/* Grid structure for mobile view (2 services per row) */}
-  {/* <div className="grid grid-cols-1 md:flex md:items-center md:justify-around  px-6 max-md:px-3 max-md:grid-cols-2 max-md:gap-4">
+      {/* Services Section */}
+      {/* <section className="py-8 text-center bg-[#F4EEE1]"> */}
+      {/* Grid structure for mobile view (2 services per row) */}
+      {/* <div className="grid grid-cols-1 md:flex md:items-center md:justify-around  px-6 max-md:px-3 max-md:grid-cols-2 max-md:gap-4">
     {services.map((service, index) => (
       <div 
         key={index} 
@@ -284,12 +449,12 @@ const Page = () => {
         />
       </section> */}
 
-     {/* Best Doctors Section */}
-{/* <section className="py-10 px-6 bg-white"> */}
-  {/* <h2 className="text-3xl font-semibold text-center">Best Doctors Connected With Us</h2> */}
-  
-  {/* Updated Grid Layout */}
-  {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 max-md:grid-cols-2">
+      {/* Best Doctors Section */}
+      {/* <section className="py-10 px-6 bg-white"> */}
+      {/* <h2 className="text-3xl font-semibold text-center">Best Doctors Connected With Us</h2> */}
+
+      {/* Updated Grid Layout */}
+      {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 max-md:grid-cols-2">
     {Array.from({ length: 8 }).map((_, index) => (
       <div key={index} className="bg-white px-4 py-2 rounded-lg border border-orange-300 text-center">
         <img src="/doctorimagepng (1).png" alt="Doctor" width={80} height={80} className="mx-auto" />
@@ -299,8 +464,7 @@ const Page = () => {
       </div>
     ))}
   </div> */}
-{/* </section> */}
-
+      {/* </section> */}
     </div>
   );
 };

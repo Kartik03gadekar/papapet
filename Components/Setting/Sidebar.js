@@ -1,42 +1,74 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { FaUser, FaHistory, FaTruck } from 'react-icons/fa';
-import { FiShoppingCart, FiLogOut } from 'react-icons/fi';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { FaUser, FaHistory, FaTruck } from "react-icons/fa";
+import { FiShoppingCart, FiLogOut } from "react-icons/fi";
+import { persistor } from "../../store/store"; // adjust path to where persistor is exported
+import { logoutUser } from "../../store/Action/auth";
+import { useDispatch } from "react-redux";
+
 
 const navItems = [
-  { name: 'Profile', icon: FaUser, index: 0, links: '/papapet/dashboard/profile' },
-  { name: 'Order History', icon: FaHistory, index: 1, links: '/papapet/dashboard/orderhistory' },
-  { name: 'Track Order', icon: FaTruck, index: 2, links: '/papapet/dashboard/trackorder' },
-  { name: 'Shopping Cart', icon: FiShoppingCart, index: 3, links: '/papapet/dashboard/shoppingcart' },
-  { name: 'LogOut', icon: FiLogOut, index: 4, links: '' },
+  {
+    name: "Profile",
+    icon: FaUser,
+    index: 0,
+    links: "/papapet/dashboard/profile",
+  },
+  {
+    name: "Order History",
+    icon: FaHistory,
+    index: 1,
+    links: "/papapet/dashboard/orderhistory",
+  },
+  {
+    name: "Track Order",
+    icon: FaTruck,
+    index: 2,
+    links: "/papapet/dashboard/trackorder",
+  },
+  {
+    name: "Shopping Cart",
+    icon: FiShoppingCart,
+    index: 3,
+    links: "/papapet/dashboard/shoppingcart",
+  },
+  { name: "LogOut", icon: FiLogOut, index: 4, links: "" },
 ];
 
 export default function Sidebar({ setopen, activeIndex }) {
+  const dispatch = useDispatch();
   const [openSidebar, setOpenSidebar] = useState(false);
   const router = useRouter();
 
-  const handleClick = (index, name) => {
-    if (name === 'LogOut') {
-      // Logout logic
-      localStorage.clear(); // Clear auth/token if any
-      router.push('/papapet/login'); // Redirect to login
+  const handleClick = (item) => {
+    if (item.name === "LogOut") {
+      // Clear redux + persisted storage
+      dispatch(logoutUser()); // reset your auth state in redux
+      persistor.purge(); // remove persisted data immediately
+
+      router.push("/papapet/auth");
       return;
     }
-    setopen(index);
-    setOpenSidebar(false); // Close sidebar on mobile
+    setopen(item.index);
+    setOpenSidebar(false);
+    router.push(item.links);
   };
 
   const renderButton = (item, isActive) => {
     const Icon = item.icon;
     return (
       <button
-        onClick={() => handleClick(item.index, item.name)}
+        key={item.name}
+        onClick={() => handleClick(item)}
         className={`flex w-full items-center gap-3 px-4 py-2 my-1 rounded-md transition
-          ${isActive ? 'bg-orange-500 text-white' : 'text-gray-700 hover:bg-orange-200'}`}
-        aria-current={isActive ? 'page' : undefined}
+          ${
+            isActive
+              ? "bg-orange-500 text-white"
+              : "text-gray-700 hover:bg-orange-200"
+          }`}
+        aria-current={isActive ? "page" : undefined}
       >
         <Icon className="text-lg" />
         <span className="text-sm font-medium">{item.name}</span>
@@ -47,7 +79,7 @@ export default function Sidebar({ setopen, activeIndex }) {
   return (
     <>
       {/* Mobile Menu Button */}
-      <div className="md:hidden px-4 py-2 bg-white  z-20">
+      <div className="md:hidden px-4 py-2 bg-white z-20">
         <button
           onClick={() => setOpenSidebar(true)}
           aria-label="Open menu"
@@ -68,7 +100,7 @@ export default function Sidebar({ setopen, activeIndex }) {
       {/* Sidebar for Mobile */}
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 transition-transform duration-300 ease-in-out 
-        ${openSidebar ? 'translate-x-0' : '-translate-x-full'} md:hidden`}
+        ${openSidebar ? "translate-x-0" : "-translate-x-full"} md:hidden`}
       >
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-lg font-semibold">Menu</h2>
@@ -83,16 +115,9 @@ export default function Sidebar({ setopen, activeIndex }) {
 
         <nav className="px-4 py-2">
           {navItems.map((item) => {
-            const isLogout = item.name === 'LogOut';
-            const isActive = activeIndex === item.index && !isLogout;
-
-            return isLogout ? (
-              <div key={item.name}>{renderButton(item, isActive)}</div>
-            ) : (
-              <Link href={item.links} key={item.name}>
-                {renderButton(item, isActive)}
-              </Link>
-            );
+            const isActive =
+              activeIndex === item.index && item.name !== "LogOut";
+            return renderButton(item, isActive);
           })}
         </nav>
       </div>
@@ -101,16 +126,9 @@ export default function Sidebar({ setopen, activeIndex }) {
       <div className="hidden md:block w-[200px] h-[calc(100vh-10vh)] border-r fixed">
         <nav className="px-4 py-4">
           {navItems.map((item) => {
-            const isLogout = item.name === 'LogOut';
-            const isActive = activeIndex === item.index && !isLogout;
-
-            return isLogout ? (
-              <div key={item.name}>{renderButton(item, isActive)}</div>
-            ) : (
-              <Link href={item.links} key={item.name}>
-                {renderButton(item, isActive)}
-              </Link>
-            );
+            const isActive =
+              activeIndex === item.index && item.name !== "LogOut";
+            return renderButton(item, isActive);
           })}
         </nav>
       </div>

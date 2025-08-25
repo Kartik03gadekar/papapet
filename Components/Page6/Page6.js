@@ -51,7 +51,7 @@ const Page6 = () => {
   ];
 
   return (
-    <section className="px-6 py-12 max-md:bg-[#F4EEE1] max-md:py-14">
+    <section id = "blogs" className="px-6 py-12 max-md:bg-[#F4EEE1] max-md:py-14">
       {/* Desktop View */}
       <div className="hidden md:block">
         <div className="text-center">
