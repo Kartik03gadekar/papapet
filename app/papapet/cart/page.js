@@ -445,7 +445,7 @@ export default function CheckoutPage() {
     dispatch(setSelectedAddress(address));
   };
 
-  const shipping = cartItems.length === 0 ? 0 : subtotal > 1000 ? 0 : 99;
+  const shipping = cartItems.length === 0 ? 0 : subtotal > 1000 || subtotal == 1 ? 0 : 99;
   const discount = useSelector((state) => state.cart.discount);
   const total = Math.round(subtotal + shipping - discount);
 

@@ -96,7 +96,7 @@ const getSocket = () => {
     // socket = io("https://api.mycozee.in/", {
     //   path: "/socket.io",
     // });
-     socket = io("https://pa-pa-pet-backend.vercel.app/", {
+     socket = io("https://papapetbackend-oaiw.onrender.com/", {
         withCredentials: true,
       path: "/socket.io",
     });

@@ -50,7 +50,6 @@ export default function CheckoutPage() {
 
   const couponCode = cart.appliedCoupon;
   const couponDiscount = cart.discount;
-  console.log(selectedAddress);
 
   // ✅ Only shipping address
 
@@ -66,7 +65,7 @@ export default function CheckoutPage() {
     }
   );
 
-  const { cartItems, subtotal, discount, shipping, total} = useSelector(
+  const { cartItems, subtotal, discount, shipping, total } = useSelector(
     (state) => state.cart
   );
 
@@ -256,7 +255,7 @@ export default function CheckoutPage() {
       }
 
       let userPhone =
-        shippingAddress.phone ||
+        shippingAddress.phoneNumber ||
         cart.user?.phone ||
         cart.user?.mobile ||
         "9123456789";
@@ -340,7 +339,7 @@ export default function CheckoutPage() {
         prefill: {
           name: shippingAddress.name,
           email: shippingAddress.email,
-          contact: userPhone,
+          contact: shippingAddress.phoneNumber || userPhone,
         },
         notes: {
           shippingAddress: JSON.stringify(shippingAddress),
@@ -373,7 +372,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <div className="overflow-hidden">
+      <div className="overflow-hidden z-50">
         <NavPapaPet />
       </div>
       <div className="max-h-screen bg-surface p-2  sm:p-4 md:px-6 md:py-8 mb-4 lg:p-8  mt-8 md:mt-4 ">
@@ -832,21 +831,17 @@ export default function CheckoutPage() {
                   <div className="space-y-2 sm:space-y-3">
                     <div className="flex justify-between text-xs sm:text-sm">
                       <span className="text-muted-foreground">Sub-total</span>
-                      <span className="font-medium">
-                        Rs {subtotal}
-                      </span>
+                      <span className="font-medium">Rs {subtotal}</span>
                     </div>
                     <div className="flex justify-between text-xs sm:text-sm">
                       <span className="text-muted-foreground">Shipping.</span>
                       <span className="font-medium text-success">
-                       {subtotal > 1000 ? "Free Shipping" : " Rs. 99"}
+                        {subtotal > 1000 ? "Free Shipping" : " Rs. 99"}
                       </span>
                     </div>
                     <div className="flex justify-between text-xs sm:text-sm">
                       <span className="text-muted-foreground">Discount</span>
-                      <span className="font-medium">
-                        Rs {discount}
-                      </span>
+                      <span className="font-medium">Rs {discount}</span>
                     </div>
                   </div>
 
