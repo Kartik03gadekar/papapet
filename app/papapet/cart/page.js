@@ -445,7 +445,8 @@ export default function CheckoutPage() {
     dispatch(setSelectedAddress(address));
   };
 
-  const shipping = cartItems.length === 0 ? 0 : subtotal > 1000 || subtotal == 1 ? 0 : 99;
+  const shipping =
+    cartItems.length === 0 ? 0 : subtotal > 1000 || subtotal == 1 ? 0 : 99;
   const discount = useSelector((state) => state.cart.discount);
   const total = Math.round(subtotal + shipping - discount);
 
@@ -970,14 +971,16 @@ export default function CheckoutPage() {
                               item.discountprice &&
                               item.discountprice < item.price && (
                                 <span className="text-neutral-700 line-through text-sm">
-                                  ₹{item.price}
+                                  ₹{Math.round(item.discountprice)}
                                 </span>
                               )}
                             <span className="font-semibold text-base text-neutral-900">
                               ₹
-                              {item.discountprice
-                                ? item.discountprice
-                                : item.price}
+                              {Math.round(
+                                item.discountprice
+                                  ? item.discountprice
+                                  : item.price
+                              )}
                             </span>
                           </div>
                         </div>
@@ -1100,7 +1103,7 @@ export default function CheckoutPage() {
                   <div className="flex justify-between">
                     <span className="text-neutral-500">Subtotal</span>
                     <span className="font-medium text-neutral-900">
-                      ₹{subtotal}
+                      ₹{Math.round(subtotal)}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -1126,7 +1129,7 @@ export default function CheckoutPage() {
                         Total
                       </span>
                       <span className="font-semibold text-xl text-orange-500">
-                        ₹{total.toFixed(2)}
+                        ₹{Math.round(total)}
                       </span>
                     </div>
                   </div>

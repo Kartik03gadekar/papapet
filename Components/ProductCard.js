@@ -144,7 +144,7 @@ const ProductCard = ({ i, product }) => {
           {/* Price Row */}
           <div className="flex items-center justify-start gap-2 mb-1 flex-wrap">
             <span className="text-[#1E90FF] text-[20px] sm:text-[16px] font-bold">
-              Rs. {hasDiscount ? i.discountprice : i.price}
+              Rs. {hasDiscount ? Math.round(i.discountprice) : i.price}
             </span>
             {hasDiscount && (
               <>
@@ -183,12 +183,7 @@ const ProductCard = ({ i, product }) => {
               onClick={handleAddToCart}
               aria-label="Add to cart"
             >
-              <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
-                <path
-                  d="M7.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM7.7 14.3a.75.75 0 01-.7-.5L4.1 6.6A.75.75 0 014.8 5.5h10.4a.75.75 0 01.7 1.1l-2.9 7.2a.75.75 0 01-.7.5H7.7z"
-                  fill="white"
-                />
-              </svg>
+             <img src = "/cart.png" alt = "cart"/>
             </button>
           </div>
         </div>

@@ -7,12 +7,13 @@ import {
   FaWhatsapp,
   FaInstagram,
 } from "react-icons/fa";
+import { useRouter } from "next/navigation"
 
 import { FiShoppingCart } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkUser } from "@/store/Action/auth";
-import { addToCart } from "@/store/slices/cartSlices";
+import { addToCart, clearCart } from "@/store/slices/cartSlices";
 import axiosInstance from "@/Axios/axios";
 import { toast } from "react-toastify"; // <-- Import toastify
 
@@ -26,7 +27,7 @@ const loadScript = (src) => {
   });
 };
 
-const ProductDetail = ({ product }) => {
+const ProductDetail = ({ product, i }) => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
@@ -34,6 +35,7 @@ const ProductDetail = ({ product }) => {
   const [pincode, setPincode] = useState("");
   const [pincodeStatus, setPincodeStatus] = useState(null);
   const [pincodeMessage, setPincodeMessage] = useState("");
+   const router = useRouter();
 
   useEffect(() => {
     dispatch(checkUser);
@@ -92,134 +94,143 @@ const ProductDetail = ({ product }) => {
     }
   };
 
-  const handleBuyNow = async () => {
-    const razorpayLoaded = await loadScript(
-      "https://checkout.razorpay.com/v1/checkout.js"
-    );
-    if (!razorpayLoaded) {
-      toast.error("Failed to load Razorpay SDK.");
-      return;
-    }
+  // const handleBuyNow = async () => {
 
-    try {
-      const amount = Math.round(
-        (product?.discountprice || product?.price || 0) * quantity * 100
-      );
+  //   const razorpayLoaded = await loadScript(
+  //     "https://checkout.razorpay.com/v1/checkout.js"
+  //   );
+  //   if (!razorpayLoaded) {
+  //     toast.error("Failed to load Razorpay SDK.");
+  //     return;
+  //   }
 
-      const backendOrderRes = await axiosInstance.post(
-        "/payment/create-order",
-        { amount: (amount / 100).toFixed(2) }
-      );
-      const order = backendOrderRes.data;
+  //   try {
+  //     const amount = Math.round(
+  //       (product?.discountprice || product?.price || 0) * quantity * 100
+  //     );
 
-      if (!order.id) {
-        toast.error("Failed to create Razorpay order");
-        return;
-      }
+  //     const backendOrderRes = await axiosInstance.post(
+  //       "/payment/create-order",
+  //       { amount: (amount / 100).toFixed(2) }
+  //     );
+  //     const order = backendOrderRes.data;
 
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: order.amount,
-        currency: order.currency,
-        name: "Papapet",
-        description: product?.name || "Product Purchase",
-        order_id: order.id,
-        handler: async function (response) {
-          try {
-            const verifyRes = await axiosInstance.post("/payment/verify", {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            });
+  //     if (!order.id) {
+  //       toast.error("Failed to create Razorpay order");
+  //       return;
+  //     }
 
-            const verifyData = verifyRes.data;
-            if (!verifyData.success) {
-              toast.error("Payment verification failed.");
-              return;
-            }
+  //     const options = {
+  //       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+  //       amount: order.amount,
+  //       currency: order.currency,
+  //       name: "Papapet",
+  //       description: product?.name || "Product Purchase",
+  //       order_id: order.id,
+  //       handler: async function (response) {
+  //         try {
+  //           const verifyRes = await axiosInstance.post("/payment/verify", {
+  //             razorpay_order_id: response.razorpay_order_id,
+  //             razorpay_payment_id: response.razorpay_payment_id,
+  //             razorpay_signature: response.razorpay_signature,
+  //           });
 
-            const orderPayload = {
-              waybill: "",
-              order: "ORD" + Date.now().toString().slice(-6),
-              order_date: new Date().toISOString().split("T")[0],
-              total_amount: Math.round(amount / 100),
-              shipping: 0,
-              discount: product?.discount || 0,
-              tax: 0,
-              name: user?.name || "Customer",
-              add: user?.address || "123 MG Road",
-              pin: user?.pincode || "462001",
-              phone: user?.phone || "9876543210",
-              billing_name: user?.billing_name || user?.name || "Customer",
-              billing_add:
-                user?.billing_address || user?.address || "123 MG Road",
-              billing_pin: user?.billing_pincode || user?.pincode || "462001",
-              billing_phone: user?.billing_phone || user?.phone || "9876543210",
-              email: user?.email || "test@example.com",
-              userId: user?._id || "68238557a668edc0ee872d33",
-              products: [
-                {
-                  product_name: product?.name,
-                  product_quantity: quantity,
-                  product_price: product?.discountprice || product?.price,
-                  product_id: product?._id || product?.id || "",
-                  product_sku: product?.sku || "",
-                  product_image: product?.image || product?.img || "",
-                  product_category: product?.category || "",
-                  product_brand: product?.brand || "",
-                },
-              ],
-              applied_coupon: null,
-              shipment_length: 20,
-              shipment_width: 10,
-              shipment_height: 5,
-              weight: 1.5,
-              payment_id: response.razorpay_payment_id,
-            };
+  //           const verifyData = verifyRes.data;
+  //           if (!verifyData.success) {
+  //             toast.error("Payment verification failed.");
+  //             return;
+  //           }
 
-            const saveOrderRes = await axiosInstance.post(
-              "/delivery/order_creation",
-              orderPayload
-            );
+  //           const orderPayload = {
+  //             waybill: "",
+  //             order: "ORD" + Date.now().toString().slice(-6),
+  //             order_date: new Date().toISOString().split("T")[0],
+  //             total_amount: Math.round(amount / 100),
+  //             shipping: 0,
+  //             discount: product?.discount || 0,
+  //             tax: 0,
+  //             name: user?.name || "Customer",
+  //             add: user?.address || "123 MG Road",
+  //             pin: user?.pincode || "462001",
+  //             phone: user?.phone || "9876543210",
+  //             billing_name: user?.billing_name || user?.name || "Customer",
+  //             billing_add:
+  //               user?.billing_address || user?.address || "123 MG Road",
+  //             billing_pin: user?.billing_pincode || user?.pincode || "462001",
+  //             billing_phone: user?.billing_phone || user?.phone || "9876543210",
+  //             email: user?.email || "test@example.com",
+  //             userId: user?._id || "68238557a668edc0ee872d33",
+  //             products: [
+  //               {
+  //                 product_name: product?.name,
+  //                 product_quantity: quantity,
+  //                 product_price: product?.discountprice || product?.price,
+  //                 product_id: product?._id || product?.id || "",
+  //                 product_sku: product?.sku || "",
+  //                 product_image: product?.image || product?.img || "",
+  //                 product_category: product?.category || "",
+  //                 product_brand: product?.brand || "",
+  //               },
+  //             ],
+  //             applied_coupon: null,
+  //             shipment_length: 20,
+  //             shipment_width: 10,
+  //             shipment_height: 5,
+  //             weight: 1.5,
+  //             payment_id: response.razorpay_payment_id,
+  //           };
 
-            if (
-              !saveOrderRes.status ||
-              saveOrderRes.status < 200 ||
-              saveOrderRes.status >= 300
-            ) {
-              const errData = saveOrderRes.data || {};
-              console.error("Order saving failed:", errData);
-              toast.error("Order could not be saved. Please contact support.");
-              return;
-            }
+  //           const saveOrderRes = await axiosInstance.post(
+  //             "/delivery/order_creation",
+  //             orderPayload
+  //           );
 
-            toast.success("Order placed successfully!");
-            window.location.href = "/papapet/order/sucessfull";
-          } catch (error) {
-            console.error("Error in order handler:", error);
-            toast.error("Something went wrong. Please try again.");
-          }
-        },
-        prefill: {
-          name: user?.name || "Customer",
-          email: user?.email || "test@example.com",
-          contact: user?.phone || "9999999999",
-        },
-        theme: { color: "#f97316" },
-      };
+  //           if (
+  //             !saveOrderRes.status ||
+  //             saveOrderRes.status < 200 ||
+  //             saveOrderRes.status >= 300
+  //           ) {
+  //             const errData = saveOrderRes.data || {};
+  //             console.error("Order saving failed:", errData);
+  //             toast.error("Order could not be saved. Please contact support.");
+  //             return;
+  //           }
 
-      const paymentObject = new window.Razorpay(options);
-      paymentObject.open();
+  //           toast.success("Order placed successfully!");
+  //           window.location.href = "/papapet/order/sucessfull";
+  //         } catch (error) {
+  //           console.error("Error in order handler:", error);
+  //           toast.error("Something went wrong. Please try again.");
+  //         }
+  //       },
+  //       prefill: {
+  //         name: user?.name || "Customer",
+  //         email: user?.email || "test@example.com",
+  //         contact: user?.phone || "9999999999",
+  //       },
+  //       theme: { color: "#f97316" },
+  //     };
 
-      paymentObject.on("payment.failed", function (response) {
-        toast.error("Payment failed.");
-        console.error(response.error);
-      });
-    } catch (error) {
-      console.error("Checkout error:", error);
-      toast.error("Something went wrong during checkout. Please try again.");
-    }
-  };
+  //     const paymentObject = new window.Razorpay(options);
+  //     paymentObject.open();
+
+  //     paymentObject.on("payment.failed", function (response) {
+  //       toast.error("Payment failed.");
+  //       console.error(response.error);
+  //     });
+  //   } catch (error) {
+  //     console.error("Checkout error:", error);
+  //     toast.error("Something went wrong during checkout. Please try again.");
+  //   }
+  // };
+
+   const handleBuyNow = (e) => {
+      e.preventDefault();
+      // Clear cart and add only this product, then go to cart page
+      dispatch(clearCart());
+      dispatch(addToCart({ ...i, quantity: 1 }));
+      router.push("/papapet/cart");
+    };
 
   const handleAddToCart = () => {
     if (!product) return;

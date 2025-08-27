@@ -102,7 +102,7 @@ const FoodContainer = () => {
   const subCategories = categories.filter((cat) => cat.value !== "All");
 
   const searchParams = useSearchParams();
-  const initialAnimal = searchParams.get("animal"); // "dog" or "cat"
+  const initialAnimal = searchParams.get("animal");
   const initialCategory = searchParams.get("category");
   const router = useRouter();
 
@@ -317,14 +317,16 @@ const FoodContainer = () => {
     );
   } else {
     productList = (
-      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-        {sorted.map((item, idx) => (
-          <ProductCard
-            key={item._id || item.id || idx}
-            i={item}
-            imgLink={imgLink}
-          />
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+        {sorted
+          .filter((item) => item.productType === "food")
+          .map((item, idx) => (
+            <ProductCard
+              key={item._id || item.id || idx}
+              i={item}
+              imgLink={imgLink}
+            />
+          ))}
       </div>
     );
   }

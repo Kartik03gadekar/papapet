@@ -469,7 +469,7 @@ export default function CheckoutPage() {
                           {/* Price */}
                           <div className="text-right mt-2 md:mt-0 md:ml-4 shrink-0">
                             <p className="font-semibold text-foreground text-sm sm:text-base">
-                              Rs. {Number(item.price).toFixed(2)}
+                              Rs. {item.price}
                             </p>
                           </div>
                         </div>
