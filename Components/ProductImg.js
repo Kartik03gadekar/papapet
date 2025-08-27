@@ -32,6 +32,8 @@ const ProductImg = ({ img, imgLink }) => {
             className={`h-[15vh] w-[5vw] bg-black relative ${
               index === ind ? "border-2 border-black" : "border-none"
             } overflow-hidden rounded-md max-md:h-[5vh] max-md:w-[5vh]`}
+
+            key={index}
           >
             <img
               // src={`${imgLink}/${i?.filename}/${i?.mimetype}`}

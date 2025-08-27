@@ -7,15 +7,16 @@ import {
   FaWhatsapp,
   FaInstagram,
 } from "react-icons/fa";
-import { useRouter } from "next/navigation"
 
 import { FiShoppingCart } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkUser } from "@/store/Action/auth";
-import { addToCart, clearCart } from "@/store/slices/cartSlices";
+import { addToCart } from "@/store/slices/cartSlices";
 import axiosInstance from "@/Axios/axios";
 import { toast } from "react-toastify"; // <-- Import toastify
+import { useRouter } from "next/navigation"
+import ShareProduct from "./ShareProduct";
 
 const loadScript = (src) => {
   return new Promise((resolve) => {
@@ -27,15 +28,14 @@ const loadScript = (src) => {
   });
 };
 
-const ProductDetail = ({ product, i }) => {
+const ProductDetail = ({ i, product }) => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
-
+   const router = useRouter();
   const [pincode, setPincode] = useState("");
   const [pincodeStatus, setPincodeStatus] = useState(null);
   const [pincodeMessage, setPincodeMessage] = useState("");
-   const router = useRouter();
 
   useEffect(() => {
     dispatch(checkUser);
@@ -95,7 +95,6 @@ const ProductDetail = ({ product, i }) => {
   };
 
   // const handleBuyNow = async () => {
-
   //   const razorpayLoaded = await loadScript(
   //     "https://checkout.razorpay.com/v1/checkout.js"
   //   );
@@ -224,13 +223,13 @@ const ProductDetail = ({ product, i }) => {
   //   }
   // };
 
-   const handleBuyNow = (e) => {
-      e.preventDefault();
-      // Clear cart and add only this product, then go to cart page
-      dispatch(clearCart());
-      dispatch(addToCart({ ...i, quantity: 1 }));
-      router.push("/papapet/cart");
-    };
+  const handleBuyNow = (e) => {
+    e.preventDefault();
+    // Clear cart and add only this product, then go to cart page
+    dispatch(clearCart());
+    dispatch(addToCart({ ...i, quantity: 1 }));
+    router.push("/papapet/cart");
+  };
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -372,11 +371,8 @@ const ProductDetail = ({ product, i }) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-4 mb-6">
-        <span className="text-gray-500 text-sm">Share product:</span>
-        <FaFacebookF className="text-gray-500 hover:text-blue-600 cursor-pointer text-lg" />
-        <FaInstagram className="text-gray-500 hover:text-red-500 cursor-pointer text-xl" />
-        <FaWhatsapp className="text-gray-500 hover:text-green-400 cursor-pointer text-xl" />
+      <div className="fixed top-20 right-5 lg:right-56 xl:right-80 flex items-center gap-xl:4 mb-6">
+        <ShareProduct product={product} />
       </div>
     </div>
   );
