@@ -12,7 +12,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkUser } from "@/store/Action/auth";
-import { addToCart } from "@/store/slices/cartSlices";
+import { addToCart, clearCart } from "@/store/slices/cartSlices";
 import axiosInstance from "@/Axios/axios";
 import { toast } from "react-toastify"; // <-- Import toastify
 import { useRouter } from "next/navigation"
