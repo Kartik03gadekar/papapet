@@ -97,6 +97,7 @@ const ProductCard = ({ i, product }) => {
         dispatch(addToCart(item));
 
         toast.success("Item added to cart!");
+        router.push("/papapet/cart")
       } else {
         toast.error(data.message || "Failed to add item");
       }
