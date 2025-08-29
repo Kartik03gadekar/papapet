@@ -79,14 +79,35 @@ const ProductCard = ({ i, product }) => {
     }
   };
 
-  // Buy now handler using redux
-  const handleBuyNow = (e) => {
+  
+    const handleBuyNow = async (e) => {
     e.preventDefault();
-    // Clear cart and add only this product, then go to cart page
-    dispatch(clearCart());
-    dispatch(addToCart({ ...i, quantity: 1 }));
-    router.push("/papapet/cart");
+
+    try {
+      const { data } = await axios.post("/user/addToCart", {
+        foodId: i._id, 
+        quantity: 1, 
+      });
+
+      if (data.success) {
+        const item = {
+          ...i,
+          quantity: 1,
+        };
+        dispatch(addToCart(item));
+
+        toast.success("Item added to cart!");
+      } else {
+        toast.error(data.message || "Failed to add item");
+      }
+    } catch (error) {
+      console.error("Add to cart error:", error);
+      toast.error(
+        error.response?.data?.message || "Something went wrong. Try again!"
+      );
+    }
   };
+
 
   return (
     <Link
