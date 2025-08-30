@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { cardData, eyeData, ivfData } from "@/db/Card";
 import { colors } from "@mui/material";
 import Link from "next/link";
@@ -16,103 +17,102 @@ import style from "./Page2.module.css";
 import { Pagination } from "swiper/modules";
 
 const Page2 = () => {
+  const [showModal, setShowModal] = useState(false);
   const data = [
     {
       name: "Food ",
       img: "/FoodnAcces.png",
       link: "/papapet/food",
-      color: "bg-orange-200" 
+      color: "bg-orange-200",
     },
     {
       name: "Accessories",
       img: "/FoodnAcces.png",
       link: "/papapet/accessories",
-      color: "bg-gray-200" 
+      color: "bg-gray-200",
     },
     {
       name: "Veteniary Doctor",
       img: "/doctorPapaper.png",
       link: "/papapet/doctor",
-      color: "bg-green-200" 
+      color: "bg-green-200",
     },
     {
       name: "Pet Walking",
       link: "/papapet/walking",
       img: "/walkingPet.png",
-    color: "bg-red-200" 
+      color: "bg-red-200",
     },
 
     {
       name: "Pet DayCare",
       link: "/papapet/daycare",
       img: "/dayCare.png",
-      color: "bg-lime-200" 
+      color: "bg-lime-200",
     },
 
     {
       name: "Pet Boarding",
       link: "/papapet/boarding",
       img: "/Boarding.png",
-      color: "bg-orange-300"
+      color: "bg-orange-300",
     },
     {
       name: "Pet Grooming",
       link: "/papapet/grooming",
       img: "/grooming.png",
-      color: "bg-purple-200" 
+      color: "bg-purple-200",
     },
   ];
   const dataTwo = [
     {
-     
       img: "/servicesfood.png",
-      link: "/papapet/food"
-     
+      link: "/papapet/food",
     },
     {
-     
       img: "/ServiecesAccosaries.png",
-      link: "/papapet/accessories"
-     
+      link: "/papapet/accessories",
     },
     {
-     
       img: "/ServiecesDoctor.png",
-      link: "/papapet/doctor"
-    
+      link: "/papapet/doctor",
     },
     {
-    
       link: "/papapet/walking",
-      img: "/ServiecesWalking.png"
-   
+      img: "/ServiecesWalking.png",
     },
 
     {
-     
       link: "/papapet/daycare",
-      img: "/ServiecesDayCare.png"
-    
+      img: "/ServiecesDayCare.png",
     },
 
     {
-     
       link: "/papapet/boarding",
-      img: "/ServiecesBoarding.png"
-  
+      img: "/ServiecesBoarding.png",
     },
     {
-      
       link: "/papapet/grooming",
-      img: "/ServiecesGromming.png"
-     
-    }
+      img: "/ServiecesGromming.png",
+    },
   ];
+
+  const handleClick = (index, link) => {
+    if (index <= 2) {
+      // first three items (Food, Accessories, Doctor) => normal navigation
+      window.location.href = link;
+    } else {
+      // from index 3 onwards => show modal
+      setShowModal(true);
+    }
+  };
 
   return (
     <section id="services">
-      <div className="min-h-auto w-full flex items-center max-md:items-start justify-center py-[8vh]  
-        flex-col gap-20 max-md:gap-8  max-md:h-fit bg-white max-md:py-0  max-md:justify-start max-md:mt-[5vw] mb-[3vw]">
+      <div
+        className="min-h-auto w-full flex items-center max-md:items-start justify-center py-[8vh]  
+        flex-col gap-20 max-md:gap-8  max-md:h-fit bg-white max-md:py-0  max-md:justify-start max-md:mt-[5vw] mb-[3vw]"
+      >
         {/* <SwiperService data={cardData}/> */}
         <div className="w-full flex flex-col items-center justify-center max-md:flex max-md:items-center max-md:justify-center">
           <div className="flex items-end justify-center gap-5 max-md:flex max-md:items-center max-md:justify-center">
@@ -123,7 +123,8 @@ const Page2 = () => {
           </div>
 
           <p className="text-center max-md:hidden">
-            Discover the perfect pet heating solutions to keep your beloved <br />
+            Discover the perfect pet heating solutions to keep your beloved{" "}
+            <br />
             companions cozy and content all year round.
           </p>
         </div>
@@ -131,10 +132,13 @@ const Page2 = () => {
         <div className="hidden max-md:flex max-md:justify-center max-md:items-center max-md:w-screen max-md:px-4">
           <div className="grid grid-cols-2 gap-1">
             {dataTwo.map((i, index) => (
-              <Link key={index} href={i.link} className="w-full">
-                <div
-                  className="flex flex-col items-center justify-center"
-                >
+              <div
+                onClick={() => handleClick(index, i.link)}
+                key={index}
+                href={i.link}
+                className="w-full"
+              >
+                <div className="flex flex-col items-center justify-center">
                   <img
                     src={i.img}
                     width={450}
@@ -143,18 +147,25 @@ const Page2 = () => {
                     alt={i.name}
                   />
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
-        <div className="w-full max-md:hidden flex flex-wrap gap-10 items-center justify-center gap-y-20 max-md:grid-cols-1 
-        place-content-center place-items-center">
-
+        <div
+          className="w-full max-md:hidden flex flex-wrap gap-10 items-center justify-center gap-y-20 max-md:grid-cols-1 
+        place-content-center place-items-center"
+        >
           <div className="w-screen flex items-center justify-center gap-40 shrink-0 flex-wrap ">
             {data?.map((i, index) => (
-              <Link key={index} href={i.link}>
-                <div className="service cursor-pointer h-[15vw] w-[15vw] items-center relative gap-1 rounded-full justify-center flex flex-col 
-                  text-black border-2 shrink-0 hover:bg-[#0D9899] hover:text-white duration-300 ease-in-out max-md:w-[60vw]">
+              <div
+                onClick={() => handleClick(index, i.link)}
+                key={index}
+                href={i.link}
+              >
+                <div
+                  className="service cursor-pointer h-[15vw] w-[15vw] items-center relative gap-1 rounded-full justify-center flex flex-col 
+                  text-black border-2 shrink-0 hover:bg-[#0D9899] hover:text-white duration-300 ease-in-out max-md:w-[60vw]"
+                >
                   <img
                     className="h-[7vw] W-[7vw] object-contain absolute -top-2 max-md:h-1/2 w-4/5 left-1/2 -translate-x-1/2"
                     src={i?.img}
@@ -173,12 +184,33 @@ const Page2 = () => {
                     Get Service
                   </button> */}
                 </div>
-              </Link>
+              </div>
             ))}
+
+            {showModal && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-md z-50">
+                <div className="bg-white rounded-2xl p-8 text-center shadow-2xl w-[90%] max-w-md">
+                  <h2 className="text-2xl font-bold mb-4">🚧 Coming Soon 🚧</h2>
+                  <p className="text-gray-600 mb-6">
+                    <b>
+                      {" "}
+                      Woof! Our paws are still busy building this service. Stay
+                      tuned!”
+                    </b>
+                  </p>
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="px-6 py-2 bg-[#0D9899] text-white rounded-lg hover:bg-[#0a7a7b] transition"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </section>
   );
-}
-export default Page2
+};
+export default Page2;

@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import axiosInstance from "@/Axios/axios";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
   const services = [
     {
       img: "/doctorimage1.png",
@@ -28,36 +30,9 @@ const Page = () => {
     },
   ];
 
-  const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({
-    animal: "",
-    breed: "",
-    height: "",
-    weight: "",
-    gender: "",
-    age: "",
-  });
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
-
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setResult(null);
-
-    try {
-      const { data } = await axiosInstance.post("/AI/AnimalHealth", form);
-      setResult(data);
-      toast.success("Health report generated!");
-    } catch (err) {
-      toast.error("Failed to generate report");
-    } finally {
-      setLoading(false);
-    }
-  };
+ const redirectToGenerator = ()=>{
+  router.push("/papapet/doctor/healthreport");
+ }
 
   return (
     <div className="w-full overflow-x-hidden">
@@ -109,7 +84,7 @@ const Page = () => {
             <p className="text-sm font-medium text-gray-700">
               Generate your Pet’s Health Report in just a few clicks  
               <span>
-                <button className=" ml-2 px-2 py-1 rounded-full bg-[#77C5C6]" onClick={() => setOpen(true)}>
+                <button className=" ml-2 px-2 py-1 rounded-full bg-[#77C5C6]" onClick={redirectToGenerator()}>
                    Generate Now &rarr;
                 </button>
               </span>
@@ -150,118 +125,6 @@ const Page = () => {
               />
             </form>
           </div>
-
-          {/* Modal */}
-          {open && (
-            <div
-              onClick={() => setOpen(false)} // click outside to close
-              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            >
-              <div
-                onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
-                className="bg-white rounded-xl p-6 w-full max-w-lg shadow-xl relative"
-              >
-                <button
-                  onClick={() => setOpen(false)}
-                  className="absolute top-3 right-3 text-gray-600 hover:text-black"
-                >
-                  ✕
-                </button>
-
-                <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
-                  Pet Health Report
-                </h2>
-
-                <form
-                  onSubmit={handleSubmit}
-                  className="grid grid-cols-1 gap-4 text-black"
-                >
-                  <input
-                    type="text"
-                    name="animal"
-                    placeholder="Animal (Dog / Cat)"
-                    value={form.animal}
-                    onChange={handleChange}
-                    className="border px-3 py-2 rounded-lg"
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="breed"
-                    placeholder="Breed"
-                    value={form.breed}
-                    onChange={handleChange}
-                    className="border px-3 py-2 rounded-lg"
-                  />
-                  <input
-                    type="number"
-                    name="height"
-                    placeholder="Height (cm)"
-                    value={form.height}
-                    onChange={handleChange}
-                    className="border px-3 py-2 rounded-lg"
-                  />
-                  <input
-                    type="number"
-                    name="weight"
-                    placeholder="Weight (kg)"
-                    value={form.weight}
-                    onChange={handleChange}
-                    className="border px-3 py-2 rounded-lg"
-                  />
-                  <select
-                    name="gender"
-                    value={form.gender}
-                    onChange={handleChange}
-                    className="border px-3 py-2 rounded-lg"
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                  <input
-                    type="number"
-                    name="age"
-                    placeholder="Age (years)"
-                    value={form.age}
-                    onChange={handleChange}
-                    className="border px-3 py-2 rounded-lg"
-                  />
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition"
-                  >
-                    {loading ? "Generating..." : "Generate Report"}
-                  </button>
-                </form>
-
-                {result && (
-                  <div className="mt-6 bg-[#F4EEE1] p-4 rounded-lg">
-                    <h3 className="font-semibold text-gray-800 mb-2">
-                      Health Status:{" "}
-                      <span
-                        className={`${
-                          result.healthStatus === "Healthy"
-                            ? "text-green-600"
-                            : "text-red-500"
-                        }`}
-                      >
-                        {result.healthStatus}
-                      </span>
-                    </h3>
-                    <h4 className="font-semibold">Suggested Products:</h4>
-                    <ul className="list-disc pl-5 text-gray-700">
-                      {result.productSuggestions?.map((p, i) => (
-                        <li key={i}>{p}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
         </div>
       </section>
       <div className="w-full h-[28vw] flex items-center justify-center  ">
