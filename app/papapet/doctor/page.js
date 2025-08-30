@@ -84,7 +84,7 @@ const Page = () => {
             <p className="text-sm font-medium text-gray-700">
               Generate your Pet’s Health Report in just a few clicks  
               <span>
-                <button className=" ml-2 px-2 py-1 rounded-full bg-[#77C5C6]" onClick={redirectToGenerator()}>
+                <button className=" ml-2 px-2 py-1 rounded-full bg-[#77C5C6]" onClick={redirectToGenerator}>
                    Generate Now &rarr;
                 </button>
               </span>

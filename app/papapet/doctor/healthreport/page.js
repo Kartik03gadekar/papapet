@@ -63,7 +63,7 @@ const PetHealthReport = () => {
       </div>
       <div className="w-full h-full flex flex-col lg:flex-row items-center justify-center">
         <div className=" max-md:h-screen w-full">
-          <div className="relative h-screen w-full bg-red-300">
+          <div className="relative h-screen w-full">
             <img
               className="h-full w-full object-cover"
               src="/healthreport/Hero.webp"
@@ -72,11 +72,14 @@ const PetHealthReport = () => {
             <div className="absolute inset-0 bg-black/60"></div>
             <div className="absolute inset-0 flex items-end justify-start p-5 2xl:p-10">
               <div>
-                <a href="#generator">
-                  <button className="lg:hidden bg-[#FEAC22]/60 border px-5 py-3 rounded-full flex items-center justify-center gap-5 mb-10">
-                    Generate Now <GoArrowRight className="text-2xl" />
-                  </button>
-                </a>
+                <button className="lg:hidden bg-[#FEAC22]/60 border px-5 py-3 rounded-full mb-10">
+                  <a href="#generator">
+                    <div className=" flex items-center justify-center gap-5">
+                      Generate Now <GoArrowRight className="text-2xl" />
+                    </div>
+                  </a>
+                </button>
+
                 <h1 className="text-2xl xl:text-3xl font-bold bg-gradient-to-l from-[#0D9899] to-white bg-clip-text text-transparent">
                   Calculate Your Pet's Body Mass Index
                 </h1>
@@ -280,10 +283,10 @@ const PetHealthReport = () => {
                     <img
                       src={
                         infoModal.field === "height"
-                          ? "/healthreport/Dog/height_helper.png"
+                          ? "/healthreport/dog/height_helper.png"
                           : infoModal.field === "limb"
-                          ? "/healthreport/Cat/lim_helper.png"
-                          : "/healthreport/Cat/ribcage_helper.png"
+                          ? "/healthreport/cat/lim_helper.png"
+                          : "/healthreport/cat/ribcage_helper.png"
                       }
                       alt="Measurement Guide"
                       className="w-full rounded-md"

@@ -227,8 +227,8 @@ const ProductDetail = ({ i, product }) => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post("/user/addToCart", {
-        foodId: i._id, 
+      const { data } = await axiosInstance.post("/user/addToCart", {
+        foodId: product._id, 
         quantity: 1, 
       });
 

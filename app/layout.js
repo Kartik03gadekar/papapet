@@ -4,13 +4,13 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NextTopLoader from "nextjs-toploader";
 import Wrapper from "@/Components/Wrapper/Wrapper";
-import ReduxProvider from "@/store/ReduxProvider"; 
-import Script from "next/script"; 
+import ReduxProvider from "@/store/ReduxProvider";
+import Script from "next/script";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-     <head>
+      <head>
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <Script id="facebook-pixel" strategy="afterInteractive">
           {`
@@ -32,7 +32,19 @@ export default function RootLayout({ children }) {
           <Wrapper>
             <NextTopLoader />
             {children}
-            <ToastContainer />
+            <ToastContainer
+              position="top-right"
+              autoClose={1000} // disappear in 1 sec
+              hideProgressBar // no progress bar
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss={false}
+              draggable={false}
+              pauseOnHover={false}
+              theme="light"
+              limit={1} // only one popup at a time
+            />
           </Wrapper>
         </ReduxProvider>
       </body>
