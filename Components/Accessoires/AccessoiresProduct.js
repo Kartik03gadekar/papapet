@@ -14,7 +14,7 @@ import Loading from "../loading";
 
 // Swiper imports for carousels
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+import { Pagination,Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -92,6 +92,7 @@ const AccessoiresProduct = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sort, setSort] = useState("relevance");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(9);
 
   // For category sidebar and mobile
   const subCategories = categories.filter((cat) => cat.value !== "All");
@@ -261,6 +262,10 @@ const AccessoiresProduct = () => {
   const filtered = filterProducts(food);
   const sorted = sortProducts(filtered);
 
+  const visibleProducts = sorted
+    .filter((item) => item.productType === "accessory")
+    .slice(0, visibleCount);
+
   // Product list rendering
   let productList;
   if (load) {
@@ -276,18 +281,30 @@ const AccessoiresProduct = () => {
       </div>
     );
   } else {
-   productList = (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-        {sorted
-          .filter((item) => item.productType === "accessory")
-          .map((item, idx) => (
+    productList = (
+      <>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+          {visibleProducts.map((item, idx) => (
             <ProductCard
               key={item._id || item.id || idx}
               i={item}
               imgLink={imgLink}
             />
           ))}
-      </div>
+        </div>
+
+        {visibleCount <
+          sorted.filter((i) => i.productType === "accessory").length && (
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 9)}
+              className="px-6 py-2 bg-[#FD890E] text-white rounded-lg shadow-md hover:bg-[#e67a0c] transition"
+            >
+              Show More
+            </button>
+          </div>
+        )}
+      </>
     );
   }
 
@@ -523,20 +540,34 @@ const AccessoiresProduct = () => {
             <div className="flex items-center text-center justify-center"></div>
             <div className="w-full flex items-center justify-center gap-8 py-2">
               <Swiper
-                pagination={{ clickable: true }}
-                modules={[Pagination]}
-                className="w-full"
-              >
-                <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                  <div className="w-full flex items-center justify-center  ">
-                    <img
-                      className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
-                      src={"/pt11.png"}
-                      alt=""
-                    />
-                  </div>
-                </SwiperSlide>
-              </Swiper>
+                  pagination={{ clickable: true }}
+                  modules={[Pagination, Autoplay]}
+                  autoplay={{
+                    delay: 2500, // time between slides (ms)
+                    disableOnInteraction: false, // keep autoplay after user swipes
+                  }}
+                  speed={1000}
+                  className="w-full"
+                >
+                  <SwiperSlide className="flex flex-col items-center justify-center text-center">
+                    <div className="w-full h-[28vw] flex items-center justify-center  ">
+                      <img
+                        className="w-[100%] h-[100%] object-cover rounded-2xl"
+                        src={"/posters/3.png"}
+                        alt=""
+                      />
+                    </div>
+                  </SwiperSlide>
+                  <SwiperSlide className="flex flex-col items-center justify-center text-center">
+                    <div className="w-full h-[28vw] flex items-center justify-center  ">
+                      <img
+                        className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
+                        src={"/pt11.png"}
+                        alt=""
+                      />
+                    </div>
+                  </SwiperSlide>
+                </Swiper>
             </div>
           </div>
         </section>

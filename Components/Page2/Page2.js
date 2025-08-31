@@ -6,6 +6,7 @@ import Link from "next/link";
 import React from "react";
 import SwiperService from "../Swiper/SwiperService";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useRouter } from "next/navigation";
 
 // Import Swiper styles
 import "swiper/css";
@@ -17,6 +18,7 @@ import style from "./Page2.module.css";
 import { Pagination } from "swiper/modules";
 
 const Page2 = () => {
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const data = [
     {
@@ -99,11 +101,10 @@ const Page2 = () => {
 
   const handleClick = (index, link) => {
     if (index <= 2) {
-      // first three items (Food, Accessories, Doctor) => normal navigation
-      window.location.href = link;
+      router.push(link); // ✅ safe navigation
     } else {
-      // from index 3 onwards => show modal
-      setShowModal(true);
+      console.log("Coming Soon");
+      setShowModal(true); // ✅ shows modal properly
     }
   };
 
@@ -135,8 +136,7 @@ const Page2 = () => {
               <div
                 onClick={() => handleClick(index, i.link)}
                 key={index}
-                href={i.link}
-                className="w-full"
+                className="w-full cursor-pointer"
               >
                 <div className="flex flex-col items-center justify-center">
                   <img
@@ -186,29 +186,29 @@ const Page2 = () => {
                 </div>
               </div>
             ))}
-
-            {showModal && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-md z-50">
-                <div className="bg-white rounded-2xl p-8 text-center shadow-2xl w-[90%] max-w-md">
-                  <h2 className="text-2xl font-bold mb-4">🚧 Coming Soon 🚧</h2>
-                  <p className="text-gray-600 mb-6">
-                    <b>
-                      {" "}
-                      Woof! Our paws are still busy building this service. Stay
-                      tuned!”
-                    </b>
-                  </p>
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className="px-6 py-2 bg-[#0D9899] text-white rounded-lg hover:bg-[#0a7a7b] transition"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
         </div>
+
+        {showModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-md z-50">
+            <div className="bg-white rounded-2xl p-8 text-center shadow-2xl w-[90%] max-w-md">
+              <h2 className="text-2xl font-bold mb-4">🚧 Coming Soon 🚧</h2>
+              <p className="text-gray-600 mb-6">
+                <b>
+                  {" "}
+                  Woof! Our paws are still busy building this service. Stay
+                  tuned!”
+                </b>
+              </p>
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-6 py-2 bg-[#0D9899] text-white rounded-lg hover:bg-[#0a7a7b] transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

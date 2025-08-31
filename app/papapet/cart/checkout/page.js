@@ -312,6 +312,7 @@ export default function CheckoutPage() {
                 notes: orderNotes,
                 userId: authUser._id,
                 payment: verifyPayload,
+                couponCode : couponCode,
               };
 
               const { data: createRes } = await axios.post(

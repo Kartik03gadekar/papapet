@@ -6,8 +6,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Pagination, Navigation } from "swiper/modules";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import style from "./Page4.module.css";
+import Link from "next/link";
 
 const Page4 = () => {
   const products = [
@@ -34,16 +35,16 @@ const Page4 = () => {
   ];
 
   const brands = [
-    { img: "/image1.png" },
-    { img: "/image2.png" },
-    { img: "/image3.png" },
-    { img: "/image4.jpg" },
-    { img: "/image5.png" },
-    { img: "/image1.png" },
-    { img: "/image2.png" },
-    { img: "/image3.png" },
-    { img: "/image4.jpg" },
-    { img: "/image5.png" },
+    { img: "/image1.png", name: "pedigree" },
+    { img: "/image2.png", name: "drools" },
+    { img: "/image3.png", name: "royalcanin" },
+    { img: "/image4.jpg", name: "smartheart" },
+    { img: "/image5.png", name: "acana" },
+    { img: "/image1.png", name: "pedigree" },
+    { img: "/image2.png", name: "drools" },
+    { img: "/image3.png", name: "royalcanin" },
+    { img: "/image4.jpg", name: "smartheart" },
+    { img: "/image5.png", name: "acana" },
   ];
 
   return (
@@ -52,9 +53,19 @@ const Page4 = () => {
         <div className="">
           <Swiper
             pagination={true}
-            modules={[Pagination]}
+            autoplay={{
+              delay: 2500, // time between slides (ms)
+              disableOnInteraction: false, // keep autoplay after user swipes
+            }}
+            speed={1000} // smooth transition speed
+            modules={[Pagination, Autoplay]}
             className="mySwiper h-auto w-screen "
           >
+            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
+              <div className="hidden max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                <img className="rounded-2xl" src={`/posters/5.png`} alt="" />
+              </div>
+            </SwiperSlide>
             <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
               <div className="hidden max-md:w-screen max-md:flex max-md:items-center max-md:justify-center">
                 <img src={`/6.png`} alt="" />
@@ -105,13 +116,15 @@ const Page4 = () => {
               >
                 <div className="w-full flex flex-col items-center justify-center ">
                   <div className="w-24 h-24 md:w-30 md:h-30 border-4 border-yellow-500 rounded-full flex items-center justify-center   ">
-                    <img
-                      src={brand.img}
-                      alt={brand.name}
-                      width={100}
-                      height={100}
-                      className=" max-md:w-70 max-md:h-70 object-contain  rounded-full "
-                    />
+                    <Link href={`/papapet/food?brand=${brand.name}`}>
+                      <img
+                        src={brand.img}
+                        alt={brand.name}
+                        width={100}
+                        height={100}
+                        className=" max-md:w-70 max-md:h-70 object-contain  rounded-full "
+                      />
+                    </Link>
                   </div>
                 </div>
               </SwiperSlide>
@@ -120,8 +133,8 @@ const Page4 = () => {
         </div>
       </div>
 
-      <section className="hidden max-md:flex max-md:w-screen max-md:h-fit    max-md:flex-col max-md:items-center max-md:py-6">
-        {/* Title */}
+      {/* <section className="hidden max-md:flex max-md:w-screen max-md:h-fit    max-md:flex-col max-md:items-center max-md:py-6">
+       
         <div className="bg-gradient-to-t from-[#FFDEBA] to-white max-md:w-full max-md:py-5 max-md:px-5 flex flex-col items-center justify-center">
           <div className="flex items-end justify-start gap-5 ">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 flex items-center gap-2">
@@ -130,7 +143,7 @@ const Page4 = () => {
             </h2>
           </div>
 
-          {/* Products Grid */}
+     
           <div className="w-full flex justify-center">
             <div className="grid max-md:grid-cols-2 grid-cols-4 gap-5 mt-6 w-full max-w-6xl h-fit justify-items-center">
               {products.map((product, index) => (
@@ -140,7 +153,7 @@ const Page4 = () => {
                 >
                   <h6 className="text-lg font-[500] ">PaPaPet</h6>
                   <h3 className="text-xl font-[700] ">{product.name}</h3>
-                  {/* <p className="text-sm text-gray-600 font-[400] mb-[4] leading-[1.1] ">{product.description}</p> */}
+                  {/* <p className="text-sm text-gray-600 font-[400] mb-[4] leading-[1.1] ">{product.description}</p> 
                   <img
                     src={product.image}
                     alt={product.name}
@@ -152,7 +165,7 @@ const Page4 = () => {
           </div>
         </div>
 
-        {/* Features Section - Visible on Mobile Only */}
+    
         <div className=" max-md:flex max-md:w-screen   max-md:gap-2 max-md:bg-teal-100 py-4  px-2  max-md:items-center  justify-center  max-md:mt-[4vw]  ">
           <div
             className="max-md:justify-center tween  max-md:flex max-md:items-center max-md:gap-1 max-md:w-[40vw] max-md:h-[15vw]
@@ -194,7 +207,7 @@ const Page4 = () => {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

@@ -325,9 +325,99 @@ export default function CheckoutPage() {
         )
       : 0;
 
+  // const handleApplyCoupon = async (e) => {
+  //   e.preventDefault();
+  //   const code = couponCode.trim().toUpperCase();
+
+  //   if (appliedCoupon && appliedCoupon.code === code) {
+  //     setCouponError(`Coupon ${code} is already applied.`);
+  //     return;
+  //   }
+  //   if (!code) {
+  //     setCouponError("Please enter a coupon code.");
+  //     dispatch(applyCoupon(null));
+  //     return;
+  //   }
+
+  //   setIsCouponLoading(true);
+  //   setCouponError("");
+
+  //   try {
+  //     const res = await axiosInstance.post("/coupon/applyCoupon", {
+  //       couponCode: code,
+  //       price: subtotal,
+  //     });
+
+  //     const coupon = res.data.coupon || res.data;
+
+  //     const now = new Date();
+  //     let validityDate;
+  //     if (coupon.validity) {
+  //       if (typeof coupon.validity === "string") {
+  //         validityDate = new Date(coupon.validity);
+  //       } else if (coupon.validity.$date) {
+  //         validityDate = new Date(coupon.validity.$date); // 👈 handle Mongo style
+  //       }
+  //     }
+
+  //     if (!validityDate || isNaN(validityDate.getTime())) {
+  //       setCouponError("Invalid coupon data.");
+  //       return;
+  //     }
+
+  //     if (validityDate.getTime() < Date.now()) {
+  //       setCouponError("This coupon has expired.");
+  //       return;
+  //     }
+
+  //     const minPurchase = Number(coupon.minPurchase) || 0;
+  //     const currentSubtotal = Number(subtotal) || 0;
+
+  //     if (currentSubtotal < minPurchase) {
+  //       setCouponError(
+  //         `Minimum purchase of ₹${minPurchase} required for this coupon.`
+  //       );
+  //       return;
+  //     }
+
+  //     let discountValue = (currentSubtotal * Number(coupon.discount)) / 100;
+  //     const maxDiscount = Number(coupon.maxDiscount) || Infinity;
+  //     discountValue = Math.min(discountValue, maxDiscount);
+
+  //     dispatch(
+  //       applyCoupon({
+  //         code: coupon.couponCode,
+  //         discount: Math.floor(discountValue),
+  //         details: coupon,
+  //       })
+  //     );
+
+  //     setCouponError("");
+  //   } catch (err) {
+  //     const errorMessage =
+  //       err?.response?.status === 404 ||
+  //       err?.response?.data?.message?.includes("not found") ||
+  //       err?.message?.includes("not found")
+  //         ? "Invalid coupon code."
+  //         : "Failed to validate coupon. Please try again.";
+
+  //     setCouponError(errorMessage);
+  //     dispatch(applyCoupon(null));
+  //   } finally {
+  //     setIsCouponLoading(false);
+  //   }
+  // };
+
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
     const code = couponCode.trim().toUpperCase();
+
+    // 🚨 Prevent reapplying the same coupon
+    if (appliedCoupon && appliedCoupon.code === code) {
+      setCouponError(`Coupon ${code} is already applied.`);
+      return;
+    }
+
     if (!code) {
       setCouponError("Please enter a coupon code.");
       dispatch(applyCoupon(null));
@@ -341,32 +431,52 @@ export default function CheckoutPage() {
       const res = await axiosInstance.post("/coupon/applyCoupon", {
         couponCode: code,
         price: subtotal,
+        userId: authUser?._id, // 👈 include user if backend needs it
       });
+
+      console.log("Coupon response:", res.data);
 
       const coupon = res.data.coupon || res.data;
 
-      const now = new Date();
-      const validityDate = new Date(coupon.validity);
+      // 🔎 Handle validity format
+      let validityDate;
+      if (coupon.validity) {
+        if (typeof coupon.validity === "string") {
+          validityDate = new Date(coupon.validity);
+        } else if (coupon.validity.$date) {
+          validityDate = new Date(coupon.validity.$date);
+        }
+      }
 
-      if (validityDate.getTime() < now.getTime()) {
-        setCouponError("This coupon has expired.");
+      if (!validityDate || isNaN(validityDate.getTime())) {
+        setCouponError("Invalid coupon data.");
+        dispatch(applyCoupon(null));
         return;
       }
 
-      const minPurchase = Number(coupon.minPurchase) || 0;
-      const currentSubtotal = Number(subtotal) || 0;
+      // ⏰ Expired check
+      if (validityDate.getTime() < Date.now()) {
+        setCouponError("This coupon has expired.");
+        dispatch(applyCoupon(null));
+        return;
+      }
 
-      if (currentSubtotal < minPurchase) {
+      // 💰 Min purchase check
+      const minPurchase = Number(coupon.minPurchase) || 0;
+      if (subtotal < minPurchase) {
         setCouponError(
           `Minimum purchase of ₹${minPurchase} required for this coupon.`
         );
+        dispatch(applyCoupon(null));
         return;
       }
 
-      let discountValue = (currentSubtotal * Number(coupon.discount)) / 100;
+      // ✅ Calculate discount
+      let discountValue = (subtotal * Number(coupon.discount)) / 100;
       const maxDiscount = Number(coupon.maxDiscount) || Infinity;
       discountValue = Math.min(discountValue, maxDiscount);
 
+      // Save in Redux
       dispatch(
         applyCoupon({
           code: coupon.couponCode,
@@ -377,14 +487,16 @@ export default function CheckoutPage() {
 
       setCouponError("");
     } catch (err) {
-      const errorMessage =
-        err?.response?.status === 404 ||
-        err?.response?.data?.message?.includes("not found") ||
-        err?.message?.includes("not found")
-          ? "Invalid coupon code."
-          : "Failed to validate coupon. Please try again.";
+      const backendMessage = err?.response?.data?.message;
 
-      setCouponError(errorMessage);
+      if (backendMessage) {
+        setCouponError(backendMessage); // show actual backend error (expired, already used, etc.)
+      } else if (err?.response?.status === 404) {
+        setCouponError("Invalid coupon code.");
+      } else {
+        setCouponError("Failed to validate coupon. Please try again.");
+      }
+
       dispatch(applyCoupon(null));
     } finally {
       setIsCouponLoading(false);

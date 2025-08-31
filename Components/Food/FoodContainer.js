@@ -13,7 +13,7 @@ import {
 
 // Swiper imports for carousels
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+import { Pagination, Navigation ,Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -41,6 +41,7 @@ const brands = [
   { name: "Drools", img: "/drools.png" },
   { name: "Happy Dog", img: "/happy.avif" },
   { name: "MERA", img: "/mera.webp" },
+  { name: "Pedigree", img: "/pedigree.png" },
 ];
 const categories = [
   { name: "All", value: "All", label: "All" },
@@ -100,11 +101,15 @@ const FoodContainer = () => {
 
   // For category sidebar and mobile
   const subCategories = categories.filter((cat) => cat.value !== "All");
+  const [visibleCount, setVisibleCount] = useState(9);
 
   const searchParams = useSearchParams();
   const initialAnimal = searchParams.get("animal");
   const initialCategory = searchParams.get("category");
+  const initialBrand = searchParams.get("brand");
   const router = useRouter();
+
+  const slugify = (str) => str.toLowerCase().replace(/\s+/g, "");
 
   // set filters from URL on mount
   useEffect(() => {
@@ -133,7 +138,11 @@ const FoodContainer = () => {
         );
       }
     }
-  }, [initialAnimal, initialCategory]);
+
+    if (initialBrand) {
+      setSelectedBrand(initialBrand);
+    }
+  }, [initialAnimal, initialCategory, initialBrand]);
 
   // Responsive check for Swiper navigation
   const [isLargeScreen, setIsLargeScreen] = useState(false);
@@ -165,7 +174,10 @@ const FoodContainer = () => {
 
     return products.filter((item) => {
       // --- Brand filter ---
-      if (selectedBrand !== "All" && item.brand !== selectedBrand) {
+      if (
+        selectedBrand !== "All" &&
+        slugify(item.brand) !== slugify(selectedBrand)
+      ) {
         return false;
       }
 
@@ -301,6 +313,10 @@ const FoodContainer = () => {
   const filtered = filterProducts(food);
   const sorted = sortProducts(filtered);
 
+  const visibleProducts = sorted
+    .filter((item) => item.productType === "food")
+    .slice(0, visibleCount);
+
   // Product list rendering
   let productList;
   if (load) {
@@ -317,17 +333,28 @@ const FoodContainer = () => {
     );
   } else {
     productList = (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-        {sorted
-          .filter((item) => item.productType === "food")
-          .map((item, idx) => (
+      <>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+          {visibleProducts.map((item, idx) => (
             <ProductCard
               key={item._id || item.id || idx}
               i={item}
               imgLink={imgLink}
             />
           ))}
-      </div>
+        </div>
+
+        {visibleCount < sorted.length && (
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 9)}
+              className="px-6 py-2 bg-[#FD890E] text-white rounded-lg shadow-md hover:bg-[#e67a0c] transition"
+            >
+              Show More
+            </button>
+          </div>
+        )}
+      </>
     );
   }
 
@@ -652,9 +679,23 @@ const FoodContainer = () => {
               <div className="w-full flex items-center justify-center gap-8 py-2">
                 <Swiper
                   pagination={{ clickable: true }}
-                  modules={[Pagination]}
+                  modules={[Pagination, Autoplay]}
+                  autoplay={{
+                    delay: 2500, // time between slides (ms)
+                    disableOnInteraction: false, // keep autoplay after user swipes
+                  }}
+                  speed={1000}
                   className="w-full"
                 >
+                  <SwiperSlide className="flex flex-col items-center justify-center text-center">
+                    <div className="w-full h-[28vw] flex items-center justify-center  ">
+                      <img
+                        className="w-[100%] h-[100%] object-cover rounded-2xl"
+                        src={"/posters/3.png"}
+                        alt=""
+                      />
+                    </div>
+                  </SwiperSlide>
                   <SwiperSlide className="flex flex-col items-center justify-center text-center">
                     <div className="w-full h-[28vw] flex items-center justify-center  ">
                       <img
