@@ -14,7 +14,7 @@ import Loading from "../loading";
 
 // Swiper imports for carousels
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination,Autoplay, Navigation } from "swiper/modules";
+import { Pagination, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -540,34 +540,34 @@ const AccessoiresProduct = () => {
             <div className="flex items-center text-center justify-center"></div>
             <div className="w-full flex items-center justify-center gap-8 py-2">
               <Swiper
-                  pagination={{ clickable: true }}
-                  modules={[Pagination, Autoplay]}
-                  autoplay={{
-                    delay: 2500, // time between slides (ms)
-                    disableOnInteraction: false, // keep autoplay after user swipes
-                  }}
-                  speed={1000}
-                  className="w-full"
-                >
-                  <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                    <div className="w-full h-[28vw] flex items-center justify-center  ">
-                      <img
-                        className="w-[100%] h-[100%] object-cover rounded-2xl"
-                        src={"/posters/3.png"}
-                        alt=""
-                      />
-                    </div>
-                  </SwiperSlide>
-                  <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                    <div className="w-full h-[28vw] flex items-center justify-center  ">
-                      <img
-                        className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
-                        src={"/pt11.png"}
-                        alt=""
-                      />
-                    </div>
-                  </SwiperSlide>
-                </Swiper>
+                pagination={{ clickable: true }}
+                modules={[Pagination, Autoplay]}
+                autoplay={{
+                  delay: 2500, // time between slides (ms)
+                  disableOnInteraction: false, // keep autoplay after user swipes
+                }}
+                speed={1000}
+                className="w-full"
+              >
+                <SwiperSlide className="flex flex-col items-center justify-center text-center">
+                  <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                    <img
+                      className="rounded-2xl h-full w-full object-cover"
+                      src={"/posters/acc1.png"}
+                      alt=""
+                    />
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide className="flex flex-col items-center justify-center text-center">
+                  <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                    <img
+                      className="rounded-2xl h-full w-full object-cover"
+                      src={"/posters/acc2.png"}
+                      alt=""
+                    />
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
           </div>
         </section>

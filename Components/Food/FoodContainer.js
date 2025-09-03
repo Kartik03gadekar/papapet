@@ -13,7 +13,7 @@ import {
 
 // Swiper imports for carousels
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation ,Autoplay } from "swiper/modules";
+import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -36,11 +36,13 @@ function classNames(...classes) {
 // Filter options
 const brands = [
   { name: "Royal Canin", img: "/royal.webp" },
-  { name: "Arden Grance", img: "/arden.png" },
-  { name: "Sniffy", img: "/sniffy.jpg" },
-  { name: "Drools", img: "/drools.png" },
-  { name: "Happy Dog", img: "/happy.avif" },
-  { name: "MERA", img: "/mera.webp" },
+  { name: "Drools", img: "/arden.png" },
+  { name: "Whiskas", img: "/sniffy.jpg" },
+  { name: "Purina", img: "/drools.png" },
+  { name: "Sheba", img: "/happy.avif" },
+  { name: "Farmina", img: "/mera.webp" },
+  { name: "Acana", img: "/pedigree.png" },
+  { name: "Smart Heart", img: "/pedigree.png" },
   { name: "Pedigree", img: "/pedigree.png" },
 ];
 const categories = [
@@ -108,8 +110,21 @@ const FoodContainer = () => {
   const initialCategory = searchParams.get("category");
   const initialBrand = searchParams.get("brand");
   const router = useRouter();
+  const [pendingBrand, setPendingBrand] = useState("All");
+  const [pendingCategory, setPendingCategory] = useState("All");
+  const [pendingAnimalCategory, setPendingAnimalCategory] = useState("All");
+  const [pendingPrice, setPendingPrice] = useState(FOOD_MAX_PRICE);
 
   const slugify = (str) => str.toLowerCase().replace(/\s+/g, "");
+
+  useEffect(() => {
+    if (mobileFiltersOpen) {
+      setPendingBrand(selectedBrand);
+      setPendingCategory(selectedCategory);
+      setPendingAnimalCategory(selectedAnimalCategory);
+      setPendingPrice(selectedPrice);
+    }
+  }, [mobileFiltersOpen]);
 
   // set filters from URL on mount
   useEffect(() => {
@@ -540,9 +555,10 @@ const FoodContainer = () => {
                   leaveTo="-translate-x-full"
                 >
                   <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+                    {/* Header */}
                     <div className="flex items-center justify-between px-4 pt-20 md:pt-40">
                       <h2 className="text-lg font-medium text-gray-900">
-                        Categories
+                        Filters
                       </h2>
                       <button
                         type="button"
@@ -553,15 +569,18 @@ const FoodContainer = () => {
                         <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
                     </div>
+
+                    {/* Categories */}
                     <div className="mt-4 px-4">
+                      <h3 className="text-sm font-medium mb-2">Categories</h3>
                       <ul className="space-y-2 text-base font-medium">
                         <li key="all">
                           <button
                             type="button"
-                            onClick={() => handleCategoryClick("All")}
+                            onClick={() => setPendingCategory("All")}
                             className={classNames(
                               "text-left w-full px-2 py-2 rounded transition-colors",
-                              selectedCategory === "All"
+                              pendingCategory === "All"
                                 ? "text-[#c9a74d] bg-gray-100 font-semibold"
                                 : "text-gray-700 hover:bg-gray-50"
                             )}
@@ -577,10 +596,10 @@ const FoodContainer = () => {
                           <li key={cat.value}>
                             <button
                               type="button"
-                              onClick={() => handleCategoryClick(cat.value)}
+                              onClick={() => setPendingCategory(cat.name)}
                               className={classNames(
                                 "text-left w-full px-2 py-2 rounded transition-colors",
-                                selectedCategory === cat.name
+                                pendingCategory === cat.name
                                   ? "text-[#c9a74d] bg-gray-100 font-semibold"
                                   : "text-gray-700 hover:bg-gray-50"
                               )}
@@ -595,16 +614,17 @@ const FoodContainer = () => {
                         ))}
                       </ul>
                     </div>
-                    {/* Animal Category filter for mobile */}
+
+                    {/* Animal Category */}
                     <div className="mt-4 px-4">
                       <label className="block text-sm font-medium mb-1">
                         Animal Category
                       </label>
                       <select
                         className="border rounded px-2 py-1 w-full"
-                        value={selectedAnimalCategory}
+                        value={pendingAnimalCategory}
                         onChange={(e) =>
-                          setSelectedAnimalCategory(e.target.value)
+                          setPendingAnimalCategory(e.target.value)
                         }
                       >
                         {animalCategories.map((animal) => (
@@ -614,7 +634,8 @@ const FoodContainer = () => {
                         ))}
                       </select>
                     </div>
-                    {/* Brand and Price filters for mobile */}
+
+                    {/* Brand + Price */}
                     <div className="mt-6 px-4">
                       <div className="mb-4">
                         <label className="block text-sm font-medium mb-1">
@@ -622,8 +643,8 @@ const FoodContainer = () => {
                         </label>
                         <select
                           className="border rounded px-2 py-1 w-full"
-                          value={selectedBrand}
-                          onChange={(e) => setSelectedBrand(e.target.value)}
+                          value={pendingBrand}
+                          onChange={(e) => setPendingBrand(e.target.value)}
                         >
                           <option value="All">All</option>
                           {brands.map((brand) => (
@@ -633,37 +654,80 @@ const FoodContainer = () => {
                           ))}
                         </select>
                       </div>
-                      <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1">
-                          Max Price (₹{selectedPrice})
-                        </label>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-gray-500">
-                            ₹{minPrice}
-                          </span>
-                          <input
-                            type="range"
-                            min={minPrice}
-                            max={maxPrice}
-                            value={selectedPrice}
-                            onChange={handlePriceSliderChange}
-                            className="flex-1 accent-[#c9a74d]"
-                            step={1}
-                          />
-                          <span className="text-xs text-gray-500">
-                            ₹{maxPrice}
-                          </span>
-                        </div>
+
+                     <div className="mb-4">
+  <label className="block text-sm font-medium mb-1">
+    Max Price (₹{pendingPrice})
+  </label>
+  <div className="flex items-center gap-2">
+    <span className="text-xs text-gray-500">₹{minPrice}</span>
+
+    <input
+      type="range"
+      min={minPrice}
+      max={maxPrice}
+      value={pendingPrice}
+      onChange={(e) => setPendingPrice(Number(e.target.value))}
+      className="flex-1 accent-[#FFAD22] cursor-pointer"
+      step={500} // step of ₹1000
+      list="price-steps"
+    />
+
+    <span className="text-xs text-gray-500">₹{maxPrice}</span>
+  </div>
+
+  {/* Stepper ticks */}
+  <datalist id="price-steps" className="w-full flex justify-between text-xs text-gray-500">
+    <option value={minPrice} label={`₹${minPrice}`} />
+    <option value={5000} label="₹5k" />
+    <option value={10000} label="₹10k" />
+    <option value={15000} label="₹15k" />
+    <option value={20000} label="₹20k" />
+    <option value={maxPrice} label={`₹${maxPrice}`} />
+  </datalist>
+</div>
+
+
+                      {/* Buttons */}
+                      {/* Buttons */}
+                      <div className="flex gap-2 mt-4">
+                        {/* Reset instantly applies */}
+                        <button
+                          className="w-1/2 px-3 py-2 rounded bg-gray-200 hover:bg-gray-300"
+                          onClick={() => {
+                            // Reset pending states
+                            setPendingBrand("All");
+                            setPendingCategory("All");
+                            setPendingAnimalCategory("All");
+                            setPendingPrice(maxPrice);
+
+                            // Instantly apply to main filters
+                            setSelectedBrand("All");
+                            setSelectedCategory("All");
+                            setSelectedAnimalCategory("All");
+                            setSelectedPrice(maxPrice);
+
+                            // Close the modal
+                            setMobileFiltersOpen(false);
+                          }}
+                        >
+                          Reset
+                        </button>
+
+                        {/* Apply requires confirmation */}
+                        <button
+                          className="w-1/2 px-3 py-2 rounded bg-[#FD890E] text-white hover:bg-[#e67a0c]"
+                          onClick={() => {
+                            setSelectedBrand(pendingBrand);
+                            setSelectedCategory(pendingCategory);
+                            setSelectedAnimalCategory(pendingAnimalCategory);
+                            setSelectedPrice(pendingPrice);
+                            setMobileFiltersOpen(false);
+                          }}
+                        >
+                          Apply
+                        </button>
                       </div>
-                      <button
-                        className="w-full mt-2 px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
-                        onClick={() => {
-                          resetFilters();
-                          setMobileFiltersOpen(false);
-                        }}
-                      >
-                        Reset Filters
-                      </button>
                     </div>
                   </Dialog.Panel>
                 </Transition.Child>
@@ -688,18 +752,27 @@ const FoodContainer = () => {
                   className="w-full"
                 >
                   <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                    <div className="w-full h-[28vw] flex items-center justify-center  ">
+                    <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
                       <img
-                        className="w-[100%] h-[100%] object-cover rounded-2xl"
-                        src={"/posters/3.png"}
+                        className="rounded-2xl h-full w-full object-cover"
+                        src={"/posters/food1.png"}
                         alt=""
                       />
                     </div>
                   </SwiperSlide>
                   <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                    <div className="w-full h-[28vw] flex items-center justify-center  ">
+                    <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
                       <img
-                        className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
+                        className="rounded-2xl h-full w-full object-cover"
+                        src={"/posters/acc1.png"}
+                        alt=""
+                      />
+                    </div>
+                  </SwiperSlide>
+                  <SwiperSlide className="flex flex-col items-center justify-center text-center">
+                    <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                      <img
+                        className="rounded-2xl h-full w-full object-cover"
                         src={"/6 (1).png"}
                         alt=""
                       />

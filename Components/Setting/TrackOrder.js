@@ -137,17 +137,15 @@ export default function TrackOrder({ details, awb }) {
     setPrintLoading(true);
     setPrintError(null);
     try {
-      const orderId = order.order || order.id || order._id;
-      if (!orderId) throw new Error("Order ID not found");
-      const res = await axiosInstance.post(
-        "/delivery/print_invoice",
-        { awb_numbers: awbNumber },
-        { responseType: "blob" }
-      );
-      const blob = new Blob([res.data], { type: "application/pdf" });
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, "_blank");
-      setTimeout(() => window.URL.revokeObjectURL(url), 10000);
+      const res = await axiosInstance.post("/delivery/print_invoice", {
+        awb_numbers: awbNumber,
+      });
+
+      const pdfUrl = res.data?.data_to_send?.file_name;
+      if (!pdfUrl) throw new Error("No PDF URL received");
+
+      // Open the PDF directly
+      window.open(pdfUrl, "_blank");
     } catch (err) {
       setPrintError(
         err?.response?.data?.message ||
@@ -159,7 +157,6 @@ export default function TrackOrder({ details, awb }) {
     }
   };
 
-  // Show cancel button only if not delivered/cancelled
   const canCancel =
     typeof currentStepIndex === "number" &&
     currentStepIndex < steps.length - 1 &&

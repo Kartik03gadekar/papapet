@@ -81,10 +81,10 @@ const PetHealthReport = () => {
                 </button>
 
                 <h1 className="text-2xl xl:text-3xl font-bold bg-gradient-to-l from-[#0D9899] to-white bg-clip-text text-transparent">
-                  Calculate Your Pet's Body Mass Index
+                  Generate your Pet's AI Health Report with PaPaPet AI
                 </h1>
                 <p className="text-white text-xl xl:text-2xl mt-2 pr-12 2xl:max-w-2xl">
-                  Body Mass Index (BMI) measures body fat based on weight and
+                  Measures body fat based on weight and
                   height. It’s one of many measures to check how in shape your
                   pet is.
                 </p>

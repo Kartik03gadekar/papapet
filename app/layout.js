@@ -1,3 +1,5 @@
+"use client";
+
 import "remixicon/fonts/remixicon.css";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
@@ -8,6 +10,7 @@ import ReduxProvider from "@/store/ReduxProvider";
 import Script from "next/script";
 
 export default function RootLayout({ children }) {
+ 
   return (
     <html lang="en">
       <head>

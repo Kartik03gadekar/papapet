@@ -72,7 +72,7 @@ export default function CheckoutPage() {
   const appliedCoupon = useSelector((state) => state.cart.appliedCoupon);
 
   useEffect(() => {
-    dispatch(fetchCart()); // ✅ gets fresh cart from DB
+    dispatch(fetchCart());
   }, [dispatch]);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     const fetchDefaultAddress = async () => {
       if (!authUser || !authUser._id) return;
-      if (selectedAddress) return; // 👈 skip if user already picked one
+      if (selectedAddress) return;
 
       try {
         const { data } = await axios.get(
@@ -302,10 +302,10 @@ export default function CheckoutPage() {
                   product_sku: item._id || "",
                   product_img_url: getImageUrl(item),
                 })),
-                shipment_length: "10",
-                shipment_width: "10",
-                shipment_height: "10",
-                weight: "0.5",
+                shipment_length: "1",
+                shipment_width: "1",
+                shipment_height: "1",
+                weight: "0.1",
                 discount: discount,
                 shipping: shipping,
                 tax: 0,

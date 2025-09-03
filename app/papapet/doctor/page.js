@@ -4,6 +4,19 @@ import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import axiosInstance from "@/Axios/axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { LuMessageCircleMore } from "react-icons/lu";
+import { LuShare } from "react-icons/lu";
+import { LuPhoneCall } from "react-icons/lu";
+import { LuMap } from "react-icons/lu";
+import { FaStar } from "react-icons/fa";
+import { IoLocationOutline } from "react-icons/io5";
+import Footer from "@/Components/Footer/Footer";
+import ShareDoctor from "@/Components/ShareDoctor";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
 const Page = () => {
   const router = useRouter();
@@ -30,9 +43,53 @@ const Page = () => {
     },
   ];
 
- const redirectToGenerator = ()=>{
-  router.push("/papapet/doctor/healthreport");
- }
+  const [shops, setShops] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(8);
+
+  const icons = [
+    <LuMessageCircleMore key="chat" />,
+    <LuShare key="share" />,
+    <LuPhoneCall key="call" />,
+    <LuMap key="location" />,
+  ];
+
+  const handleGetNearby = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        setLoading(true);
+        try {
+          const res = await axiosInstance.post("/AI/getNearbyPlaces", {
+            lat,
+            lng,
+            keyword: "veterinary clinic pet hospital pet shop",
+            radius: 10000, // 3km radius
+          });
+
+          setShops(res.data.results);
+        } catch (err) {
+          console.error("Error fetching places:", err);
+        } finally {
+          setLoading(false);
+        }
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+        toast.warn("Please enable location access to use this feature.");
+      }
+    );
+  };
+
+  const redirectToGenerator = () => {
+    router.push("/papapet/doctor/healthreport");
+  };
 
   return (
     <div className="w-full overflow-x-hidden">
@@ -82,10 +139,13 @@ const Page = () => {
         <div className="w-full md:w-1/3 flex flex-col items-center justify-start gap-[8vw] max-md:w-full max-md:items-center max-md:gap-[8vw]">
           <div className="cursor-pointer bg-[#FFAD22] p-4 rounded-lg shadow-lg flex items-center space-x-3 max-md:w-[80%]">
             <p className="text-sm font-medium text-gray-700">
-              Generate your Pet’s Health Report in just a few clicks  
+              Generate your Pet’s Health Report in just a few clicks
               <span>
-                <button className=" ml-2 px-2 py-1 rounded-full bg-[#77C5C6]" onClick={redirectToGenerator}>
-                   Generate Now &rarr;
+                <button
+                  className=" ml-2 px-2 py-1 rounded-full bg-[#77C5C6]"
+                  onClick={redirectToGenerator}
+                >
+                  Generate Now &rarr;
                 </button>
               </span>
             </p>
@@ -127,13 +187,39 @@ const Page = () => {
           </div>
         </div>
       </section>
-      <div className="w-full h-[28vw] flex items-center justify-center  ">
-        <img
-          className="w-[80%] h-[80%] max-md:w-[90%]  max-md:h-[90%]"
-          src={"/9.png"}
-          alt=""
-        />
-      </div>
+      <section>
+        <div className="h-auto w-full">
+          <Swiper
+            pagination={true}
+            autoplay={{
+              delay: 2500, // time between slides (ms)
+              disableOnInteraction: false, // keep autoplay after user swipes
+            }}
+            speed={1000} // smooth transition speed
+            modules={[Pagination, Autoplay]}
+            className="mySwiper h-auto w-screen "
+          >
+            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
+              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                <img
+                  className="rounded-2xl h-full w-full object-cover"
+                  src={`/posters/doctor1.png`}
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
+              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                <img
+                  className="h-full w-full object-cover rounded-2xl"
+                  src={`/posters/doctor2.png`}
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+          </Swiper>
+        </div>
+      </section>
 
       {/* Services Section */}
       <section className="py-8 text-center bg-[#F4EEE1]">
@@ -161,43 +247,137 @@ const Page = () => {
 
       {/* Trusted Doctors Section */}
       <section className="py-10 px-6 text-center bg-[#F4EEE1]">
-        <h2 className="text-3xl font-semibold">Trusted Doctors Near You</h2>
-        <input
-          type="text"
-          placeholder="Search Top doctors around here..."
-          className="mt-4 p-2 w-full md:w-1/2 border border-gray-300 rounded-md placeholder:pl-2"
-        />
+        <div className="p-6">
+          <div className="flex max-md:flex-col items-center justify-between gap-3">
+            <h2 className="text-3xl font-bold">Nearby Veterinary Clinics</h2>
+            <button
+              onClick={handleGetNearby}
+              className="btn bg-orange-500 text-white mb-6"
+            >
+              Use My Location
+            </button>
+          </div>
+
+          {loading && <p>Loading nearby clinics...</p>}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
+            {shops.slice(0, visibleCount).map((shop, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col h-full"
+              >
+                {/* Image */}
+                <img
+                  src={
+                    shop.photos
+                      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${shop.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`
+                      : "https://placehold.co/400x300?text=No+Image"
+                  }
+                  alt={shop.name}
+                  className="w-full h-48 sm:h-56 object-cover"
+                />
+
+                {/* Content */}
+                <div className="p-4 sm:p-6 flex flex-col flex-grow text-left">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1 pr-2">
+                      <h1 className="text-lg sm:text-xl font-bold text-[var(--text-primary)] line-clamp-2">
+                        {shop.name}
+                      </h1>
+                      <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-1 line-clamp-1">
+                        {shop.types?.slice(0, 3).join(", ")}
+                      </p>
+                    </div>
+
+                    {/* Rating */}
+                    {shop.rating && (
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        <FaStar className="text-yellow-400 text-sm sm:text-base" />
+                        <span className="font-bold text-sm sm:text-lg text-[var(--text-primary)]">
+                          {shop.rating}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Address */}
+                  <div className="mt-3 text-[var(--text-secondary)] text-xs sm:text-sm gap-2 flex items-center w-full line-clamp-2">
+                    <IoLocationOutline className="md:text-2xl text-xl flex-shrink-0" />
+                    <span>{shop.vicinity}</span>
+                  </div>
+
+                  <div className="flex-grow"></div>
+                </div>
+
+                {/* Footer Buttons */}
+                {/* Footer Buttons */}
+                <div className="rounded-b-2xl px-4 sm:px-6 py-2 flex justify-around items-center text-white border-t bg-orange-400">
+                  {/* Chat */}
+                  <button
+                    onClick={() => console.log(`Chat with ${shop.name}`)}
+                    className="flex flex-col items-center hover:opacity-80 transition-opacity text-lg sm:text-2xl"
+                  >
+                    <LuMessageCircleMore />
+                  </button>
+
+                  {/* Share */}
+                  <ShareDoctor product={shop} />
+
+                  {/* Phone */}
+                  <button
+                    onClick={() => {
+                      if (shop.formatted_phone_number) {
+                        window.location.href = `tel:${shop.formatted_phone_number}`;
+                      } else {
+                        toast.error("Phone number not available");
+                      }
+                    }}
+                    className="flex flex-col items-center hover:opacity-80 transition-opacity text-lg sm:text-2xl"
+                  >
+                    <LuPhoneCall />
+                  </button>
+
+                  {/* Map */}
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `https://www.google.com/maps/search/?api=1&query=${shop.geometry?.location.lat},${shop.geometry?.location.lng}`,
+                        "_blank"
+                      )
+                    }
+                    className="flex flex-col items-center hover:opacity-80 transition-opacity text-lg sm:text-2xl"
+                  >
+                    <LuMap />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Load More Button */}
+          {visibleCount < shops.length && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={() => setVisibleCount(visibleCount + 8)}
+                className="btn bg-orange-500 text-white"
+              >
+                Load More
+              </button>
+            </div>
+          )}
+        </div>
       </section>
 
       {/* Best Doctors Section */}
-      <section className="py-10 px-6 bg-white">
-        <h2 className="text-3xl font-semibold text-center">
+      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-white">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-center">
           Best Doctors Connected With Us
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 max-md:grid-cols-2">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <div
-              key={index}
-              className="bg-white px-4 py-2 rounded-lg border border-orange-300 text-center"
-            >
-              <img
-                src="/doctorimagepng (1).png"
-                alt="Doctor"
-                width={80}
-                height={80}
-                className="mx-auto"
-              />
-              <h3 className="mt-2 font-medium max-md:text-[4vw]">
-                Dr. Abhinav Jain
-              </h3>
-              <h4 className="text-sm max-md:text-[3vw]">City-Bhopal</h4>
-              <p className="text-sm text-gray-500 max-md:text-[2.5vw]">
-                Connect Within 60 sec
-              </p>
-            </div>
-          ))}
-        </div>
+
+        {/* Grid layout */}
       </section>
+
+      <Footer />
 
       {/* Hero Section */}
       {/* <section className="relative w-full h-screen max-md:h-auto max-md:pb-6 text-white flex flex-col md:flex-row justify-between items-center px-8 gap-4"> */}

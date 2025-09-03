@@ -35,22 +35,21 @@ const Page4 = () => {
   ];
 
   const brands = [
-    { img: "/image1.png", name: "pedigree" },
-    { img: "/image2.png", name: "drools" },
-    { img: "/image3.png", name: "royalcanin" },
+    { img: "/brands/pedigree.png", name: "pedigree" },
+    { img: "/brands/drools.jpg", name: "drools" },
+    { img: "/brands/royalcanin.png", name: "royalcanin" },
     { img: "/image4.jpg", name: "smartheart" },
     { img: "/image5.png", name: "acana" },
-    { img: "/image1.png", name: "pedigree" },
-    { img: "/image2.png", name: "drools" },
-    { img: "/image3.png", name: "royalcanin" },
-    { img: "/image4.jpg", name: "smartheart" },
-    { img: "/image5.png", name: "acana" },
+    { img: "/brands/purina.png", name: "purina" },
+    { img: "/brands/whiskas.png", name: "whiskas" },
+    { img: "/brands/sheba.png", name: "sheba" },
+    { img: "/brands/farmina.png", name: "farmina" },
   ];
 
   return (
     <div>
       <section id="supplies">
-        <div className="">
+        <div className="h-auto w-full">
           <Swiper
             pagination={true}
             autoplay={{
@@ -62,13 +61,48 @@ const Page4 = () => {
             className="mySwiper h-auto w-screen "
           >
             <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
-              <div className="hidden max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                <img className="rounded-2xl" src={`/posters/5.png`} alt="" />
+              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                <img
+                  className="rounded-2xl h-full w-full object-cover"
+                  src={`/posters/home2.png`}
+                  alt=""
+                />
               </div>
             </SwiperSlide>
             <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
-              <div className="hidden max-md:w-screen max-md:flex max-md:items-center max-md:justify-center">
-                <img src={`/6.png`} alt="" />
+              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                <img
+                  className="h-full w-full object-cover rounded-2xl"
+                  src={`/posters/home1.png`}
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
+              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                <img
+                  className="h-full w-full object-cover rounded-2xl"
+                  src={`/posters/home3.png`}
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
+              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                <img
+                  className="h-full w-full object-cover rounded-2xl"
+                  src={`/posters/home4.png`}
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
+              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                <img
+                  className="h-full w-full object-cover rounded-2xl"
+                  src={`/posters/home5.png`}
+                  alt=""
+                />
               </div>
             </SwiperSlide>
           </Swiper>
@@ -120,9 +154,7 @@ const Page4 = () => {
                       <img
                         src={brand.img}
                         alt={brand.name}
-                        width={100}
-                        height={100}
-                        className=" max-md:w-70 max-md:h-70 object-contain  rounded-full "
+                        className="w-full h-full rounded-full object-contain"
                       />
                     </Link>
                   </div>

@@ -15,7 +15,7 @@ import { checkUser } from "@/store/Action/auth";
 import { addToCart, clearCart } from "@/store/slices/cartSlices";
 import axiosInstance from "@/Axios/axios";
 import { toast } from "react-toastify"; // <-- Import toastify
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 import ShareProduct from "./ShareProduct";
 
 const loadScript = (src) => {
@@ -32,7 +32,7 @@ const ProductDetail = ({ i, product }) => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
-   const router = useRouter();
+  const router = useRouter();
   const [pincode, setPincode] = useState("");
   const [pincodeStatus, setPincodeStatus] = useState(null);
   const [pincodeMessage, setPincodeMessage] = useState("");
@@ -51,185 +51,63 @@ const ProductDetail = ({ i, product }) => {
     setQuantity(quantity + 1);
   };
 
-  const handleCheckPincode = async () => {
-    if (!pincode || pincode.length < 6) {
-      setPincodeStatus("error");
-      setPincodeMessage("Please enter a valid 6-digit pincode.");
-      return;
-    }
+ const handleCheckPincode = async () => {
+  if (!pincode || pincode.length < 6) {
+    setPincodeStatus("error");
+    setPincodeMessage("Please enter a valid 6-digit pincode.");
+    return;
+  }
 
-    setPincodeStatus("checking");
-    setPincodeMessage("Checking delivery availability...");
+  setPincodeStatus("checking");
+  setPincodeMessage("Checking delivery availability...");
 
-    try {
-      const res = await axiosInstance.post(`/delivery/pincode`, { pincode });
-      const data = res.data;
+  try {
+    const res = await axiosInstance.post(`/delivery/pincode`, { pincode });
+    const data = res.data;
 
-      if (data.status === "success" && data.data) {
-        const courierData = data.data[pincode];
-        if (courierData) {
-          const isAvailable = Object.values(courierData).some(
-            (courier) => courier.prepaid === "Y" || courier.cod === "Y"
-          );
+    if (data.status === "success" && data.data) {
+      const courierData = data.data[pincode];
+      if (courierData) {
+        const isAvailable = Object.values(courierData).some(
+          (courier) => courier.prepaid === "Y" || courier.cod === "Y"
+        );
 
-          if (isAvailable) {
-            setPincodeStatus("available");
-            setPincodeMessage("Delivery is available to this pincode!");
-          } else {
-            setPincodeStatus("unavailable");
-            setPincodeMessage("Sorry, no courier delivers to this pincode.");
-          }
+        if (isAvailable) {
+          setPincodeStatus("available");
+          setPincodeMessage("Delivery is available to this pincode!");
         } else {
           setPincodeStatus("unavailable");
-          setPincodeMessage("Pincode not serviceable.");
+          setPincodeMessage("Sorry, no courier delivers to this pincode.");
         }
       } else {
-        setPincodeStatus("error");
-        setPincodeMessage("Failed to check pincode. Please try again.");
+        setPincodeStatus("unavailable");
+        setPincodeMessage("Pincode not serviceable.");
       }
-    } catch (err) {
-      console.error(err);
+    } else {
       setPincodeStatus("error");
       setPincodeMessage("Failed to check pincode. Please try again.");
     }
-  };
+  } catch (err) {
+    console.error(err);
 
-  // const handleBuyNow = async () => {
-  //   const razorpayLoaded = await loadScript(
-  //     "https://checkout.razorpay.com/v1/checkout.js"
-  //   );
-  //   if (!razorpayLoaded) {
-  //     toast.error("Failed to load Razorpay SDK.");
-  //     return;
-  //   }
+    if (err.response?.status === 401) {
+      setPincodeStatus("unauthorized");
+      setPincodeMessage("Please login to check delivery availability.");
+    } else {
+      setPincodeStatus("error");
+      setPincodeMessage("Failed to check pincode. Please try again.");
+    }
+  }
+};
 
-  //   try {
-  //     const amount = Math.round(
-  //       (product?.discountprice || product?.price || 0) * quantity * 100
-  //     );
 
-  //     const backendOrderRes = await axiosInstance.post(
-  //       "/payment/create-order",
-  //       { amount: (amount / 100).toFixed(2) }
-  //     );
-  //     const order = backendOrderRes.data;
-
-  //     if (!order.id) {
-  //       toast.error("Failed to create Razorpay order");
-  //       return;
-  //     }
-
-  //     const options = {
-  //       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-  //       amount: order.amount,
-  //       currency: order.currency,
-  //       name: "Papapet",
-  //       description: product?.name || "Product Purchase",
-  //       order_id: order.id,
-  //       handler: async function (response) {
-  //         try {
-  //           const verifyRes = await axiosInstance.post("/payment/verify", {
-  //             razorpay_order_id: response.razorpay_order_id,
-  //             razorpay_payment_id: response.razorpay_payment_id,
-  //             razorpay_signature: response.razorpay_signature,
-  //           });
-
-  //           const verifyData = verifyRes.data;
-  //           if (!verifyData.success) {
-  //             toast.error("Payment verification failed.");
-  //             return;
-  //           }
-
-  //           const orderPayload = {
-  //             waybill: "",
-  //             order: "ORD" + Date.now().toString().slice(-6),
-  //             order_date: new Date().toISOString().split("T")[0],
-  //             total_amount: Math.round(amount / 100),
-  //             shipping: 0,
-  //             discount: product?.discount || 0,
-  //             tax: 0,
-  //             name: user?.name || "Customer",
-  //             add: user?.address || "123 MG Road",
-  //             pin: user?.pincode || "462001",
-  //             phone: user?.phone || "9876543210",
-  //             billing_name: user?.billing_name || user?.name || "Customer",
-  //             billing_add:
-  //               user?.billing_address || user?.address || "123 MG Road",
-  //             billing_pin: user?.billing_pincode || user?.pincode || "462001",
-  //             billing_phone: user?.billing_phone || user?.phone || "9876543210",
-  //             email: user?.email || "test@example.com",
-  //             userId: user?._id || "68238557a668edc0ee872d33",
-  //             products: [
-  //               {
-  //                 product_name: product?.name,
-  //                 product_quantity: quantity,
-  //                 product_price: product?.discountprice || product?.price,
-  //                 product_id: product?._id || product?.id || "",
-  //                 product_sku: product?.sku || "",
-  //                 product_image: product?.image || product?.img || "",
-  //                 product_category: product?.category || "",
-  //                 product_brand: product?.brand || "",
-  //               },
-  //             ],
-  //             applied_coupon: null,
-  //             shipment_length: 20,
-  //             shipment_width: 10,
-  //             shipment_height: 5,
-  //             weight: 1.5,
-  //             payment_id: response.razorpay_payment_id,
-  //           };
-
-  //           const saveOrderRes = await axiosInstance.post(
-  //             "/delivery/order_creation",
-  //             orderPayload
-  //           );
-
-  //           if (
-  //             !saveOrderRes.status ||
-  //             saveOrderRes.status < 200 ||
-  //             saveOrderRes.status >= 300
-  //           ) {
-  //             const errData = saveOrderRes.data || {};
-  //             console.error("Order saving failed:", errData);
-  //             toast.error("Order could not be saved. Please contact support.");
-  //             return;
-  //           }
-
-  //           toast.success("Order placed successfully!");
-  //           window.location.href = "/papapet/order/sucessfull";
-  //         } catch (error) {
-  //           console.error("Error in order handler:", error);
-  //           toast.error("Something went wrong. Please try again.");
-  //         }
-  //       },
-  //       prefill: {
-  //         name: user?.name || "Customer",
-  //         email: user?.email || "test@example.com",
-  //         contact: user?.phone || "9999999999",
-  //       },
-  //       theme: { color: "#f97316" },
-  //     };
-
-  //     const paymentObject = new window.Razorpay(options);
-  //     paymentObject.open();
-
-  //     paymentObject.on("payment.failed", function (response) {
-  //       toast.error("Payment failed.");
-  //       console.error(response.error);
-  //     });
-  //   } catch (error) {
-  //     console.error("Checkout error:", error);
-  //     toast.error("Something went wrong during checkout. Please try again.");
-  //   }
-  // };
-
-      const handleBuyNow = async (e) => {
+  const handleBuyNow = async (e) => {
     e.preventDefault();
 
     try {
       const { data } = await axiosInstance.post("/user/addToCart", {
-        foodId: product._id, 
-        quantity: 1, 
+        foodId: product._id,
+        quantity: 1,
       });
 
       if (data.success) {
@@ -240,7 +118,7 @@ const ProductDetail = ({ i, product }) => {
         dispatch(addToCart(item));
 
         toast.success("Item added to cart!");
-        router.push("/papapet/cart")
+        router.push("/papapet/cart");
       } else {
         toast.error(data.message || "Failed to add item");
       }
