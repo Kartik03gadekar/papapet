@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { DotLottiePlayer } from "@dotlottie/react-player";
-import "@dotlottie/react-player/dist/index.css";
+import { DotLottiePlayer } from "@lottiefiles/dotlottie-react"; // ✅ new package
+import "@lottiefiles/dotlottie-react/dist/index.css"; // if needed
 
 const Loader = () => {
   const messages = [
@@ -22,13 +22,13 @@ const Loader = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setMessage(messages[Math.floor(Math.random() * messages.length)]);
-    }, 2000); // change message every 2s
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="h-screen w-screen">
-      <div className="fixed bottom-2 right-1 md:bottom-5 md:right-5  bg-white z-[9999]">
+      <div className="fixed bottom-2 right-1 md:bottom-5 md:right-5 bg-white z-[9999]">
         <DotLottiePlayer
           src="/loaders/pageloader.lottie"
           autoplay
