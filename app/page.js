@@ -118,14 +118,6 @@ const Footer = dynamic(() => import("@/Components/Footer/Footer"));
 // import PageLoader from "@/Components/loader/PageLoader";
 
 const Page = () => {
-  useEffect(() => {
-    import("@/Components/Page2/Page2");
-    import("@/Components/Page3/Page3");
-    import("@/Components/Page4/Page4");
-    import("@/Components/Page5/Page5");
-    import("@/Components/Page6/Page6");
-    import("@/Components/Footer/Footer");
-  }, []);
 
   const dispatch = useDispatch();
   const { homepage, imgLink } = useSelector((state) => state.others);
