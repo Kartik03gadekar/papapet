@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
       <body suppressHydrationWarning={true}>
         <ReduxProvider>
           <NextTopLoader />
-          <TransitionWrapper>{children}</TransitionWrapper>
+          {children}
           <ToastContainer
             position="top-right"
             autoClose={1000} // disappear in 1 sec
