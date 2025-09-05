@@ -283,7 +283,7 @@ const AccessoiresProduct = () => {
   } else {
     productList = (
       <>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-5">
           {visibleProducts.map((item, idx) => (
             <ProductCard
               key={item._id || item.id || idx}

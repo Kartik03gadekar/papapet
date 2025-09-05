@@ -60,9 +60,9 @@ export default function TrackOrderPage() {
               <p className="text-lg">No orders found.</p>
             </div>
           ) : (
-            orders.map((order) => (
+            orders.map((order, index) => (
               <button
-                key={order.id}
+                key={index}
                 onClick={() =>
                   router.push(`/papapet/dashboard/trackorder/${order.order}`)
                 }
@@ -73,7 +73,8 @@ export default function TrackOrderPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition">
-                        Order <span className="font-semibold">#{order.order}</span>
+                        Order{" "}
+                        <span className="font-semibold">#{order.order}</span>
                       </span>
                       {order.steps &&
                         typeof order.currentStepIndex === "number" && (
@@ -111,8 +112,12 @@ export default function TrackOrderPage() {
                 </div>
                 <div className="border-t border-gray-100 px-5 py-2 flex items-center justify-between">
                   <span className="text-xs text-gray-400">{order.notes}</span>
-                  <span className="text-xs text-blue-500 font-medium group-hover:underline">
-                    View details &rarr;
+                  <span
+                    className={`text-xs font-medium group-hover:underline ${
+                      order.isCancelled ? "text-red-500" : "text-orange-500"
+                    }`}
+                  >
+                    {order.isCancelled ? "Cancelled" : "View details →"}
                   </span>
                 </div>
               </button>

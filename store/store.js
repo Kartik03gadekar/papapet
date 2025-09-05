@@ -113,17 +113,11 @@ const cartPersistConfig = {
   storage,
 };
 
-const authPersistConfig = {
-  key: "auth",
-  storage,
-};
-
 const persistedCartReducer = persistReducer(cartPersistConfig, cart);
-const persistedAuthReducer = persistReducer(authPersistConfig, auth);
 
 export const store = configureStore({
   reducer: {
-    auth: persistedAuthReducer, // 👈 persist auth
+    auth,
     others,
     cart: persistedCartReducer, // 👈 persist cart
   },

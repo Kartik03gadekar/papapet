@@ -92,7 +92,7 @@ export const auth = createSlice({
   initialState,
   reducers: {
     isUserRequest: (state, action) => {
-      state.loading = false;
+      state.loading = true; // default was false.
     },
     isUser: (state, action) => {
       state.isAuthenticated = true;

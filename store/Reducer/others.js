@@ -5,7 +5,7 @@ const initialState = {
   isAuthenticated: false,
   load: false,
   
-  imgLink: "https://papapetbackend.onrender.com/api/v1/admin/get/image",
+  imgLink: "https://papapetbackend-oaiw.onrender.com/api/v1/admin/get/image",
 };
 
 export const others = createSlice({

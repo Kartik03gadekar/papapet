@@ -39,6 +39,7 @@ export default function TrackOrder({ details, awb }) {
   const awbNumber =
     awb || details.awb_number || details.awb || details.AWB || order.AWB || "";
 
+  console.log("Tracking details:", awbNumber);
   // Steps and current step index
   const steps = TRACKING_STEPS;
   const statusMap = {
@@ -176,7 +177,15 @@ export default function TrackOrder({ details, awb }) {
         >
           {printLoading ? "Printing..." : "Print Invoice"}
         </button>
-        {canCancel && (
+        {order.isCancelled ? (
+          <button
+            disabled
+            className="px-4 py-2 rounded-lg bg-gray-400 text-white font-semibold text-xs cursor-not-allowed"
+            type="button"
+          >
+            Cancelled
+          </button>
+        ) : canCancel ? (
           <button
             onClick={handleCancelOrder}
             disabled={cancelLoading}
@@ -185,7 +194,7 @@ export default function TrackOrder({ details, awb }) {
           >
             {cancelLoading ? "Cancelling..." : "Cancel Order"}
           </button>
-        )}
+        ) : null}
       </div>
 
       {/* Order Summary */}
@@ -345,11 +354,6 @@ export default function TrackOrder({ details, awb }) {
                   <p className="font-medium text-gray-800">
                     {product.name || product.title || "Product"}
                   </p>
-                  {product.description && (
-                    <p className="text-xs text-gray-400">
-                      {product.description}
-                    </p>
-                  )}
                 </div>
                 <div className="text-right text-sm">
                   <p className="text-[#0D9899] font-semibold">

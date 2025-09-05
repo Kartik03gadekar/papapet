@@ -572,18 +572,18 @@ const NavPapaPet = () => {
   ];
 
   const colors = [
-  "#FF6B6B", // Vibrant Red
-  "#FF922B", // Bright Orange
-  "#FCC419", // Vibrant Yellow
-  "#40C057", // Bright Green
-  "#2F9E44", // Deep Green
-  "#15AABF", // Teal / Aqua
-  "#228BE6", // Vibrant Blue
-  "#4C6EF5", // Indigo Blue
-  "#7950F2", // Vivid Purple
-  "#BE4BDB", // Magenta
-  "#E64980", // Hot Pink
-];
+    "#FF6B6B", // Vibrant Red
+    "#FF922B", // Bright Orange
+    "#FCC419", // Vibrant Yellow
+    "#40C057", // Bright Green
+    "#2F9E44", // Deep Green
+    "#15AABF", // Teal / Aqua
+    "#228BE6", // Vibrant Blue
+    "#4C6EF5", // Indigo Blue
+    "#7950F2", // Vivid Purple
+    "#BE4BDB", // Magenta
+    "#E64980", // Hot Pink
+  ];
 
   function getRandomColor(name) {
     const charCode = name?.charCodeAt(0) || 65;
@@ -640,16 +640,8 @@ const NavPapaPet = () => {
   }, []);
 
   useEffect(() => {
-    // Only run if not authenticated AND we haven't checked before
-    if (
-      !isAuthenticated &&
-      !sessionStorage.getItem("userChecked") &&
-      localStorage.getItem("persist:auth")
-    ) {
-      sessionStorage.setItem("userChecked", "true");
-      dispatch(checkUser());
-    }
-  }, [dispatch, isAuthenticated]);
+    dispatch(checkUser()); // always re-check user from backend on mount
+  }, [dispatch]);
 
   // Animate desktop orange circle on scroll, keep mobile static
   // useEffect(() => {
@@ -697,17 +689,7 @@ const NavPapaPet = () => {
   }, [mobileMenuOpen]);
 
   const handleLogout = async () => {
-    await dispatch(logoutUser()); // Clears Redux auth state
-
-    // Clear persisted auth from localStorage/sessionStorage if you are using redux-persist
-    localStorage.removeItem("persist:auth");
-    sessionStorage.removeItem("userChecked");
-
-    // Redirect to home (or auth page)
-    router.push("/"); // Change to "/papapet/auth" if you want login page instead
-
-    // Optional: Hard reload the page to fully reset state
-    window.location.reload();
+    await dispatch(logoutUser(router)); // 👈 pass router
   };
 
   // Handler for cart icon click
@@ -737,7 +719,7 @@ const NavPapaPet = () => {
 
   return (
     <>
-      <Search open={searchOpen} onClose={() => setSearchOpen(false)} />
+      {/* <Search open={searchOpen} onClose={() => setSearchOpen(false)} /> */}
       <div
         className={`h-auto w-full  top-0 left-0 z-40 font-semibold text-black flex items-center px-14 justify-between p-5 flex-col bg-white
            max-md:px-5 transition-transform duration-500 ease-in-out overflow-visible `}

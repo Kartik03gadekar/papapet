@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cardData, eyeData, ivfData } from "@/db/Card";
 import { colors } from "@mui/material";
 import Link from "next/link";
@@ -16,6 +16,7 @@ import style from "./Page2.module.css";
 
 // import required modules
 import { Pagination } from "swiper/modules";
+import LazyImage from "../LazyImage";
 
 const Page2 = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const Page2 = () => {
     },
     {
       name: "Accessories",
-      img: "/FoodnAcces.png",
+      img: "/access.png",
       link: "/papapet/accessories",
       color: "bg-gray-200",
     },
@@ -99,12 +100,18 @@ const Page2 = () => {
     },
   ];
 
+  useEffect(() => {
+    data.forEach((item) => {
+      if (item.link) router.prefetch(item.link);
+    });
+  }, [router]);
+
   const handleClick = (index, link) => {
     if (index <= 2) {
-      router.push(link); // ✅ safe navigation
+      router.push(link);
     } else {
       console.log("Coming Soon");
-      setShowModal(true); // ✅ shows modal properly
+      setShowModal(true);
     }
   };
 
@@ -139,7 +146,7 @@ const Page2 = () => {
                 className="w-full cursor-pointer"
               >
                 <div className="flex flex-col items-center justify-center">
-                  <img
+                  <LazyImage
                     src={i.img}
                     width={450}
                     height={300}

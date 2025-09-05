@@ -9,6 +9,7 @@ import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import style from "./Page4.module.css";
 import Link from "next/link";
+import LazyImage from "../LazyImage";
 
 const Page4 = () => {
   const products = [
@@ -46,6 +47,14 @@ const Page4 = () => {
     { img: "/brands/farmina.png", name: "farmina" },
   ];
 
+  const posters = [
+    { img: "/posters/home1.png" },
+    { img: "/posters/home2.png" },
+    { img: "/posters/home3.png" },
+    { img: "/posters/home4.png" },
+    { img: "/posters/home5.png" },
+  ];
+
   return (
     <div>
       <section id="supplies">
@@ -60,51 +69,22 @@ const Page4 = () => {
             modules={[Pagination, Autoplay]}
             className="mySwiper h-auto w-screen "
           >
-            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
-              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                <img
-                  className="rounded-2xl h-full w-full object-cover"
-                  src={`/posters/home2.png`}
-                  alt=""
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
-              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                <img
-                  className="h-full w-full object-cover rounded-2xl"
-                  src={`/posters/home1.png`}
-                  alt=""
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
-              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                <img
-                  className="h-full w-full object-cover rounded-2xl"
-                  src={`/posters/home3.png`}
-                  alt=""
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
-              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                <img
-                  className="h-full w-full object-cover rounded-2xl"
-                  src={`/posters/home4.png`}
-                  alt=""
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="flex justify-center items-center text-center text-[18px]">
-              <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                <img
-                  className="h-full w-full object-cover rounded-2xl"
-                  src={`/posters/home5.png`}
-                  alt=""
-                />
-              </div>
-            </SwiperSlide>
+            {posters.map((poster, index) => {
+              return (
+                <SwiperSlide
+                  key={index}
+                  className="flex justify-center items-center text-center text-[18px]"
+                >
+                  <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                    <LazyImage
+                      className="rounded-2xl h-full w-full object-cover"
+                      src={poster.img}
+                      alt=""
+                    />
+                  </div>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </div>
       </section>

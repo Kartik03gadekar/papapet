@@ -148,12 +148,12 @@ export const checkUser = () => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.get("/user/user");
-    console.log(data.user);
-    dispatch(isUser(data));
+    dispatch(isUser(data.user));
   } catch (error) {
     dispatch(isUserFail());
   }
 };
+
 export const registerUser = (info) => async (dispatch) => {
   dispatch(isUserRequest());
   try {
@@ -176,16 +176,17 @@ export const loginUser = (info) => async (dispatch) => {
     dispatch(isUserFail());
   }
 };
-export const logoutUser = () => async (dispatch) => {
+export const logoutUser = (router) => async (dispatch) => {
   dispatch(isUserRequest());
   try {
+    // Ask backend to clear the cookie
     await axios.post("/user/signout", {}, { withCredentials: true });
 
+    // Reset Redux state
     dispatch(logout());
-    localStorage.removeItem("persist:auth"); // 👈 clears auth state
-    await persistor.purge(); // 👈 clears localStorage
 
-    window.location.href = "/papapet/auth";
+    // Smooth redirect with Next.js (no hard reload)
+    router.push("/papapet/auth");
   } catch (error) {
     dispatch(isUserFail());
     console.error("Logout error:", error);
@@ -247,7 +248,7 @@ export const updateDetails = (info) => async (dispatch) => {
   console.log(info);
   try {
     const { data } = await axios.post("/user/profile/update", info);
-    dispatch(isUser(data));
+    dispatch(isUser(data.user));
   } catch (error) {
     dispatch(isUserFail(error.response.data));
   }

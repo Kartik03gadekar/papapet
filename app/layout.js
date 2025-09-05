@@ -5,12 +5,12 @@ import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NextTopLoader from "nextjs-toploader";
-import Wrapper from "@/Components/Wrapper/Wrapper";
+// import Wrapper from "@/Components/Wrapper/Wrapper";
+import TransitionWrapper from "@/Components/TransitionWrapper";
 import ReduxProvider from "@/store/ReduxProvider";
 import Script from "next/script";
 
 export default function RootLayout({ children }) {
- 
   return (
     <html lang="en">
       <head>
@@ -32,23 +32,21 @@ export default function RootLayout({ children }) {
       </head>
       <body suppressHydrationWarning={true}>
         <ReduxProvider>
-          <Wrapper>
-            <NextTopLoader />
-            {children}
-            <ToastContainer
-              position="top-right"
-              autoClose={1000} // disappear in 1 sec
-              hideProgressBar // no progress bar
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss={false}
-              draggable={false}
-              pauseOnHover={false}
-              theme="light"
-              limit={1} // only one popup at a time
-            />
-          </Wrapper>
+          <NextTopLoader />
+          <TransitionWrapper>{children}</TransitionWrapper>
+          <ToastContainer
+            position="top-right"
+            autoClose={1000} // disappear in 1 sec
+            hideProgressBar // no progress bar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable={false}
+            pauseOnHover={false}
+            theme="light"
+            limit={1} // only one popup at a time
+          />
         </ReduxProvider>
       </body>
     </html>

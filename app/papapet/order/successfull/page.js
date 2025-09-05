@@ -21,11 +21,12 @@ const Page = () => {
               className=" w-[20vw] max-md:w-[200px] "
             />
             <h2 className="text-2xl font-semibold mt-5">
-              Your order is successfully placed
+              Paws up! Your order is on its way 🐾
             </h2>
-            <p className="w-[40%] text-gray-600 mt-2 ">
-              Pellentesque sed lectus nec tortor tristique accumsan quis dictum
-              risus. Donec volutpat mollis nulla non facilisis.
+            <p className="max-w-3xl text-gray-600 mt-2  px-5">
+              "Woof Woof! Your order is confirmed and our furry friends are
+              already sniffing around the shelves to fetch it. Sit back, relax, and get ready for tail wags and happy
+              purrs at your doorstep!"
             </p>
             <div className="mt-6 flex justify-center gap-4 flex-wrap">
               <Link href={"/papapet/dashboard"}>
