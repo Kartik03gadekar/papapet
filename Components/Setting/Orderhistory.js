@@ -88,7 +88,7 @@ const OrderHistory = () => {
             // pick status: cancelled → CANCELLED, else → tracking status, else fallback
             const status = order.isCancelled
               ? "CANCELLED"
-              : trackingStatuses[order.awb] || "IN PROGRESS";
+              : trackingStatuses[order.AWB] || "IN PROGRESS";
 
             return (
               <div
