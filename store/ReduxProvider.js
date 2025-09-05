@@ -19,14 +19,19 @@
 import { Provider, useDispatch } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { checkUser } from "./Action/auth";
 
 // ✅ This runs checkUser once Redux is available
 function InitAuth() {
   const dispatch = useDispatch();
+  const ran = useRef(false);
+
   useEffect(() => {
-    dispatch(checkUser());
+    if (!ran.current) {
+      dispatch(checkUser());
+      ran.current = true;
+    }
   }, [dispatch]);
 
   return null;
