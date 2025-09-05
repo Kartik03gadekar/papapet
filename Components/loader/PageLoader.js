@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { DotLottiePlayer } from "@lottiefiles/dotlottie-react"; // ✅ new package
-import "@lottiefiles/dotlottie-react/dist/index.css"; // if needed
 
 const Loader = () => {
   const messages = [
