@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@dotlottie/react-player": "^1.6.19",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@gsap/react": "^2.1.1",
