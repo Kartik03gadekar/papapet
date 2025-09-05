@@ -81,77 +81,60 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, Lazy, Suspense } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getHomePage } from "@/store/Action/others";
 import { io } from "socket.io-client";
-import PhantomConnect from "@/Components/WalletProvider";
-let socket;
+
+let socket; // singleton
+
 const getSocket = () => {
   if (!socket) {
-    // socket = io("http://localhost:5001/", { path: "/socket.io" });
-    // socket = io("https://api.mycozee.in/", {
-    //   path: "/socket.io",
-    // });
     socket = io("https://papapetbackend-oaiw.onrender.com/", {
       withCredentials: true,
       path: "/socket.io",
     });
   }
-
   return socket;
 };
 
-// Dynamically import heavy components for performance optimization
+// Dynamically imported components
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import HomePage from "@/Components/HomePage/HomePage";
 const Page2 = dynamic(() => import("@/Components/Page2/Page2"));
-
 const Page3 = dynamic(() => import("@/Components/Page3/Page3"));
-
 const Page4 = dynamic(() => import("@/Components/Page4/Page4"));
-
 const Page5 = dynamic(() => import("@/Components/Page5/Page5"));
 const Page6 = dynamic(() => import("@/Components/Page6/Page6"));
 const Footer = dynamic(() => import("@/Components/Footer/Footer"));
 
-// import PageLoader from "@/Components/loader/PageLoader";
-
 const Page = () => {
-
   const dispatch = useDispatch();
   const { homepage, imgLink } = useSelector((state) => state.others);
 
+  // Initialize socket and fetch homepage once
   useEffect(() => {
-    getSocket();
+    const s = getSocket();
+
+    // Only attach listeners once
+    s.on("connect", () => console.log("Connected to server"));
+    s.on("dataUpdate", (data) => console.log("Received data:", data));
+
     dispatch(getHomePage());
+
+    // Do NOT disconnect socket on unmount
   }, [dispatch]);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected to server");
-    });
-    socket.on("dataUpdate", (data) => {
-      console.log("Received data from the server:", data);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
   return (
     <div className="w-full relative overflow-hidden bg-white">
       <NavPapaPet />
       <HomePage />
-      <Suspense fallback={<div>Loading...</div>}>
-        <Page2 />
-        <Page3 />
-        <Page4 />
-        <Page5 />
-        <Page6 />
-        <Footer />
-      </Suspense>
+      <Page2 />
+      <Page3 />
+      <Page4 />
+      <Page5 />
+      <Page6 />
+      <Footer />
     </div>
   );
 };

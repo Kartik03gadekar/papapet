@@ -6,6 +6,7 @@ import PageLoader from "./loader/PageLoader";
 export default function TransitionWrapper({ children }) {
   const pathname = usePathname(); // tells us when route changes
   const [loading, setLoading] = useState(true);
+  const [prevPath, setPrevPath] = useState(pathname);
 
   // Loader on first page load
   useEffect(() => {
@@ -15,12 +16,13 @@ export default function TransitionWrapper({ children }) {
 
   // Loader when changing pages
   useEffect(() => {
-    if (!loading) {
+    if (pathname !== prevPath) {
       setLoading(true);
       const timer = setTimeout(() => setLoading(false), 1200);
+      setPrevPath(pathname); // update previous path
       return () => clearTimeout(timer);
     }
-  }, [pathname]);
+  }, [pathname, prevPath]);
 
   if (loading) return <PageLoader />;
 
