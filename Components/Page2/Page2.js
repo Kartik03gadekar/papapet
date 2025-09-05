@@ -102,9 +102,11 @@ const Page2 = () => {
 
   useEffect(() => {
     data.forEach((item) => {
-      if (item.link) router.prefetch(item.link);
+      if (item.link && item.link !== router.pathname) {
+        router.prefetch(item.link);
+      }
     });
-  }, [router]);
+  }, []);
 
   const handleClick = (index, link) => {
     if (index <= 2) {
