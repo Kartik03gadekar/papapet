@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import DotLottie from "@lottiefiles/dotlottie-react"; // ✅ new package
+import { Player } from "@lottiefiles/dotlottie-react"; // ✅ new package
 
 const Loader = () => {
   const messages = [
@@ -28,7 +28,7 @@ const Loader = () => {
   return (
     <div className="h-screen w-screen">
       <div className="fixed bottom-2 right-1 md:bottom-5 md:right-5 bg-white z-[9999]">
-        <DotLottie
+        <Player
           src="/loaders/pageloader.lottie"
           autoplay
           loop
