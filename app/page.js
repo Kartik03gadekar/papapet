@@ -28,7 +28,7 @@
 // const HomePage = dynamic(() => import("@/Components/HomePage/HomePage"), {
 //   ssr: false,
 // });
-// const Page2 = dynamic(() => import("@/Components/Page2/Page2"), { ssr: false });
+// const Page2 = dynamic(() => import("@/Components/Page2/Page2"));
 
 // const Page3 = dynamic(() => import("@/Components/Page3/Page3"), { ssr: false });
 
@@ -81,7 +81,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, Lazy, Suspense } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getHomePage } from "@/store/Action/others";
 import { io } from "socket.io-client";
@@ -102,20 +102,16 @@ const getSocket = () => {
   return socket;
 };
 
-// Dynamically import heavy components for performance optimization
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import HomePage from "@/Components/HomePage/HomePage";
-const Page2 = dynamic(() => import("@/Components/Page2/Page2"), { ssr: false });
+import ComponentLoader from "@/Components/loader/ComponentLoader";
+const Page2 = lazy(() => import("@/Components/Page2/Page2"));
+const Page3 = lazy(() => import("@/Components/Page3/Page3"));
+const Page4 = lazy(() => import("@/Components/Page4/Page4"));
+const Page5 = lazy(() => import("@/Components/Page5/Page5"));
+const Page6 = lazy(() => import("@/Components/Page6/Page6"));
+const Footer = lazy(() => import("@/Components/Footer/Footer"));
 
-const Page3 = dynamic(() => import("@/Components/Page3/Page3"), { ssr: false });
-
-const Page4 = dynamic(() => import("@/Components/Page4/Page4"), { ssr: false });
-
-const Page5 = dynamic(() => import("@/Components/Page5/Page5"), { ssr: false });
-const Page6 = dynamic(() => import("@/Components/Page6/Page6"), { ssr: false });
-const Footer = dynamic(() => import("@/Components/Footer/Footer"), {
-  ssr: false,
-});
 
 // import PageLoader from "@/Components/loader/PageLoader";
 
@@ -145,7 +141,7 @@ const Page = () => {
     <div className="w-full relative overflow-hidden bg-white">
       <NavPapaPet />
       <HomePage />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<ComponentLoader/>}>
         <Page2 />
         <Page3 />
         <Page4 />
@@ -153,7 +149,6 @@ const Page = () => {
         <Page6 />
         <Footer />
       </Suspense>
-      
     </div>
   );
 };

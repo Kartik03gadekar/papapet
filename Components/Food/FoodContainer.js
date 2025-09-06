@@ -20,6 +20,8 @@ import "swiper/css/navigation";
 import { HiFilter } from "react-icons/hi";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import ComponentLoader from "../loader/ComponentLoader";
+import LazyImage from "../LazyImage";
 
 // Dummy data for category carousel
 const categoryCarouselData = [
@@ -76,6 +78,12 @@ const sortOptions = [
   { name: "Price: High to Low", value: "priceHigh" },
   { name: "Name: A-Z", value: "nameAZ" },
   { name: "Name: Z-A", value: "nameZA" },
+];
+
+const posters = [
+  { img: "/posters/food1.png" },
+  { img: "/posters/acc1.png" },
+  { img: "/6 (1).png" },
 ];
 
 const FOOD_MIN_PRICE = 0;
@@ -337,7 +345,7 @@ const FoodContainer = () => {
   if (load) {
     productList = (
       <div className="flex justify-center items-center min-h-[300px]">
-        <Loading />
+        <ComponentLoader />
       </div>
     );
   } else if (!sorted || sorted.length === 0) {
@@ -466,27 +474,6 @@ const FoodContainer = () => {
 
       <div className="w-full min-h-screen">
         <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pt-10">
-          <div className="flex items-center justify-between mt-10 mb-5 px-5">
-            <h1
-              className="text-5xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
-              style={{
-                lineHeight: "1.1",
-                letterSpacing: "-0.01em",
-                wordBreak: "break-word",
-              }}
-            >
-              Food
-            </h1>
-            <div className="flex  justify-end">
-              <button
-                onClick={() => setMobileFiltersOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-[#FD890E] text-white rounded-lg shadow-md"
-              >
-                <HiFilter className="text-lg" /> Filters
-              </button>
-            </div>
-          </div>
-
           {/* Animal Category */}
           {/* <div className="flex items-center justify-around pt-6 "  >
   <div className="flex flex-col w-full md:w-1/4 "> 
@@ -655,38 +642,46 @@ const FoodContainer = () => {
                         </select>
                       </div>
 
-                     <div className="mb-4">
-  <label className="block text-sm font-medium mb-1">
-    Max Price (₹{pendingPrice})
-  </label>
-  <div className="flex items-center gap-2">
-    <span className="text-xs text-gray-500">₹{minPrice}</span>
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium mb-1">
+                          Max Price (₹{pendingPrice})
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-gray-500">
+                            ₹{minPrice}
+                          </span>
 
-    <input
-      type="range"
-      min={minPrice}
-      max={maxPrice}
-      value={pendingPrice}
-      onChange={(e) => setPendingPrice(Number(e.target.value))}
-      className="flex-1 accent-[#FFAD22] cursor-pointer"
-      step={500} // step of ₹1000
-      list="price-steps"
-    />
+                          <input
+                            type="range"
+                            min={minPrice}
+                            max={maxPrice}
+                            value={pendingPrice}
+                            onChange={(e) =>
+                              setPendingPrice(Number(e.target.value))
+                            }
+                            className="flex-1 accent-[#FFAD22] cursor-pointer"
+                            step={500} // step of ₹1000
+                            list="price-steps"
+                          />
 
-    <span className="text-xs text-gray-500">₹{maxPrice}</span>
-  </div>
+                          <span className="text-xs text-gray-500">
+                            ₹{maxPrice}
+                          </span>
+                        </div>
 
-  {/* Stepper ticks */}
-  <datalist id="price-steps" className="w-full flex justify-between text-xs text-gray-500">
-    <option value={minPrice} label={`₹${minPrice}`} />
-    <option value={5000} label="₹5k" />
-    <option value={10000} label="₹10k" />
-    <option value={15000} label="₹15k" />
-    <option value={20000} label="₹20k" />
-    <option value={maxPrice} label={`₹${maxPrice}`} />
-  </datalist>
-</div>
-
+                        {/* Stepper ticks */}
+                        <datalist
+                          id="price-steps"
+                          className="w-full flex justify-between text-xs text-gray-500"
+                        >
+                          <option value={minPrice} label={`₹${minPrice}`} />
+                          <option value={5000} label="₹5k" />
+                          <option value={10000} label="₹10k" />
+                          <option value={15000} label="₹15k" />
+                          <option value={20000} label="₹20k" />
+                          <option value={maxPrice} label={`₹${maxPrice}`} />
+                        </datalist>
+                      </div>
 
                       {/* Buttons */}
                       {/* Buttons */}
@@ -751,34 +746,42 @@ const FoodContainer = () => {
                   speed={1000}
                   className="w-full"
                 >
-                  <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                    <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                      <img
-                        className="rounded-2xl h-full w-full object-cover"
-                        src={"/posters/food1.png"}
-                        alt=""
-                      />
-                    </div>
-                  </SwiperSlide>
-                  <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                    <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                      <img
-                        className="rounded-2xl h-full w-full object-cover"
-                        src={"/posters/acc1.png"}
-                        alt=""
-                      />
-                    </div>
-                  </SwiperSlide>
-                  <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                    <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                      <img
-                        className="rounded-2xl h-full w-full object-cover"
-                        src={"/6 (1).png"}
-                        alt=""
-                      />
-                    </div>
-                  </SwiperSlide>
+                  {posters.map((poster, index) => {
+                    return (
+                      <SwiperSlide key = {index} className="flex flex-col items-center justify-center text-center">
+                        <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                          <LazyImage
+                            className="rounded-2xl h-full w-full object-cover"
+                            src={poster.img}
+                            alt=""
+                          />
+                        </div>
+                      </SwiperSlide>
+                    );
+                  })}
                 </Swiper>
+              </div>
+            </div>
+          </section>
+          <section>
+            <div className="flex items-center justify-between mt-10 mb-5 px-5">
+              <h1
+                className="text-5xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
+                style={{
+                  lineHeight: "1.1",
+                  letterSpacing: "-0.01em",
+                  wordBreak: "break-word",
+                }}
+              >
+                Food
+              </h1>
+              <div className="flex  justify-end">
+                <button
+                  onClick={() => setMobileFiltersOpen(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-[#FD890E] text-white rounded-lg shadow-md"
+                >
+                  <HiFilter className="text-lg" /> Filters
+                </button>
               </div>
             </div>
           </section>

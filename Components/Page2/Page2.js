@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cardData, eyeData, ivfData } from "@/db/Card";
 import { colors } from "@mui/material";
 import Link from "next/link";
@@ -99,15 +99,20 @@ const Page2 = () => {
     },
   ];
 
-  const handleClick = (index, link) => {
+  useEffect(() => {
+    data.slice(0, 3).forEach((d) => {
+      router.prefetch(d.link);
+    });
+  }, [router]);
+
+  const handleClick = async (index, link) => {
     if (index <= 2) {
-      router.push(link); // ✅ safe navigation
+      await router.prefetch(link); // make sure it’s cached
+      router.push(link);
     } else {
-      console.log("Coming Soon");
-      setShowModal(true); // ✅ shows modal properly
+      setShowModal(true);
     }
   };
-
   return (
     <section id="services">
       <div
@@ -137,6 +142,7 @@ const Page2 = () => {
                 onClick={() => handleClick(index, i.link)}
                 key={index}
                 className="w-full cursor-pointer"
+                onTouchStart={() => router.prefetch(i.link)}
               >
                 <div className="flex flex-col items-center justify-center">
                   <img
@@ -161,6 +167,7 @@ const Page2 = () => {
                 onClick={() => handleClick(index, i.link)}
                 key={index}
                 href={i.link}
+                onMouseEnter={() => router.prefetch(i.link)}
               >
                 <div
                   className="service cursor-pointer h-[15vw] w-[15vw] items-center relative gap-1 rounded-full justify-center flex flex-col 

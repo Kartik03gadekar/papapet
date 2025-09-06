@@ -349,7 +349,6 @@ import { toast } from "react-toastify";
 import { updateDetails } from "@/store/Action/auth";
 
 const Profile = ({ user }) => {
-  console.log(user);
   
   const file = useRef(null);
   const dispatch = useDispatch();

@@ -1,8 +1,8 @@
 import React from "react";
-import Loading from "./loading";
 import ProductImg from "./ProductImg";
 import ProductExtraInfo from "./ProductExtraInfo";
 import ProductDetail from "./ProductDetail";
+import ComponentLoader from "./loader/ComponentLoader";
 
 
 const ProductView = ({ data, imgLink, loading }) => {
@@ -12,7 +12,7 @@ const ProductView = ({ data, imgLink, loading }) => {
   return (
     <div className="w-full min-h-screen flex flex-col p-4 max-md:mt-[10vh] gap-6  overflow-hidden">
       {loading ? (
-        <Loading />
+        <ComponentLoader />
       ) : (
         <>
           {/* Top section: Image and Details */}

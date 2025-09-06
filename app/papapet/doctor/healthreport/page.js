@@ -7,6 +7,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import ReactToPrint from "react-to-print";
 import { GoArrowRight } from "react-icons/go";
+import ComponentLoader from "@/Components/loader/ComponentLoader";
 
 const PetHealthReport = () => {
   const [activeTab, setActiveTab] = useState("Cat");
@@ -23,9 +24,9 @@ const PetHealthReport = () => {
   const [form, setForm] = useState({
     name: "",
     breed: "",
-    height: "", // Dog only
-    lim: "", // Cat only
-    ribcage: "", // Cat only
+    height: "",
+    lim: "",
+    ribcage: "",
     weight: "",
     gender: "",
     age: "",
@@ -55,6 +56,11 @@ const PetHealthReport = () => {
       setLoading(false);
     }
   };
+  const ShowLoader = () => (
+    <div className="fixed inset-0 flex items-center justify-center bg-black/20 z-[9999]">
+      <ComponentLoader />
+    </div>
+  );
 
   return (
     <section className="lg:overflow-hidden">
@@ -84,9 +90,8 @@ const PetHealthReport = () => {
                   Generate your Pet's AI Health Report with PaPaPet AI
                 </h1>
                 <p className="text-white text-xl xl:text-2xl mt-2 pr-12 2xl:max-w-2xl">
-                  Measures body fat based on weight and
-                  height. It’s one of many measures to check how in shape your
-                  pet is.
+                  Measures body fat based on weight and height. It’s one of many
+                  measures to check how in shape your pet is.
                 </p>
               </div>
             </div>
@@ -256,11 +261,12 @@ const PetHealthReport = () => {
               />
 
               <button
+                onClick={ShowLoader}
                 type="submit"
                 disabled={loading}
                 className="bg-[#FEAC22] hover:bg-orange-600 text-white font-semibold py-2 md:py-3 rounded-lg transition text-sm md:text-base"
               >
-                {loading ? "Generating..." : "Generate Report"}
+                {loading ? "Generating Report..." : "Generate Report"}
               </button>
 
               {/* Modal */}
@@ -417,6 +423,7 @@ const PetHealthReport = () => {
           </div>
         </div>
       </div>
+      {loading && <ShowLoader />}
     </section>
   );
 };

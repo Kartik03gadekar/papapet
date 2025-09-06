@@ -719,7 +719,7 @@ const NavPapaPet = () => {
 
   return (
     <>
-      {/* <Search open={searchOpen} onClose={() => setSearchOpen(false)} /> */}
+      <Search open={searchOpen} onClose={() => setSearchOpen(false)} />
       <div
         className={`h-auto w-full  top-0 left-0 z-40 font-semibold text-black flex items-center px-14 justify-between p-5 flex-col bg-white
            max-md:px-5 transition-transform duration-500 ease-in-out overflow-visible `}

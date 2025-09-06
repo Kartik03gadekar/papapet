@@ -18,6 +18,8 @@ import { Pagination, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import ComponentLoader from "../loader/ComponentLoader";
+import LazyImage from "../LazyImage";
 
 // Helper for unique values
 const getUnique = (arr, key) => {
@@ -69,6 +71,8 @@ const sortOptions = [
   { name: "Name: A-Z", value: "nameAZ" },
   { name: "Name: Z-A", value: "nameZA" },
 ];
+
+const posters = [{ img: "/posters/acc1.png" }, { img: "/posters/acc2.png" }];
 
 const FOOD_MIN_PRICE = 0;
 const FOOD_MAX_PRICE = 25000;
@@ -271,7 +275,7 @@ const AccessoiresProduct = () => {
   if (load) {
     productList = (
       <div className="flex justify-center items-center min-h-[300px]">
-        <Loading />
+        <ComponentLoader />
       </div>
     );
   } else if (!sorted || sorted.length === 0) {
@@ -312,28 +316,7 @@ const AccessoiresProduct = () => {
 
   return (
     <div className="w-full min-h-screen">
-      <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pt-20">
-        <div className="flex items-center justify-between mt-10 mb-5 px-5">
-          <h1
-            className="text-3xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
-            style={{
-              lineHeight: "1.1",
-              letterSpacing: "-0.01em",
-              wordBreak: "break-word",
-            }}
-          >
-            Pet Accessories
-          </h1>
-          <div className="flex  justify-end">
-            <button
-              onClick={() => setMobileFiltersOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-[#FD890E] text-white rounded-lg shadow-md"
-            >
-              <HiFilter className="text-lg" /> Filters
-            </button>
-          </div>
-        </div>
-
+      <main className="mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
         {/* Animal Category */}
         {/* <div className="flex items-center justify-around pt-6 "  >
       <div className="flex flex-col w-full md:w-1/4 "> 
@@ -537,7 +520,6 @@ const AccessoiresProduct = () => {
 
         <section>
           <div className="flex flex-col gap-[4vw] items-center justify-center ">
-            <div className="flex items-center text-center justify-center"></div>
             <div className="w-full flex items-center justify-center gap-8 py-2">
               <Swiper
                 pagination={{ clickable: true }}
@@ -549,25 +531,42 @@ const AccessoiresProduct = () => {
                 speed={1000}
                 className="w-full"
               >
-                <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                  <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                    <img
-                      className="rounded-2xl h-full w-full object-cover"
-                      src={"/posters/acc1.png"}
-                      alt=""
-                    />
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide className="flex flex-col items-center justify-center text-center">
-                  <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                    <img
-                      className="rounded-2xl h-full w-full object-cover"
-                      src={"/posters/acc2.png"}
-                      alt=""
-                    />
-                  </div>
-                </SwiperSlide>
+                {posters.map((poster, index) => {
+                  return (
+                    <SwiperSlide key={index} className="flex flex-col items-center justify-center text-center">
+                      <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                        <LazyImage
+                          className="rounded-2xl h-full w-full object-cover"
+                          src={poster.img}
+                          alt=""
+                        />
+                      </div>
+                    </SwiperSlide>
+                  );
+                })}
               </Swiper>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div className="flex items-center justify-between mt-10 mb-5 px-5">
+            <h1
+              className="text-3xl md:text-5xl head font-bold tracking-tight text-gray-900 text-center"
+              style={{
+                lineHeight: "1.1",
+                letterSpacing: "-0.01em",
+                wordBreak: "break-word",
+              }}
+            >
+              Pet Accessories
+            </h1>
+            <div className="flex  justify-end">
+              <button
+                onClick={() => setMobileFiltersOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-[#FD890E] text-white rounded-lg shadow-md"
+              >
+                <HiFilter className="text-lg" /> Filters
+              </button>
             </div>
           </div>
         </section>

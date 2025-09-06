@@ -1,10 +1,12 @@
 import Link from "next/link";
-import React from "react";
+import React, {useEffect} from "react";
 import axios from "@/Axios/axios";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addToCart, clearCart } from "@/store/slices/cartSlices";
 import { toast } from "react-toastify";
+import { LazyMotion } from "framer-motion";
+import LazyImage from "./LazyImage";
 
 const ProductCard = ({ i, product }) => {
   const router = useRouter();
@@ -52,7 +54,7 @@ const ProductCard = ({ i, product }) => {
   // };
 
   const handleAddToCart = async (e) => {
-    e.preventDefault();
+     e.stopPropagation();
 
     try {
       const { data } = await axios.post("/user/addToCart", {
@@ -81,7 +83,7 @@ const ProductCard = ({ i, product }) => {
 
   
     const handleBuyNow = async (e) => {
-    e.preventDefault();
+    e.stopPropagation();
 
     try {
       const { data } = await axios.post("/user/addToCart", {
@@ -109,10 +111,15 @@ const ProductCard = ({ i, product }) => {
     }
   };
 
+  useEffect(() => {
+  router.prefetch(`/papapet/product/${i._id}`);
+}, [i._id, router]);
+
 
   return (
     <Link
       href={`/papapet/product/${i._id}`}
+      prefetch={true}
       className="no-underline w-full block"
       tabIndex={0}
     >
@@ -129,7 +136,7 @@ const ProductCard = ({ i, product }) => {
           className="w-[130px] h-[130px] flex-shrink-0 flex items-center justify-center 
       mb-2 sm:mb-0"
         >
-          <img
+          <LazyImage
             className="
               w-full h-full sm:w-full sm:h-full
               object-contain rounded
@@ -205,7 +212,7 @@ const ProductCard = ({ i, product }) => {
               onClick={handleAddToCart}
               aria-label="Add to cart"
             >
-             <img src = "/cart.png" alt = "cart"/>
+             <LazyImage src = "/cart.png" alt = "cart"/>
             </button>
           </div>
         </div>

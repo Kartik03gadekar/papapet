@@ -80,6 +80,8 @@ const Page4 = () => {
                       className="rounded-2xl h-full w-full object-cover"
                       src={poster.img}
                       alt=""
+                      width={1200}
+                      height={400}
                     />
                   </div>
                 </SwiperSlide>

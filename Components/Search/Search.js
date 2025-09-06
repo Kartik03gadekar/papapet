@@ -1,91 +1,68 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFood } from "@/store/Action/others";
-import axios from "@/Axios/axios";
 
-export default function Search({ open, onClose, i }) {
+export default function Search({ open, onClose }) {
   const [query, setQuery] = useState("");
-  const [filtered, setFiltered] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(5); // Number of items shown
   const inputRef = useRef(null);
 
   const dispatch = useDispatch();
   const { food = [], load } = useSelector((state) => state.others);
-  const { imgLink } = useSelector((state) => state.others);
-  // Fetch food list once when modal opens
+
+  // Fetch food list only once
   useEffect(() => {
-    if (open && food.length === 0) {
-      dispatch(getFood());
-    }
+    if (open && food.length === 0) dispatch(getFood());
   }, [open, food.length, dispatch]);
 
-  // Autofocus on open
+  // Autofocus and body scroll lock
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
       document.body.style.overflow = "";
-      setQuery(""); // reset search on close
-      setFiltered([]); // clear results on close
+      setQuery("");
+      setVisibleCount(5); // reset count when modal closes
     }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => (document.body.style.overflow = "");
   }, [open]);
 
-  // Update results only if query has value
-  useEffect(() => {
-    if (query.trim() === "") {
-      setFiltered([]); // ✅ don’t show all products by default
-    } else {
-      setFiltered(
-        food.filter(
-          (p) =>
-            p.name?.toLowerCase().includes(query.toLowerCase()) ||
-            p.description?.toLowerCase().includes(query.toLowerCase())
-        )
-      );
-    }
+  // Filter by animalCategory
+  const filtered = useMemo(() => {
+    if (!query.trim()) return [];
+    const q = query.toLowerCase();
+    return food.filter(
+      (p) => p.animalCategory?.toLowerCase().includes(q)
+    );
   }, [query, food]);
 
   if (!open) return null;
 
-  const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose?.();
-    }
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 5); // show 5 more items
   };
 
-  // const getImageUrl = () => {
-  //   if (i?.image && i?.image[0]) {
-  //     const { filename, mimetype } = i.image[0];
-  //     const [type, subtype] = mimetype.split("/");
-  //     return `${axios.defaults.baseURL}admin/get/image/${filename}/${type}/${subtype}`;
-  //   }
-  //   return "/no-image.png";
-  // };
+  const visibleItems = filtered.slice(0, visibleCount);
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-start justify-center"
-      style={{
-        backdropFilter: "blur(8px)",
-        background: "rgba(0,0,0,0.25)",
-      }}
-      onClick={handleOverlayClick}
+      style={{ backdropFilter: "blur(8px)", background: "rgba(0,0,0,0.25)" }}
+      onClick={(e) => e.target === e.currentTarget && onClose?.()}
     >
       <div
-        className="w-full max-w-3xl mt-14 pt-10 md:pt-20 bg-white rounded-xl shadow-lg p-6 relative"
+        className="w-full max-w-3xl mt-14 md:mt-20 bg-white rounded-xl shadow-lg p-6 relative"
         style={{ minHeight: "300px" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           className="absolute -top-7 left-1/2 -translate-x-1/2 md:top-0 md:right-0 md:left-auto md:translate-x-0
-             bg-white text-gray-400 hover:text-gray-700 rounded-full shadow-lg md:shadow-none
-             h-12 w-12 flex items-center justify-center text-3xl"
+          bg-white text-gray-400 hover:text-gray-700 rounded-full shadow-lg md:shadow-none
+          h-12 w-12 flex items-center justify-center text-3xl"
           onClick={onClose}
           aria-label="close"
         >
@@ -97,9 +74,9 @@ export default function Search({ open, onClose, i }) {
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search products..."
-          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFAD22] text-lg mb-6"
+          onChange={(e) => setQuery(e.target.value.replace(/\s+/g, " "))}
+          placeholder="Search by animal category..."
+          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFAD22] text-lg mb-6 mt-10"
         />
 
         {/* Results */}
@@ -111,21 +88,29 @@ export default function Search({ open, onClose, i }) {
               No products found.
             </div>
           ) : (
-            query && (
+            <>
               <ul className="divide-y divide-gray-100">
-                {filtered.map((product) => (
+                {visibleItems.map((product) => (
                   <li
                     key={product._id}
                     className="py-4 flex items-center gap-4 cursor-pointer hover:bg-gray-50 rounded-lg px-2"
                   >
-                    <img
-                      src={
-                        product.image?.length
-                          ? `${imgLink}/${product.image[0].filename}`
-                          : "/no-image.png"
-                      }
-                      alt={product.name}
-                    />
+                    <div className="w-16 h-16 flex-shrink-0 relative">
+                      <img
+                        src={
+                          product.image?.length
+                            ? `https://papapetbackend-oaiw.onrender.com/api/v1/admin/images/${
+                                product.image[0].filename
+                              }/${product.image[0].mimetype.split("/")[0]}/${
+                                product.image[0].mimetype.split("/")[1]
+                              }`
+                            : "/no-image.png"
+                        }
+                        alt={product.name}
+                        className="rounded-md"
+                      />
+                    </div>
+
                     <div className="flex flex-col gap-1">
                       <span className="font-semibold text-[#0D9899] flex items-center gap-2">
                         {product.name}
@@ -142,7 +127,19 @@ export default function Search({ open, onClose, i }) {
                   </li>
                 ))}
               </ul>
-            )
+
+              {/* Load More button */}
+              {visibleCount < filtered.length && (
+                <div className="text-center mt-4">
+                  <button
+                    onClick={handleLoadMore}
+                    className="px-4 py-2 bg-[#FFAD22] text-white rounded-lg hover:bg-[#e69c1d]"
+                  >
+                    Load More
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
