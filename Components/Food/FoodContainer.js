@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFood } from "@/store/Action/others";
 import ProductCard from "../ProductCard";
@@ -732,37 +732,42 @@ const FoodContainer = () => {
 
           {/* Main content grid */}
 
-          <section>
-            <div className="flex flex-col gap-[4vw] items-center justify-center ">
-              <div className="flex items-center text-center justify-center"></div>
-              <div className="w-full flex items-center justify-center gap-8 py-2">
-                <Swiper
-                  pagination={{ clickable: true }}
-                  modules={[Pagination, Autoplay]}
-                  autoplay={{
-                    delay: 2500, // time between slides (ms)
-                    disableOnInteraction: false, // keep autoplay after user swipes
-                  }}
-                  speed={1000}
-                  className="w-full"
-                >
-                  {posters.map((poster, index) => {
-                    return (
-                      <SwiperSlide key = {index} className="flex flex-col items-center justify-center text-center">
-                        <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                          <LazyImage
-                            className="rounded-2xl h-full w-full object-cover"
-                            src={poster.img}
-                            alt=""
-                          />
-                        </div>
-                      </SwiperSlide>
-                    );
-                  })}
-                </Swiper>
+          <Suspense fallback={<ComponentLoader />}>
+            <section>
+              <div className="flex flex-col gap-[4vw] items-center justify-center ">
+                <div className="flex items-center text-center justify-center"></div>
+                <div className="w-full flex items-center justify-center gap-8 py-2">
+                  <Swiper
+                    pagination={{ clickable: true }}
+                    modules={[Pagination, Autoplay]}
+                    autoplay={{
+                      delay: 2500, // time between slides (ms)
+                      disableOnInteraction: false, // keep autoplay after user swipes
+                    }}
+                    speed={1000}
+                    className="w-full h-[40vh]"
+                  >
+                    {posters.map((poster, index) => {
+                      return (
+                        <SwiperSlide
+                          key={index}
+                          className="flex flex-col items-center justify-center text-center"
+                        >
+                          <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                            <img
+                              className="rounded-2xl h-full w-full object-cover"
+                              src={poster.img}
+                              alt=""
+                            />
+                          </div>
+                        </SwiperSlide>
+                      );
+                    })}
+                  </Swiper>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </Suspense>
           <section>
             <div className="flex items-center justify-between mt-10 mb-5 px-5">
               <h1
