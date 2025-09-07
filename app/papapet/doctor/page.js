@@ -75,7 +75,7 @@ const Page = () => {
             radius: 10000, // 3km radius
           });
 
-          setShops(res.data.results);
+          setShops(res.data);
         } catch (err) {
           console.error("Error fetching places:", err);
         } finally {
@@ -287,7 +287,7 @@ const Page = () => {
                 {/* Image */}
                 <LazyImage
                   src={
-                    shop.photos
+                    shop.photos?.length > 0 && shop.photos[0]?.photo_reference
                       ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${shop.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`
                       : "https://placehold.co/400x300?text=No+Image"
                   }
@@ -330,22 +330,21 @@ const Page = () => {
                 {/* Footer */}
                 <div className="px-4 py-2 border-t flex justify-around items-center bg-orange-500 text-white">
                   <button
-                    onClick={() => console.log(`Chat with ${shop.name}`)}
-                    className="flex flex-col items-center hover:text-orange-700 transition"
-                  >
-                    <LuMessageCircleMore className="text-xl text" />
-                    <span className="text-xs mt-1">Chat</span>
-                  </button>
-
-                  <button className="flex flex-col items-center hover:text-orange-700 transition">
-                    <ShareDoctor product={shop} />
-                    <span className="text-xs mt-1">Chat</span>
-                  </button>
-
-                  <button
                     onClick={() => {
-                      if (shop.formatted_phone_number) {
-                        window.location.href = `tel:${shop.formatted_phone_number}`;
+                      if (shop.phone_number) {
+                        let phone = shop.phone_number.trim();
+
+                        // Remove leading 0 if present
+                        if (phone.startsWith("0")) {
+                          phone = phone.substring(1);
+                        }
+
+                        // Ensure it has +91 prefix
+                        if (!phone.startsWith("+91")) {
+                          phone = `+91${phone}`;
+                        }
+
+                        window.location.href = `tel:${phone}`;
                       } else {
                         toast.error("Phone number not available");
                       }
@@ -354,7 +353,7 @@ const Page = () => {
                   >
                     <LuPhoneCall className="text-xl" />
                     <span className="text-xs mt-1">Call</span>
-                  </button>
+                  </button>  
 
                   <button
                     onClick={() =>
@@ -367,6 +366,11 @@ const Page = () => {
                   >
                     <LuMap className="text-xl" />
                     <span className="text-xs mt-1">Map</span>
+                  </button>
+
+                  <button className="flex flex-col items-center hover:text-orange-700 transition">
+                    <ShareDoctor product={shop} />
+                    <span className="text-xs mt-1">Share</span>
                   </button>
                 </div>
               </div>

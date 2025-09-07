@@ -54,7 +54,7 @@ const ProductCard = ({ i, product }) => {
   // };
 
   const handleAddToCart = async (e) => {
-     e.stopPropagation();
+     e.preventDefault();
 
     try {
       const { data } = await axios.post("/user/addToCart", {
@@ -83,7 +83,7 @@ const ProductCard = ({ i, product }) => {
 
   
     const handleBuyNow = async (e) => {
-    e.stopPropagation();
+    e.preventDefault();
 
     try {
       const { data } = await axios.post("/user/addToCart", {
@@ -212,7 +212,7 @@ const ProductCard = ({ i, product }) => {
               onClick={handleAddToCart}
               aria-label="Add to cart"
             >
-             <LazyImage src = "/cart.png" alt = "cart"/>
+             <img src = "/cart.png" alt = "cart"/>
             </button>
           </div>
         </div>

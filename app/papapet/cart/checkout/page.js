@@ -212,6 +212,24 @@ export default function CheckoutPage() {
   // );
 
   // ✅ Place order only with shipping address
+
+  const totalShipmentLength = cart.cartItems.reduce(
+    (sum, item) => sum + Number(item.dimensions?.length || 1),
+    0
+  );
+  const totalShipmentWidth = cart.cartItems.reduce(
+    (sum, item) => sum + Number(item.dimensions?.width || 1),
+    0
+  );
+  const totalShipmentHeight = cart.cartItems.reduce(
+    (sum, item) => sum + Number(item.dimensions?.height || 1),
+    0
+  );
+  const totalWeight = cart.cartItems.reduce(
+    (sum, item) => sum + Number(item.dimensions?.weight || 0.1),
+    0
+  );
+
   const handlePlaceOrder = useCallback(async () => {
     if (isPlacingOrder) return;
     if (!authUser || !authUser._id) {
@@ -302,17 +320,17 @@ export default function CheckoutPage() {
                   product_sku: item._id || "",
                   product_img_url: getImageUrl(item),
                 })),
-                shipment_length: "1",
-                shipment_width: "1",
-                shipment_height: "1",
-                weight: "0.1",
+                shipment_length: totalShipmentLength.toString(),
+                shipment_width: totalShipmentWidth.toString(),
+                shipment_height: totalShipmentHeight.toString(),
+                weight: totalWeight.toString(),
                 discount: discount,
                 shipping: shipping,
                 tax: 0,
                 notes: orderNotes,
                 userId: authUser._id,
                 payment: verifyPayload,
-                couponCode : couponCode,
+                couponCode: couponCode,
               };
 
               const { data: createRes } = await axios.post(
