@@ -5,8 +5,8 @@ import axiosInstance from "@/Axios/axios";
 
 const TRACKING_STEPS = [
   "Order Placed",
-  "Packed",
-  "Shipped",
+  "Picked Up",
+  "In-Transit",
   "Out for Delivery",
   "Delivered",
 ];
@@ -14,15 +14,55 @@ const TRACKING_STEPS = [
 export default function TrackOrder({ details, awb }) {
   if (!details) return null;
 
+  // --- Map backend status to step index ---
+  function mapStatusToStep(status = "") {
+    const s = (status || "").toLowerCase();
+
+    if (
+      s.includes("manifest") ||
+      s.includes("order placed") ||
+      s.includes("order received")
+    )
+      return 0;
+
+    if (
+      s.includes("pickup") ||
+      s.includes("picked up") ||
+      s.includes("collected")
+    )
+      return 1;
+
+    if (
+      s.includes("in transit") ||
+      s.includes("dispatched") ||
+      s.includes("received at") ||
+      s.includes("reached") ||
+      s.includes("hub") ||
+      s.includes("center") ||
+      s.includes("warehouse")
+    )
+      return 2;
+
+    if (s.includes("out for delivery") || s.includes("with courier")) return 3;
+    if (s.includes("delivered") || s.includes("received by customer")) return 4;
+
+    return 0;
+  }
+
+  const currentStepIndex = mapStatusToStep(details.current_status);
+
+  // --- States for actions ---
   const [cancelLoading, setCancelLoading] = useState(false);
   const [cancelSuccess, setCancelSuccess] = useState(null);
   const [cancelError, setCancelError] = useState(null);
   const [printLoading, setPrintLoading] = useState(false);
   const [printError, setPrintError] = useState(null);
 
+  // --- Order and user info ---
   const order = details.order || {};
   const products = Array.isArray(order.products) ? order.products : [];
   const productCount = products.length;
+
   const orderDate =
     order.orderDate || order.createdAt || details.booking_date || null;
   const totalAmount =
@@ -35,44 +75,9 @@ export default function TrackOrder({ details, awb }) {
     null;
   const notes = order.notes || details.remarks || "";
 
-  // AWB number
   const awbNumber =
     awb || details.awb_number || details.awb || details.AWB || order.AWB || "";
 
-  console.log("Tracking details:", awbNumber);
-  // Steps and current step index
-  const steps = TRACKING_STEPS;
-  const statusMap = {
-    "Order Placed": 0,
-    Packed: 1,
-    Shipped: 2,
-    "Out for Delivery": 3,
-    Delivered: 4,
-  };
-  let currentStepIndex = 0;
-  if (details.current_status) {
-    const status = details.current_status.trim().toLowerCase();
-    const foundIdx = steps.findIndex((step) => step.toLowerCase() === status);
-    if (foundIdx !== -1) {
-      currentStepIndex = foundIdx;
-    } else if (typeof statusMap[details.current_status] === "number") {
-      currentStepIndex = statusMap[details.current_status];
-    } else {
-      const partialIdx = steps.findIndex((step) =>
-        status.includes(step.toLowerCase())
-      );
-      if (partialIdx !== -1) currentStepIndex = partialIdx;
-    }
-  }
-
-  // Activity timeline
-  const activity =
-    Array.isArray(details.shipment_track_activities) &&
-    details.shipment_track_activities.length > 0
-      ? details.shipment_track_activities
-      : [];
-
-  // User info (billing/shipping) fallback
   const user = order.user || order.customer || {};
   const userName =
     user.name || order.orderName || details.consignee_name || "N/A";
@@ -90,11 +95,9 @@ export default function TrackOrder({ details, awb }) {
   const userEmail =
     user.email || order.email || details.consignee_email || "N/A";
 
-  // Helper for currency
+  // --- Format helpers ---
   const formatCurrency = (amount) =>
     `₹${Number(amount || 0).toLocaleString("en-IN")}`;
-
-  // Helper for date
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     const date = new Date(dateStr);
@@ -106,7 +109,7 @@ export default function TrackOrder({ details, awb }) {
     });
   };
 
-  // Handler for order cancellation
+  // --- Handlers ---
   const handleCancelOrder = async () => {
     setCancelLoading(true);
     setCancelSuccess(null);
@@ -114,14 +117,13 @@ export default function TrackOrder({ details, awb }) {
     try {
       const orderId = order.order || order.id || order._id;
       if (!orderId) throw new Error("Order ID not found");
+
       const res = await axiosInstance.post("/delivery/order_cancellation", {
         awb_numbers: awbNumber,
       });
-      if (res.data && res.data.success) {
-        setCancelSuccess("Order cancelled successfully.");
-      } else {
-        setCancelError(res.data?.message || "Failed to cancel order.");
-      }
+
+      if (res.data?.success) setCancelSuccess("Order cancelled successfully.");
+      else setCancelError(res.data?.message || "Failed to cancel order.");
     } catch (err) {
       setCancelError(
         err?.response?.data?.message ||
@@ -133,7 +135,6 @@ export default function TrackOrder({ details, awb }) {
     }
   };
 
-  // Handler for printing invoice
   const handlePrintInvoice = async () => {
     setPrintLoading(true);
     setPrintError(null);
@@ -141,11 +142,8 @@ export default function TrackOrder({ details, awb }) {
       const res = await axiosInstance.post("/delivery/print_invoice", {
         awb_numbers: awbNumber,
       });
-
       const pdfUrl = res.data?.data_to_send?.file_name;
       if (!pdfUrl) throw new Error("No PDF URL received");
-
-      // Open the PDF directly
       window.open(pdfUrl, "_blank");
     } catch (err) {
       setPrintError(
@@ -160,10 +158,34 @@ export default function TrackOrder({ details, awb }) {
 
   const canCancel =
     typeof currentStepIndex === "number" &&
-    currentStepIndex < steps.length - 1 &&
+    currentStepIndex < TRACKING_STEPS.length - 1 &&
     !(order.status || details.current_status || "")
       .toLowerCase()
       .includes("cancel");
+
+  // --- Activity timeline ---
+  const activity = Array.isArray(details.scan_details)
+    ? details.scan_details
+    : details.shipment_track_activities || [];
+  const meaningfulStatuses = [
+    "order placed",
+    "picked up",
+    "in-transit",
+    "dispatched",
+    "received at",
+    "reached",
+    "hub",
+    "center",
+    "warehouse",
+    "out for delivery",
+    "with courier",
+    "delivered",
+    "added to bag",
+  ];
+  const filteredActivity = activity.filter((item) => {
+    const status = (item.status_remark || item.status || "").toLowerCase();
+    return meaningfulStatuses.some((keyword) => status.includes(keyword));
+  });
 
   return (
     <div className="w-[80vw] mx-auto px-5 md:px-20 sm:px-6 py-5 rounded-2xl shadow-sm border border-[#e6f4f4] bg-white">
@@ -181,7 +203,6 @@ export default function TrackOrder({ details, awb }) {
           <button
             disabled
             className="px-4 py-2 rounded-lg bg-gray-400 text-white font-semibold text-xs cursor-not-allowed"
-            type="button"
           >
             Cancelled
           </button>
@@ -219,11 +240,15 @@ export default function TrackOrder({ details, awb }) {
       </div>
 
       {/* Progress Steps */}
-      {/* <div className="flex max-md:flex-col items-start md:items-center md:justify-between gap-2 mb-6 overflow-x-auto">
-        {steps.map((step, idx) => (
-          <div key={idx} className="flex-1 min-w-[60px] flex md:flex-col items-center max-md:justify-center gap-3">
+      <div className="flex max-md:flex-col items-start md:items-center md:justify-between gap-2 mb-6 overflow-x-auto">
+        {TRACKING_STEPS.map((step, idx) => (
+          <div
+            key={idx}
+            className="flex-1 min-w-[60px] flex md:flex-col items-center max-md:justify-center gap-3 relative"
+          >
             <div
-              className={`w-7 h-7 flex items-center justify-center rounded-full border-2 ${
+              className={`w-7 h-7 flex items-center justify-center rounded-full border-2 z-10
+              ${
                 idx < currentStepIndex
                   ? "bg-[#0D9899] border-[#0D9899] text-white"
                   : idx === currentStepIndex
@@ -234,7 +259,8 @@ export default function TrackOrder({ details, awb }) {
               {idx + 1}
             </div>
             <span
-              className={`mt-1 max-md:text-lg text-[11px] text-center leading-tight ${
+              className={`mt-1 max-md:text-lg text-[11px] text-center leading-tight
+              ${
                 idx <= currentStepIndex
                   ? "text-[#0D9899] font-medium"
                   : "text-gray-400"
@@ -243,44 +269,8 @@ export default function TrackOrder({ details, awb }) {
             >
               {step}
             </span>
-            {idx < steps.length - 1 && (
-              <div className="hidden sm:block w-full h-0.5 bg-gray-200 mt-1" />
-            )}
-          </div>
-        ))}
-      </div> */}
-      <div className="flex max-md:flex-col items-start md:items-center md:justify-between gap-2 mb-6 overflow-x-auto">
-        {steps.map((step, idx) => (
-          <div
-            key={idx}
-            className="flex-1 min-w-[60px] flex md:flex-col items-center max-md:justify-center gap-3 relative"
-          >
-            <div
-              className={`w-7 h-7 flex items-center justify-center rounded-full border-2 z-10
-          ${
-            idx < currentStepIndex
-              ? "bg-[#0D9899] border-[#0D9899] text-white"
-              : idx === currentStepIndex
-              ? "bg-white border-[#0D9899] text-[#0D9899] font-bold"
-              : "bg-gray-100 border-gray-200 text-gray-400"
-          } transition`}
-            >
-              {idx + 1}
-            </div>
-            <span
-              className={`mt-1 max-md:text-lg text-[11px] text-center leading-tight
-          ${
-            idx <= currentStepIndex
-              ? "text-[#0D9899] font-medium"
-              : "text-gray-400"
-          }`}
-              style={{ minHeight: 28 }}
-            >
-              {step}
-            </span>
 
-            {/* Connector line (only between steps) */}
-            {idx < steps.length - 1 && (
+            {idx < TRACKING_STEPS.length - 1 && (
               <div className="absolute max-md:hidden top-3 left-[50%] w-full h-0.5 bg-gray-200 -z-0" />
             )}
           </div>
@@ -295,17 +285,15 @@ export default function TrackOrder({ details, awb }) {
         <ul className="text-sm text-gray-600 space-y-1">
           {activity.length === 0 ? (
             <li className="text-gray-400">No activity found.</li>
+          ) : filteredActivity.length === 0 ? (
+            <li className="text-gray-400">No location updates found.</li>
           ) : (
-            activity.map((item, i) => (
+            filteredActivity.map((item, i) => (
               <li key={i} className="flex items-center gap-2">
                 <span
-                  className={` w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold ${
-                    (item.activity_type || item.status || "")
-                      .toLowerCase()
-                      .includes("delivered") ||
-                    (item.activity_type || item.status || "")
-                      .toLowerCase()
-                      .includes("success")
+                  className={`w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold
+                  ${
+                    (item.status || "").toLowerCase().includes("delivered")
                       ? "bg-green-100 text-green-600"
                       : "bg-[#e6f4f4] text-[#0D9899]"
                   }`}
@@ -313,18 +301,15 @@ export default function TrackOrder({ details, awb }) {
                   ✓
                 </span>
                 <span className="text-gray-700">
-                  {item.activity ||
-                    item.status ||
-                    item.activity_type ||
-                    "Status Update"}
-                  {item.date_time && (
+                  {item.status_remark || item.status}
+                  {item.status_date_time && (
                     <span className="ml-2 text-xs text-gray-400">
-                      ({formatDate(item.date_time)})
+                      ({formatDate(item.status_date_time)})
                     </span>
                   )}
-                  {item.location && (
+                  {item.status_location && (
                     <span className="ml-2 text-xs text-gray-300">
-                      {item.location}
+                      {item.status_location}
                     </span>
                   )}
                 </span>
@@ -396,14 +381,6 @@ export default function TrackOrder({ details, awb }) {
           </p>
         </div>
       </div>
-      {/* <div className="mt-6 text-center">
-        <span className="inline-block text-xs text-gray-400">
-          Expected Arrival:{" "}
-          <span className="text-[#0D9899] font-semibold">
-            {formatDate(expectedArrival)}
-          </span>
-        </span>
-      </div> */}
     </div>
   );
 }

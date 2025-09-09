@@ -6,7 +6,7 @@ import axiosInstance from "@/Axios/axios";
 import TrackOrder from "@/Components/Setting/TrackOrder";
 
 export default function TrackOrderDetail() {
-  const { id: orderNumber } = useParams(); // e.g., ORD510576
+  const { id: orderNumber } = useParams();
   const { user } = useSelector((state) => state.auth);
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,22 +20,27 @@ export default function TrackOrderDetail() {
         });
 
         const allOrders = ordersRes.data?.orders || [];
+        const normalize = (val = "") => val.toString().replace(/^ORD[-]?/, "");
         const matchedOrder = allOrders.find(
-          (o) => o.order?.toString() === orderNumber
+          (o) => normalize(o.order) === normalize(orderNumber)
         );
 
         if (!matchedOrder?.AWB) throw new Error("Order or AWB not found");
 
         // 2️⃣ Fetch live tracking info from backend
         const trackRes = await axiosInstance.post("/delivery/order_tracking", {
-          // Convert AWB to string (iThink expects comma-separated string if multiple)
           awb_number_list: matchedOrder.AWB.toString(),
         });
 
-        // ✅ Expecting backend to return: { success: true, trackingData: {...} }
+        // unwrap iThink response safely
+        const rawTracking =
+          trackRes.data?.trackingData || trackRes.data?.data || {};
+        const awbKey = matchedOrder.AWB.toString();
         const awbData =
-          trackRes.data?.trackingData?.[matchedOrder.AWB] ||
-          trackRes.data?.trackingData?.[matchedOrder.AWB.toString()] ||
+          rawTracking[awbKey] ||
+          rawTracking[String(awbKey)] ||
+          rawTracking[Number(awbKey)] ||
+          Object.values(rawTracking)[0] ||
           {};
 
         // 3️⃣ Merge tracking info + DB order for TrackOrder component
@@ -43,10 +48,10 @@ export default function TrackOrderDetail() {
           ...awbData,
           order: {
             ...matchedOrder,
-            // Add fallback fields if DB doesn't store them
             orderDate: matchedOrder.date || matchedOrder.createdAt,
             totalAmount: matchedOrder.totalAmount || matchedOrder.amount || 0,
-            expectedArrival: awbData.edd || awbData.expected_delivery_date || null,
+            expectedArrival:
+              awbData.edd || awbData.expected_delivery_date || null,
             productCount: matchedOrder.products?.length || 0,
           },
           awb: matchedOrder.AWB,
@@ -69,7 +74,11 @@ export default function TrackOrderDetail() {
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">Order #{orderNumber}</h1>
-      <TrackOrder details={orderDetails} awb={orderDetails?.awb} />
+      {/* ✅ now TrackOrder receives both full details + filtered movements */}
+      <TrackOrder
+        details={orderDetails}
+        awb={orderDetails?.awb}
+      />
     </div>
   );
 }
