@@ -51,55 +51,54 @@ const ProductDetail = ({ i, product }) => {
     setQuantity(quantity + 1);
   };
 
- const handleCheckPincode = async () => {
-  if (!pincode || pincode.length < 6) {
-    setPincodeStatus("error");
-    setPincodeMessage("Please enter a valid 6-digit pincode.");
-    return;
-  }
+  const handleCheckPincode = async () => {
+    if (!pincode || pincode.length < 6) {
+      setPincodeStatus("error");
+      setPincodeMessage("Please enter a valid 6-digit pincode.");
+      return;
+    }
 
-  setPincodeStatus("checking");
-  setPincodeMessage("Checking delivery availability...");
+    setPincodeStatus("checking");
+    setPincodeMessage("Checking delivery availability...");
 
-  try {
-    const res = await axiosInstance.post(`/delivery/pincode`, { pincode });
-    const data = res.data;
+    try {
+      const res = await axiosInstance.post(`/delivery/pincode`, { pincode });
+      const data = res.data;
 
-    if (data.status === "success" && data.data) {
-      const courierData = data.data[pincode];
-      if (courierData) {
-        const isAvailable = Object.values(courierData).some(
-          (courier) => courier.prepaid === "Y" || courier.cod === "Y"
-        );
+      if (data.status === "success" && data.data) {
+        const courierData = data.data[pincode];
+        if (courierData) {
+          const isAvailable = Object.values(courierData).some(
+            (courier) => courier.prepaid === "Y" || courier.cod === "Y"
+          );
 
-        if (isAvailable) {
-          setPincodeStatus("available");
-          setPincodeMessage("Delivery is available to this pincode!");
+          if (isAvailable) {
+            setPincodeStatus("available");
+            setPincodeMessage("Delivery is available to this pincode!");
+          } else {
+            setPincodeStatus("unavailable");
+            setPincodeMessage("Sorry, no courier delivers to this pincode.");
+          }
         } else {
           setPincodeStatus("unavailable");
-          setPincodeMessage("Sorry, no courier delivers to this pincode.");
+          setPincodeMessage("Pincode not serviceable.");
         }
       } else {
-        setPincodeStatus("unavailable");
-        setPincodeMessage("Pincode not serviceable.");
+        setPincodeStatus("error");
+        setPincodeMessage("Failed to check pincode. Please try again.");
       }
-    } else {
-      setPincodeStatus("error");
-      setPincodeMessage("Failed to check pincode. Please try again.");
-    }
-  } catch (err) {
-    console.error(err);
+    } catch (err) {
+      console.error(err);
 
-    if (err.response?.status === 401) {
-      setPincodeStatus("unauthorized");
-      setPincodeMessage("Please login to check delivery availability.");
-    } else {
-      setPincodeStatus("error");
-      setPincodeMessage("Failed to check pincode. Please try again.");
+      if (err.response?.status === 401) {
+        setPincodeStatus("unauthorized");
+        setPincodeMessage("Please login to check delivery availability.");
+      } else {
+        setPincodeStatus("error");
+        setPincodeMessage("Failed to check pincode. Please try again.");
+      }
     }
-  }
-};
-
+  };
 
   const handleBuyNow = async (e) => {
     e.preventDefault();
@@ -124,22 +123,40 @@ const ProductDetail = ({ i, product }) => {
       }
     } catch (error) {
       console.error("Add to cart error:", error);
+      router.push("/papapet/auth");
       toast.error(
         error.response?.data?.message || "Something went wrong. Try again!"
       );
     }
   };
 
-  const handleAddToCart = () => {
-    if (!product) return;
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
 
-    const item = {
-      ...product,
-      quantity,
-    };
+    try {
+      const { data } = await axios.post("/user/addToCart", {
+        foodId: i._id,
+        quantity: 1,
+      });
 
-    dispatch(addToCart(item));
-    toast.success("Item added to cart!");
+      if (data.success) {
+        const item = {
+          ...i,
+          quantity: 1,
+        };
+        dispatch(addToCart(item));
+
+        toast.success("Item added to cart!");
+      } else {
+        toast.error(data.message || "Failed to add item");
+      }
+    } catch (error) {
+      console.error("Add to cart error:", error);
+      router.push("/papapet/auth");
+      toast.error(
+        error.response?.data?.message || "Something went wrong. Try again!"
+      );
+    }
   };
 
   return (

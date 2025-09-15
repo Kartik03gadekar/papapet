@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import axios from "@/Axios/axios";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
@@ -54,12 +54,12 @@ const ProductCard = ({ i, product }) => {
   // };
 
   const handleAddToCart = async (e) => {
-     e.preventDefault();
+    e.preventDefault();
 
     try {
       const { data } = await axios.post("/user/addToCart", {
-        foodId: i._id, 
-        quantity: 1, 
+        foodId: i._id,
+        quantity: 1,
       });
 
       if (data.success) {
@@ -75,20 +75,20 @@ const ProductCard = ({ i, product }) => {
       }
     } catch (error) {
       console.error("Add to cart error:", error);
+      router.push("/papapet/auth");
       toast.error(
         error.response?.data?.message || "Something went wrong. Try again!"
       );
     }
   };
 
-  
-    const handleBuyNow = async (e) => {
+  const handleBuyNow = async (e) => {
     e.preventDefault();
 
     try {
       const { data } = await axios.post("/user/addToCart", {
-        foodId: i._id, 
-        quantity: 1, 
+        foodId: i._id,
+        quantity: 1,
       });
 
       if (data.success) {
@@ -99,12 +99,13 @@ const ProductCard = ({ i, product }) => {
         dispatch(addToCart(item));
 
         toast.success("Item added to cart!");
-        router.push("/papapet/cart")
+        router.push("/papapet/cart");
       } else {
         toast.error(data.message || "Failed to add item");
       }
     } catch (error) {
       console.error("Add to cart error:", error);
+      router.push("/papapet/auth");
       toast.error(
         error.response?.data?.message || "Something went wrong. Try again!"
       );
@@ -112,9 +113,8 @@ const ProductCard = ({ i, product }) => {
   };
 
   useEffect(() => {
-  router.prefetch(`/papapet/product/${i._id}`);
-}, [i._id, router]);
-
+    router.prefetch(`/papapet/product/${i._id}`);
+  }, [i._id, router]);
 
   return (
     <Link
@@ -212,7 +212,7 @@ const ProductCard = ({ i, product }) => {
               onClick={handleAddToCart}
               aria-label="Add to cart"
             >
-             <img src = "/cart.png" alt = "cart"/>
+              <img src="/cart.png" alt="cart" />
             </button>
           </div>
         </div>

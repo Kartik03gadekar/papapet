@@ -19,35 +19,34 @@ import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import ComponentLoader from "@/Components/loader/ComponentLoader";
 import LazyImage from "@/Components/LazyImage";
+import Appointment from "@/Components/Doctor/Appointment";
+import DoctorBooking from "@/Components/Doctor/DoctorBooking";
 
 const Page = () => {
   const router = useRouter();
   const services = [
-    {
-      img: "/doctorimage1.png",
-      name: "Instant Video Consultation",
-      p: "Connect Within 30 sec",
-    },
     {
       img: "/doctorimage2.png",
       name: "Find Doctors Near You",
       p: "Confirmed Appointment",
     },
     {
-      img: "/doctorimage3.png",
-      name: "In-Clinic Services",
-      p: "Best clinic near you",
+      img: "/doctorimage1.png",
+      name: "Instant Video Consultation",
+      p: "Connect Within 30 sec",
     },
+
     {
-      img: "/doctorimage4.png",
-      name: "Home Services",
-      p: "Best Home Services",
+      img: "/doctorimage3.png",
+      name: "In-Clinic / Home Services",
+      p: "Best clinic near you",
     },
   ];
 
   const [shops, setShops] = useState([]);
   const [loading, setLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(8);
+  const [activeService, setActiveService] = useState("Find Doctors Near You");
 
   const icons = [
     <LuMessageCircleMore key="chat" />,
@@ -194,6 +193,235 @@ const Page = () => {
         </div>
       </section>
 
+      {/* Services Section */}
+
+      <section className="py-8 text-center bg-[#F4EEE1]">
+        <div className="grid grid-cols-1 md:flex md:items-center md:justify-around px-6 max-md:px-3 max-md:grid-cols-2 max-md:gap-4">
+          {services.map((service, index) => {
+            const isActive = activeService === service.name;
+            return (
+              <div
+                onClick={() => setActiveService(service.name)}
+                key={index}
+                className={`cursor-pointer w-[18vw] h-[13vw] max-md:w-[45vw] max-md:h-[42vw] rounded-lg shadow-md flex flex-col items-center justify-center border-2 border-[#FFAD22] p-2 transition
+            ${
+              isActive
+                ? "bg-[#FFAD22] text-white"
+                : "bg-white text-gray-800 hover:bg-orange-100"
+            }`}
+              >
+                <img
+                  src={service.img}
+                  alt={service.name}
+                  className="rounded w-[10vw] max-md:w-[25vw]"
+                />
+                <h3
+                  className={`mt-2 font-medium text-[1vw] max-md:text-[3.7vw] ${
+                    isActive ? "text-white" : "text-gray-800"
+                  }`}
+                >
+                  {service.name}
+                </h3>
+                <p
+                  className={`text-xs max-md:text-[3vw] ${
+                    isActive ? "text-orange-100" : "text-gray-400"
+                  }`}
+                >
+                  {service.p}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section>
+        {activeService === "Instant Video Consultation" && (
+          <section className="py-14 px-6 rounded-xl">
+            <Appointment />
+          </section>
+        )}
+
+        {activeService === "Find Doctors Near You" && (
+          <section className="py-14 px-6 bg-[#F4EEE1]">
+            <div className="container mx-auto">
+              {/* Header */}
+              <div className="flex flex-col md:flex-row items-center justify-between gap-10 bg-white px-10 py-5 rounded-xl border-2 border-[#FFAD22]">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-800 text-center md:text-left">
+                  Nearby Veterinary Clinics
+                </h2>
+                <button
+                  onClick={handleGetNearby}
+                  className="bg-[#FFAD22] hover:bg-[#c2800e] text-white px-5 py-2 rounded-full shadow-md transition"
+                >
+                  Use My Location
+                </button>
+              </div>
+
+              {/* Loader */}
+              {loading && (
+                <div className="flex justify-center items-center py-10">
+                  <ComponentLoader />
+                </div>
+              )}
+
+              {/* Clinics Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-10">
+                {shops.slice(0, visibleCount).map((shop, index) => (
+                  <div
+                    key={index}
+                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col"
+                  >
+                    {/* Image */}
+                    <LazyImage
+                      src={
+                        shop.photos?.length > 0 &&
+                        shop.photos[0]?.photo_reference
+                          ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${shop.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`
+                          : "https://placehold.co/400x300?text=No+Image"
+                      }
+                      alt={shop.name}
+                      className="w-full h-48 sm:h-56 object-cover"
+                    />
+
+                    {/* Content */}
+                    <div className="p-4 flex flex-col flex-grow">
+                      {/* Title + Rating */}
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1 pr-2">
+                          <h3 className="text-lg sm:text-xl font-semibold text-gray-800 line-clamp-2">
+                            {shop.name}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-1">
+                            {shop.types?.slice(0, 3).join(", ")}
+                          </p>
+                        </div>
+
+                        {shop.rating && (
+                          <div className="flex items-center gap-1 bg-yellow-100 px-2 py-1 rounded-md">
+                            <FaStar className="text-yellow-500 text-sm" />
+                            <span className="font-medium text-sm">
+                              {shop.rating}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Address */}
+                      <div className="mt-3 flex items-start gap-2 text-sm text-gray-600 line-clamp-2">
+                        <IoLocationOutline className="text-lg flex-shrink-0 text-orange-500" />
+                        <span>{shop.vicinity}</span>
+                      </div>
+
+                      <div className="flex-grow"></div>
+                    </div>
+
+                    <Suspense fallback={<ComponentLoader />}>
+                      <section>
+                        <div className="h-auto w-full">
+                          <Swiper
+                            pagination={true}
+                            autoplay={{
+                              delay: 2500, // time between slides (ms)
+                              disableOnInteraction: false, // keep autoplay after user swipes
+                            }}
+                            speed={1000} // smooth transition speed
+                            modules={[Pagination, Autoplay]}
+                            className="mySwiper h-auto w-screen "
+                          >
+                            {posters.map((poster, index) => {
+                              return (
+                                <SwiperSlide
+                                  key={index}
+                                  className="flex justify-center items-center text-center text-[18px]"
+                                >
+                                  <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                                    <LazyImage
+                                      className="rounded-2xl h-full w-full object-cover"
+                                      src={poster.img}
+                                      alt=""
+                                    />
+                                  </div>
+                                </SwiperSlide>
+                              );
+                            })}
+                          </Swiper>
+                        </div>
+                      </section>
+                    </Suspense>
+
+                    {/* Footer */}
+                    <div className="px-4 py-2 border-t flex justify-around items-center bg-orange-500 text-white">
+                      <button
+                        onClick={() => {
+                          if (shop.phone_number) {
+                            let phone = shop.phone_number.trim();
+
+                            // Remove leading 0 if present
+                            if (phone.startsWith("0")) {
+                              phone = phone.substring(1);
+                            }
+
+                            // Ensure it has +91 prefix
+                            if (!phone.startsWith("+91")) {
+                              phone = `+91${phone}`;
+                            }
+
+                            window.location.href = `tel:${phone}`;
+                          } else {
+                            toast.error("Phone number not available");
+                          }
+                        }}
+                        className="flex flex-col items-center hover:text-orange-700 transition"
+                      >
+                        <LuPhoneCall className="text-xl" />
+                        <span className="text-xs mt-1">Call</span>
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          window.open(
+                            `https://www.google.com/maps/search/?api=1&query=${shop.geometry?.location.lat},${shop.geometry?.location.lng}`,
+                            "_blank"
+                          )
+                        }
+                        className="flex flex-col items-center hover:text-orange-700 transition"
+                      >
+                        <LuMap className="text-xl" />
+                        <span className="text-xs mt-1">Map</span>
+                      </button>
+
+                      <button className="flex flex-col items-center hover:text-orange-700 transition">
+                        <ShareDoctor product={shop} />
+                        <span className="text-xs mt-1">Share</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Load More Button */}
+              {visibleCount < shops.length && (
+                <div className="flex justify-center mt-10">
+                  <button
+                    onClick={() => setVisibleCount(visibleCount + 8)}
+                    className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md transition"
+                  >
+                    Load More
+                  </button>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {activeService === "In-Clinic / Home Services" && (
+          <section className="py-14 px-6">
+            <DoctorBooking />
+          </section>
+        )}
+      </section>
+
       <Suspense fallback={<ComponentLoader />}>
         <section>
           <div className="h-auto w-full">
@@ -213,7 +441,7 @@ const Page = () => {
                     key={index}
                     className="flex justify-center items-center text-center text-[18px]"
                   >
-                    <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
+                    <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5 rounded-2xl">
                       <LazyImage
                         className="rounded-2xl h-full w-full object-cover"
                         src={poster.img}
@@ -227,179 +455,6 @@ const Page = () => {
           </div>
         </section>
       </Suspense>
-
-      {/* Services Section */}
-
-      <section className="py-8 text-center bg-[#F4EEE1]">
-        <div className="grid grid-cols-1 md:flex md:items-center md:justify-around px-6 max-md:px-3 max-md:grid-cols-2 max-md:gap-4">
-          {services.map((service, index) => (
-            <div
-              key={index}
-              className="bg-white w-[18vw] h-[13vw] max-md:w-[45vw] max-md:h-[42vw] rounded-lg shadow-md flex flex-col items-center justify-center p-2"
-            >
-              <img
-                src={service.img}
-                alt={service.name}
-                className="rounded w-[10vw] max-md:w-[25vw]"
-              />
-              <h3 className="mt-2 font-medium text-[1vw] max-md:text-[3.7vw]">
-                {service.name}
-              </h3>
-              <p className="text-xs text-gray-400 max-md:text-[3vw]">
-                {service.p}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Trusted Doctors Section */}
-
-      <section className="py-14 px-6 bg-[#F4EEE1]">
-        <div className="container mx-auto">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 text-center md:text-left">
-              Nearby Veterinary Clinics
-            </h2>
-            <button
-              onClick={handleGetNearby}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-full shadow-md transition"
-            >
-              Use My Location
-            </button>
-          </div>
-
-          {/* Loader */}
-          {loading && (
-            <div className="flex justify-center items-center py-10">
-              <ComponentLoader />
-            </div>
-          )}
-
-          {/* Clinics Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-10">
-            {shops.slice(0, visibleCount).map((shop, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col"
-              >
-                {/* Image */}
-                <LazyImage
-                  src={
-                    shop.photos?.length > 0 && shop.photos[0]?.photo_reference
-                      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${shop.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`
-                      : "https://placehold.co/400x300?text=No+Image"
-                  }
-                  alt={shop.name}
-                  className="w-full h-48 sm:h-56 object-cover"
-                />
-
-                {/* Content */}
-                <div className="p-4 flex flex-col flex-grow">
-                  {/* Title + Rating */}
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1 pr-2">
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-800 line-clamp-2">
-                        {shop.name}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-1">
-                        {shop.types?.slice(0, 3).join(", ")}
-                      </p>
-                    </div>
-
-                    {shop.rating && (
-                      <div className="flex items-center gap-1 bg-yellow-100 px-2 py-1 rounded-md">
-                        <FaStar className="text-yellow-500 text-sm" />
-                        <span className="font-medium text-sm">
-                          {shop.rating}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Address */}
-                  <div className="mt-3 flex items-start gap-2 text-sm text-gray-600 line-clamp-2">
-                    <IoLocationOutline className="text-lg flex-shrink-0 text-orange-500" />
-                    <span>{shop.vicinity}</span>
-                  </div>
-
-                  <div className="flex-grow"></div>
-                </div>
-
-                {/* Footer */}
-                <div className="px-4 py-2 border-t flex justify-around items-center bg-orange-500 text-white">
-                  <button
-                    onClick={() => {
-                      if (shop.phone_number) {
-                        let phone = shop.phone_number.trim();
-
-                        // Remove leading 0 if present
-                        if (phone.startsWith("0")) {
-                          phone = phone.substring(1);
-                        }
-
-                        // Ensure it has +91 prefix
-                        if (!phone.startsWith("+91")) {
-                          phone = `+91${phone}`;
-                        }
-
-                        window.location.href = `tel:${phone}`;
-                      } else {
-                        toast.error("Phone number not available");
-                      }
-                    }}
-                    className="flex flex-col items-center hover:text-orange-700 transition"
-                  >
-                    <LuPhoneCall className="text-xl" />
-                    <span className="text-xs mt-1">Call</span>
-                  </button>  
-
-                  <button
-                    onClick={() =>
-                      window.open(
-                        `https://www.google.com/maps/search/?api=1&query=${shop.geometry?.location.lat},${shop.geometry?.location.lng}`,
-                        "_blank"
-                      )
-                    }
-                    className="flex flex-col items-center hover:text-orange-700 transition"
-                  >
-                    <LuMap className="text-xl" />
-                    <span className="text-xs mt-1">Map</span>
-                  </button>
-
-                  <button className="flex flex-col items-center hover:text-orange-700 transition">
-                    <ShareDoctor product={shop} />
-                    <span className="text-xs mt-1">Share</span>
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Load More Button */}
-          {visibleCount < shops.length && (
-            <div className="flex justify-center mt-10">
-              <button
-                onClick={() => setVisibleCount(visibleCount + 8)}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md transition"
-              >
-                Load More
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Best Doctors Section */}
-
-      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-white">
-        <h2 className="text-2xl sm:text-3xl font-semibold text-center">
-          Best Doctors Connected With Us
-        </h2>
-
-        {/* Grid layout */}
-      </section>
 
       <Footer />
 
