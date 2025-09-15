@@ -78,7 +78,7 @@ const cartSlice = createSlice({
         const qty = Number(item.quantity) || 1;
         return sum + price * qty;
       }, 0);
-      const shipping = subtotal > 1000 || subtotal == 1 ? 0 : 99;
+      const shipping = subtotal > 1000 || subtotal == 200 ? 0 : 99;
       const discountAmount = state.discount || 0;
 
       state.subtotal = subtotal;
