@@ -560,7 +560,7 @@ export default function CheckoutPage() {
   const shipping =
     cartItems.length === 0 ? 0 : subtotal > 1000 || subtotal == 1 ? 0 : 99;
   const discount = useSelector((state) => state.cart.discount);
-  const total = Math.round(subtotal + shipping - discount);
+  const total = Math.round(subtotal - discount);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (
