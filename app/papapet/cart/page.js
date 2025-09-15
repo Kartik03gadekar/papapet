@@ -1221,7 +1221,7 @@ export default function CheckoutPage() {
                   <div className="flex justify-between">
                     <span className="text-neutral-500">Shipping</span>
                     <span className="font-medium text-green-600">
-                      {shipping == 0 ? "Free Shipping" : "₹ 99"}
+                      Free Shipping
                     </span>
                   </div>
                   <div className="flex justify-between">
