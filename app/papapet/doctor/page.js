@@ -316,40 +316,6 @@ const Page = () => {
                       <div className="flex-grow"></div>
                     </div>
 
-                    <Suspense fallback={<ComponentLoader />}>
-                      <section>
-                        <div className="h-auto w-full">
-                          <Swiper
-                            pagination={true}
-                            autoplay={{
-                              delay: 2500, // time between slides (ms)
-                              disableOnInteraction: false, // keep autoplay after user swipes
-                            }}
-                            speed={1000} // smooth transition speed
-                            modules={[Pagination, Autoplay]}
-                            className="mySwiper h-auto w-screen "
-                          >
-                            {posters.map((poster, index) => {
-                              return (
-                                <SwiperSlide
-                                  key={index}
-                                  className="flex justify-center items-center text-center text-[18px]"
-                                >
-                                  <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
-                                    <LazyImage
-                                      className="rounded-2xl h-full w-full object-cover"
-                                      src={poster.img}
-                                      alt=""
-                                    />
-                                  </div>
-                                </SwiperSlide>
-                              );
-                            })}
-                          </Swiper>
-                        </div>
-                      </section>
-                    </Suspense>
-
                     {/* Footer */}
                     <div className="px-4 py-2 border-t flex justify-around items-center bg-orange-500 text-white">
                       <button
@@ -442,6 +408,40 @@ const Page = () => {
                     className="flex justify-center items-center text-center text-[18px]"
                   >
                     <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5 rounded-2xl">
+                      <LazyImage
+                        className="rounded-2xl h-full w-full object-cover"
+                        src={poster.img}
+                        alt=""
+                      />
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
+        </section>
+      </Suspense>
+
+      <Suspense fallback={<ComponentLoader />}>
+        <section>
+          <div className="h-auto w-full">
+            <Swiper
+              pagination={true}
+              autoplay={{
+                delay: 2500, // time between slides (ms)
+                disableOnInteraction: false, // keep autoplay after user swipes
+              }}
+              speed={1000} // smooth transition speed
+              modules={[Pagination, Autoplay]}
+              className="mySwiper h-auto w-screen "
+            >
+              {posters.map((poster, index) => {
+                return (
+                  <SwiperSlide
+                    key={index}
+                    className="flex justify-center items-center text-center text-[18px]"
+                  >
+                    <div className="h-auto max-md:w-screen max-md:flex max-md:items-center max-md:justify-center p-5 mb-5">
                       <LazyImage
                         className="rounded-2xl h-full w-full object-cover"
                         src={poster.img}
