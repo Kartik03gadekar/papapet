@@ -8,8 +8,10 @@ import { toast } from "react-toastify";
 import ReactToPrint from "react-to-print";
 import { GoArrowRight } from "react-icons/go";
 import ComponentLoader from "@/Components/loader/ComponentLoader";
+import { useRouter } from "next/navigation";
 
 const PetHealthReport = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("Cat");
   const [infoModal, setInfoModal] = useState({ open: false, field: "" });
   const [showModal, setShowModal] = useState(false);
@@ -52,10 +54,41 @@ const PetHealthReport = () => {
       toast.success("Health report generated!");
     } catch (err) {
       toast.error("Failed to generate report");
+      router.push("/papapet/auth");
     } finally {
       setLoading(false);
     }
   };
+
+  const downloadPdf = (base64String, fileName = "report.pdf") => {
+    try {
+      const byteCharacters = atob(base64String);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/pdf" });
+
+      const url = URL.createObjectURL(blob);
+
+      // Trigger file download
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      link.click();
+
+      // Optional: open in new tab
+      // window.open(url, "_blank");
+
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("❌ Failed to download PDF:", err);
+    }
+  };
+
   const ShowLoader = () => (
     <div className="fixed inset-0 flex items-center justify-center bg-black/20 z-[9999]">
       <ComponentLoader />
@@ -314,7 +347,7 @@ const PetHealthReport = () => {
                     {/* Title */}
                     <div id="health-report">
                       <h2 className="text-2xl font-bold mb-4 text-[#0D9899]">
-                        {result.petName}’s Health Report
+                        {result.report.petName}’s Health Report
                       </h2>
 
                       {/* Summary */}
@@ -324,10 +357,10 @@ const PetHealthReport = () => {
                         </h3>
                         <p className="mt-1">
                           <span className="font-semibold">Status:</span>{" "}
-                          {result.summary?.healthStatus}
+                          {result.report.summary?.healthStatus}
                         </p>
                         <p className="mt-1 text-gray-700">
-                          {result.summary?.overallAssessment}
+                          {result.report.summary?.overallAssessment}
                         </p>
                       </div>
 
@@ -339,13 +372,15 @@ const PetHealthReport = () => {
                         <ul className="list-disc list-inside text-gray-700 space-y-1">
                           <li>
                             <span className="font-semibold">BMI:</span>{" "}
-                            {result.bodyCondition?.BMI}
+                            {result.report.bodyCondition?.BMI}
                           </li>
                           <li>
                             <span className="font-semibold">Ideal BMI:</span>{" "}
-                            {result.bodyCondition?.idealBMI}
+                            {result.report.bodyCondition?.idealBMI}
                           </li>
-                          <li>{result.bodyCondition?.currentWeightAnalysis}</li>
+                          <li>
+                            {result.report.bodyCondition?.currentWeightAnalysis}
+                          </li>
                         </ul>
                       </div>
 
@@ -355,15 +390,19 @@ const PetHealthReport = () => {
                           Food & Nutrition
                         </h3>
                         <p className="mt-1 text-gray-700">
-                          {result.food?.dietaryGuideline}
+                          {result.report.food?.dietaryGuideline}
                         </p>
                         <ul className="list-disc list-inside mt-2 space-y-1">
-                          {result.food?.recommendedProducts?.map((p, idx) => (
-                            <li key={idx} className="text-gray-700">
-                              <span className="font-semibold">{p.brand}:</span>{" "}
-                              {p.productName}
-                            </li>
-                          ))}
+                          {result.report.food?.recommendedProducts?.map(
+                            (p, idx) => (
+                              <li key={idx} className="text-gray-700">
+                                <span className="font-semibold">
+                                  {p.brand}:
+                                </span>{" "}
+                                {p.productName}
+                              </li>
+                            )
+                          )}
                         </ul>
                       </div>
 
@@ -373,23 +412,25 @@ const PetHealthReport = () => {
                           Exercise Plan
                         </h3>
                         <p className="mt-1 text-gray-700">
-                          {result.exercisePlan?.recomendation}
+                          {result.report.exercisePlan?.recomendation}
                         </p>
                       </div>
 
                       {/* Potential Risks */}
-                      {result.potentialHealthRisks &&
-                        result.potentialHealthRisks.length > 0 && (
+                      {result.report.potentialHealthRisks &&
+                        result.report.potentialHealthRisks.length > 0 && (
                           <div className="mb-4">
                             <h3 className="text-lg font-semibold text-[#FEAC22]">
                               Potential Health Risks
                             </h3>
                             <ul className="list-disc list-inside mt-1 space-y-1">
-                              {result.potentialHealthRisks.map((risk, idx) => (
-                                <li key={idx} className="text-gray-700">
-                                  {risk}
-                                </li>
-                              ))}
+                              {result.report.potentialHealthRisks.map(
+                                (risk, idx) => (
+                                  <li key={idx} className="text-gray-700">
+                                    {risk}
+                                  </li>
+                                )
+                              )}
                             </ul>
                           </div>
                         )}
@@ -397,7 +438,7 @@ const PetHealthReport = () => {
 
                     {/* Buttons */}
                     <div className="flex justify-end mt-4 gap-3">
-                      <ReactToPrint
+                      {/* <ReactToPrint
                         trigger={() => (
                           <button
                             type="button"
@@ -407,9 +448,23 @@ const PetHealthReport = () => {
                           </button>
                         )}
                         content={() => document.getElementById("health-report")}
-                      />
+                      /> */}
                       <button
-                        type="button" // ✅ prevent form submit
+                        type="button"
+                        onClick={() =>
+                          downloadPdf(
+                            result.pdf,
+                            `${
+                              result?.report?.petName?.toLowerCase() || "pet"
+                            }-healthreport.pdf`
+                          )
+                        }
+                        className="bg-[#FEAC22] text-white px-4 py-2 rounded-lg hover:bg-orange-600"
+                      >
+                        Download PDF
+                      </button>
+                      <button
+                        type="button"
                         onClick={() => setShowModal(false)}
                         className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
                       >

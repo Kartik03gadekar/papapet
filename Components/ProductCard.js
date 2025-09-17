@@ -142,7 +142,7 @@ const ProductCard = ({ i, product }) => {
               object-contain rounded
               mx-auto
             "
-            src={getImageUrl()}
+            src={i?.image[0]}
             alt={i?.name || "Product"}
           />
         </div>

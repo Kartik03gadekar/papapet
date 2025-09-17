@@ -161,7 +161,7 @@ const ProductDetail = ({ i, product }) => {
 
   return (
     <div className="overflow-hidden">
-      <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-6 capitalize">
+      <h1 className="text-2xl md:text-3xl max-w-lg font-semibold text-gray-800 mb-6 capitalize">
         {product?.name || "PEDIGREE® Chicken and Vegetables for Adult Dogs"}
       </h1>
 
