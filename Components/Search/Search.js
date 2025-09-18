@@ -35,7 +35,7 @@ export default function Search({ open, onClose }) {
     if (!query.trim()) return [];
     const q = query.toLowerCase();
     return food.filter(
-      (p) => p.animalCategory?.toLowerCase().includes(q)
+      (p) => p.name?.toLowerCase().includes(q)
     );
   }, [query, food]);
 
@@ -98,13 +98,7 @@ export default function Search({ open, onClose }) {
                     <div className="w-16 h-16 flex-shrink-0 relative">
                       <img
                         src={
-                          product.image?.length
-                            ? `https://papapetbackend-oaiw.onrender.com/api/v1/admin/images/${
-                                product.image[0].filename
-                              }/${product.image[0].mimetype.split("/")[0]}/${
-                                product.image[0].mimetype.split("/")[1]
-                              }`
-                            : "/no-image.png"
+                          product.image[0]
                         }
                         alt={product.name}
                         className="rounded-md"

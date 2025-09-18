@@ -954,23 +954,7 @@ export default function CheckoutPage() {
                         <div className="flex gap-3">
                           <div className="w-20 h-20 bg-neutral-100 rounded-xl flex-shrink-0 overflow-hidden border border-neutral-100">
                             <img
-                              src={
-                                item.image
-                                  ? typeof item.image === "string"
-                                    ? item.image
-                                    : item.image[0]?.filename
-                                    ? `${
-                                        axiosInstance.defaults.baseURL
-                                      }admin/get/image/${
-                                        item.image[0]?.filename
-                                      }/${
-                                        item.image[0]?.mimetype?.split("/")[0]
-                                      }/${
-                                        item.image[0]?.mimetype?.split("/")[1]
-                                      }`
-                                    : "/placeholder.svg"
-                                  : "/placeholder.svg"
-                              }
+                              src={item.image[0]}
                               alt={item.name}
                               className="w-full h-full object-cover"
                             />
@@ -1050,21 +1034,7 @@ export default function CheckoutPage() {
                           <div className="w-16 h-16 bg-neutral-100 rounded-xl flex-shrink-0 overflow-hidden border border-neutral-100">
                             <img
                               src={
-                                item.image
-                                  ? typeof item.image === "string"
-                                    ? item.image
-                                    : item.image[0]?.filename
-                                    ? `${
-                                        axiosInstance.defaults.baseURL
-                                      }admin/get/image/${
-                                        item.image[0]?.filename
-                                      }/${
-                                        item.image[0]?.mimetype?.split("/")[0]
-                                      }/${
-                                        item.image[0]?.mimetype?.split("/")[1]
-                                      }`
-                                    : "/placeholder.svg"
-                                  : "/placeholder.svg"
+                                item.image[0]
                               }
                               alt={item.name}
                               className="w-full h-full object-cover"

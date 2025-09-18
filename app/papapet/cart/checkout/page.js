@@ -318,7 +318,7 @@ export default function CheckoutPage() {
                   product_quantity: item.quantity || 1,
                   product_price: item.price,
                   product_sku: item._id || "",
-                  product_img_url: getImageUrl(item),
+                  product_img_url: item.image[0],
                 })),
                 shipment_length: totalShipmentLength.toString(),
                 shipment_width: totalShipmentWidth.toString(),
@@ -451,7 +451,7 @@ export default function CheckoutPage() {
                         {/* Product Image */}
                         <div className="w-20 h-20 md:w-16 md:h-16 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
                           <img
-                            src={getImageUrl(item)}
+                            src={item.image[0]}
                             alt={item.name}
                             className="w-full h-full object-cover"
                             loading="lazy"
