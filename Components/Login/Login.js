@@ -230,8 +230,6 @@
 
 // export default Login;
 
-
-
 "use client";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -336,11 +334,14 @@ const Login = () => {
     e.preventDefault();
     const target = e.target;
 
-    const formData = new FormData();
-    formData.append("email", target.email.value);
-    formData.append("password", target.password.value);
+    const creds = {
+    email: e.target.email.value,
+    password: e.target.password.value,
+};
 
-    const response = await dispatch(loginUser(formData));
+    console.log(creds);
+
+    const response = await dispatch(loginUser(creds));
 
     if (response?.payload?.token) {
       // Cookies.set("token", response.payload.token, { expires: 7 });
