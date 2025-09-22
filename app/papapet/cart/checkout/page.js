@@ -318,7 +318,6 @@ export default function CheckoutPage() {
                   product_quantity: item.quantity || 1,
                   product_price: item.price,
                   product_sku: item._id || "",
-                  product_img_url: item.image[0],
                 })),
                 shipment_length: totalShipmentLength.toString(),
                 shipment_width: totalShipmentWidth.toString(),

@@ -36,6 +36,9 @@ const ProductDetail = ({ i, product }) => {
   const [pincode, setPincode] = useState("");
   const [pincodeStatus, setPincodeStatus] = useState(null);
   const [pincodeMessage, setPincodeMessage] = useState("");
+  const [selectedStock, setSelectedStock] = useState(
+    product?.stock?.[0] || null
+  );
 
   useEffect(() => {
     dispatch(checkUser);
@@ -165,10 +168,6 @@ const ProductDetail = ({ i, product }) => {
         {product?.name || "PEDIGREE® Chicken and Vegetables for Adult Dogs"}
       </h1>
 
-      <p className="text-orange-500 font-semibold text-lg mb-4 capitalize">
-        {product?.stock?.[0]?.value || "00 Kg"}
-      </p>
-
       <p className="text-gray-600 text-sm mb-2 capitalize">
         <span className="font-semibold">Brand:</span>{" "}
         {product?.brand || "Pedigree"}
@@ -229,20 +228,36 @@ const ProductDetail = ({ i, product }) => {
         )}
       </div>
 
+      <div className="mb-6 flex gap-3">
+        {product?.stock?.map((stockItem, index) => (
+          <button
+            key={index}
+            onClick={() => setSelectedStock(stockItem)}
+            className={`px-5 py-2 rounded border font-semibold ${
+              selectedStock?.value === stockItem.value
+                ? "bg-orange-500 text-white"
+                : "bg-white text-gray-700 border-gray-300"
+            }`}
+          >
+            {stockItem.value}
+          </button>
+        ))}
+      </div>
+
       <div className="mb-8">
-        {product?.discountprice ? (
+        {selectedStock?.discountprice ? (
           <div className="flex items-center gap-4">
             <p className="text-2xl text-blue-600 font-bold">
-              ₹{product.discountprice}
+              ₹{selectedStock.discountprice}
             </p>
-            <p className="text-gray-400 line-through">₹{product.price}</p>
+            <p className="text-gray-400 line-through">₹{selectedStock.price}</p>
             <span className="bg-yellow-400 text-xs font-semibold px-2 py-1 rounded">
-              {product.discount + "% OFF" || "0.00% OFF"}
+              {selectedStock.discount + "% OFF" || "0% OFF"}
             </span>
           </div>
         ) : (
           <p className="text-2xl text-blue-600 font-bold">
-            ₹{product?.price || "0000"}
+            ₹{selectedStock?.sellingprice || product?.discountprice}
           </p>
         )}
       </div>
@@ -287,7 +302,7 @@ const ProductDetail = ({ i, product }) => {
         </div>
       </div>
 
-      <div className="fixed top-20 right-5 lg:right-56 xl:right-80 flex items-center gap-xl:4 mb-6">
+      <div className="fixed top-10 right-5 xl:right-20 flex items-center gap-xl:4 mb-6">
         <ShareProduct product={product} />
       </div>
     </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFood } from "@/store/Action/others";
+ import Link from "next/link";
 
 export default function Search({ open, onClose }) {
   const [query, setQuery] = useState("");
@@ -34,9 +35,7 @@ export default function Search({ open, onClose }) {
   const filtered = useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase();
-    return food.filter(
-      (p) => p.name?.toLowerCase().includes(q)
-    );
+    return food.filter((p) => p.name?.toLowerCase().includes(q));
   }, [query, food]);
 
   if (!open) return null;
@@ -80,7 +79,7 @@ export default function Search({ open, onClose }) {
         />
 
         {/* Results */}
-        <div className="overflow-y-auto" style={{ maxHeight: "450px" }}>
+        <div className="overflow-y-auto h-auto" style={{ maxHeight: "450px" }}>
           {load && query ? (
             <div className="text-gray-500 text-center py-8">Loading...</div>
           ) : query && filtered.length === 0 ? (
@@ -93,31 +92,34 @@ export default function Search({ open, onClose }) {
                 {visibleItems.map((product) => (
                   <li
                     key={product._id}
-                    className="py-4 flex items-center gap-4 cursor-pointer hover:bg-gray-50 rounded-lg px-2"
+                    className="py-4 flex items-center gap-4 hover:bg-gray-50 rounded-lg px-2"
                   >
-                    <div className="w-16 h-16 flex-shrink-0 relative">
-                      <img
-                        src={
-                          product.image[0]
-                        }
-                        alt={product.name}
-                        className="rounded-md"
-                      />
-                    </div>
+                    <Link
+                      href={`/papapet/product/${product._id}`}
+                      className="flex items-center gap-4 w-full"
+                    >
+                      <div className="w-16 h-16 flex-shrink-0 relative">
+                        <img
+                          src={product.image[0]}
+                          alt={product.name}
+                          className="rounded-md"
+                        />
+                      </div>
 
-                    <div className="flex flex-col gap-1">
-                      <span className="font-semibold text-[#0D9899] flex items-center gap-2">
-                        {product.name}
-                        {product.animalCategory && (
-                          <span className="ml-2 text-xs bg-[#FFAD22]/20 text-[#FFAD22] px-2 py-0.5 rounded-full">
-                            {product.animalCategory}
-                          </span>
-                        )}
-                      </span>
-                      <span className="text-gray-600 text-sm line-clamp-1">
-                        {product.description}
-                      </span>
-                    </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="font-semibold text-[#0D9899] flex items-center gap-2">
+                          {product.name}
+                          {product.animalCategory && (
+                            <span className="ml-2 text-xs bg-[#FFAD22]/20 text-[#FFAD22] px-2 py-0.5 rounded-full">
+                              {product.animalCategory}
+                            </span>
+                          )}
+                        </span>
+                        <span className="text-gray-600 text-sm line-clamp-1">
+                          {product.description}
+                        </span>
+                      </div>
+                    </Link>
                   </li>
                 ))}
               </ul>

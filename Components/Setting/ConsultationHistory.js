@@ -1,123 +1,139 @@
-import { Tag } from "antd";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import axios from "@/Axios/axios"; // your axios instance
 import Link from "next/link";
-import React from "react";
+import { Tag } from "antd";
+import { useSelector } from "react-redux";
 
-const ConsultationHistory = ({ data }) => {
-  return (
-    <div className="w-full p-10">
-      <div class="relative overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50  dark:text-gray-400">
-            <tr>
-              <th scope="col" class="px-6 py-3">
-                TeLe Id
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Doctor Name
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Consultation Fess
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Prescription
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Video Call
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.map((dets, index) => (
-              <tr class="bg-white border-b " key={index}>
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium whitespace-nowraptext-white"
-                >
-                  {dets?.tele}
-                </th>
-                <td class="px-6 py-4">{dets?.doctor?.firstname} {dets?.doctor?.lastname}</td>
-                <td class="px-6 py-4">{dets?.fees}</td>
-                <td>
-            {dets?.prescription ? (
-                    <Link href={`/mediensure/prescription/${dets?.prescription?._id}`}>
-                          <Tag
-                      color={"green"}
-                      style={{ display: "flex", width: "fit-content" }}
-                      className="p-2 cursor-pointer hover:bg-green-200"
-                    >
-                      Prescription{" "}
-                      <img
-                        className="h-5 w-5 object-contain"
-                        src="/prescriptionP.png"
-                        alt=""
-                      />
-                    </Tag>
-                    </Link>
-              
-                  ) : (
-                    <Tag
-                      // onClick={() => setId(dets?._id)}
-                      color={"cyan"}
-                      style={{ display: "flex", width: "fit-content" }}
-                      className="p-2 cursor-pointer hover:bg-cyan-500 hover:text-white"
-                    >
-                      Not Submitted{" "}
-                      <img
-                        className="h-5 w-5 object-contain"
-                        src="/prescriptionP.png"
-                        alt=""
-                      />
-                    </Tag>
-                  )}
-            </td>
-            <td>
-              {
-                dets?.doctorJoin === true ? 
-                <Link href={`/meeting/${dets?.tele}`}> 
-                <Tag
-                  color={"gold"}
-                  style={{ display: "flex", width: "fit-content" }}
-                  className="p-2 cursor-pointer hover:bg-orange-200 gap-2 hover:text-black"
-                  
-                >
-                  Video Call{" "}
-                  <img
-                    className="h-5 w-5 object-contain"
-                    src="/video.png"
-                    alt=""
-                  />
-                </Tag>
-                </Link> :        
-                  <Tag
-                    color={"gold"}
-                    style={{ display: "flex", width: "fit-content" }}
-                    className="p-2 cursor-pointer bg-gray-200  hover:bg-gray-200 gap-2 hover:text-black"
-                    
-                  >
-                    Video Call{" "}
-                    <img
-                      className="h-5 w-5 object-contain"
-                      src="/video.png"
-                      alt=""
-                    />
-                  </Tag>
+const ConsultationHistory = () => {
+  const [consultations, setConsultations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-              }
-     
-            </td>
-                <td class="px-6 py-4">
-                <Tag color={"green"}>
-              {dets?.status.toUpperCase()}
-            </Tag>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+  // ✅ Correct selector (adjust if your slice is different)
+  const user = useSelector((state) => state.auth?.user);
+
+  // ✅ Fetch consultations
+  useEffect(() => {
+    const fetchConsultations = async () => {
+      try {
+        const { data } = await axios.get("/consultations/details");
+
+        // Adjust if API returns { consultations: [...] }
+        const consultationsArray = Array.isArray(data)
+          ? data
+          : data.consultations;
+
+        // Filter consultations for this user
+        const filtered = consultationsArray?.filter(
+          (c) => c.user?._id === user?._id
+        );
+
+        setConsultations(filtered || []);
+      } catch (error) {
+        console.error("Error fetching consultations:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user?._id) fetchConsultations();
+  }, [user?._id]);
+
+  if (loading)
+    return <p className="text-center p-6">Loading consultations...</p>;
+
+  if (!consultations || consultations.length === 0) {
+    return (
+      <div className="w-full flex justify-center p-6">
+        <Tag color="volcano" className="p-2">
+          No consultations found
+        </Tag>
       </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 p-6">
+      {consultations.map((dets) => (
+        <div
+          key={dets._id}
+          className="bg-white/90 backdrop-blur-sm border border-gray-100 shadow-lg rounded-xl p-6 flex flex-col gap-5 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+        >
+          {/* Header */}
+          <div className="flex justify-between items-center border-b pb-3">
+            <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#0D9899] to-[#1AC6C6]">
+              {dets?.doctor?.name || "Doctor"}
+            </h3>
+
+            <div className="pt-2">
+              <Tag
+                color={
+                  dets?.status?.toLowerCase() === "completed"
+                    ? "green"
+                    : "orange"
+                }
+                className="px-3 py-2 rounded-md font-semibold tracking-wide"
+              >
+                {dets?.status?.toUpperCase() || "PENDING"}
+              </Tag>
+            </div>
+          </div>
+
+          {/* Info Section */}
+          <div className="flex items-center justify-between gap-2 text-sm">
+            <p className="text-gray-600">
+              <span className="font-medium text-gray-800">Date:</span>{" "}
+              {dets.date ? new Date(dets.date).toLocaleDateString() : "N/A"}
+            </p>
+            {dets?.fees && (
+              <p className="text-gray-600">
+                <span className="font-medium text-gray-800">Fees:</span> ₹
+                {dets.fees}
+              </p>
+            )}
+
+            <Tag
+              color="blue"
+              className="rounded-full px-3 py-1 font-medium text-xs"
+            >
+              {dets.petType}
+            </Tag>
+          </div>
+
+          {/* <div>
+            {dets?.prescription ? (
+              <Link href={`/mediensure/prescription/${dets.prescription._id}`}>
+                <Tag
+                  color="green"
+                  className="px-3 py-2 rounded-md cursor-pointer hover:bg-green-200 flex items-center gap-2 w-fit font-medium transition"
+                >
+                  Prescription
+                  <img className="h-5 w-5" src="/prescriptionP.png" alt="" />
+                </Tag>
+              </Link>
+            ) : (
+              <Tag
+                color="cyan"
+                className="px-3 py-2 rounded-md flex items-center gap-2 w-fit bg-cyan-100 font-medium"
+              >
+                Not Submitted
+                <img className="h-5 w-5" src="/prescriptionP.png" alt="" />
+              </Tag>
+            )}
+          </div> */}
+
+            <div className="flex items-center justify-between">
+              <h1>Appointment Type:</h1>
+              <Tag
+                color="gold"
+                className="px-3 py-2 rounded-md flex items-center gap-2 w-fit text-white bg-[#FFAD22] font-medium"
+              >
+                Video Call
+              </Tag>
+            </div>
+        </div>
+      ))}
     </div>
   );
 };

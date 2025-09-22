@@ -34,7 +34,13 @@ const navItems = [
     index: 3,
     links: "/papapet/dashboard/shoppingcart",
   },
-  { name: "LogOut", icon: FiLogOut, index: 4, links: "" },
+  {
+    name: "Consultations",
+    icon: FiShoppingCart,
+    index: 4,
+    links: "/papapet/dashboard/consultations",
+  },
+  { name: "LogOut", icon: FiLogOut, index: 5, links: "" },
 ];
 
 export default function Sidebar({ setopen, activeIndex }) {
