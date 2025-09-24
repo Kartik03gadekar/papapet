@@ -2,9 +2,12 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "@/Axios/axios"; // your pre-configured axios instance
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function BookDoctor({ doctor, onBack }) {
   const { user } = useSelector((state) => state.auth);
+  const router = useRouter();
 
   const [pet, setPet] = useState(doctor.petTypes[0] ?? "");
   const [consultation, setConsultation] = useState(
@@ -14,9 +17,7 @@ export default function BookDoctor({ doctor, onBack }) {
   const [time, setTime] = useState("");
   const [address, setAddress] = useState(""); // for home consultation
   const [notes, setNotes] = useState("");
-  const [savedAddresses, setSavedAddresses] = useState(
-    user?.addresses || []
-  ); // assume user may have saved addresses
+  const [savedAddresses, setSavedAddresses] = useState(user?.addresses || []); // assume user may have saved addresses
   const [useNewAddress, setUseNewAddress] = useState(false); // toggle for new address
 
   if (!doctor) {
@@ -55,8 +56,13 @@ export default function BookDoctor({ doctor, onBack }) {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      return toast.warning("Please login to book an appointment.");
+    }
+
     if (!date || !time || !consultation) return alert("Please fill all fields");
-    if (consultation === "home" && !address) return alert("Please enter address");
+    if (consultation === "home" && !address)
+      return alert("Please enter address");
 
     try {
       const loaded = await loadRazorpay();
@@ -121,14 +127,23 @@ export default function BookDoctor({ doctor, onBack }) {
   return (
     <main>
       <section className="mx-auto px-6">
-        <button onClick={onBack} className="text-amber-700 hover:underline">
+        <button onClick={onBack} className="text-white font-bold bg-[#FFAD22] px-5 py-2 rounded-full ">
           ← Back
         </button>
 
-        <h1 className="mt-3 text-3xl font-bold">{doctor.name}</h1>
-        <p className="text-amber-700 font-medium">{doctor.qualification}</p>
-        <p className="text-gray-600">{doctor.experience}+ years experience</p>
-        <p className="text-gray-600">Timings: {doctor.timings}</p>
+        <div className="flex max-md:flex-col items-start justify-start gap-5 mt-5">
+          <div className="h-40 w-40 rounded-xl">
+            <img src={doctor.image} className="h-full w-full object-cover rounded-xl" alt="" />
+          </div>
+          <div className="max-md:text-center">
+            <h1 className="text-3xl font-bold">{doctor.name}</h1>
+            <p className="text-amber-700 font-medium">{doctor.qualification}</p>
+            <p className="text-gray-600">
+              {doctor.experience}+ years experience
+            </p>
+            <p className="text-gray-600">Timings: {doctor.timings}</p>
+          </div>
+        </div>
 
         <form onSubmit={submit} className="mt-10 space-y-8">
           {/* Pet selection */}
@@ -264,7 +279,9 @@ export default function BookDoctor({ doctor, onBack }) {
               </div>
               <button
                 type="submit"
-                disabled={!date || !time || (consultation === "home" && !address)}
+                disabled={
+                  !date || !time || (consultation === "home" && !address)
+                }
                 className="bg-amber-500 text-white px-6 py-2 rounded-lg"
               >
                 Book Now

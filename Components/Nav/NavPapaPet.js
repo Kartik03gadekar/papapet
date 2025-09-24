@@ -747,13 +747,7 @@ const NavPapaPet = () => {
             {/* Desktop Search Icon */}
             <button
               className="text-2xl p-2 text-[#0D9899] rounded-full transition-all duration-300"
-              onClick={() => {
-                if (user) {
-                  setSearchOpen(true); // ✅ Only opens if logged in
-                } else {
-                  router.push("/papapet/auth"); // 🚀 Redirect to login page
-                }
-              }}
+              onClick={() => setSearchOpen(true)}
               aria-label="Open search"
               type="button"
             >

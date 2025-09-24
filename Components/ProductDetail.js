@@ -228,7 +228,7 @@ const ProductDetail = ({ i, product }) => {
         )}
       </div>
 
-      <div className="mb-6 flex gap-3">
+      <div className="mb-6 flex gap-3 flex-wrap">
         {product?.stock?.map((stockItem, index) => (
           <button
             key={index}

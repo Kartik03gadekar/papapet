@@ -311,9 +311,11 @@ const Login = () => {
       const result = await confirmationResult.confirm(otp);
 
       // Send phone number to backend
-      const formData = new FormData();
-      formData.append("phone", result.user.phoneNumber.replace("+91", ""));
-      const response = await dispatch(loginUser(formData));
+      const creds = {
+        phone: result.user.phoneNumber.replace(/^\+91/, ""),
+      };
+
+      const response = await dispatch(loginUser(creds));
 
       // Assuming backend returns a token
       if (response?.payload?.token) {
@@ -335,12 +337,9 @@ const Login = () => {
     const target = e.target;
 
     const creds = {
-    email: e.target.email.value,
-    password: e.target.password.value,
-};
-
-    console.log(creds);
-
+      email: e.target.email.value,
+      password: e.target.password.value,
+    };
     const response = await dispatch(loginUser(creds));
 
     if (response?.payload?.token) {

@@ -23,8 +23,8 @@ export default function ListDoctors({ doctor, onSelect }) {
       className="cursor-pointer group rounded-2xl border border-amber-300/70 bg-white p-5 shadow-sm hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="flex items-center gap-4">
-        <div className="size-16 rounded-xl bg-amber-50 flex items-center justify-center text-3xl">
-          🐾
+        <div className="size-24 rounded-xl bg-amber-50 flex items-center justify-center text-3xl">
+          {"🐾" || <img src={doctor.image} className="h-full w-full object-cover" alt="" />}
         </div>
         <div className="min-w-0">
           <h3 className="truncate text-lg font-semibold text-gray-900">

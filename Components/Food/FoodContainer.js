@@ -145,7 +145,6 @@ const FoodContainer = () => {
     }
 
     if (initialCategory) {
-      // first check if it's an animal category
       const animalMatch = animalCategories.find(
         (a) => a.value.toLowerCase() === initialCategory.toLowerCase()
       );
@@ -153,7 +152,6 @@ const FoodContainer = () => {
       if (animalMatch) {
         setSelectedAnimalCategory(animalMatch.label);
       } else {
-        // otherwise treat it as food category
         setSelectedCategory(
           categories.find(
             (c) => c.value.toLowerCase() === initialCategory.toLowerCase()
@@ -163,7 +161,12 @@ const FoodContainer = () => {
     }
 
     if (initialBrand) {
-      setSelectedBrand(initialBrand);
+      const matchedBrand =
+        brands.find((b) => b.name.toLowerCase() === initialBrand.toLowerCase())
+          ?.name || "All";
+
+      setSelectedBrand(matchedBrand);
+      setPendingBrand(matchedBrand); // keep sidebar filter in sync too
     }
   }, [initialAnimal, initialCategory, initialBrand]);
 
@@ -196,10 +199,15 @@ const FoodContainer = () => {
     if (!Array.isArray(products)) return [];
 
     return products.filter((item) => {
+      const brand = item.brand || "";
+      const categories = item.categories || "";
+      const animalCategory = item.animalCategory || "";
+      const name = item.name || "";
+
       // --- Brand filter ---
       if (
         selectedBrand !== "All" &&
-        slugify(item.brand) !== slugify(selectedBrand)
+        slugify(brand) !== slugify(selectedBrand)
       ) {
         return false;
       }
@@ -209,10 +217,9 @@ const FoodContainer = () => {
         const cat = selectedCategory.toLowerCase();
         if (
           !(
-            (item.categories && item.categories.toLowerCase().includes(cat)) ||
-            (item.animalCategory &&
-              item.animalCategory.toLowerCase().includes(cat)) ||
-            (item.name && item.name.toLowerCase().includes(cat))
+            categories.toLowerCase().includes(cat) ||
+            animalCategory.toLowerCase().includes(cat) ||
+            name.toLowerCase().includes(cat)
           )
         ) {
           return false;
@@ -224,11 +231,9 @@ const FoodContainer = () => {
         const animalCat = selectedAnimalCategory.toLowerCase();
         if (
           !(
-            (item.animalCategory &&
-              item.animalCategory.toLowerCase().includes(animalCat)) ||
-            (item.categories &&
-              item.categories.toLowerCase().includes(animalCat)) ||
-            (item.name && item.name.toLowerCase().includes(animalCat))
+            animalCategory.toLowerCase().includes(animalCat) ||
+            categories.toLowerCase().includes(animalCat) ||
+            name.toLowerCase().includes(animalCat)
           )
         ) {
           return false;
@@ -243,22 +248,18 @@ const FoodContainer = () => {
       }
 
       // --- Search filter ---
-      if (
-        searchTerm &&
-        !(
-          (item.name &&
-            item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (item.brand &&
-            item.brand.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (item.categories &&
-            item.categories.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (item.animalCategory &&
-            item.animalCategory
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()))
-        )
-      ) {
-        return false;
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        if (
+          !(
+            name.toLowerCase().includes(term) ||
+            brand.toLowerCase().includes(term) ||
+            categories.toLowerCase().includes(term) ||
+            animalCategory.toLowerCase().includes(term)
+          )
+        ) {
+          return false;
+        }
       }
 
       return true;
