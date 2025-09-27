@@ -52,7 +52,7 @@ const categories = [
   { name: "Dry Food", value: "dry", label: "Dry Food" },
   { name: "Wet Food", value: "wet", label: "Wet Food" },
   { name: "Treats", value: "treats", label: "Treats" },
-  { name: "Other", value: "other", label: "Other" },
+  { name: "Accessories", value: "other", label: "Other" },
 ];
 
 // Animal category filter options
@@ -266,10 +266,20 @@ const FoodContainer = () => {
     });
   };
 
+  function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
   // Sorting logic
   const sortProducts = (products) => {
     if (!Array.isArray(products)) return [];
     let sorted = [...products];
+
     switch (sort) {
       case "priceLow":
         sorted.sort((a, b) => Number(a.price) - Number(b.price));
@@ -283,10 +293,12 @@ const FoodContainer = () => {
       case "nameZA":
         sorted.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
         break;
+      case "relevance":
       default:
-        // relevance: do nothing
+        sorted = shuffleArray(sorted); // random order
         break;
     }
+
     return sorted;
   };
 
@@ -337,9 +349,7 @@ const FoodContainer = () => {
   const filtered = filterProducts(food);
   const sorted = sortProducts(filtered);
 
-  const visibleProducts = sorted
-    .filter((item) => item.productType === "food")
-    .slice(0, visibleCount);
+  const visibleProducts = sorted.slice(0, visibleCount);
 
   // Product list rendering
   let productList;
@@ -596,7 +606,7 @@ const FoodContainer = () => {
                                 letterSpacing: "-0.01em",
                               }}
                             >
-                              {cat.label}
+                              {cat.name}
                             </button>
                           </li>
                         ))}
@@ -779,9 +789,23 @@ const FoodContainer = () => {
                   wordBreak: "break-word",
                 }}
               >
-                Food
+                Food and Accessories
               </h1>
-              <div className="flex  justify-end">
+              <div className="flex items-center gap-4">
+                {/* Sort Dropdown */}
+                <select
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                  className="border rounded-lg px-3 py-2 text-sm"
+                >
+                  <option value="relevance">Relevance</option>
+                  <option value="priceLow">Price: Low to High</option>
+                  <option value="priceHigh">Price: High to Low</option>
+                  <option value="nameAZ">Name: A-Z</option>
+                  <option value="nameZA">Name: Z-A</option>
+                </select>
+
+                {/* Filters Button */}
                 <button
                   onClick={() => setMobileFiltersOpen(true)}
                   className="flex items-center gap-2 px-4 py-2 bg-[#FD890E] text-white rounded-lg shadow-md"

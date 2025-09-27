@@ -22,16 +22,10 @@ const Page2 = () => {
   const [showModal, setShowModal] = useState(false);
   const data = [
     {
-      name: "Food ",
+      name: "Products",
       img: "/FoodnAcces.png",
       link: "/papapet/food",
       color: "bg-orange-200",
-    },
-    {
-      name: "Accessories",
-      img: "/FoodnAcces.png",
-      link: "/papapet/accessories",
-      color: "bg-gray-200",
     },
     {
       name: "Veteniary Doctor",
@@ -70,10 +64,6 @@ const Page2 = () => {
     {
       img: "/servicesfood.png",
       link: "/papapet/food",
-    },
-    {
-      img: "/ServiecesAccosaries.png",
-      link: "/papapet/accessories",
     },
     {
       img: "/ServiecesDoctor.png",
@@ -161,7 +151,7 @@ const Page2 = () => {
           className="w-full max-md:hidden flex flex-wrap gap-10 items-center justify-center gap-y-20 max-md:grid-cols-1 
         place-content-center place-items-center"
         >
-          <div className="w-screen flex items-center justify-center gap-40 shrink-0 flex-wrap ">
+          <div className="w-screen flex items-center justify-center gap-40 shrink-0 flex-wrap px-10">
             {data?.map((i, index) => (
               <div
                 onClick={() => handleClick(index, i.link)}
