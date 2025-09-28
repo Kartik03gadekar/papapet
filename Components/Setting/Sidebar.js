@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaUser, FaHistory, FaTruck } from "react-icons/fa";
 import { FiShoppingCart, FiLogOut } from "react-icons/fi";
+import { FaUserDoctor } from "react-icons/fa6";
 import { persistor } from "../../store/store"; // adjust path to where persistor is exported
 import { logoutUser } from "../../store/Action/auth";
 import { useDispatch } from "react-redux";
-
 
 const navItems = [
   {
@@ -23,23 +23,24 @@ const navItems = [
     links: "/papapet/dashboard/orderhistory",
   },
   {
+    name: "Consultations",
+    icon: FaUserDoctor,
+    index: 2,
+    links: "/papapet/dashboard/consultations",
+  },
+  {
     name: "Track Order",
     icon: FaTruck,
-    index: 2,
+    index: 3,
     links: "/papapet/dashboard/trackorder",
   },
   {
     name: "Shopping Cart",
     icon: FiShoppingCart,
-    index: 3,
+    index: 4,
     links: "/papapet/dashboard/shoppingcart",
   },
-  {
-    name: "Consultations",
-    icon: FiShoppingCart,
-    index: 4,
-    links: "/papapet/dashboard/consultations",
-  },
+
   { name: "LogOut", icon: FiLogOut, index: 5, links: "" },
 ];
 

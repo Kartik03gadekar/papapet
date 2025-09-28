@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
 const statusClasses = {
-  "IN PROGRESS": "bg-orange-100 text-orange-600",
-  COMPLETED: "bg-green-100 text-green-600",
-  CANCELLED: "bg-red-100 text-red-600",
-  PENDING: "bg-yellow-100 text-yellow-600",
+  "in transit": "bg-orange-100 text-orange-600",
+  Delivered: "bg-green-100 text-green-600",
+  Cancelled: "bg-red-100 text-red-600",
+  "Out For Delivery": "bg-yellow-100 text-yellow-600",
 };
 
 const OrderHistory = () => {
@@ -58,7 +58,7 @@ const OrderHistory = () => {
       });
 
       const trackingInfo =
-        res.data?.data?.[awb]?.[0]?.current_status || "IN PROGRESS";
+        res.data?.data?.[awb]?.current_status || "IN PROGRESS";
 
       setTrackingStatuses((prev) => ({
         ...prev,

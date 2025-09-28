@@ -130,9 +130,9 @@ export default function BookDoctor({ doctor, onBack }) {
               date,
               time,
               fees: doctor.fees,
-              address: consultation === "home" ? address : "", // Only send address if it's a home visit
+              address: consultation === "home" ? address : "",
               notes,
-              consultationType: consultation, // e.g., "home", "clinic"
+              consultationType: consultation,
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,

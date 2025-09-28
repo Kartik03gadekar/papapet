@@ -22,7 +22,7 @@ const Page2 = () => {
   const [showModal, setShowModal] = useState(false);
   const data = [
     {
-      name: "Products",
+      name: "Food & Products",
       img: "/FoodnAcces.png",
       link: "/papapet/food",
       color: "bg-orange-200",

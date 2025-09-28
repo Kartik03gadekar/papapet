@@ -68,10 +68,8 @@ export default function TrackOrder({ details, awb }) {
   const totalAmount =
     order.totalAmount || order.amount || details.total_amount || 0;
   const expectedArrival =
-    order.expectedArrival ||
-    details.edd ||
     details.expected_delivery_date ||
-    details.promised_delivery_date ||
+    details.order_details?.expected_delivery_date ||
     null;
   const notes = order.notes || details.remarks || "";
 
@@ -158,7 +156,7 @@ export default function TrackOrder({ details, awb }) {
 
   const canCancel =
     typeof currentStepIndex === "number" &&
-    currentStepIndex < TRACKING_STEPS.length - 1 &&
+    currentStepIndex < TRACKING_STEPS.length - 3 &&
     !(order.status || details.current_status || "")
       .toLowerCase()
       .includes("cancel");
@@ -228,6 +226,11 @@ export default function TrackOrder({ details, awb }) {
             {productCount} Product{productCount !== 1 ? "s" : ""} • Placed on{" "}
             {formatDate(orderDate)}
           </p>
+
+          <p className="text-xs text-gray-500 mt-1">
+            Expected Delivery : {formatDate(expectedArrival)}
+          </p>
+
           {awbNumber && (
             <p className="text-xs text-gray-400 mt-1">
               <span className="font-semibold">AWB:</span> {awbNumber}
@@ -241,40 +244,48 @@ export default function TrackOrder({ details, awb }) {
 
       {/* Progress Steps */}
       <div className="flex max-md:flex-col items-start md:items-center md:justify-between gap-2 mb-6 overflow-x-auto">
-        {TRACKING_STEPS.map((step, idx) => (
-          <div
-            key={idx}
-            className="flex-1 min-w-[60px] flex md:flex-col items-center max-md:justify-center gap-3 relative"
-          >
-            <div
-              className={`w-7 h-7 flex items-center justify-center rounded-full border-2 z-10
-              ${
-                idx < currentStepIndex
-                  ? "bg-[#0D9899] border-[#0D9899] text-white"
-                  : idx === currentStepIndex
-                  ? "bg-white border-[#0D9899] text-[#0D9899] font-bold"
-                  : "bg-gray-100 border-gray-200 text-gray-400"
-              } transition`}
-            >
-              {idx + 1}
-            </div>
-            <span
-              className={`mt-1 max-md:text-lg text-[11px] text-center leading-tight
-              ${
-                idx <= currentStepIndex
-                  ? "text-[#0D9899] font-medium"
-                  : "text-gray-400"
-              }`}
-              style={{ minHeight: 28 }}
-            >
-              {step}
-            </span>
+        {TRACKING_STEPS.map((step, idx) => {
+          const isLast = idx === TRACKING_STEPS.length - 1;
+          const isCompleted = idx < currentStepIndex;
+          const isActive = idx === currentStepIndex;
 
-            {idx < TRACKING_STEPS.length - 1 && (
-              <div className="absolute max-md:hidden top-3 left-[50%] w-full h-0.5 bg-gray-200 -z-0" />
-            )}
-          </div>
-        ))}
+          return (
+            <div
+              key={idx}
+              className="flex-1 min-w-[60px] flex md:flex-col items-center max-md:justify-center gap-3 relative"
+            >
+              <div
+                className={`w-7 h-7 flex items-center justify-center rounded-full border-2 z-10 transition
+    ${
+      isCompleted || (isLast && isActive)
+        ? "bg-[#0D9899] border-[#0D9899] text-white"
+        : isActive
+        ? "bg-white border-[#0D9899] text-[#0D9899] font-bold"
+        : "bg-gray-100 border-gray-200 text-gray-400"
+    }
+  `}
+              >
+                {isLast && (isCompleted || isActive) ? "✓" : idx + 1}
+              </div>
+
+              <span
+                className={`mt-1 max-md:text-lg text-[11px] text-center leading-tight
+            ${
+              idx <= currentStepIndex
+                ? "text-[#0D9899] font-medium"
+                : "text-gray-400"
+            }`}
+                style={{ minHeight: 28 }}
+              >
+                {step}
+              </span>
+
+              {idx < TRACKING_STEPS.length - 1 && (
+                <div className="absolute max-md:hidden top-3 left-[50%] w-full h-0.5 bg-gray-200 -z-0" />
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Order Activity */}

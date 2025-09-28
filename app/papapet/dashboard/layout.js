@@ -44,7 +44,7 @@ export default function DashboardLayout({ children }) {
       </div>
 
       <div
-        className="w-full flex relative pt-[12vh] lg:pt-[10vh] overflow-hidden"
+        className="w-full flex relative pt-[15vh] lg:pt-[10vh] overflow-hidden"
         style={{ minHeight: "calc(100vh - 10vh)" }}
       >
         {/* Sidebar for large screens */}
