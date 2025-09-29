@@ -8,6 +8,7 @@ import { applyCoupon, setSelectedAddress } from "@/store/slices/cartSlices";
 import axios from "@/Axios/axios";
 import { useRouter } from "next/navigation";
 import { fetchCart } from "@/store/slices/cartSlices";
+import { Ri24HoursLine } from "react-icons/ri";
 
 function loadRazorpayScript(src) {
   return new Promise((resolve) => {
@@ -47,12 +48,7 @@ export default function CheckoutPage() {
   const [orderNotes, setOrderNotes] = useState("");
   const [showNotesInput, setShowNotesInput] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
-
-  const couponCode = cart.appliedCoupon;
-  const couponDiscount = cart.discount;
-
-  // ✅ Only shipping address
-
+  const [deliveryOption, setDeliveryOption] = useState("standard");
   const [shippingAddress, setShippingAddress] = useState(
     selectedAddress || {
       name: "",
@@ -64,6 +60,61 @@ export default function CheckoutPage() {
       addressId: undefined,
     }
   );
+
+  const couponCode = cart.appliedCoupon;
+  const couponDiscount = cart.discount;
+
+  const isBhopalDelivery = useMemo(() => {
+    const bhopalPincodes = new Set([
+      "462001",
+      "462002",
+      "462003",
+      "462004",
+      "462007",
+      "462008",
+      "462010",
+      "462011",
+      "462013",
+      "462016",
+      "462018",
+      "462020",
+      "462021",
+      "462022",
+      "462023",
+      "462024",
+      "462026",
+      "462027",
+      "462030",
+      "462031",
+      "462032",
+      "462033",
+      "462036",
+      "462037",
+      "462038",
+      "462039",
+      "462040",
+      "462041",
+      "462042",
+      "462043",
+      "462044",
+      "462045",
+      "462046",
+      "462047",
+      "462051",
+      "462052",
+      "462053",
+      "462054",
+      "462055",
+      "463106",
+      "463111",
+      "464993",
+      "466114",
+    ]);
+    const currentPincode = shippingAddress?.pincode || shippingAddress?.pin;
+    return bhopalPincodes.has(currentPincode);
+  }, [shippingAddress]);
+
+  // ✅ Only shipping address
 
   const { cartItems, subtotal, discount, shipping, total } = useSelector(
     (state) => state.cart
@@ -914,6 +965,34 @@ export default function CheckoutPage() {
                         <X className="w-4 h-4" />
                       </button>
                     </div>
+                  )}
+
+                  {isBhopalDelivery && (
+                    <label
+                      htmlFor="sameDayDelivery"
+                      className="mt-4 block bg-white border rounded-xl shadow-sm cursor-pointer hover:border-primary transition-colors"
+                    >
+                      <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
+                        <input
+                          type="radio"
+                          id="sameDayDelivery"
+                          name="deliveryOption"
+                          value="sameDay"
+                          checked={deliveryOption === "sameDay"}
+                          onChange={() => setDeliveryOption("sameDay")}
+                          className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                        />
+                        <div className="flex-1">
+                          <h4 className="font-bold text-sm sm:text-base text-card-foreground">
+                            Same Day Delivery
+                          </h4>
+                          <p className="text-xs sm:text-sm text-muted-foreground">
+                            Available for your location in Bhopal.
+                          </p>
+                        </div>
+                        <Ri24HoursLine className="text-3xl sm:text-4xl text-primary flex-shrink-0" />
+                      </div>
+                    </label>
                   )}
                 </div>
               </div>
