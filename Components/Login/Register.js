@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "@/store/Action/auth";
 import { toast } from "react-toastify";
@@ -25,24 +25,25 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  // Setup Recaptcha
-  const setupRecaptcha = () => {
-    if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear();
-      window.recaptchaVerifier = null;
-    }
+  useEffect(() => {
     window.recaptchaVerifier = new RecaptchaVerifier(
-       auth,
+      auth,
       "recaptcha-container",
       {
         size: "invisible",
-        callback: () => console.log("Recaptcha verified"),
-        "expired-callback": () => console.warn("Recaptcha expired"),
+        callback: () => console.log("Recaptcha solved"),
+        "expired-callback": () => {
+          toast.warn("reCAPTCHA expired. Please try sending the OTP again.");
+        },
       }
-     
     );
-    return window.recaptchaVerifier;
-  };
+
+    return () => {
+      if (window.recaptchaVerifier) {
+        window.recaptchaVerifier.clear();
+      }
+    };
+  }, []);
 
   // Send OTP
   const handleSendOtp = async () => {
@@ -57,7 +58,7 @@ const Register = () => {
 
     try {
       setLoading(true);
-      const verifier = setupRecaptcha();
+      const verifier = window.recaptchaVerifier;
       const e164Phone = `+91${formValues.phone}`;
       const result = await signInWithPhoneNumber(auth, e164Phone, verifier);
       setConfirmationResult(result);
@@ -87,10 +88,15 @@ const Register = () => {
         if (key !== "confirmPassword") formData.append(key, value);
       });
 
-      // Dispatch to backend and get token
-      const response = await dispatch(registerUser(formData));
+      const payload = {
+        name: formValues.name,
+        email: formValues.email,
+        phone: formValues.phone,
+        password: formValues.password,
+      };
 
-      // Assuming backend returns token in response.payload.token
+      const response = await dispatch(registerUser(payload));
+
       const token = response?.payload?.token;
       if (token) {
         Cookies.set("token", token, { expires: 7 });
@@ -106,7 +112,6 @@ const Register = () => {
     }
   };
 
-  // Handle form changes
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
   };

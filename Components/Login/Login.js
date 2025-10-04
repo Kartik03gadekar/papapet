@@ -237,7 +237,6 @@ import { loginUser } from "@/store/Action/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "@/Firebase/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-// import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
