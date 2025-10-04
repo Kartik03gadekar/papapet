@@ -32,13 +32,13 @@ const Register = () => {
       window.recaptchaVerifier = null;
     }
     window.recaptchaVerifier = new RecaptchaVerifier(
-      auth,
       "recaptcha-container",
       {
         size: "invisible",
         callback: () => console.log("Recaptcha verified"),
         "expired-callback": () => console.warn("Recaptcha expired"),
-      }
+      },
+      auth
     );
     return window.recaptchaVerifier;
   };
@@ -90,13 +90,13 @@ const Register = () => {
       const response = await dispatch(registerUser(formData));
 
       // Assuming backend returns token in response.payload.token
-      // const token = response?.payload?.token;
+      const token = response?.payload?.token;
       if (token) {
-        // Cookies.set("token", token, { expires: 7 }); // 7 days
+        Cookies.set("token", token, { expires: 7 });
       }
 
       toast.success("Registration successful");
-      router.push("/"); // redirect to home
+      router.push("/");
     } catch (error) {
       console.error("OTP verify error:", error);
       toast.error("Invalid OTP");
@@ -212,7 +212,6 @@ const Register = () => {
 };
 
 export default Register;
-
 
 // "use client";
 // import React, { useState } from "react";
