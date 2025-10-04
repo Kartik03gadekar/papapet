@@ -231,7 +231,7 @@
 // export default Login;
 
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/store/Action/auth";
 import { useRouter } from "next/navigation";
