@@ -32,13 +32,14 @@ const Register = () => {
       window.recaptchaVerifier = null;
     }
     window.recaptchaVerifier = new RecaptchaVerifier(
+       auth,
       "recaptcha-container",
       {
         size: "invisible",
         callback: () => console.log("Recaptcha verified"),
         "expired-callback": () => console.warn("Recaptcha expired"),
-      },
-      auth
+      }
+     
     );
     return window.recaptchaVerifier;
   };
