@@ -252,30 +252,26 @@ const Login = () => {
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Setup Recaptcha
-  const setupRecaptcha = () => {
-    if (typeof window === "undefined") return null;
-
-    // Prevent duplicate instances
-    if (window.recaptchaVerifier) {
-      return window.recaptchaVerifier;
-    }
-
+  useEffect(() => {
     window.recaptchaVerifier = new RecaptchaVerifier(
       auth,
       "recaptcha-container",
       {
         size: "invisible",
-        callback: () => console.log("Recaptcha verified"),
-        "expired-callback": () => console.warn("Recaptcha expired"),
+        callback: () => console.log("Recaptcha solved"),
+        "expired-callback": () => {
+          toast.warn("reCAPTCHA expired. Please try sending the OTP again.");
+        },
       }
-      
     );
 
-    return window.recaptchaVerifier;
-  };
+    return () => {
+      if (window.recaptchaVerifier) {
+        window.recaptchaVerifier.clear();
+      }
+    };
+  }, []);
 
-  // ✅ Send OTP
   const handleSendOtp = async () => {
     if (!/^[0-9]{10}$/.test(phone)) {
       toast.error("Enter a valid 10-digit phone number");
@@ -286,7 +282,7 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const verifier = setupRecaptcha();
+     const verifier = window.recaptchaVerifier;
 
       const result = await signInWithPhoneNumber(auth, e164Phone, verifier);
       setConfirmationResult(result);
