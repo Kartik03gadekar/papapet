@@ -846,20 +846,13 @@ const NavPapaPet = () => {
           <div className="flex items-center pl-3">
             <button
               className="text-white text-2xl p-2  hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
-              onClick={() => {
-                if (user) {
-                  setSearchOpen(true); // ✅ Only opens if logged in
-                } else {
-                  router.push("/papapet/auth"); // 🚀 Redirect to login page
-                }
-              }}
+              onClick={() => setSearchOpen(true)}
               aria-label="Open search"
               type="button"
             >
               <i className="ri-search-line"></i>
             </button>
 
-            {/* Mobile Cart Icon */}
             {user && (
               <button
                 className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
