@@ -235,10 +235,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/store/Action/auth";
 import { useRouter } from "next/navigation";
-import { auth } from "@/Firebase/firebase";
+import { auth, googleProvider } from "@/Firebase/firebase";
+import { signInWithPopup } from "firebase/auth";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -250,6 +252,7 @@ const Login = () => {
   const [phone, setPhone] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     window.recaptchaVerifier = new RecaptchaVerifier(
@@ -271,6 +274,29 @@ const Login = () => {
     };
   }, []);
 
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      const creds = {
+        email: user.email,
+        name: user.displayName,
+        googleId: user.uid,
+      };
+
+      const response = await dispatch(loginUser(creds));
+
+      if (response?.payload?.token) {
+        toast.success("Google login successful");
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Google Login Error:", error);
+      toast.error("Google login failed. Try again.");
+    }
+  };
+
   const handleSendOtp = async () => {
     if (!/^[0-9]{10}$/.test(phone)) {
       toast.error("Enter a valid 10-digit phone number");
@@ -281,7 +307,7 @@ const Login = () => {
 
     try {
       setLoading(true);
-     const verifier = window.recaptchaVerifier;
+      const verifier = window.recaptchaVerifier;
 
       const result = await signInWithPhoneNumber(auth, e164Phone, verifier);
       setConfirmationResult(result);
@@ -375,15 +401,21 @@ const Login = () => {
               />
             </div>
 
-            <div className="flex flex-col gap-1 mb-2">
+            <div className="flex flex-col gap-1 mb-2 relative">
               <label className="text-sm text-gray-600">Password</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter your password"
                 className="border rounded-lg px-3 py-2 w-full outline-none"
                 required
               />
+              <div
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute z-50 top-9 right-5 cursor-pointer text-gray-600"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </div>
             </div>
 
             <div className="text-right text-sm text-red-500 cursor-pointer mb-3">
@@ -436,6 +468,13 @@ const Login = () => {
           <label className="text-sm text-gray-700">
             Login with OTP instead of password
           </label>
+        </div>
+
+        <div className="flex flex-col gap-3 items-center justify-center mb-10">
+          <h4 className="text-center">or <br /> Sign in with</h4>
+          <button onClick={handleGoogleLogin} className= " p-2 shadow-lg rounded-full">
+            <img src="/Authlogos/googlelogo.svg" className="h-10 w-10" alt="" />
+          </button>
         </div>
 
         <button

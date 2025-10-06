@@ -4,10 +4,12 @@ import { useDispatch } from "react-redux";
 import { registerUser } from "@/store/Action/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { auth } from "@/Firebase/firebase";
+import { auth, googleProvider } from "@/Firebase/firebase";
+import { signInWithPopup } from "firebase/auth";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie"; // npm install js-cookie
+import Cookies from "js-cookie";
+import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,8 @@ const Register = () => {
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCPassword, setShowCPassword] = useState(false);
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
@@ -72,7 +76,6 @@ const Register = () => {
     }
   };
 
-  // Verify OTP and register user
   const handleVerifyOtp = async () => {
     if (!otp || !confirmationResult) {
       toast.error("Enter the OTP");
@@ -109,6 +112,31 @@ const Register = () => {
       toast.error("Invalid OTP");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleRegister = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      const payload = {
+        name: user.displayName,
+        email: user.email,
+        googleId: user.uid,
+      };
+
+      const response = await dispatch(registerUser(payload));
+
+      const token = response?.payload?.token;
+      if (token) {
+        Cookies.set("token", token, { expires: 7 });
+        toast.success("Google sign-up successful");
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Google Register Error:", error);
+      toast.error("Google registration failed. Try again.");
     }
   };
 
@@ -163,31 +191,55 @@ const Register = () => {
               />
             </div>
 
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 relative">
               <label className="text-sm text-gray-600">Create Password</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formValues.password}
                 onChange={handleChange}
                 className="border rounded-lg px-3 py-2 w-full outline-none"
                 required
               />
+              <div
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute z-50 top-9 right-5 cursor-pointer text-gray-600"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </div>
             </div>
 
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 relative">
               <label className="text-sm text-gray-600">Confirm Password</label>
               <input
-                type="password"
+                type={showCPassword ? "text" : "password"}
                 name="confirmPassword"
                 value={formValues.confirmPassword}
                 onChange={handleChange}
                 className="border rounded-lg px-3 py-2 w-full outline-none"
                 required
               />
+              <div
+                onClick={() => setShowCPassword(!showCPassword)}
+                className="absolute z-50 top-9 right-5 cursor-pointer text-gray-600"
+              >
+                {showCPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </div>
             </div>
           </>
         )}
+
+        <div className="flex flex-col gap-3 items-center justify-center py-5">
+          <h4 className="text-center">
+            or <br /> Sign Up with
+          </h4>
+          <button
+            onClick={handleGoogleRegister}
+            className=" p-2 shadow-lg rounded-full"
+          >
+            <img src="/Authlogos/googlelogo.svg" className="h-10 w-10" alt="" />
+          </button>
+        </div>
 
         {otpSent && (
           <div className="flex flex-col gap-1 mb-4">

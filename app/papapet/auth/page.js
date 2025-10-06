@@ -7,11 +7,11 @@ import React from "react";
 const page = () => {
   return (
     <div className=" w-full overflow-hidden">
-      <div className="">
+      <div className="fixed top-0 w-full">
         <NavPapaPet />
       </div>
 
-      <div className="h-[80%]">
+      <div className="h-full overflow-hidden">
         {" "}
         <Auth />
       </div>

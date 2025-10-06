@@ -37,9 +37,9 @@ const Auth = () => {
   }
 
   return (
-    <div className="h-screen w-full flex flex-col md:flex-row">
+    <div className="h-screen w-full flex flex-col md:flex-row overflow-hidden">
       {/* Left Section */}
-      <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-6">
+      <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-6 mt-14">
         <div className="w-full max-w-md">
           <img src="/logo.png" alt="Logo" className="h-10 mb-2 mx-auto" />
           <h2 className="text-2xl font-bold text-gray-800 text-center">

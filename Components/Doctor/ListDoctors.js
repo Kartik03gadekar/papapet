@@ -24,7 +24,13 @@ export default function ListDoctors({ doctor, onSelect }) {
     >
       <div className="flex items-center gap-4">
         <div className="size-24 rounded-xl bg-amber-50 flex items-center justify-center text-3xl">
-          {"🐾" || <img src={doctor.image} className="h-full w-full object-cover" alt="" />}
+          {
+            <img
+              src={doctor.image}
+              className="h-full w-full object-cover"
+              alt="🐾"
+            />
+          }
         </div>
         <div className="min-w-0">
           <h3 className="truncate text-lg font-semibold text-gray-900">

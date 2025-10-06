@@ -125,7 +125,6 @@
 //   }
 // };
 
-
 import axios from "@/Axios/axios.js";
 import {
   fail,
@@ -157,7 +156,6 @@ export const checkUser = () => async (dispatch) => {
 export const registerUser = (info) => async (dispatch) => {
   dispatch(isUserRequest());
   try {
-    console.log(info);
     const { data } = await axios.post("/user/register", info);
 
     dispatch(isUser(data.user));
@@ -169,7 +167,6 @@ export const loginUser = (info) => async (dispatch) => {
   dispatch(isUserRequest());
   try {
     const { data } = await axios.post("/user/login", info);
-
 
     dispatch(isUser(data.user));
   } catch (error) {
