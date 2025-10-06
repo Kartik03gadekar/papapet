@@ -72,7 +72,6 @@ const FoodContainer = () => {
   const [selectedPrice, setSelectedPrice] = useState(FOOD_MAX_PRICE);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // --- Initialize filters from query ---
   useEffect(() => {
     const initialAnimal = searchParams.get("animal");
     const initialCategory = searchParams.get("category");
@@ -86,15 +85,25 @@ const FoodContainer = () => {
     }
 
     if (initialCategory) {
-      const match = categories.find(
+      const categoryMatch = categories.find(
         (c) => c.value.toLowerCase() === initialCategory.toLowerCase()
       );
-      if (match) setSelectedCategory(match.name);
+      if (categoryMatch) {
+        setSelectedCategory(categoryMatch.name);
+      } else {
+        const animalMatch = animalCategories.find(
+          (a) => a.value.toLowerCase() === initialCategory.toLowerCase()
+        );
+
+        if (animalMatch && !initialAnimal) {
+          setSelectedAnimalCategory(animalMatch.label);
+        }
+      }
     }
 
     if (initialBrand) {
       const match = brands.find(
-        (b) => b.name.toLowerCase() === initialBrand.toLowerCase()
+        (b) => slugify(b.name) === slugify(initialBrand)
       );
       if (match) {
         setSelectedBrand(match.name);
@@ -133,14 +142,9 @@ const FoodContainer = () => {
       }
       if (selectedAnimalCategory !== "All") {
         const animalCat = selectedAnimalCategory.toLowerCase();
-        if (
-          !(
-            animalCategory.toLowerCase().includes(animalCat) ||
-            categoriesStr.toLowerCase().includes(animalCat) ||
-            name.toLowerCase().includes(animalCat)
-          )
-        )
+        if (animalCategory.toLowerCase() !== animalCat) {
           return false;
+        }
       }
       if (price < 0 || price > selectedPrice) return false;
       if (searchTerm) {
