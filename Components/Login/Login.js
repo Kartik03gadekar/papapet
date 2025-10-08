@@ -241,6 +241,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Eye, EyeOff } from "lucide-react";
+import axios from "@/Axios/axios";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -278,16 +279,18 @@ const Login = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
+      console.log(user);
 
       const creds = {
         email: user.email,
         name: user.displayName,
+        phone: user.phoneNumber,
         googleId: user.uid,
       };
 
-      const response = await dispatch(loginUser(creds));
+      const response = await axios.post("/user/oauth", creds);
 
-      if (response?.payload?.token) {
+      if (response?.data?.token) {
         toast.success("Google login successful");
         router.push("/");
       }
@@ -471,8 +474,13 @@ const Login = () => {
         </div>
 
         <div className="flex flex-col gap-3 items-center justify-center mb-10">
-          <h4 className="text-center">or <br /> Sign in with</h4>
-          <button onClick={handleGoogleLogin} className= " p-2 shadow-lg rounded-full">
+          <h4 className="text-center">
+            or <br /> Sign in with
+          </h4>
+          <button
+            onClick={handleGoogleLogin}
+            className=" p-2 shadow-lg rounded-full"
+          >
             <img src="/Authlogos/googlelogo.svg" className="h-10 w-10" alt="" />
           </button>
         </div>
