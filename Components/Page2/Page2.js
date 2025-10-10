@@ -90,7 +90,7 @@ const Page2 = () => {
   ];
 
   useEffect(() => {
-    data.slice(0, 3).forEach((d) => {
+    data.slice(0, 2).forEach((d) => {
       router.prefetch(d.link);
     });
   }, [router]);
