@@ -11,7 +11,7 @@ const FloatingWindow = () => {
   return (
     <div
      
-      className="bg-gradient-to-r from-[#FEBC28] to-white cursor-pointer rounded-2xl"
+      className="bg-gradient-to-r from-[#FEBC28] to-white cursor-pointer"
     >
       <div className="flex flex-col md:flex-row items-center justify-between px-6 md:px-12 py-10 gap-10">
         <div className="flex flex-col gap-8 items-center md:items-start text-center md:text-left">
