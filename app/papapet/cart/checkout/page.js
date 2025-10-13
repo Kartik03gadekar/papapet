@@ -334,7 +334,7 @@ export default function CheckoutPage() {
         amount: backendOrder.amount,
         currency: "INR",
         name: "PapaPet",
-        description: "Payment for checkout",
+        description: "Making Pets Life Better Together.",
         image: "/logo.png",
         order_id: backendOrder.id,
         handler: async function (response) {

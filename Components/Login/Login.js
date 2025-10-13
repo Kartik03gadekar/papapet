@@ -238,8 +238,7 @@ import { useRouter } from "next/navigation";
 import { auth, googleProvider } from "@/Firebase/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
 import axios from "@/Axios/axios";
 

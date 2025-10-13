@@ -19,7 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import axios from "@/Axios/axios";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { isUserRequest } from "@/store/Reducer/auth";
 import Link from "next/link";
 import { setSelectedAddress, applyCoupon } from "@/store/slices/cartSlices";

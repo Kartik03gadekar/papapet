@@ -4,7 +4,8 @@ import axios from "@/Axios/axios";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addToCart, clearCart } from "@/store/slices/cartSlices";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import { LazyMotion } from "framer-motion";
 import LazyImage from "./LazyImage";
 

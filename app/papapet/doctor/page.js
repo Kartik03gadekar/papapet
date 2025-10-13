@@ -2,7 +2,7 @@
 import React, { useState, lazy, Suspense } from "react";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import axiosInstance from "@/Axios/axios";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { LuMessageCircleMore } from "react-icons/lu";
 import { LuShare } from "react-icons/lu";
@@ -26,7 +26,7 @@ const Page = () => {
   const router = useRouter();
   const services = [
     {
-      img: "/doctorimage2.png",
+      img: "/doctor1.jpg",
       name: "Find Doctors Near You",
       p: "Confirmed Appointment",
     },

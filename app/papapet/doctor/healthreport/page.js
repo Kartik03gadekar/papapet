@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import NavPapaPet from "@/Components/Nav/NavPapaPet";
 import axiosInstance from "@/Axios/axios";
 import { FaInfoCircle } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import ReactToPrint from "react-to-print";
 import { GoArrowRight } from "react-icons/go";
 import ComponentLoader from "@/Components/loader/ComponentLoader";

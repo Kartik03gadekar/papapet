@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkUser } from "@/store/Action/auth";
 import { addToCart, clearCart } from "@/store/slices/cartSlices";
 import axiosInstance from "@/Axios/axios";
-import { toast } from "react-toastify"; // <-- Import toastify
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import ShareProduct from "./ShareProduct";
 
@@ -157,7 +157,7 @@ const ProductDetail = ({ i, product }) => {
       console.error("Add to cart error:", error);
       router.push("/papapet/auth");
       toast.error(
-        error.response?.data?.message || "Something went wrong. Try again!"
+        error.response?.data?.message || "Please Login to continue!"
       );
     }
   };
@@ -183,11 +183,11 @@ const ProductDetail = ({ i, product }) => {
         {product?.category || "Dry Food"}
       </p>
 
-      {product?.stock?.length > 0 && product.stock[0].quantity > 0 ? (
+      {/* {product?.stock[0]?.length > 0 && product.stock[0].quantity > 0 ? (
         <p className="text-green-600 font-semibold mb-8">In Stock</p>
       ) : (
         <p className="text-red-600 font-semibold mb-8">Out of Stock</p>
-      )}
+      )} */}
 
       <div className="mb-8">
         <div className="flex items-center gap-2">

@@ -85,7 +85,8 @@ import { useEffect, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getHomePage } from "@/store/Action/others";
 import { io } from "socket.io-client";
-import PhantomConnect from "@/Components/WalletProvider";
+// import PhantomConnect from "@/Components/WalletProvider";
+import FloatingWindow from "@/Components/HealthReport/FloatingWindow";
 let socket;
 const getSocket = () => {
   if (!socket) {
@@ -111,7 +112,6 @@ const Page4 = lazy(() => import("@/Components/Page4/Page4"));
 const Page5 = lazy(() => import("@/Components/Page5/Page5"));
 const Page6 = lazy(() => import("@/Components/Page6/Page6"));
 const Footer = lazy(() => import("@/Components/Footer/Footer"));
-
 
 // import PageLoader from "@/Components/loader/PageLoader";
 
@@ -141,7 +141,8 @@ const Page = () => {
     <div className="w-full relative overflow-hidden bg-white">
       <NavPapaPet />
       <HomePage />
-      <Suspense fallback={<ComponentLoader/>}>
+      <Suspense fallback={<ComponentLoader />}>
+        <FloatingWindow />
         <Page2 />
         <Page3 />
         <Page4 />

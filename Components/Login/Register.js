@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "@/store/Action/auth";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
 import { auth, googleProvider } from "@/Firebase/firebase";
 import { signInWithPopup } from "firebase/auth";

@@ -5,7 +5,7 @@ export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
   async (_, thunkAPI) => {
     try {
-      const { data } = await axios.get("/user/getCart"); // ✅ backend pulls user from token
+      const { data } = await axios.get("/user/getCart");
       return data.cart;
     } catch (err) {
       return thunkAPI.rejectWithValue(

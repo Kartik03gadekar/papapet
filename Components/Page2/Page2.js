@@ -96,8 +96,8 @@ const Page2 = () => {
   }, [router]);
 
   const handleClick = async (index, link) => {
-    if (index <= 2) {
-      await router.prefetch(link); // make sure it’s cached
+    if (index <= 1) {
+      await router.prefetch(link);
       router.push(link);
     } else {
       setShowModal(true);
