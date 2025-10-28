@@ -5,7 +5,7 @@ const Page5 = () => {
   return (
     <section id="about">
       <div className=" max-md:hidden  w-full h-fit p-20 flex flex-col items-center justify-center max-md:px-0">
-    <img src="/aboutUs.png" className="w-[65vw] object-contain max-md:object-cover max-md:h-[18vh] max-md:w-[120%] " alt="" />
+    <img src="/about.png" className="w-[65vw] object-contain max-md:object-cover max-md:h-[18vh] max-md:w-[120%] " alt="" />
      
     </div>
     </section>

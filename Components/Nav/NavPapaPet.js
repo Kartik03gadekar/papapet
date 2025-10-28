@@ -755,7 +755,7 @@ const NavPapaPet = () => {
             </button>
 
             {/* Desktop Cart Icon */}
-            {user && (
+           
               <button
                 className="hidden md:flex text-2xl text-[#0D9899] p-2 rounded-full transition-all duration-300"
                 onClick={handleCartClick}
@@ -764,7 +764,7 @@ const NavPapaPet = () => {
               >
                 <i className="ri-shopping-cart-2-line"></i>
               </button>
-            )}
+            
             {user ? (
               <div className="flex items-center justify-center gap-2 max-md:hidden">
                 <Box sx={{ flexGrow: 0 }}>
@@ -853,16 +853,16 @@ const NavPapaPet = () => {
               <i className="ri-search-line"></i>
             </button>
 
-            {user && (
+           
               <button
-                className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"
+                className="text-white text-2xl p-2 rounded-full transition-all duration-300"
                 onClick={handleCartClick}
                 aria-label="Open cart"
                 type="button"
               >
                 <i className="ri-shopping-cart-2-line"></i>
               </button>
-            )}
+            
             <button
               onClick={openMenu}
               className="text-white text-2xl p-2 hover:bg-white hover:text-[#0D9899] rounded-full transition-all duration-300"

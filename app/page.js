@@ -141,7 +141,7 @@ const Page = () => {
     <div className="w-full relative overflow-hidden bg-white">
       <NavPapaPet />
       <HomePage />
-      <Suspense fallback={<ComponentLoader />}>
+     
         <FloatingWindow />
         <Page2 />
         <Page3 />
@@ -149,7 +149,7 @@ const Page = () => {
         <Page5 />
         <Page6 />
         <Footer />
-      </Suspense>
+     
     </div>
   );
 };

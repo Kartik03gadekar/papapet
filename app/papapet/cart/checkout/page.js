@@ -27,14 +27,18 @@ function loadRazorpayScript(src) {
 
 function getImageUrl(item) {
   if (!item.image) return "/placeholder.svg";
+
   if (typeof item.image === "string") return item.image;
-  if (
-    Array.isArray(item.image) &&
-    item.image[0]?.filename &&
-    item.image[0]?.mimetype
-  ) {
-    const [type, subtype] = item.image[0].mimetype.split("/");
-    return `${axios.defaults.baseURL}admin/get/image/${item.image[0].filename}/${type}/${subtype}`;
+
+  if (Array.isArray(item.image)) {
+    if (typeof item.image[0] === "string") {
+      return item.image[0];
+    }
+
+    if (item.image[0]?.filename && item.image[0]?.mimetype) {
+      const [type, subtype] = item.image[0].mimetype.split("/");
+      return `${axios.defaults.baseURL}admin/get/image/${item.image[0].filename}/${type}/${subtype}`;
+    }
   }
   return "/placeholder.svg";
 }
@@ -501,7 +505,7 @@ export default function CheckoutPage() {
                         {/* Product Image */}
                         <div className="w-20 h-20 md:w-16 md:h-16 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
                           <img
-                            src={item.image[0]}
+                            src={getImageUrl(item)}
                             alt={item.name}
                             className="w-full h-full object-cover"
                             loading="lazy"

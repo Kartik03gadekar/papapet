@@ -23,7 +23,7 @@ const Page2 = () => {
   const data = [
     {
       name: "Food & Products",
-      img: "/FoodnAcces.png",
+      img: "/HomeScreen/food.png",
       link: "/papapet/food",
       color: "bg-orange-200",
     },
@@ -33,32 +33,32 @@ const Page2 = () => {
       link: "/papapet/doctor",
       color: "bg-green-200",
     },
-    {
-      name: "Pet Walking",
-      link: "/papapet/walking",
-      img: "/walkingPet.png",
-      color: "bg-red-200",
-    },
+    // {
+    //   name: "Pet Walking",
+    //   link: "/papapet/walking",
+    //   img: "/walkingPet.png",
+    //   color: "bg-red-200",
+    // },
 
-    {
-      name: "Pet DayCare",
-      link: "/papapet/daycare",
-      img: "/dayCare.png",
-      color: "bg-lime-200",
-    },
+    // {
+    //   name: "Pet DayCare",
+    //   link: "/papapet/daycare",
+    //   img: "/dayCare.png",
+    //   color: "bg-lime-200",
+    // },
 
-    {
-      name: "Pet Boarding",
-      link: "/papapet/boarding",
-      img: "/Boarding.png",
-      color: "bg-orange-300",
-    },
-    {
-      name: "Pet Grooming",
-      link: "/papapet/grooming",
-      img: "/grooming.png",
-      color: "bg-purple-200",
-    },
+    // {
+    //   name: "Pet Boarding",
+    //   link: "/papapet/boarding",
+    //   img: "/Boarding.png",
+    //   color: "bg-orange-300",
+    // },
+    // {
+    //   name: "Pet Grooming",
+    //   link: "/papapet/grooming",
+    //   img: "/grooming.png",
+    //   color: "bg-purple-200",
+    // },
   ];
   const dataTwo = [
     {
@@ -69,24 +69,24 @@ const Page2 = () => {
       img: "/ServiecesDoctor.png",
       link: "/papapet/doctor",
     },
-    {
-      link: "/papapet/walking",
-      img: "/ServiecesWalking.png",
-    },
+    // {
+    //   link: "/papapet/walking",
+    //   img: "/ServiecesWalking.png",
+    // },
 
-    {
-      link: "/papapet/daycare",
-      img: "/ServiecesDayCare.png",
-    },
+    // {
+    //   link: "/papapet/daycare",
+    //   img: "/ServiecesDayCare.png",
+    // },
 
-    {
-      link: "/papapet/boarding",
-      img: "/ServiecesBoarding.png",
-    },
-    {
-      link: "/papapet/grooming",
-      img: "/ServiecesGromming.png",
-    },
+    // {
+    //   link: "/papapet/boarding",
+    //   img: "/ServiecesBoarding.png",
+    // },
+    // {
+    //   link: "/papapet/grooming",
+    //   img: "/ServiecesGromming.png",
+    // },
   ];
 
   useEffect(() => {
