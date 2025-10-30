@@ -978,7 +978,7 @@ export default function CheckoutPage() {
                     >
                       <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
                         <input
-                          type="radio"
+                          type="checkbox"
                           id="sameDayDelivery"
                           name="deliveryOption"
                           value="sameDay"
