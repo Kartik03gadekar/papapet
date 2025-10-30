@@ -156,9 +156,7 @@ const ProductDetail = ({ i, product }) => {
     } catch (error) {
       console.error("Add to cart error:", error);
       router.push("/papapet/auth");
-      toast.error(
-        error.response?.data?.message || "Please Login to continue!"
-      );
+      toast.error(error.response?.data?.message || "Please Login to continue!");
     }
   };
 
@@ -183,11 +181,11 @@ const ProductDetail = ({ i, product }) => {
         {product?.category || "Dry Food"}
       </p>
 
-      {/* {product?.stock[0]?.length > 0 && product.stock[0].quantity > 0 ? (
+      {product?.stock[0].quantity > 0 ? (
         <p className="text-green-600 font-semibold mb-8">In Stock</p>
       ) : (
         <p className="text-red-600 font-semibold mb-8">Out of Stock</p>
-      )} */}
+      )}
 
       <div className="mb-8">
         <div className="flex items-center gap-2">
@@ -288,14 +286,14 @@ const ProductDetail = ({ i, product }) => {
         <div className="flex items-center justify-start gap-5 py-5">
           <button
             onClick={handleAddToCart}
-            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded flex items-center gap-2"
+            className="border border-orange-500 text-orange-500 font-semibold px-6 py-3 rounded flex items-center gap-2"
           >
             <FiShoppingCart /> ADD TO CART
           </button>
 
           <button
             onClick={handleBuyNow}
-            className="border border-orange-500 hover:bg-orange-50 text-orange-500 font-semibold px-6 py-3 rounded"
+            className="bg-orange-500  hover:bg-orange-50 text-white font-semibold px-6 py-3 rounded"
           >
             BUY NOW
           </button>
