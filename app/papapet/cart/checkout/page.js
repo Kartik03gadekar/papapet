@@ -9,6 +9,7 @@ import axios from "@/Axios/axios";
 import { useRouter } from "next/navigation";
 import { fetchCart } from "@/store/slices/cartSlices";
 import { Ri24HoursLine } from "react-icons/ri";
+import { toast } from "react-hot-toast";
 
 function loadRazorpayScript(src) {
   return new Promise((resolve) => {
@@ -168,6 +169,14 @@ export default function CheckoutPage() {
 
     fetchDefaultAddress();
   }, [authUser, selectedAddress]);
+
+  useEffect(() => {
+    if (subtotal < 500) {
+      router.replace("/papapet/cart");
+    }
+  }, [subtotal, router]);
+
+  if (subtotal < 500) return null;
 
   // Edit state
   const [editAddressType, setEditAddressType] = useState(null); // only "shipping"
@@ -909,7 +918,7 @@ export default function CheckoutPage() {
                     <div className="flex justify-between text-xs sm:text-sm">
                       <span className="text-muted-foreground">Shipping.</span>
                       <span className="font-medium text-success">
-                        {subtotal > 1000 ? "Free Shipping" : " Rs. 99"}
+                        <span className="line-through text-red-400">Rs. 99</span> Free 
                       </span>
                     </div>
                     <div className="flex justify-between text-xs sm:text-sm">

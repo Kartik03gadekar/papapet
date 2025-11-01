@@ -46,7 +46,6 @@ function Modal({ open, onClose, children }) {
 }
 
 function ProductCard({ product }) {
-
   return (
     <Link href={`/papapet/product/${product._id}`}>
       <div className="flex-shrink-0 w-48 border border-neutral-200 rounded-xl p-3 flex flex-col gap-2 shadow-sm bg-white">
@@ -66,7 +65,6 @@ function ProductCard({ product }) {
             ₹{product.price}
           </span>
           <button
-            
             className="px-4 py-2 bg-[#FB923C] text-white font-bold rounded-xl"
             aria-label="Add to cart"
           >
@@ -95,6 +93,8 @@ const useUserAddresses = (userId) => {
     isDefault: false,
   });
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (!userId) return;
 
@@ -107,7 +107,12 @@ const useUserAddresses = (userId) => {
         }));
         setAddresses(addressesWithId);
         if (addressesWithId.length > 0) {
-          setSelectedAddressId(addressesWithId[0].id);
+          const defaultAddress =
+            addressesWithId.find((addr) => addr.isDefault) ||
+            addressesWithId[0];
+
+          setSelectedAddressId(defaultAddress.id);
+          dispatch(setSelectedAddress(defaultAddress));
         }
       } catch (err) {
         console.error("Error fetching addresses:", err);
@@ -347,21 +352,21 @@ export default function CheckoutPage() {
   }, []);
 
   const recommendedProducts = useMemo(() => {
-    if (!cartItems?.length || !allProducts?.length) {
-      return [];
-    }
+    if (!cartItems?.length || !allProducts?.length) return [];
 
     const cartCategoriesSet = new Set();
+    const cartAnimalSet = new Set();
+
     cartItems.forEach((item) => {
-      const categoryValue = item.categories || item.category;
-      if (typeof categoryValue === "string") {
-        cartCategoriesSet.add(categoryValue.trim().toLowerCase());
-      }
+      const categoryValue = (item.categories || item.category || "")
+        .trim()
+        .toLowerCase();
+      const animalValue = (item.animalCategory || "").trim().toLowerCase();
+      if (categoryValue) cartCategoriesSet.add(categoryValue);
+      if (animalValue) cartAnimalSet.add(animalValue);
     });
 
-    if (cartCategoriesSet.size === 0) {
-      return [];
-    }
+    if (cartCategoriesSet.size === 0 && cartAnimalSet.size === 0) return [];
 
     const cartItemIds = new Set(cartItems.map((item) => item._id));
 
@@ -373,24 +378,23 @@ export default function CheckoutPage() {
       )
         .trim()
         .toLowerCase();
-      const isInCategory = cartCategoriesSet.has(productCategoryValue);
+      const productAnimalValue = (product.animalCategory || "")
+        .trim()
+        .toLowerCase();
+
+      const matchesCategory = cartCategoriesSet.has(productCategoryValue);
+      const matchesAnimal = cartAnimalSet.has(productAnimalValue);
       const notInCart = !cartItemIds.has(product._id);
-      return isInCategory && notInCart;
+
+      return matchesAnimal && notInCart;
     });
 
-    const groupedByCategory = potentialRecommendations.reduce(
-      (acc, product) => {
-        const category = (product.categories || product.category || "")
-          .trim()
-          .toLowerCase();
-        if (!acc[category]) {
-          acc[category] = [];
-        }
-        acc[category].push(product);
-        return acc;
-      },
-      {}
-    );
+    const groupedByAnimal = potentialRecommendations.reduce((acc, product) => {
+      const animal = (product.animalCategory || "").trim().toLowerCase();
+      if (!acc[animal]) acc[animal] = [];
+      acc[animal].push(product);
+      return acc;
+    }, {});
 
     const shuffleArray = (array) => {
       const newArray = [...array];
@@ -402,15 +406,13 @@ export default function CheckoutPage() {
     };
 
     const finalRecommendations = [];
-    const maxItemsPerCategory = 5;
+    const maxItemsPerAnimal = 5;
 
-    cartCategoriesSet.forEach((category) => {
-      const productsInCategory = groupedByCategory[category];
-      if (productsInCategory) {
-        const shuffledProducts = shuffleArray(productsInCategory);
-        finalRecommendations.push(
-          ...shuffledProducts.slice(0, maxItemsPerCategory)
-        );
+    cartAnimalSet.forEach((animal) => {
+      const productsForAnimal = groupedByAnimal[animal];
+      if (productsForAnimal) {
+        const shuffled = shuffleArray(productsForAnimal);
+        finalRecommendations.push(...shuffled.slice(0, maxItemsPerAnimal));
       }
     });
 
@@ -511,6 +513,11 @@ export default function CheckoutPage() {
 
     if (cartItems.length === 0) {
       toast.error("Your cart is empty. Please add items before checkout.");
+      return;
+    }
+
+    if (Math.round(subtotal) < 500) {
+      toast.error("Minimum order amount is ₹499 to proceed to checkout.");
       return;
     }
 
@@ -698,7 +705,6 @@ export default function CheckoutPage() {
                   setShowAddAddressModal(false);
                   setAddressError("");
                 }}
-                
               >
                 <h3 className="text-lg font-semibold mb-4 text-neutral-900">
                   Add Address
@@ -1087,7 +1093,7 @@ export default function CheckoutPage() {
                 <button
                   onClick={checkUserLoggedIn}
                   className="w-full mt-6 px-6 py-3 bg-orange-400 text-white rounded-lg font-semibold hover:bg-orange-500 transition flex items-center justify-center gap-2 text-base shadow-md"
-                  disabled={addresses.length === 0}
+                  disabled={addresses.length === 0 && subtotal < 500}
                   title={
                     addresses.length === 0 ? "Please add address first" : ""
                   }
@@ -1098,6 +1104,12 @@ export default function CheckoutPage() {
                 {addresses.length === 0 && (
                   <div className="text-red-500 text-xs mt-2">
                     Please add an address first to proceed.
+                  </div>
+                )}
+
+                {subtotal < 500 && (
+                  <div className="text-red-500 text-xs mt-2">
+                    Minimum order amount is ₹499 to proceed to checkout.
                   </div>
                 )}
               </div>

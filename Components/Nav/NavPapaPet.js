@@ -727,7 +727,7 @@ const NavPapaPet = () => {
           transform: showNavbar ? "translateY(0)" : "translateY(-100%)",
         }}
       >
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full  flex items-center justify-between">
           <Link href="/">
             <div className="flex items-center justify-center gap-2">
               <img className="object-contain h-10" src="/logo.png" alt="logo" />

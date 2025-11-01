@@ -17,9 +17,9 @@ const HomePage = () => {
 
   return (
     <div
-      className="relative max-md:flex max-md:flex-col max-md:items-center max-md:justify-between max-md:pt-[2vw] w-full 
-      overflow-hidden flex items-center justify-between min-h-screen px-10 py-[8vw] pl-[3vw] pt-[6vw] gap-4 max-md:gap-0 max-md:overflow-hidden
-      max-md:min-h-screen max-md:pb-0 z-10"
+      className="h-screen relative max-md:flex max-md:flex-col max-md:items-center max-md:justify-between max-md:pt-[2vw] w-full 
+      overflow-hidden flex items-center justify-between px-10 py-[8vw] pl-[3vw] pt-[6vw] gap-4 max-md:gap-0 max-md:overflow-hidden
+       max-md:pb-0 z-10"
     >
       {/* Left Side Content */}
       <div

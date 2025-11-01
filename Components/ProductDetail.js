@@ -171,21 +171,15 @@ const ProductDetail = ({ i, product }) => {
         {product?.brand || "Pedigree"}
       </p>
 
-      <p className="text-gray-600 text-sm mb-2 uppercase">
-        <span className="font-semibold">Animal Category:</span>{" "}
+      <p className="text-gray-600 text-sm mb-2 capitalize">
+        <span className="font-semibold">animal category:</span>{" "}
         {product?.animalCategory || "Dog"}
       </p>
 
       <p className="text-gray-600 text-sm mb-4 capitalize">
         <span className="font-semibold">Category:</span>{" "}
-        {product?.category || "Dry Food"}
+        {product?.categories}
       </p>
-
-      {product?.stock[0].quantity > 0 ? (
-        <p className="text-green-600 font-semibold mb-8">In Stock</p>
-      ) : (
-        <p className="text-red-600 font-semibold mb-8">Out of Stock</p>
-      )}
 
       <div className="mb-8">
         <div className="flex items-center gap-2">
@@ -226,22 +220,6 @@ const ProductDetail = ({ i, product }) => {
         )}
       </div>
 
-      <div className="mb-6 flex gap-3 flex-wrap">
-        {product?.stock?.map((stockItem, index) => (
-          <button
-            key={index}
-            onClick={() => setSelectedStock(stockItem)}
-            className={`px-5 py-2 rounded border font-semibold ${
-              selectedStock?.value === stockItem.value
-                ? "bg-orange-500 text-white"
-                : "bg-white text-gray-700 border-gray-300"
-            }`}
-          >
-            {stockItem.value}
-          </button>
-        ))}
-      </div>
-
       <div className="mb-8">
         {selectedStock?.discountprice ? (
           <div className="flex items-center gap-4">
@@ -258,6 +236,55 @@ const ProductDetail = ({ i, product }) => {
             ₹{selectedStock?.sellingprice || product?.discountprice}
           </p>
         )}
+      </div>
+
+      <div className="mb-6 flex gap-3 flex-wrap">
+        {(!product?.stock || product.stock.length === 0) && (
+          <div className="p-3 rounded bg-yellow-50 text-yellow-800 border border-yellow-100">
+            This product has no stock available
+          </div>
+        )}
+
+        {product?.stock?.map((stockItem, idx) => {
+          const out = !(stockItem && Number(stockItem.quantity) > 0);
+          const selected =
+            selectedStock && selectedStock.value === stockItem.value;
+          return (
+            <button
+              key={idx}
+              onClick={() => {
+                if (!out) setSelectedStock(stockItem);
+              }}
+              className={`px-4 py-2 rounded border font-semibold flex items-center gap-3 ${
+                selected
+                  ? "bg-orange-500 text-white border-orange-500"
+                  : out
+                  ? "bg-white text-gray-300 border-gray-200 cursor-not-allowed opacity-70"
+                  : "bg-white text-gray-700 border-gray-300 hover:shadow-sm"
+              }`}
+              disabled={out}
+              title={
+                out
+                  ? `Out of stock (${stockItem.value})`
+                  : `Select ${stockItem.value} - ${
+                      stockItem.quantity ?? 0
+                    } left`
+              }
+            >
+              <span>{stockItem.value}</span>
+
+              {out ? (
+                <span className="text-xs text-red-500 bg-red-50 px-2 py-0.5 rounded">
+                  Out of stock
+                </span>
+              ) : (
+                <span className="text-xs text-gray-600 bg-gray-50 px-2 py-0.5 rounded">
+                  {stockItem.quantity ?? 0} left
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       <div className="">
